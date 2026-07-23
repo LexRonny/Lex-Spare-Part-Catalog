@@ -515,7 +515,7 @@
                 tags: ["Bearing", "Vacuum", "Incom", "Ceramic"],
                 source: { title: "Incom Bulletin XW-44-B", author: "Incom", page: "XW-44-B", isbn: "N/A" },
                 relations: { powerSource: "N/A", needs: "PTFE Dry Lubricant", interfaces: "SAM-12 Mount", uses: "Si3N4 Ceramic Balls" },
-                specs: "Precision vacuum bearing with silicon nitride (Si3N4) ceramic balls. Operating Temp Range: -150°C to +200°C.",
+                specs: "Precision vacuum bearing with silicon nitride ($\\text{Si}_3\\text{N}_4$) ceramic balls. Operating Temp Range: -150°C to +200°C.",
                 notes: "Don't use regular grease in vacuum.", spectreNote: "[SPECTRE]: Zero outgassing risk."
             },
             {
@@ -635,7 +635,7 @@
                 tags: ["Bearing", "Spherical", "Rothana"],
                 source: { title: "RHI Manual 04", author: "Rothana", page: "p. 99", isbn: "N/A" },
                 relations: { powerSource: "N/A", needs: "Moly-grease (250h)", interfaces: "Clevis pin", uses: "Durasteel sphere" },
-                specs: "Self-aligning spherical bearing absorbing angular deflection.",
+                specs: "Self-aligning spherical bearing absorbing angular deflection ($\\pm 7.0^\\circ$).",
                 notes: "Absorbs rotational twist.", spectreNote: "[SPECTRE]: Kinetic shock dissipation verified."
             },
             {
@@ -658,7 +658,7 @@
                 compatibleWith: ["Stealth recon drone sensors"], installedOn: ["Optical Gimbals"],
                 tags: ["Bearing", "Superconducting", "Incom"],
                 source: { title: "Incom Cryo Journal", author: "Incom", page: "p. 112", isbn: "N/A" },
-                relations: { powerSource: "Zero Active Power", needs: "Coolant flow", interfaces: "Cryo Sleeve", uses: "YBCO Superconductor" },
+                relations: { powerSource: "Zero Active Power", needs: "Coolant flow ($< -180^\\circ\\text{C}$)", interfaces: "Cryo Sleeve", uses: "YBCO Superconductor" },
                 specs: "Self-stabilizing passive magnetic bearing utilizing flux-pinned superconductors.",
                 notes: "Quantum physics does the work.", spectreNote: "[SPECTRE]: Zero micro-vibration detected."
             },
@@ -684,7 +684,7 @@
                 source: { title: "KDY Hydraulic Specs", author: "KDY", page: "p. 310", isbn: "N/A" },
                 relations: { powerSource: "350 Bar Hydraulic Pump", needs: "Filter manifolds (500h)", interfaces: "Thrust ring", uses: "Durasteel plates" },
                 specs: "Externally pressurized fluid bearing using 350 Bar hydraulic pump pressure.",
-                notes: "Spin 500-ton drive shaft with bare hand.", spectreNote: "[SPECTRE]: Fluid gap clearance maintained."
+                notes: "Spin 500-ton drive shaft with bare hand.", spectreNote: "[SPECTRE]: Fluid gap clearance $45\\text{ }\\mu\\text{m}$."
             },
             {
                 id: "LRS-BRG-160001", stdNo: "GS-STD-BRG-61", rev: "Rev A", name: "Pillow Block Heavy Bearing Housing",
@@ -707,7 +707,7 @@
                 tags: ["Locknut", "Washer", "Retention"],
                 source: { title: "Corellian Fastener Manual", author: "Corellian", page: "p. 8", isbn: "N/A" },
                 relations: { powerSource: "N/A", needs: "Single-use washer", interfaces: "Threaded shaft end", uses: "Alloy steel" },
-                specs: "High-torque threaded shaft retention nut paired with multi-tab locking washer.",
+                specs: "High-torque threaded shaft retention nut paired with multi-tab locking washer (850 Nm).",
                 notes: "Don't reuse the tab washer.", spectreNote: "[SPECTRE]: Thread engagement verified."
             },
             {
@@ -719,8 +719,8 @@
                 tags: ["Material", "Quadanium", "Rendili"],
                 source: { title: "Rendili Vault Archives", author: "Rendili", page: "Vault Q-8", isbn: "N/A" },
                 relations: { powerSource: "N/A", needs: "Diamond-tipped tools", interfaces: "Precision machining", uses: "Quadanium-Durasteel" },
-                specs: "Ultra-dense forged alloy stock (Grade Q-8). Hardness: 64-67 HRC. Strength: 2,400 MPa.",
-                notes: "Kills standard lathe bits in five seconds.", spectreNote: "[SPECTRE]: Shear fatigue resistance exceeds standard by 310%."
+                specs: "Ultra-dense forged alloy stock (Grade Q-8). Surface Hardness: $64-67\\text{ HRC}$. Tensile Strength: $2,400\\text{ MPa}$.",
+                notes: "Kills standard lathe bits in five seconds.", spectreNote: "[SPECTRE]: Shear fatigue resistance +310%."
             },
             {
                 id: "LRS-BRG-170002", stdNo: "GS-STD-MAT-72", rev: "Rev A", name: "Silicon Nitride (Si3N4) Ceramic Element Stock",
@@ -731,7 +731,7 @@
                 tags: ["Material", "Ceramic", "Si3N4"],
                 source: { title: "Sublight Ceramics Spec CR-88", author: "Sublight", page: "CR-88", isbn: "N/A" },
                 relations: { powerSource: "N/A", needs: "Padded containers", interfaces: "Micro-polishing", uses: "Silicon Nitride" },
-                specs: "Ultra-lightweight non-conductive ceramic rolling element stock.",
+                specs: "Ultra-lightweight ($3.2\\text{ g/cm}^3$), non-conductive, dielectric ceramic rolling element stock ($> 15\\text{ kV}$).",
                 notes: "Blocks stray current from ruining bearings.", spectreNote: "[SPECTRE]: Centrifugal loading reduced by 60%."
             },
 
@@ -749,7 +749,7 @@
                 notes: "Passive stealth is usually worth more than active stealth.", spectreNote: "[SPECTRE]: Threat Reduction Value: High."
             },
 
-            // CORE SYSTEMS & MATERIALS
+            // CORE SHADOW HUNTER SYSTEMS & MATERIALS
             {
                 id: "WEAP-CEC-001", stdNo: "GS-STD-7021", rev: "Rev C", name: "CEC AG-2G Quad Laser Cannon Assembly",
                 categoryPath: ["Assemblies", "Weapons", "Starfighter Weapons", "Quad Laser Cannons"], parentId: null,
@@ -780,7 +780,7 @@
                 compatibleWith: ["Reinforcements", "Armor"], installedOn: ["Shadow Hunter Brackets"],
                 tags: ["Material", "Metal", "Beskar"], source: { title: "The Mandalorian Guide", author: "Lucasfilm", page: "p. 88", isbn: "978-0241401200" },
                 relations: { powerSource: "N/A", needs: "Armorer Forge", interfaces: "Plating Matrix", uses: "N/A" },
-                specs: "Folded and forged Mandalorian super-alloy immune to blaster fire and lightsabers.",
+                specs: "Folded and forged Mandalorian super-alloy completely immune to blaster fire and lightsaber strikes.",
                 notes: "Reserved for high-priority mounts.", spectreNote: "[SPECTRE]: Molecular density prevents thermal transfer."
             },
             {
@@ -792,7 +792,7 @@
                 tags: ["Material", "Durasteel"], source: { title: "Galactic Industrial Guide", author: "Kuat", page: "p. 10", isbn: "N/A" },
                 relations: { powerSource: "N/A", needs: "Plasma Welders", interfaces: "Structural Frame", uses: "N/A" },
                 specs: "Heavy-duty alloy composed of carvanite, titanium, chromium, and lommite.",
-                notes: "Used for hull repairs and bulkheads.", spectreNote: "[SPECTRE]: Standard tensile strength verified."
+                notes: "For hull repairs and bulkheads.", spectreNote: "[SPECTRE]: Standard tensile strength verified."
             }
         ];
 
@@ -829,7 +829,7 @@
             const badge = document.getElementById('syncBadge');
             const txt = document.getElementById('syncBadgeText');
             if (badge && txt) {
-                badge.style.cssText = classNames;
+                badge.className = `px-2.5 py-0.5 rounded text-[10px] font-mono uppercase font-bold border flex items-center gap-1.5 self-end md:self-auto ${classNames}`;
                 txt.innerText = text;
             }
         }
@@ -842,19 +842,13 @@
             const tableContainer = document.getElementById('viewTableContainer');
 
             if (view === 'tree') {
-                treeBtn.className = "btn-cyan";
-                tableBtn.className = "btn-dark";
-                tableBtn.style.background = "transparent";
-                tableBtn.style.border = "none";
-                tableBtn.style.color = "#94a3b8";
+                treeBtn.className = "px-3 py-1 rounded bg-cyan-950 text-cyanGlow border border-cyan-700 font-bold heading-font flex items-center gap-2 text-xs";
+                tableBtn.className = "px-3 py-1 rounded text-slate-400 hover:text-white border border-transparent font-bold heading-font flex items-center gap-2 text-xs";
                 treeContainer.classList.remove('hidden');
                 tableContainer.classList.add('hidden');
             } else {
-                tableBtn.className = "btn-cyan";
-                treeBtn.className = "btn-dark";
-                treeBtn.style.background = "transparent";
-                treeBtn.style.border = "none";
-                treeBtn.style.color = "#94a3b8";
+                tableBtn.className = "px-3 py-1 rounded bg-cyan-950 text-cyanGlow border border-cyan-700 font-bold heading-font flex items-center gap-2 text-xs";
+                treeBtn.className = "px-3 py-1 rounded text-slate-400 hover:text-white border border-transparent font-bold heading-font flex items-center gap-2 text-xs";
                 tableContainer.classList.remove('hidden');
                 treeContainer.classList.add('hidden');
             }
@@ -863,6 +857,7 @@
 
         function renderCatalog() {
             if (!catalog || catalog.length < 75) loadCatalog();
+
             updateMetrics();
 
             const search = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -900,132 +895,177 @@
             folderCounter = 0;
 
             const treeRoot = {};
+
             items.forEach(item => {
                 const path = item.categoryPath && item.categoryPath.length > 0 ? item.categoryPath : ["Uncategorized"];
                 let current = treeRoot;
+
                 path.forEach(folder => {
-                    if (!current[folder]) current[folder] = { _items: [], _sub: {} };
+                    if (!current[folder]) {
+                        current[folder] = { _items: [], _sub: {} };
+                    }
                     current = current[folder]._sub;
                 });
+
                 let targetNode = treeRoot;
                 path.forEach((folder, idx) => {
-                    if (idx === path.length - 1) targetNode[folder]._items.push(item);
-                    else targetNode = targetNode[folder]._sub;
+                    if (idx === path.length - 1) {
+                        targetNode[folder]._items.push(item);
+                    } else {
+                        targetNode = targetNode[folder]._sub;
+                    }
                 });
             });
 
-            function countRecursive(nodeObj) {
+            function countRecursiveItems(nodeObj) {
                 let total = nodeObj._items.length;
-                Object.keys(nodeObj._sub).forEach(sub => total += countRecursive(nodeObj._sub[sub]));
+                Object.keys(nodeObj._sub).forEach(subKey => {
+                    total += countRecursiveItems(nodeObj._sub[subKey]);
+                });
                 return total;
             }
 
-            function buildDOM(node, container, depth = 0) {
+            function buildDOMTree(node, container, depth = 0) {
                 Object.keys(node).forEach(folderName => {
                     const folderObj = node[folderName];
                     const folderId = `tree_folder_${folderCounter++}`;
-                    const totalItems = countRecursive(folderObj);
+                    const totalItems = countRecursiveItems(folderObj);
 
-                    const div = document.createElement('div');
-                    div.style.marginLeft = `${Math.min(depth * 15, 60)}px`;
-                    div.style.marginTop = '0.25rem';
+                    const folderWrapper = document.createElement('div');
+                    folderWrapper.className = `ml-${Math.min(depth * 3, 12)} my-1`;
 
-                    const header = document.createElement('div');
-                    header.style.cssText = "display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.35rem 0.5rem; border-radius: 0.25rem; font-weight: bold; color: #cbd5e1; background: rgba(15,23,42,0.6); border: 1px solid #1e293b;";
-                    header.onclick = () => toggleFolder(folderId);
-                    header.innerHTML = `
-                        <i id="icon_${folderId}" class="fa-solid fa-chevron-down" style="color: #00f0ff; font-size: 0.7rem; transition: transform 0.2s;"></i>
-                        <i class="fa-solid fa-folder-open" style="color: #fbbf24;"></i>
-                        <span style="color: #fff;">${folderName}</span>
-                        <span style="font-size: 0.7rem; background: #020617; color: #38bdf8; padding: 0.1rem 0.4rem; border-radius: 0.25rem; border: 1px solid #0369a1; margin-left: auto;">${totalItems} items</span>
+                    const folderHeader = document.createElement('div');
+                    folderHeader.className = "flex items-center gap-2 cursor-pointer hover:bg-slate-900/80 p-1.5 rounded text-slate-300 font-bold heading-font select-none transition border border-transparent hover:border-slate-800";
+                    folderHeader.onclick = function() { toggleFolder(folderId); };
+
+                    folderHeader.innerHTML = `
+                        <i id="icon_${folderId}" class="fa-solid fa-chevron-down text-cyanGlow text-[10px] transition-transform"></i>
+                        <i class="fa-solid fa-folder-open text-amber-400 text-xs"></i>
+                        <span class="text-white text-xs">${folderName}</span>
+                        <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-1.5 py-0.2 rounded border border-cyan-800 ml-1">${totalItems} items</span>
                     `;
 
-                    const body = document.createElement('div');
-                    body.id = folderId;
-                    body.style.cssText = "border-left: 1px dashed #334155; margin-left: 0.75rem; padding-left: 0.75rem; margin-top: 0.25rem; display: flex; flex-direction: column; gap: 0.25rem;";
+                    const childrenContainer = document.createElement('div');
+                    childrenContainer.id = folderId;
+                    childrenContainer.className = "pl-4 tree-line space-y-1 mt-1 tree-folder-content";
 
                     folderObj._items.forEach(item => {
-                        const itemRow = document.createElement('div');
-                        itemRow.style.cssText = "display: flex; justify-content: space-between; align-items: center; background: rgba(15,23,42,0.8); border: 1px solid #1e293b; padding: 0.35rem 0.75rem; border-radius: 0.25rem;";
-                        itemRow.innerHTML = `
-                            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                <i class="fa-solid fa-microchip" style="color: #00f0ff; font-size: 0.8rem;"></i>
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = "flex items-center justify-between p-1.5 rounded bg-slate-900/80 border border-slate-800 hover:border-cyanGlow transition";
+                        itemDiv.innerHTML = `
+                            <div class="flex items-center gap-2.5">
+                                <i class="fa-solid fa-microchip text-cyanGlow text-[11px]"></i>
                                 <div>
-                                    <span style="font-weight: bold; color: #fff; cursor: pointer;" onclick="inspectPart('${item.id}')">${item.name}</span>
-                                    <span style="color: #fbbf24; font-size: 0.75rem; margin-left: 0.5rem;">${item.stdNo} (${item.rev || 'Rev A'})</span>
+                                    <span class="font-bold text-white cursor-pointer hover:underline text-xs" onclick="inspectPart('${item.id}')">${item.name}</span>
+                                    <span class="text-[10px] text-amber-400 font-mono ml-2">${item.stdNo} (${item.rev || 'Rev A'})</span>
                                 </div>
                             </div>
-                            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                <span style="font-size: 0.7rem; background: #020617; border: 1px solid #334155; padding: 0.1rem 0.4rem; border-radius: 0.25rem; color: #cbd5e1;">${item.accessClass}</span>
-                                <span style="color: #34d399; font-weight: bold; font-size: 0.8rem;">${item.qty} units</span>
-                                <button onclick="inspectPart('${item.id}')" class="btn-cyan" style="font-size: 0.7rem; padding: 0.2rem 0.5rem;"><i class="fa-solid fa-eye"></i> Inspect</button>
+                            <div class="flex items-center gap-3">
+                                <span class="text-[9px] px-1.5 py-0.5 rounded border border-slate-700 bg-slate-950 font-mono text-slate-300">${item.accessClass}</span>
+                                <span class="text-xs font-mono text-emerald-400 font-bold">${item.qty} units</span>
+                                <button onclick="inspectPart('${item.id}')" class="px-2 py-0.5 bg-cyan-950 hover:bg-cyan-900 text-cyanGlow border border-cyan-800 rounded text-[10px]" title="Inspect Datapad">
+                                    <i class="fa-solid fa-eye"></i> Inspect
+                                </button>
                             </div>
                         `;
-                        body.appendChild(itemRow);
+                        childrenContainer.appendChild(itemDiv);
                     });
 
-                    div.appendChild(header);
-                    div.appendChild(body);
+                    folderWrapper.appendChild(folderHeader);
+                    folderWrapper.appendChild(childrenContainer);
 
                     if (Object.keys(folderObj._sub).length > 0) {
-                        buildDOM(folderObj._sub, body, depth + 1);
+                        buildDOMTree(folderObj._sub, childrenContainer, depth + 1);
                     }
-                    container.appendChild(div);
+
+                    container.appendChild(folderWrapper);
                 });
             }
 
-            buildDOM(treeRoot, treeBody);
+            buildDOMTree(treeRoot, treeBody);
         }
 
         function toggleFolder(folderId) {
-            const el = document.getElementById(folderId);
+            const container = document.getElementById(folderId);
             const icon = document.getElementById(`icon_${folderId}`);
-            if (el) {
-                const isHidden = el.style.display === 'none';
-                el.style.display = isHidden ? 'flex' : 'none';
-                if (icon) icon.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(-90deg)';
+            if (container) {
+                container.classList.toggle('hidden');
+                if (icon) {
+                    if (container.classList.contains('hidden')) {
+                        icon.className = "fa-solid fa-chevron-right text-slate-500 text-[10px] transition-transform";
+                    } else {
+                        icon.className = "fa-solid fa-chevron-down text-cyanGlow text-[10px] transition-transform";
+                    }
+                }
             }
         }
 
         function expandAllFolders() {
-            document.querySelectorAll('[id^="tree_folder_"]').forEach(el => el.style.display = 'flex');
-            document.querySelectorAll('[id^="icon_tree_folder_"]').forEach(icon => icon.style.transform = 'rotate(0deg)');
+            document.querySelectorAll('.tree-folder-content').forEach(el => el.classList.remove('hidden'));
+            document.querySelectorAll('[id^="icon_tree_folder_"]').forEach(icon => {
+                icon.className = "fa-solid fa-chevron-down text-cyanGlow text-[10px] transition-transform";
+            });
         }
 
         function collapseAllFolders() {
-            document.querySelectorAll('[id^="tree_folder_"]').forEach(el => el.style.display = 'none');
-            document.querySelectorAll('[id^="icon_tree_folder_"]').forEach(icon => icon.style.transform = 'rotate(-90deg)');
+            document.querySelectorAll('.tree-folder-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('[id^="icon_tree_folder_"]').forEach(icon => {
+                icon.className = "fa-solid fa-chevron-right text-slate-500 text-[10px] transition-transform";
+            });
         }
 
         function renderTableView(items) {
             const tbody = document.getElementById('catalogTableBody');
             const emptyState = document.getElementById('emptyState');
             tbody.innerHTML = '';
-            if (items.length === 0) { emptyState.classList.remove('hidden'); return; }
+
+            if (items.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            }
             emptyState.classList.add('hidden');
 
             items.forEach(item => {
                 const pathStr = item.categoryPath ? item.categoryPath.join(' > ') : 'Uncategorized';
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="font-family: monospace;"><strong style="color: #00f0ff;">${item.id}</strong><br><span style="color: #fbbf24; font-size: 0.75rem;">${item.stdNo} (${item.rev || 'Rev A'})</span></td>
-                    <td><div style="font-weight: bold; color: #fff; cursor: pointer;" onclick="inspectPart('${item.id}')">${item.name}</div><div style="font-size: 0.75rem; color: #fbbf24; margin-top: 0.2rem;">${item.confidenceStars || "★★★★★"} <span style="background: #020617; padding: 0.1rem 0.3rem; border-radius: 0.2rem; border: 1px solid #334155; color: #94a3b8; margin-left: 0.25rem;">${item.univStatus}</span></div></td>
-                    <td style="font-family: monospace; font-size: 0.75rem; color: #94a3b8;">${pathStr}</td>
-                    <td>${item.supplier}</td>
-                    <td style="color: #94a3b8;"><i class="fa-solid fa-location-dot" style="color: #00f0ff;"></i> ${item.location}</td>
-                    <td style="text-align: center; font-weight: bold; color: #34d399;">${item.qty}</td>
-                    <td style="text-align: right; font-family: monospace; font-weight: bold; color: #34d399;">${item.price.toLocaleString()} ₡</td>
-                    <td style="text-align: center;"><button onclick="inspectPart('${item.id}')" class="btn-cyan" style="font-size: 0.7rem; padding: 0.25rem 0.5rem;"><i class="fa-solid fa-eye"></i></button></td>
+                const stars = item.confidenceStars || "★★★★★";
+
+                const row = document.createElement('tr');
+                row.className = "hover:bg-slate-900/50 transition border-b border-slate-800/60";
+                row.innerHTML = `
+                    <td class="p-3 font-mono text-xs">
+                        <span class="text-cyanGlow font-bold block">${item.id}</span>
+                        <span class="text-amber-400 text-[10px]">${item.stdNo} (${item.rev || 'Rev A'})</span>
+                    </td>
+                    <td class="p-3">
+                        <div class="font-bold text-white cursor-pointer hover:text-cyanGlow text-xs" onclick="inspectPart('${item.id}')">${item.name}</div>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-amber-400 text-[10px]">${stars}</span>
+                            <span class="text-[10px] px-1 py-0.5 rounded border border-slate-700 bg-slate-900 text-slate-300 font-mono">${item.univStatus}</span>
+                        </div>
+                    </td>
+                    <td class="p-3 text-[11px] text-slate-400 font-mono">${pathStr}</td>
+                    <td class="p-3 text-xs text-slate-200">${item.supplier}</td>
+                    <td class="p-3 text-xs text-slate-400"><i class="fa-solid fa-location-dot text-cyanGlow mr-1"></i>${item.location}</td>
+                    <td class="p-3 text-center font-bold text-emerald-400 text-xs">${item.qty}</td>
+                    <td class="p-3 text-right font-mono text-emerald-400 font-bold text-xs">${item.price.toLocaleString()} ₡</td>
+                    <td class="p-3 text-center">
+                        <button onclick="inspectPart('${item.id}')" class="p-1.5 bg-cyan-950 text-cyanGlow border border-cyan-800 rounded text-xs" title="Inspect">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </td>
                 `;
-                tbody.appendChild(tr);
+                tbody.appendChild(row);
             });
         }
 
         function updateMetrics() {
             document.getElementById('statTotalParts').innerText = catalog.length;
-            document.getElementById('statTotalUnits').innerText = catalog.reduce((s, i) => s + i.qty, 0);
-            document.getElementById('statLowStock').innerText = catalog.filter(i => i.qty <= i.minQty).length;
-            document.getElementById('statTotalValue').innerText = catalog.reduce((s, i) => s + (i.qty * i.price), 0).toLocaleString() + ' ₡';
+            const totalUnits = catalog.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('statTotalUnits').innerText = totalUnits;
+            const lowStockCount = catalog.filter(item => item.qty <= item.minQty).length;
+            document.getElementById('statLowStock').innerText = lowStockCount;
+            const totalVal = catalog.reduce((sum, item) => sum + (item.qty * item.price), 0);
+            document.getElementById('statTotalValue').innerText = totalVal.toLocaleString() + ' ₡';
         }
 
         function toggleLowStockFilter() {
@@ -1033,62 +1073,91 @@
             const btn = document.getElementById('lowStockToggle');
             const txt = document.getElementById('lowStockToggleText');
             if (showLowStockOnly) {
-                btn.className = "btn-red";
+                btn.classList.add('bg-amber-950', 'border-amber-500', 'text-amber-300');
                 txt.innerText = "Low Stock Active";
             } else {
-                btn.className = "btn-dark";
+                btn.classList.remove('bg-amber-950', 'border-amber-500', 'text-amber-300');
                 txt.innerText = "Low Stock / Unstocked";
             }
             renderCatalog();
         }
 
+        let activeInspectPartId = null;
         function inspectPart(id) {
             const item = catalog.find(c => c.id === id);
             if (!item) return;
+            activeInspectPartId = id;
 
             document.getElementById('inspectRecordId').innerText = item.id;
             document.getElementById('inspectStdNo').innerText = `STD: ${item.stdNo} (${item.rev || 'Rev A'})`;
             document.getElementById('inspectStars').innerText = item.confidenceStars || "★★★★★";
             document.getElementById('inspectName').innerText = item.name;
             document.getElementById('inspectPathBreadcrumb').innerText = item.categoryPath ? item.categoryPath.join(' / ') : "Uncategorized";
+
             document.getElementById('inspectUnivStatus').innerText = item.univStatus || 'Canon';
             document.getElementById('inspectAccessClass').innerText = item.accessClass || 'Trade';
             document.getElementById('inspectLifecycle').innerText = item.lifecycle || 'Mass Production';
             document.getElementById('inspectConfidenceVal').innerText = `${item.confidence || 5} / 5 Stars`;
             document.getElementById('inspectRev').innerText = item.rev || 'Rev A';
-            document.getElementById('inspectDescription').innerText = item.specs || 'No specifications logged.';
+            document.getElementById('inspectDescription').innerText = item.specs || 'No technical specifications logged.';
+
             document.getElementById('inspectLocation').innerText = item.location;
-            document.getElementById('inspectStock').innerText = `${item.qty} units (Min: ${item.minQty})`;
+            document.getElementById('inspectStock').innerText = `${item.qty} units (Minimum: ${item.minQty})`;
             document.getElementById('inspectPrice').innerText = `${item.price.toLocaleString()} ₡`;
 
             const tagsCont = document.getElementById('inspectTagsContainer');
             tagsCont.innerHTML = '';
             (item.tags || []).forEach(t => {
-                tagsCont.innerHTML += `<span style="font-size: 0.7rem; font-family: monospace; background: #020617; border: 1px solid #0369a1; color: #38bdf8; padding: 0.1rem 0.4rem; border-radius: 0.2rem;">#${t}</span>`;
+                const tagSpan = document.createElement('span');
+                tagSpan.className = "px-2 py-0.5 rounded border border-cyan-900 bg-cyan-950/60 text-cyan-300 font-mono text-[10px]";
+                tagSpan.innerText = `#${t}`;
+                tagsCont.appendChild(tagSpan);
             });
 
             const parentCont = document.getElementById('inspectParentContainer');
             if (item.parentId) {
-                const p = catalog.find(c => c.id === item.parentId);
-                parentCont.innerHTML = p ? `<div style="display: flex; justify-content: space-between; align-items: center;"><span><strong>Parent:</strong> ${p.name} (${p.id})</span><button onclick="inspectPart('${p.id}')" class="btn-cyan" style="font-size: 0.7rem;">Jump</button></div>` : 'Parent not found.';
-            } else { parentCont.innerHTML = 'Top-Level Assembly (No Parent)'; }
+                const parentItem = catalog.find(c => c.id === item.parentId);
+                parentCont.innerHTML = parentItem ? 
+                    `<div class="flex items-center justify-between">
+                        <span><strong class="text-slate-400">Parent Assembly:</strong> ${parentItem.name} (${parentItem.id})</span>
+                        <button onclick="inspectPart('${parentItem.id}')" class="px-2 py-1 bg-cyan-950 text-cyanGlow border border-cyan-700 rounded text-[10px]">Jump to Parent</button>
+                    </div>` : 
+                    `<span class="text-slate-500">Parent ID (${item.parentId}) not found in database.</span>`;
+            } else {
+                parentCont.innerHTML = `<span class="text-slate-500">Top-Level Component (No Parent Assembly)</span>`;
+            }
 
             const childrenCont = document.getElementById('inspectChildrenContainer');
             childrenCont.innerHTML = '';
-            const kids = catalog.filter(c => c.parentId === item.id);
-            if (kids.length > 0) {
-                kids.forEach(k => {
-                    childrenCont.innerHTML += `<div style="display: flex; justify-content: space-between; align-items: center; background: #090d16; padding: 0.5rem; border-radius: 0.25rem; border: 1px solid #1e293b;"><div><strong>${k.name}</strong><br><span style="color: #fbbf24; font-size: 0.7rem;">${k.id}</span></div><button onclick="inspectPart('${k.id}')" class="btn-cyan" style="font-size: 0.7rem;">Inspect</button></div>`;
+            const children = catalog.filter(c => c.parentId === item.id);
+            if (children.length > 0) {
+                children.forEach(child => {
+                    const childDiv = document.createElement('div');
+                    childDiv.className = "flex items-center justify-between p-2 rounded bg-slate-900 border border-slate-800";
+                    childDiv.innerHTML = `
+                        <div>
+                            <span class="text-white font-bold block">${child.name}</span>
+                            <span class="text-[10px] text-amber-400 font-mono">${child.id} | ${child.stdNo}</span>
+                        </div>
+                        <button onclick="inspectPart('${child.id}')" class="px-2 py-1 bg-cyan-950 text-cyanGlow border border-cyan-700 rounded text-[10px]">Inspect Sub-Part</button>
+                    `;
+                    childrenCont.appendChild(childDiv);
                 });
-            } else { childrenCont.innerHTML = '<span style="color: #64748b; font-style: italic;">No sub-components in BOM.</span>'; }
+            } else {
+                childrenCont.innerHTML = `<span class="text-slate-500 italic">No child sub-components registered in BOM for this item.</span>`;
+            }
 
             const compatCont = document.getElementById('inspectCompatContainer');
             compatCont.innerHTML = '';
-            (item.compatibleWith || []).forEach(c => compatCont.innerHTML += `<span style="font-family: monospace; background: #020617; border: 1px solid #0369a1; color: #38bdf8; padding: 0.25rem 0.5rem; border-radius: 0.25rem;">${c}</span>`);
+            (item.compatibleWith || []).forEach(c => {
+                compatCont.innerHTML += `<span class="px-2 py-1 bg-cyan-950 border border-cyan-800 text-cyan-300 rounded font-mono">${c}</span>`;
+            });
 
             const installedCont = document.getElementById('inspectInstalledContainer');
             installedCont.innerHTML = '';
-            (item.installedOn || []).forEach(i => installedCont.innerHTML += `<span style="font-family: monospace; background: #064e3b; border: 1px solid #047857; color: #34d399; padding: 0.25rem 0.5rem; border-radius: 0.25rem;">${i}</span>`);
+            (item.installedOn || []).forEach(i => {
+                installedCont.innerHTML += `<span class="px-2 py-1 bg-emerald-950 border border-emerald-800 text-emerald-300 rounded font-mono">${i}</span>`;
+            });
 
             const rel = item.relations || {};
             document.getElementById('relPowerSource').innerText = rel.powerSource || 'N/A';
@@ -1097,70 +1166,80 @@
             document.getElementById('relUses').innerText = rel.uses || 'N/A';
 
             const src = item.source || {};
-            document.getElementById('srcTitle').innerText = src.title || 'Galactic Archives';
+            document.getElementById('srcTitle').innerText = src.title || 'Galactic Archive';
             document.getElementById('srcAuthor').innerText = src.author || 'Unknown';
             document.getElementById('srcPage').innerText = src.page || 'N/A';
             document.getElementById('srcIsbn').innerText = src.isbn || 'N/A';
 
             document.getElementById('inspectNote').innerText = item.notes ? `"${item.notes}"` : 'No field notes logged.';
-            document.getElementById('inspectSpectreNote').innerText = item.spectreNote || '[SPECTRE]: No observation data recorded.';
+            document.getElementById('inspectSpectreNote').innerText = item.spectreNote || '[SPECTRE]: No tactical observations logged.';
 
             switchInspectTab('tabOverview');
-            document.getElementById('inspectModal').style.display = 'flex';
+            document.getElementById('inspectModal').classList.remove('hidden');
+            document.getElementById('inspectModal').classList.add('flex');
         }
 
-        function closeInspectModal() { document.getElementById('inspectModal').style.display = 'none'; }
+        function closeInspectModal() {
+            document.getElementById('inspectModal').classList.add('hidden');
+            document.getElementById('inspectModal').classList.remove('flex');
+        }
 
         function switchInspectTab(tabId) {
             const tabs = ['tabOverview', 'tabBOM', 'tabCompat', 'tabRelations', 'tabSource', 'tabVoices'];
             const btns = ['btnTabOverview', 'btnTabBOM', 'btnTabCompat', 'btnTabRelations', 'btnTabSource', 'btnTabVoices'];
+
             tabs.forEach((t, idx) => {
                 const el = document.getElementById(t);
                 const btn = document.getElementById(btns[idx]);
                 if (t === tabId) {
                     el.classList.remove('hidden');
-                    btn.className = "btn-cyan";
+                    btn.className = "px-3 py-1.5 rounded bg-cyan-950 text-cyanGlow border border-cyan-700 whitespace-nowrap";
                 } else {
                     el.classList.add('hidden');
-                    btn.className = "btn-dark";
+                    btn.className = "px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap";
                 }
             });
         }
 
         function promptResetCatalog() {
-            showConfirmModal("Restore Master Dataset", "Reset database to full master v1.0 standard dataset (82 items)?", () => {
+            showConfirmModal("Restore Master Dataset", "Reset database to full master v1.0 standard dataset (all 82 components including all Bearings & Material Archives)?", function() {
                 catalog = JSON.parse(JSON.stringify(initialCatalog));
                 saveCatalogToLocalStorage(true);
                 renderCatalog();
-                showToast("Archive restored with all 82 items!");
+                showToast("Archive restored with all 82 components!");
             });
         }
 
         function exportJSON() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(catalog, null, 2));
-            const a = document.createElement('a');
-            a.setAttribute("href", dataStr);
-            a.setAttribute("download", `lex_rogers_catalog_v10_${new Date().toISOString().slice(0,10)}.json`);
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `lex_rogers_catalog_v10_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
             showToast("Datapad JSON exported!");
         }
 
-        function importJSON(e) {
-            const file = e.target.files[0];
+        function importJSON(event) {
+            const file = event.target.files[0];
             if (!file) return;
+
             const reader = new FileReader();
-            reader.onload = (evt) => {
+            reader.onload = function(e) {
                 try {
-                    const imp = JSON.parse(evt.target.result);
-                    if (Array.isArray(imp)) {
-                        catalog = imp;
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported)) {
+                        catalog = imported;
                         saveCatalogToLocalStorage(true);
                         renderCatalog();
                         showToast("Datapad archive imported!");
-                    } else alert("Invalid JSON format.");
-                } catch(err) { alert("Error: " + err.message); }
+                    } else {
+                        alert("Invalid JSON format.");
+                    }
+                } catch (err) {
+                    alert("Error reading JSON file: " + err.message);
+                }
             };
             reader.readAsText(file);
         }
@@ -1168,27 +1247,37 @@
         function showConfirmModal(title, msg, onConfirm) {
             document.getElementById('confirmTitle').innerText = title;
             document.getElementById('confirmMsg').innerText = msg;
-            document.getElementById('btnConfirmOK').onclick = () => { onConfirm(); closeConfirmModal(); };
-            document.getElementById('confirmModal').style.display = 'flex';
+            confirmCallback = onConfirm;
+            document.getElementById('btnConfirmOK').onclick = function() {
+                if (confirmCallback) confirmCallback();
+                closeConfirmModal();
+            };
+            document.getElementById('confirmModal').classList.remove('hidden');
+            document.getElementById('confirmModal').classList.add('flex');
         }
 
-        function closeConfirmModal() { document.getElementById('confirmModal').style.display = 'none'; }
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.add('hidden');
+            document.getElementById('confirmModal').classList.remove('flex');
+            confirmCallback = null;
+        }
 
         function showToast(msg) {
-            const t = document.getElementById('toast');
+            const toast = document.getElementById('toast');
             document.getElementById('toastMsg').innerText = msg;
-            t.style.opacity = '1';
-            setTimeout(() => { t.style.opacity = '0'; }, 3000);
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 3000);
         }
 
-        window.onload = () => { loadCatalog(); renderCatalog(); };
+        window.onload = function() {
+            loadCatalog();
+            renderCatalog();
+        };
     </script>
 </body>
 </html>
 ```eof
-
-### Slik gjør du det nå:
-1. Lim inn denne oppdaterte koden i `index.html` på GitHub.
-2. Gå til nettsiden din og trykk på den røde knappen: **`Restore 82 Master Items`**.
-
-Da vil alle de 82 delene tvinges inn i lokal lagring og Firebase under riktig nøkkel med en gang, og alt vil se helt riktig ut.
