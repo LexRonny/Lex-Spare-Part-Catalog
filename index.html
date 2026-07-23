@@ -741,7 +741,7 @@
                 spectreNote: "[SPECTRE]: Operates passively until hostile active sensor sweep detected."
             },
 
-            // Power, Propulsion & Stealth
+            // Power, Propulsion, Fuel & Stealth
             {
                 id: "PROP-ENG-003-WHISPERTHRUST", stdNo: "GS-STD-5091", name: "Rendili WhisperThrust Baffled Drive", category: "Power, Propulsion & Thermal", supplier: "Rendili StarDrive", originWorld: "Rendili", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 210000,
                 univStatus: "Fan-made", accessClass: "Black Market", confidence: "Verified", recordState: "Active",
@@ -762,6 +762,20 @@
                 specs: "Primary power generation core module for heavy transport vessels.",
                 notes: "Keep two spare seal rings in the locker on Deck 2. Willy's mechanic said these leak if not pre-heated.",
                 spectreNote: "[SPECTRE]: Core thermal signatures are clean. Interlock matches GSC v0.2 standard."
+            },
+            {
+                id: "FUEL-COAXIUM-01", stdNo: "GS-STD-8890", name: "Refined Coaxium Hyperfuel Canister", category: "Power, Propulsion & Thermal", supplier: "Kessel Mining / Vandor Refineries", originWorld: "Kessel", location: "Onboard Shadow Hunter", qty: 3, minQty: 1, price: 95000,
+                univStatus: "Canon", accessClass: "Black Market", confidence: "Verified", recordState: "Active",
+                specs: "Extremely reactive hyperdrive fuel supplying the massive energy burst required for hyperdrive spacetime tearing.",
+                notes: "Stored in Deck 1 blast-shielded hazardous containment lockers.",
+                spectreNote: "[SPECTRE]: Containment temperature stabilized at 12 Kelvin. Zero volatility leak."
+            },
+            {
+                id: "FUEL-RHYDONIUM-01", stdNo: "GS-STD-8885", name: "Volatile Rhydonium Fuel Cell", category: "Power, Propulsion & Thermal", supplier: "Abafar Refineries", originWorld: "Abafar", location: "Onboard Shadow Hunter", qty: 4, minQty: 2, price: 18500,
+                univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
+                specs: "High-efficiency liquid starfighter fuel mineral with characteristic luminescent blue/green glow.",
+                notes: "Primary thruster reserve fuel and military demolition component.",
+                spectreNote: "[SPECTRE]: Sublight booster feed routing active."
             },
 
             // Spacecraft, Systems, Hull & Nav
@@ -882,7 +896,168 @@
                 spectreNote: "[SPECTRE]: Mounted on underside deployment racks."
             },
 
-            // Materials & Stealth Market
+            // MASTER MATERIAL ARCHIVE: METALS, ALLOYS, POLYMERS, FABRICS & CRYSTALS
+            {
+                id: "MAT-MET-BESKAR", stdNo: "GS-STD-4090", name: "Beskar (Mandalorian Iron) Ingot", category: "Materials & Feedstocks", supplier: "Mandalorian Armorers / Black Market", originWorld: "Mandalore / Concordia", location: "Home Base", qty: 2, minQty: 1, price: 150000,
+                univStatus: "Canon", accessClass: "Black Market", confidence: "Verified", recordState: "Active",
+                specs: "Folded and forged Mandalorian super-alloy completely immune to blaster fire and lightsaber strikes.",
+                notes: "Reserved for high-priority reinforcement brackets and elite personal armor.",
+                spectreNote: "[SPECTRE]: Molecular density prevents thermal transfer from energy blades."
+            },
+            {
+                id: "MAT-ALY-DURASTEEL", stdNo: "GS-STD-4002", name: "Standard Industrial Durasteel Ingot", category: "Materials & Feedstocks", supplier: "Corellian / Kuat Foundries", originWorld: "Corellia / Kuat", location: "Home Base", qty: 50, minQty: 10, price: 2500,
+                univStatus: "Canon", accessClass: "Trade", confidence: "Verified", recordState: "Active",
+                specs: "Heavy-duty alloy composed of carvanite, titanium, chromium, and lommite forming galactic structural backbone.",
+                notes: "Used for hull repairs, internal bulkheads, and heavy equipment mounts.",
+                spectreNote: "[SPECTRE]: Standard tensile strength and heat resistance verified."
+            },
+            { 
+                id: "MAT-MET-PHRIK", stdNo: "GS-STD-4088", name: "Phrik Alloy Ingot", category: "Materials & Feedstocks", supplier: "Gromas Mining Corp", originWorld: "Gromas 16", location: "Home Base", qty: 4, minQty: 1, price: 32000, 
+                univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
+                specs: "Extremely lightweight and indestructible lightsaber-resistant alloy ingot used for critical structural reinforcement.",
+                notes: "Reserved for high-stress structural joints and vital core mounts.",
+                spectreNote: "[SPECTRE]: Zero deformation under extreme heat and kinetic load."
+            },
+            {
+                id: "MAT-MIN-CORTOSIS", stdNo: "GS-STD-4095", name: "Refined Cortosis Ore Matrix", category: "Materials & Feedstocks", supplier: "Balmorra Mining Combine", originWorld: "Balmorra / Mokivj", location: "Market / Vendor", qty: 0, minQty: 1, price: 45000,
+                univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
+                specs: "Brittle energy-conductive mineral matrix capable of short-circuiting active lightsaber blades on contact.",
+                notes: "Evaluated for anti-saber shield weaves and energy dampening barriers.",
+                spectreNote: "[SPECTRE]: Highly brittle; requires alloy bonding before structural deployment."
+            },
+            {
+                id: "MAT-MET-CHROMIUM", stdNo: "GS-STD-4050", name: "Royal High-Gleam Chromium Ingot", category: "Materials & Feedstocks", supplier: "Naboo Refineries", originWorld: "Naboo", location: "Home Base", qty: 6, minQty: 2, price: 12000,
+                univStatus: "Canon", accessClass: "Trade", confidence: "Verified", recordState: "Active",
+                specs: "Highly polished reflective metal offering superior radiation shielding and striking aesthetic mirror finish.",
+                notes: "Used for sensor viewport trims and high-radiation reactor conduit cladding.",
+                spectreNote: "[SPECTRE]: Reflects 98.2% of harmful solar radiation."
+            },
+            {
+                id: "MAT-MET-ELECTRUM", stdNo: "GS-STD-4060", name: "Decorative Electrum Foil / Ingot", category: "Materials & Feedstocks", supplier: "Core World Artisan Guilds", originWorld: "Core Worlds", location: "Market / Vendor", qty: 0, minQty: 1, price: 38000,
+                univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
+                specs: "Precious golden noble metal used as symbol of high rank, authority, and ceremonial prestige.",
+                notes: "No armor value; trade asset and luxury trim material.",
+                spectreNote: "[SPECTRE]: High monetary liquidity across Outer Rim markets."
+            },
+            {
+                id: "MAT-MET-DESH", stdNo: "GS-STD-4012", name: "Desh-Terenthium Alloy Sheet", category: "Materials & Feedstocks", supplier: "Bakura Metalworks", originWorld: "Bakura / Danji", location: "Home Base", qty: 30, minQty: 10, price: 850,
+                univStatus: "Canon", accessClass: "Trade", confidence: "Verified", recordState: "Active",
+                specs: "Ultra-lightweight, flexible, low-cost alloy with high electrical conductivity for circuitry and light chassis.",
+                notes: "Used for internal sensor wiring, measuring equipment, and droid repairs.",
+                spectreNote: "[SPECTRE]: Conductive efficiency 94.1%."
+            },
+            {
+                id: "MAT-MET-SONGSTEEL", stdNo: "GS-STD-4098", name: "Songsteel Alloy Ingot", category: "Materials & Feedstocks", supplier: "Outer Rim Miners Guild", originWorld: "Outer Rim", location: "Home Base", qty: 0, minQty: 1, price: 85000,
+                univStatus: "Legends", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
+                specs: "Extremely rare, silver-white lightweight super-alloy resisting lightsaber blades alongside Beskar and Phrik.",
+                notes: "Highly prized for custom weapon hilts and precision joints.",
+                spectreNote: "[SPECTRE]: High structural resonance during stress testing."
+            },
+            {
+                id: "MAT-MET-AURODIUM", stdNo: "GS-STD-4070", name: "Aurodium Bullion Ingot", category: "Materials & Feedstocks", supplier: "Syndicate Reserves", originWorld: "Heavy-Metal Worlds", location: "Home Base", qty: 2, minQty: 1, price: 125000,
+                univStatus: "Canon", accessClass: "Black Market", confidence: "Verified", recordState: "Active",
+                specs: "Ultra-precious non-corrosive noble metal serving as direct black-market wealth reserve.",
+                notes: "Emergency slush fund stored in Deck 2 safe.",
+                spectreNote: "[SPECTRE]: Value stable across all galactic credit exchange fluctuations."
+            },
+            {
+                id: "MAT-ALY-DURALIUM", stdNo: "GS-STD-4015", name: "Duralium-Lanthanide Structural Plate", category: "Materials & Feedstocks", supplier: "Fondor Shipyards", originWorld: "Fondor", location: "Home Base", qty: 20, minQty: 5, price: 3400,
+                univStatus: "Canon", accessClass: "Trade", confidence: "Verified", recordState: "Active",
+                specs: "Lightweight high-strength structural alloy used for internal ship frames and pressure bulkheads.",
+                notes: "Standard stock for interior deck frame repairs.",
+                spectreNote: "[SPECTRE]: Yield strength rating nominal."
+            },
+            {
+                id: "MAT-POL-PLASTOID", stdNo: "GS-STD-1010", name: "Industrial Plastoid Compound Sheet", category: "Materials & Feedstocks", supplier: "Kamino / Imperial Foundries", originWorld: "Kamino", location: "Home Base", qty: 40, minQty: 10, price: 650,
+                univStatus: "Canon", accessClass: "Public", confidence: "Verified", recordState: "Active",
+                specs: "Lightweight thermo-polymer providing kinetic and shrapnel absorption.",
+                notes: "Used for stormtrooper armor repairs and civilian vehicle plating.",
+                spectreNote: "[SPECTRE]: Absorbs kinetic impact; limited blaster absorption."
+            },
+            {
+                id: "MAT-POL-DURAPLAST", stdNo: "GS-STD-1015", name: "Reinforced Duraplast Composite Plate", category: "Materials & Feedstocks", supplier: "Military Chemical Corp", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 10, minQty: 2, price: 4200,
+                univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
+                specs: "High-grade polymer blended with metallic micro-fibers for superior blaster, radiation, and EMP shielding.",
+                notes: "Protective housing around Deck 2 computer cores.",
+                spectreNote: "[SPECTRE]: EMP shielding effectiveness 88%."
+            },
+            {
+                id: "MAT-POL-PLASTEEL", stdNo: "GS-STD-1005", name: "Standard Plasteel Construction Panel", category: "Materials & Feedstocks", supplier: "Galactic Standard", originWorld: "Galactic Wide", location: "Home Base", qty: 60, minQty: 15, price: 450,
+                univStatus: "Canon", accessClass: "Public", confidence: "Verified", recordState: "Active",
+                specs: "Versatile non-corrosive composite plastic combining steel strength with plastic moldability.",
+                notes: "Used for internal wall paneling, toolboxes, and storage bins.",
+                spectreNote: "[SPECTRE]: Standard non-structural composite."
+            },
+            {
+                id: "MAT-POL-ARMORPLAST", stdNo: "GS-STD-1020", name: "Heat-Dispersing Armorplast Plate", category: "Materials & Feedstocks", supplier: "Tactical Armor Foundry", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 5, minQty: 2, price: 6800,
+                univStatus: "Canon", accessClass: "Military", confidence: "Verified", recordState: "Active",
+                specs: "Dense polymer alloy specifically engineered to absorb and dissipate extreme plasma and blaster thermal surges.",
+                notes: "Reinforcement plates for heavy troop transport doors and gunner positions.",
+                spectreNote: "[SPECTRE]: Thermal dissipation coefficient optimal."
+            },
+            {
+                id: "MAT-POL-FIBERPLAST", stdNo: "GS-STD-1025", name: "High-Tensile Fiberplast Roll", category: "Materials & Feedstocks", supplier: "Synthetic Textile Corp", originWorld: "Core Worlds", location: "Home Base", qty: 18, minQty: 5, price: 1100,
+                univStatus: "Canon", accessClass: "Trade", confidence: "Verified", recordState: "Active",
+                specs: "Resin-molded woven fiber material resistant to chemical corrosion and heavy wear.",
+                notes: "Used for flexible fuel bladder liners and hull seam gaskets.",
+                spectreNote: "[SPECTRE]: Chemical resistance 99.8%."
+            },
+            {
+                id: "MAT-TEX-ARMORWEAVE", stdNo: "GS-STD-1510", name: "Tactical Armorweave Fabric Roll", category: "Materials & Feedstocks", supplier: "Military Tailors Guild", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 4, minQty: 1, price: 14500,
+                univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
+                specs: "Flexible, highly durable armored weave spreading thermal energy from blaster fire, shrapnel, and blade cuts.",
+                notes: "Used for crew flight suit linings and tactical capes.",
+                spectreNote: "[SPECTRE]: Thermal energy dispersion verified."
+            },
+            {
+                id: "MAT-TEX-SYNTHSILK", stdNo: "GS-STD-1502", name: "Standard Synthsilk Bolt", category: "Materials & Feedstocks", supplier: "Civilian Textile Mills", originWorld: "Galactic Wide", location: "Home Base", qty: 15, minQty: 5, price: 350,
+                univStatus: "Canon", accessClass: "Public", confidence: "Verified", recordState: "Active",
+                specs: "Soft, durable synthetic silk replacement fabric easy to dye and clean.",
+                notes: "Crew quarters beddings, lounge upholstery, and standard uniforms.",
+                spectreNote: "[SPECTRE]: Non-hazardous textile."
+            },
+            {
+                id: "MAT-TEX-SPIDERSILK", stdNo: "GS-STD-1520", name: "Corellian Shell Spider Silk Bolt", category: "Materials & Feedstocks", supplier: "Corellian Weavers Guild", originWorld: "Corellia / Tatooine", location: "Market / Vendor", qty: 0, minQty: 1, price: 28000,
+                univStatus: "Legends", accessClass: "Trade", confidence: "Verified", recordState: "Active",
+                specs: "Bio-extracted spider silk stronger than steel per weight, providing bulletproof resistance against light kinetic rounds.",
+                notes: "High-end luxury protective clothing lining.",
+                spectreNote: "[SPECTRE]: Tensile strength exceeds standard Kevlex."
+            },
+            {
+                id: "MAT-TEX-ZERSIUM", stdNo: "GS-STD-1530", name: "Zersium Reinforced Wire-Mesh", category: "Materials & Feedstocks", supplier: "Heavy Mining Refineries", originWorld: "Mining Worlds", location: "Home Base", qty: 8, minQty: 2, price: 5200,
+                univStatus: "Legends", accessClass: "Trade", confidence: "Verified", recordState: "Active",
+                specs: "Heavy metallic textile fiber woven into fabrics for extreme abrasion and environmental resistance.",
+                notes: "Reinforced cargo tarps and heavy cable sleeves.",
+                spectreNote: "[SPECTRE]: High resistance to environmental tearing."
+            },
+            {
+                id: "MAT-TEX-KEVLEX", stdNo: "GS-STD-1535", name: "Kevlex Shock-Absorbing Fabric", category: "Materials & Feedstocks", supplier: "Polymer Labs", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 6, minQty: 2, price: 3900,
+                univStatus: "Legends", accessClass: "Trade", confidence: "Verified", recordState: "Active",
+                specs: "Heat-resistant flexible synthetic fiber absorbing kinetic impacts and thermal flashes.",
+                notes: "Tactical gloves, boots, and cockpit acoustic dampening matting.",
+                spectreNote: "[SPECTRE]: Acoustic dampening rating nominal."
+            },
+            {
+                id: "MAT-CRY-KYBER", stdNo: "GS-STD-9950", name: "Focusing Kyber Crystal (Unattuned)", category: "Materials & Feedstocks", supplier: "Black Market Relic Traders", originWorld: "Ilum / Jedha", location: "Market / Vendor", qty: 0, minQty: 1, price: 250000,
+                univStatus: "Canon", accessClass: "Black Market", confidence: "Verified", recordState: "Active",
+                specs: "Rare, Force-resonant crystal functioning as the ultimate energy focuser for plasma weapons and superlasers.",
+                notes: "Illegal black market item under strict Empire ban.",
+                spectreNote: "[SPECTRE]: Energy throughput capacity exceeds measurable scale."
+            },
+            {
+                id: "MAT-MIN-DOONIUM", stdNo: "GS-STD-4030", name: "Refined Doonium Heavy Ore", category: "Materials & Feedstocks", supplier: "Lothal Mining Combine", originWorld: "Lothal / Eriadu", location: "Home Base", qty: 25, minQty: 5, price: 9500,
+                univStatus: "Canon", accessClass: "Military", confidence: "Verified", recordState: "Active",
+                specs: "Dense, heavy metal ore serving as primary raw material for capital ship hulls and star destroyer superstructures.",
+                notes: "Heavy structural reinforcement stock.",
+                spectreNote: "[SPECTRE]: High structural mass; increases hull armor rating."
+            },
+            {
+                id: "MAT-CRY-STYGIUM", stdNo: "GS-STD-3991", name: "Raw Stygium Stealth Crystal Matrix", category: "Materials & Feedstocks", supplier: "Aeten II Mining Syndicate", originWorld: "Aeten II", location: "Market / Vendor", qty: 0, minQty: 1, price: 320000,
+                univStatus: "Canon", accessClass: "Black Market", confidence: "Verified", recordState: "Active",
+                specs: "Ultra-rare crystals capable of bending light and sensor waves when charged with electricity.",
+                notes: "Kore material for active cloaking generators.",
+                spectreNote: "[SPECTRE]: Requires specialized energy dampening matrix to prevent thermal bloom."
+            },
             { 
                 id: "MAT-MET-00001", stdNo: "GS-STD-9901", name: "Virellium Conductor Wiring", category: "Materials & Feedstocks", supplier: "Byss Mining Guild", originWorld: "Byss (86 BBY)", location: "Onboard Shadow Hunter", qty: 12, minQty: 5, price: 1250, 
                 univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
@@ -917,13 +1092,6 @@
                 specs: "High-density durasteel alloy impregnated with neutrons for enhanced energy displacement.",
                 notes: "Evaluated as hull upgrade for heavy hull sections.",
                 spectreNote: "[SPECTRE]: Thermal and kinetic absorption 40% higher than standard DUR-5."
-            },
-            {
-                id: "MAT-MET-PHRIK", stdNo: "GS-STD-4088", name: "Phrik Alloy Ingot", category: "Materials & Feedstocks", supplier: "Gromas Mining Corp", originWorld: "Gromas", location: "Home Base", qty: 4, minQty: 1, price: 32000,
-                univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
-                specs: "Extremely lightweight and indestructible metallic alloy ingot used for critical reinforcement brackets.",
-                notes: "Reserved for high-stress structural joints and vital core mounts.",
-                spectreNote: "[SPECTRE]: Zero deformation under extreme heat and kinetic load."
             },
             {
                 id: "MAT-COAT-001", stdNo: "GS-STD-1088", name: "Reflec Sensor-Absorbing Coating", category: "Materials & Feedstocks", supplier: "Market / Vendor", originWorld: "Unknown", location: "Market / Vendor", qty: 0, minQty: 1, price: 65000,
@@ -1360,10 +1528,3 @@
 </body>
 </html>
 ```eof
-
-### Slik gjør du det på GitHub nå:
-1. Kopier hele koden fra `spare_parts_catalog.html` over.
-2. Åpne `index.html` på GitHub.
-3. Trykk på **Blyant-ikonet** (Edit file), slett alt som står der, lim inn den nye koden, og trykk **`Commit changes...`**.
-
-Når du oppdaterer nettsiden din på GitHub etterpå, har du en ny **`All Classifications`**-nedtrekksmeny rett ved siden av kategorifilteret for å hente frem *Restricted* og *Black Market* med ett enkelt klikk!
