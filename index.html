@@ -75,7 +75,7 @@
             </div>
             
             <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
-                <button onclick="promptResetCatalog()" class="px-3 py-2 bg-red-950/60 hover:bg-red-900/80 text-red-300 rounded border border-red-800 text-xs transition flex items-center gap-1.5" title="Reset Master Dataset (82 Items)">
+                <button onclick="promptResetCatalog()" class="px-3 py-2 bg-red-950/60 hover:bg-red-900/80 text-red-300 rounded border border-red-800 text-xs transition flex items-center gap-1.5" title="Reset Master Dataset">
                     <i class="fa-solid fa-rotate-left"></i> Reset Master Dataset
                 </button>
                 <button onclick="exportJSON()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-600 text-xs transition" title="Export Datapad JSON">
@@ -414,9 +414,9 @@
         <span id="toastMsg" class="text-sm font-semibold">Changes saved!</span>
     </div>
 
-    <!-- Main Engine Script with Pure LocalStorage Master Override (NO FIREBASE OVERWRITE) -->
+    <!-- Main Engine Script with Complete Master Dataset (ALL 82 ITEMS INCLUDING BATCH 03 & 04) -->
     <script>
-        const masterCatalogData = [
+        const initialCatalog = [
             // LRS BEARINGS BATCH 01-04 (22 ITEMS)
             {
                 id: "LRS-BRG-110001", stdNo: "GS-STD-BRG-01", rev: "Rev A", name: "Standard Deep Groove Ball Bearing",
@@ -697,7 +697,7 @@
                 notes: "Passive stealth is usually worth more than active stealth.", spectreNote: "[SPECTRE]: Threat Reduction Value: High."
             },
 
-            // CORE SHADOW HUNTER SYSTEMS & MATERIALS
+            // CORE SHADOW HUNTER SYSTEMS & MATERIALS (ALL 58 ORIGINAL ITEMS)
             {
                 id: "WEAP-CEC-001", stdNo: "GS-STD-7021", rev: "Rev C", name: "CEC AG-2G Quad Laser Cannon Assembly",
                 categoryPath: ["Assemblies", "Weapons", "Starfighter Weapons", "Quad Laser Cannons"], parentId: null,
@@ -741,6 +741,314 @@
                 relations: { powerSource: "N/A", needs: "Plasma Welders", interfaces: "Structural Frame", uses: "N/A" },
                 specs: "Heavy-duty alloy composed of carvanite, titanium, chromium, and lommite.",
                 notes: "Used for hull repairs and bulkheads.", spectreNote: "[SPECTRE]: Standard tensile strength verified."
+            },
+            {
+                id: "MAT-MET-PHRIK", stdNo: "GS-STD-4088", rev: "Rev A", name: "Phrik Alloy Ingot",
+                categoryPath: ["Materials", "Raw Materials", "Metals & Superalloys"], parentId: null,
+                supplier: "Gromas Mining Corp", originWorld: "Gromas 16", location: "Home Base", qty: 4, minQty: 1, price: 32000,
+                univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Core Mounts"], installedOn: ["Shadow Hunter (Core Mounts)"],
+                tags: ["Material", "Metal", "Phrik"], source: { title: "Dark Forces Briefing", author: "LucasArts", page: "p. 14", isbn: "LA-DF-95" },
+                relations: { powerSource: "N/A", needs: "Smelter", interfaces: "Structural Frame", uses: "N/A" },
+                specs: "Extremely lightweight and indestructible lightsaber-resistant alloy ingot.",
+                notes: "Reserved for vital core mounts.", spectreNote: "[SPECTRE]: Zero deformation under load."
+            },
+            {
+                id: "MAT-MIN-CORTOSIS", stdNo: "GS-STD-4095", rev: "Rev A", name: "Refined Cortosis Ore Matrix",
+                categoryPath: ["Materials", "Raw Materials", "Conductive Minerals"], parentId: null,
+                supplier: "Balmorra Mining Combine", originWorld: "Balmorra / Mokivj", location: "Market / Vendor", qty: 0, minQty: 1, price: 45000,
+                univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Military Restricted",
+                compatibleWith: ["Cortosis Shields"], installedOn: ["Market Asset"],
+                tags: ["Material", "Cortosis"], source: { title: "Darth Bane", author: "Drew Karpyshyn", page: "p. 91", isbn: "0-345-47736-7" },
+                relations: { powerSource: "N/A", needs: "Alloy Bonding", interfaces: "Shield Weave", uses: "Saber Overload Reaction" },
+                specs: "Brittle energy-conductive mineral matrix capable of short-circuiting active lightsaber blades.",
+                notes: "Requires alloy bonding.", spectreNote: "[SPECTRE]: Highly brittle; requires weave integration."
+            },
+            {
+                id: "MAT-MET-CHROMIUM", stdNo: "GS-STD-4050", rev: "Rev A", name: "Royal High-Gleam Chromium Ingot",
+                categoryPath: ["Materials", "Refined Materials", "Noble Metals"], parentId: null,
+                supplier: "Naboo Refineries", originWorld: "Naboo", location: "Home Base", qty: 6, minQty: 2, price: 12000,
+                univStatus: "Canon", accessClass: "Trade", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Royal Vessels"], installedOn: ["Viewport Trims"],
+                tags: ["Material", "Chromium"], source: { title: "Naboo Starships Guide", author: "DK", page: "p. 33", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Polishing", interfaces: "Outer Hull", uses: "Radiation Shielding" },
+                specs: "Highly polished reflective metal offering superior radiation shielding.",
+                notes: "Used for sensor viewport trims.", spectreNote: "[SPECTRE]: Reflects 98.2% solar radiation."
+            },
+            {
+                id: "MAT-MET-ELECTRUM", stdNo: "GS-STD-4060", rev: "Rev A", name: "Decorative Electrum Foil / Ingot",
+                categoryPath: ["Materials", "Refined Materials", "Noble Metals"], parentId: null,
+                supplier: "Core World Artisan Guilds", originWorld: "Core Worlds", location: "Market / Vendor", qty: 0, minQty: 1, price: 38000,
+                univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Jedi Weaponry"], installedOn: ["Market Asset"],
+                tags: ["Material", "Electrum"], source: { title: "Jedi vs Sith", author: "Ryder Windham", page: "p. 110", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Engraving Tool", interfaces: "Weapon Hilt", uses: "Status Symbol" },
+                specs: "Precious golden noble metal used as symbol of high rank.",
+                notes: "Trade asset.", spectreNote: "[SPECTRE]: High monetary liquidity."
+            },
+            {
+                id: "MAT-MET-DESH", stdNo: "GS-STD-4012", rev: "Rev A", name: "Desh-Terenthium Alloy Sheet",
+                categoryPath: ["Materials", "Refined Materials", "Lightweight Alloys"], parentId: null,
+                supplier: "Bakura Metalworks", originWorld: "Bakura / Danji", location: "Home Base", qty: 30, minQty: 10, price: 850,
+                univStatus: "Canon", accessClass: "Trade", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Droid Chassis"], installedOn: ["Sensor Wiring"],
+                tags: ["Material", "Desh"], source: { title: "Bakuran Index", author: "Bakura", page: "p. 4", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Stamping Tool", interfaces: "Electronic Buses", uses: "Conduction" },
+                specs: "Ultra-lightweight flexible alloy with high electrical conductivity.",
+                notes: "Used for sensor wiring.", spectreNote: "[SPECTRE]: Conductive efficiency 94.1%."
+            },
+            {
+                id: "MAT-MET-SONGSTEEL", stdNo: "GS-STD-4098", rev: "Rev A", name: "Songsteel Alloy Ingot",
+                categoryPath: ["Materials", "Raw Materials", "Metals & Superalloys"], parentId: null,
+                supplier: "Outer Rim Miners Guild", originWorld: "Outer Rim", location: "Home Base", qty: 0, minQty: 1, price: 85000,
+                univStatus: "Legends", accessClass: "Restricted", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Obsolete",
+                compatibleWith: ["Custom Swords"], installedOn: ["Home Base Vault"],
+                tags: ["Material", "Songsteel"], source: { title: "Coruscant Nights", author: "Michael Reaves", page: "p. 210", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Forge", interfaces: "Weapon Core", uses: "Saber Resistance" },
+                specs: "Extremely rare, silver-white lightweight super-alloy.",
+                notes: "Prized for weapon hilts.", spectreNote: "[SPECTRE]: High structural resonance."
+            },
+            {
+                id: "MAT-MET-AURODIUM", stdNo: "GS-STD-4070", rev: "Rev A", name: "Aurodium Bullion Ingot",
+                categoryPath: ["Materials", "Refined Materials", "Noble Metals"], parentId: null,
+                supplier: "Syndicate Reserves", originWorld: "Heavy-Metal Worlds", location: "Home Base", qty: 2, minQty: 1, price: 125000,
+                univStatus: "Canon", accessClass: "Black Market", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Black Market",
+                compatibleWith: ["Currency Exchange"], installedOn: ["Shadow Hunter Safe"],
+                tags: ["Material", "Aurodium"], source: { title: "Scum and Villainy", author: "FFG", page: "p. 18", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Safe", interfaces: "Trade", uses: "Wealth Reserve" },
+                specs: "Ultra-precious non-corrosive noble metal serving as direct wealth reserve.",
+                notes: "Emergency slush fund.", spectreNote: "[SPECTRE]: Value stable."
+            },
+            {
+                id: "MAT-ALY-DURALIUM", stdNo: "GS-STD-4015", rev: "Rev A", name: "Duralium-Lanthanide Structural Plate",
+                categoryPath: ["Materials", "Refined Materials", "Structural Alloys"], parentId: null,
+                supplier: "Fondor Shipyards", originWorld: "Fondor", location: "Home Base", qty: 20, minQty: 5, price: 3400,
+                univStatus: "Canon", accessClass: "Trade", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Interior Bulkheads"], installedOn: ["Deck Frames"],
+                tags: ["Material", "Duralium"], source: { title: "Fondor Compendium", author: "Fondor", page: "p. 80", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Rivets", interfaces: "Bulkheads", uses: "Load Bearing" },
+                specs: "Lightweight high-strength structural alloy.",
+                notes: "Standard frame repair stock.", spectreNote: "[SPECTRE]: Yield strength nominal."
+            },
+            {
+                id: "MAT-POL-PLASTOID", stdNo: "GS-STD-1010", rev: "Rev A", name: "Industrial Plastoid Compound Sheet",
+                categoryPath: ["Materials", "Composite Materials", "Polymers & Plastoids"], parentId: null,
+                supplier: "Kamino Foundries", originWorld: "Kamino", location: "Home Base", qty: 40, minQty: 10, price: 650,
+                univStatus: "Canon", accessClass: "Public", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Trooper Armor"], installedOn: ["Vehicle Plating"],
+                tags: ["Material", "Plastoid"], source: { title: "Imperial Specs", author: "Imperial Ordnance", page: "p. 1", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Forming", interfaces: "Armor Mounts", uses: "Kinetic Absorption" },
+                specs: "Lightweight thermo-polymer for kinetic and shrapnel absorption.",
+                notes: "Armor repairs.", spectreNote: "[SPECTRE]: Absorbs kinetic impact."
+            },
+            {
+                id: "MAT-POL-DURAPLAST", stdNo: "GS-STD-1015", rev: "Rev A", name: "Reinforced Duraplast Composite Plate",
+                categoryPath: ["Materials", "Composite Materials", "Polymers & Plastoids"], parentId: null,
+                supplier: "Military Chemical Corp", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 10, minQty: 2, price: 4200,
+                univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Computer Enclosures"], installedOn: ["Deck 2 Core"],
+                tags: ["Material", "Duraplast"], source: { title: "MilChem Handbook", author: "MilChem", page: "p. 67", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Bolts", interfaces: "Avionics", uses: "EMP Shielding" },
+                specs: "Polymer blended with micro-fibers for EMP and radiation shielding.",
+                notes: "Core housing.", spectreNote: "[SPECTRE]: EMP shielding 88%."
+            },
+            {
+                id: "MAT-POL-PLASTEEL", stdNo: "GS-STD-1005", rev: "Rev A", name: "Standard Plasteel Construction Panel",
+                categoryPath: ["Materials", "Composite Materials", "Polymers & Plastoids"], parentId: null,
+                supplier: "Galactic Standard", originWorld: "Galactic Wide", location: "Home Base", qty: 60, minQty: 15, price: 450,
+                univStatus: "Canon", accessClass: "Public", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Interior Walls"], installedOn: ["Wall Panels"],
+                tags: ["Material", "Plasteel"], source: { title: "GS Materials", author: "GS", page: "p. 102", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Fasteners", interfaces: "Enclosures", uses: "Paneling" },
+                specs: "Versatile non-corrosive composite plastic.",
+                notes: "Wall panels.", spectreNote: "[SPECTRE]: Standard composite."
+            },
+            {
+                id: "MAT-POL-ARMORPLAST", stdNo: "GS-STD-1020", rev: "Rev A", name: "Heat-Dispersing Armorplast Plate",
+                categoryPath: ["Materials", "Composite Materials", "Polymers & Plastoids"], parentId: null,
+                supplier: "Tactical Armor Foundry", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 5, minQty: 2, price: 6800,
+                univStatus: "Canon", accessClass: "Military", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Military Restricted",
+                compatibleWith: ["Troop Transports"], installedOn: ["Ramp Doors"],
+                tags: ["Material", "Armorplast"], source: { title: "TA Foundry Journal", author: "TA", page: "p. 19", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Heavy Mounts", interfaces: "Doors", uses: "Thermal Dispersion" },
+                specs: "Dense polymer alloy to dissipate extreme plasma surges.",
+                notes: "Transport door plates.", spectreNote: "[SPECTRE]: Thermal coefficient optimal."
+            },
+            {
+                id: "MAT-POL-FIBERPLAST", stdNo: "GS-STD-1025", rev: "Rev A", name: "High-Tensile Fiberplast Roll",
+                categoryPath: ["Materials", "Composite Materials", "Polymers & Plastoids"], parentId: null,
+                supplier: "Synthetic Textile Corp", originWorld: "Core Worlds", location: "Home Base", qty: 18, minQty: 5, price: 1100,
+                univStatus: "Canon", accessClass: "Trade", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Fuel Bladders"], installedOn: ["Deck 1 Gaskets"],
+                tags: ["Material", "Fiberplast"], source: { title: "ST Review", author: "ST", page: "p. 40", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Resin", interfaces: "Tanks", uses: "Containment" },
+                specs: "Resin-molded woven fiber resistant to chemical corrosion.",
+                notes: "Fuel bladders.", spectreNote: "[SPECTRE]: Chemical resistance 99.8%."
+            },
+            {
+                id: "MAT-TEX-ARMORWEAVE", stdNo: "GS-STD-1510", rev: "Rev A", name: "Tactical Armorweave Fabric Roll",
+                categoryPath: ["Materials", "Textiles & Fabrics", "Armored Weaves"], parentId: null,
+                supplier: "Military Tailors Guild", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 4, minQty: 1, price: 14500,
+                univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Flight Suits"], installedOn: ["Crew Suits"],
+                tags: ["Textile", "Armorweave"], source: { title: "MT Guild", author: "Guild", page: "p. 8", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Tailoring", interfaces: "Suits", uses: "Heat Dispersion" },
+                specs: "Flexible armored weave spreading thermal energy.",
+                notes: "Suit linings.", spectreNote: "[SPECTRE]: Dispersion verified."
+            },
+            {
+                id: "MAT-TEX-SYNTHSILK", stdNo: "GS-STD-1502", rev: "Rev A", name: "Standard Synthsilk Bolt",
+                categoryPath: ["Materials", "Textiles & Fabrics", "Synthetic Fabrics"], parentId: null,
+                supplier: "Civilian Textile Mills", originWorld: "Galactic Wide", location: "Home Base", qty: 15, minQty: 5, price: 350,
+                univStatus: "Canon", accessClass: "Public", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Uniforms"], installedOn: ["Bunks"],
+                tags: ["Textile", "Synthsilk"], source: { title: "CT Mills", author: "CT", page: "p. 2", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Thread", interfaces: "Furniture", uses: "Upholstery" },
+                specs: "Soft synthetic silk replacement fabric.",
+                notes: "Bedding.", spectreNote: "[SPECTRE]: Non-hazardous."
+            },
+            {
+                id: "MAT-TEX-SPIDERSILK", stdNo: "GS-STD-1520", rev: "Rev A", name: "Corellian Shell Spider Silk Bolt",
+                categoryPath: ["Materials", "Textiles & Fabrics", "Bio-Fibers"], parentId: null,
+                supplier: "Corellian Weavers Guild", originWorld: "Corellia", location: "Market / Vendor", qty: 0, minQty: 1, price: 28000,
+                univStatus: "Legends", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["Luxury Garments"], installedOn: ["Market Asset"],
+                tags: ["Textile", "Spider Silk"], source: { title: "Corellian Press", author: "Press", page: "p. 144", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Weaving", interfaces: "Suits", uses: "Kinetic Protection" },
+                specs: "Bio-extracted spider silk stronger than steel per weight.",
+                notes: "Luxury lining.", spectreNote: "[SPECTRE]: Tensile strength high."
+            },
+            {
+                id: "MAT-TEX-ZERSIUM", stdNo: "GS-STD-1530", rev: "Rev A", name: "Zersium Reinforced Wire-Mesh",
+                categoryPath: ["Materials", "Textiles & Fabrics", "Metallic Mesh"], parentId: null,
+                supplier: "Heavy Mining Refineries", originWorld: "Mining Worlds", location: "Home Base", qty: 8, minQty: 2, price: 5200,
+                univStatus: "Legends", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["Cargo Tarps"], installedOn: ["Cargo Netting"],
+                tags: ["Textile", "Zersium"], source: { title: "Mining Combine", author: "Combine", page: "p. 77", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Clamps", interfaces: "Tie-Downs", uses: "Abrasion Resistance" },
+                specs: "Metallic textile fiber woven for extreme abrasion resistance.",
+                notes: "Cargo tarps.", spectreNote: "[SPECTRE]: Tearing resistance nominal."
+            },
+            {
+                id: "MAT-TEX-KEVLEX", stdNo: "GS-STD-1535", rev: "Rev A", name: "Kevlex Shock-Absorbing Fabric",
+                categoryPath: ["Materials", "Textiles & Fabrics", "Shock-Absorbing Fabrics"], parentId: null,
+                supplier: "Polymer Labs", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 6, minQty: 2, price: 3900,
+                univStatus: "Legends", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["Boots"], installedOn: ["Cockpit Seals"],
+                tags: ["Textile", "Kevlex"], source: { title: "Polymer Gazette", author: "Labs", page: "p. 12", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Adhesive", interfaces: "Bulkhead", uses: "Dampening" },
+                specs: "Heat-resistant flexible synthetic fiber absorbing impacts.",
+                notes: "Cockpit dampening.", spectreNote: "[SPECTRE]: Acoustic dampening nominal."
+            },
+            {
+                id: "MAT-CRY-KYBER", stdNo: "GS-STD-9950", rev: "Rev A", name: "Focusing Kyber Crystal (Unattuned)",
+                categoryPath: ["Materials", "Crystals & Energy Minerals", "Force Crystals"], parentId: null,
+                supplier: "Black Market Relic Traders", originWorld: "Ilum / Jedha", location: "Market / Vendor", qty: 0, minQty: 1, price: 250000,
+                univStatus: "Canon", accessClass: "Black Market", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Black Market",
+                compatibleWith: ["Lightsabers"], installedOn: ["Market Asset"],
+                tags: ["Crystal", "Kyber"], source: { title: "Lightsaber Guide", author: "DK", page: "p. 12", isbn: "978-1465436016" },
+                relations: { powerSource: "Plasma Input", needs: "Chamber", interfaces: "Matrix", uses: "Focusing" },
+                specs: "Rare Force-resonant crystal functioning as energy focuser.",
+                notes: "Illegal black market item.", spectreNote: "[SPECTRE]: Throughput extreme."
+            },
+            {
+                id: "MAT-MIN-DOONIUM", stdNo: "GS-STD-4030", rev: "Rev A", name: "Refined Doonium Heavy Ore",
+                categoryPath: ["Materials", "Raw Materials", "Heavy Ores"], parentId: null,
+                supplier: "Lothal Mining Combine", originWorld: "Lothal", location: "Home Base", qty: 25, minQty: 5, price: 9500,
+                univStatus: "Canon", accessClass: "Military", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Military Restricted",
+                compatibleWith: ["Capital Hulls"], installedOn: ["Home Base Storage"],
+                tags: ["Ore", "Doonium"], source: { title: "Thrawn Journal", author: "Timothy Zahn", page: "p. 142", isbn: "978-0425287071" },
+                relations: { powerSource: "N/A", needs: "Smelter", interfaces: "Hulls", uses: "Mass" },
+                specs: "Dense metal ore serving as primary raw material for capital ship hulls.",
+                notes: "Heavy reinforcement stock.", spectreNote: "[SPECTRE]: High mass increases hull rating."
+            },
+            {
+                id: "MAT-CRY-STYGIUM", stdNo: "GS-STD-3991", rev: "Rev A", name: "Raw Stygium Stealth Crystal Matrix",
+                categoryPath: ["Materials", "Crystals & Energy Minerals", "Stealth Crystals"], parentId: null,
+                supplier: "Aeten II Syndicate", originWorld: "Aeten II", location: "Market / Vendor", qty: 0, minQty: 1, price: 320000,
+                univStatus: "Canon", accessClass: "Black Market", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Black Market",
+                compatibleWith: ["Cloaking Devices"], installedOn: ["Market Asset"],
+                tags: ["Crystal", "Stygium"], source: { title: "Scimitar Specs", author: "Lucasfilm", page: "p. 4", isbn: "N/A" },
+                relations: { powerSource: "High Voltage", needs: "Shield Matrix", interfaces: "Cloak Generator", uses: "Bending" },
+                specs: "Crystals capable of bending light and sensor waves when charged.",
+                notes: "Core cloaking material.", spectreNote: "[SPECTRE]: Requires thermal dampening."
+            },
+            {
+                id: "MAT-MET-00001", stdNo: "GS-STD-9901", rev: "Rev A", name: "Virellium Conductor Wiring Spool",
+                categoryPath: ["Materials", "Refined Materials", "Conductor Wiring"], parentId: null,
+                supplier: "Byss Mining Guild", originWorld: "Byss", location: "Onboard Shadow Hunter", qty: 12, minQty: 5, price: 1250,
+                univStatus: "Canon", accessClass: "Restricted", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["AI Data Lines"], installedOn: ["Server Room"],
+                tags: ["Wiring", "Virellium"], source: { title: "Byss Report", author: "Guild", page: "p. 18", isbn: "N/A" },
+                relations: { powerSource: "Bus Voltages", needs: "Sleeves", interfaces: "Nodes", uses: "Signal" },
+                specs: "Rare lightweight metal for droid-brain wiring and Spectre AI data lines.",
+                notes: "Good conductor.", spectreNote: "[SPECTRE]: Recommended for signal lines."
+            },
+            {
+                id: "MAT-POL-CP-00001", stdNo: "GS-STD-1002", rev: "Rev A", name: "CP-CPL-2.1AG Precision Clear Plastoid",
+                categoryPath: ["Materials", "Composite Materials", "Precision Plastoid"], parentId: null,
+                supplier: "CP Productions", originWorld: "Coruscant", location: "Home Base", qty: 8, minQty: 2, price: 4200,
+                univStatus: "Fan-made", accessClass: "Restricted", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Mass Production",
+                compatibleWith: ["Sensor Viewports"], installedOn: ["Bridge Glare Shield"],
+                tags: ["Plastoid", "CP Productions"], source: { title: "CP Catalog", author: "CP", page: "p. 21", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Seals", interfaces: "Sensors", uses: "Optics" },
+                specs: "Precision glare-free military grade clear plastoid.",
+                notes: "Zero distortion.", spectreNote: "[SPECTRE]: Transmission >99.4%."
+            },
+            {
+                id: "MAT-POL-CP-00002", stdNo: "GS-STD-1004", rev: "Rev A", name: "CP-CPL-4.5AG Standard Clear Plastoid",
+                categoryPath: ["Materials", "Composite Materials", "Standard Plastoid"], parentId: null,
+                supplier: "CP Productions", originWorld: "Coruscant", location: "Home Base", qty: 25, minQty: 10, price: 1800,
+                univStatus: "Fan-made", accessClass: "Trade", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Mass Production",
+                compatibleWith: ["Instrument Covers"], installedOn: ["Deck 2 Displays"],
+                tags: ["Plastoid", "CP Productions"], source: { title: "CP Catalog", author: "CP", page: "p. 24", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Clips", interfaces: "Displays", uses: "Protection" },
+                specs: "Standard industrial instrument cover grade with anti-glare coating.",
+                notes: "Deck 2 covers.", spectreNote: "[SPECTRE]: Anti-reflective rating verified."
+            },
+            {
+                id: "MAT-ALY-00001", stdNo: "GS-STD-4001", rev: "Rev B", name: "DUR-4L Lissium-Stabilised Durasteel Plate",
+                categoryPath: ["Materials", "Refined Materials", "Structural Alloys"], parentId: null,
+                supplier: "Kuat Drive Yards", originWorld: "Kuat", location: "Home Base", qty: 15, minQty: 5, price: 8500,
+                univStatus: "Canon", accessClass: "Trade", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Reinforced Frames"], installedOn: ["Internal Pressure Hull"],
+                tags: ["Durasteel", "KDY"], source: { title: "KDY Index", author: "KDY", page: "p. 401", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Plasma Cutters", interfaces: "Ribs", uses: "Integrity" },
+                specs: "Premium Lissium-stabilised durasteel plate for internal frames.",
+                notes: "Kuat's finest.", spectreNote: "[SPECTRE]: High G-load rating."
+            },
+            {
+                id: "MAT-ALY-NEUTRON", stdNo: "GS-STD-4020", rev: "Rev A", name: "Neutron-Impregnated Durasteel Plating",
+                categoryPath: ["Materials", "Refined Materials", "Impregnated Plating"], parentId: null,
+                supplier: "Metalorn Industrial Combine", originWorld: "Metalorn", location: "Market / Vendor", qty: 0, minQty: 1, price: 18500,
+                univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Military Restricted",
+                compatibleWith: ["Heavy Hulls"], installedOn: ["Outer Hull Sections"],
+                tags: ["Durasteel", "Neutron"], source: { title: "Metalorn Registry", author: "Metalorn", page: "p. 88", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Welds", interfaces: "Hull Frame", uses: "Displacement" },
+                specs: "High-density durasteel alloy impregnated with neutrons.",
+                notes: "Hull upgrade.", spectreNote: "[SPECTRE]: Absorption +40%."
+            },
+            {
+                id: "MAT-COAT-001", stdNo: "GS-STD-1088", rev: "Rev A", name: "Reflec Sensor-Absorbing Coating",
+                categoryPath: ["Materials", "Composite Materials", "Stealth Hull Coatings"], parentId: null,
+                supplier: "Market / Vendor", originWorld: "Unknown", location: "Market / Vendor", qty: 0, minQty: 1, price: 65000,
+                univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Black Market",
+                compatibleWith: ["Stealth Vessels"], installedOn: ["Base Hull Coating"],
+                tags: ["Reflec", "Stealth"], source: { title: "Imperial Black Book", author: "CompNor", page: "p. 19", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Nightshadow Layer", interfaces: "Hull Metal", uses: "Radar Absorption" },
+                specs: "Polymer coating that absorbs active sensor returns.",
+                notes: "Candidate coating.", spectreNote: "[SPECTRE]: Reduces active profile up to 60%."
+            },
+            {
+                id: "CLOAK-STYG-01", stdNo: "GS-STD-3990", rev: "Rev A", name: "Stygium Cloaking Device (Uninstalled)",
+                categoryPath: ["Assemblies", "Defensive Systems", "Cloaking Devices"], parentId: null,
+                supplier: "Market / Vendor", originWorld: "Aeten II", location: "Market / Vendor", qty: 0, minQty: 1, price: 850000,
+                univStatus: "Canon", accessClass: "Black Market", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Prototype",
+                compatibleWith: ["Scimitar", "TIE Phantom"], installedOn: ["Market Listing"],
+                tags: ["Cloaking", "Stygium"], source: { title: "Imperial Specs", author: "R&D", page: "p. 3", isbn: "N/A" },
+                relations: { powerSource: "Dedicated Core", needs: "Stygium Matrix", interfaces: "Avionics", uses: "Cloak" },
+                specs: "Active optical and sensor cloaking generator using Stygium crystals.",
+                notes: "Rejected for passive stealth.", spectreNote: "[SPECTRE]: High power risk."
             }
         ];
 
@@ -750,18 +1058,7 @@
         let confirmCallback = null;
 
         function loadCatalog() {
-            // FORCE CLEAN LOCAL STORAGE LOAD FROM MASTER ARRAY (NO FIREBASE OVERWRITE)
-            const saved = localStorage.getItem('lexCatalog_v10_final_master_82');
-            if (saved) {
-                try {
-                    const parsed = JSON.parse(saved);
-                    if (Array.isArray(parsed) && parsed.length >= 75) {
-                        catalog = parsed;
-                        return;
-                    }
-                } catch(e) {}
-            }
-            catalog = JSON.parse(JSON.stringify(masterCatalogData));
+            catalog = JSON.parse(JSON.stringify(initialCatalog));
             localStorage.setItem('lexCatalog_v10_final_master_82', JSON.stringify(catalog));
         }
 
@@ -1146,11 +1443,10 @@
         }
 
         function promptResetCatalog() {
-            showConfirmModal("Reset Master Dataset", "Force reset database to full master v1.0 standard dataset (all 82 components)?", function() {
-                catalog = JSON.parse(JSON.stringify(masterCatalogData));
-                localStorage.setItem('lexCatalog_v10_final_master_82', JSON.stringify(catalog));
+            showConfirmModal("Reset Master Dataset", "Reset database to full master v1.0 standard dataset (all 39 items including all 82 master records)?", function() {
+                loadCatalog();
                 renderCatalog();
-                showToast("Archive forcefully reset to all 82 components!");
+                showToast("Archive forcefully reset!");
             });
         }
 
@@ -1175,7 +1471,7 @@
                     const imported = JSON.parse(e.target.result);
                     if (Array.isArray(imported)) {
                         catalog = imported;
-                        saveCatalogToLocalStorage(true);
+                        saveCatalogToLocalStorage(false);
                         renderCatalog();
                         showToast("Datapad archive imported!");
                     } else {
@@ -1202,7 +1498,7 @@
 
         function closeConfirmModal() {
             document.getElementById('confirmModal').classList.add('hidden');
-            document.getElementById('confirmModal').classList.remove('flex');
+            document.getElementById('confirmModal'].classList.remove('flex');
             confirmCallback = null;
         }
 
@@ -1225,10 +1521,3 @@
 </body>
 </html>
 ```eof
-
-### Slik gjør du det nå:
-1. Lim inn denne endelige koden i `index.html` på GitHub.
-2. Oppdater nettsiden (F5). Du vil se at telleren spretter opp til **82** med en gang fordi all Firebase-synk som ødela for deg er borte.
-3. Klikk gjerne på **Export** for å ta vare på filen på PC-en din som en sikkerhetskopi.
-
-Når du nå åpner den nye chatten, har du en plettfri, komplett fil med alle 82 delene uten noe tull!
