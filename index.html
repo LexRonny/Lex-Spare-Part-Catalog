@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lex Rogers - Spare Part Catalog</title>
+    <title>Lex Rogers - Industrial Catalog v1.0</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -21,13 +21,15 @@
                     fontFamily: {
                         heading: ['Orbitron', 'sans-serif'],
                         sans: ['Rajdhani', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
                     },
                     colors: {
                         cyanGlow: '#00f0ff',
                         amberGlow: '#ffaa00',
                         redGlow: '#ff0055',
-                        darkBg: '#0b0f19',
-                        panelBg: '#121826',
+                        purpleGlow: '#a855f7',
+                        darkBg: '#080c14',
+                        panelBg: '#0f172a',
                         panelBorder: '#1e293b',
                     }
                 }
@@ -39,77 +41,68 @@
             background-color: #080c14;
             color: #cbd5e1;
             font-family: 'Rajdhani', sans-serif;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
         }
-        .heading-font {
-            font-family: 'Orbitron', sans-serif;
-        }
-        .glow-cyan {
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
-        }
-        .glow-amber {
-            box-shadow: 0 0 15px rgba(255, 170, 0, 0.25);
-        }
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0b0f19;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 4px;
-            border: 1px solid #00f0ff;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #00f0ff;
-        }
+        .heading-font { font-family: 'Orbitron', sans-serif; }
+        .glow-cyan { box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); }
+        .glow-amber { box-shadow: 0 0 15px rgba(255, 170, 0, 0.2); }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #080c14; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; border: 1px solid #00f0ff; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f0ff; }
+        .tree-line { border-left: 1px dashed #334155; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col p-3 md:p-6 text-slate-200">
 
-    <!-- Header -->
+    <!-- Header & System Governance -->
     <header class="bg-panelBg border-b-2 border-cyanGlow rounded-t-xl p-4 md:p-6 mb-4 glow-cyan flex flex-col gap-3">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div class="flex items-center gap-4">
                 <div class="p-3 bg-red-950/80 border border-red-500 text-red-400 rounded-lg text-2xl animate-pulse">
-                    <i class="fa-solid fa-terminal"></i>
+                    <i class="fa-solid fa-sitemap"></i>
                 </div>
                 <div>
                     <div class="flex items-center gap-2 text-xs font-semibold text-amber-400 uppercase tracking-widest heading-font">
-                        <span class="bg-red-950/90 text-red-400 px-2 py-0.5 rounded border border-red-800">STOLEN INDUSTRIAL DATAPAD ARCHIVE</span>
+                        <span class="bg-red-950/90 text-red-400 px-2 py-0.5 rounded border border-red-800">INDUSTRIAL ENGINEERING DATABASE</span>
                         <span>//</span>
-                        <span class="text-cyanGlow">CATALOGUE FOUNDATION v0.2</span>
+                        <span class="text-cyanGlow">v1.0 MASTER ARCHITECTURE</span>
                     </div>
                     <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-wider heading-font mt-1">
-                        LEX ROGERS <span class="text-cyanGlow">SPARE PART CATALOG</span>
+                        LEX ROGERS <span class="text-cyanGlow">INDUSTRIAL CATALOGUE v1.0</span>
                     </h1>
                 </div>
             </div>
+            
             <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
-                <button onclick="openAddModal()" class="px-4 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-black font-bold uppercase tracking-wider rounded border border-cyanGlow transition flex items-center gap-2 text-sm shadow-lg shadow-cyan-500/20">
-                    <i class="fa-solid fa-plus"></i> Register New Component
+                <button onclick="openAddModal()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-black font-bold uppercase tracking-wider rounded border border-cyanGlow transition flex items-center gap-2 text-xs shadow-lg shadow-cyan-500/20">
+                    <i class="fa-solid fa-plus"></i> Register Part / Assembly
                 </button>
-                <button onclick="promptResetCatalog()" class="px-3 py-2.5 bg-red-950/60 hover:bg-red-900/80 text-red-300 rounded border border-red-800 text-sm transition" title="Restore Default Archive Data">
+                <button onclick="promptResetCatalog()" class="px-3 py-2 bg-red-950/60 hover:bg-red-900/80 text-red-300 rounded border border-red-800 text-xs transition" title="Restore Default Archive Data">
                     <i class="fa-solid fa-rotate-left"></i>
                 </button>
-                <button onclick="exportJSON()" class="px-3 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-600 text-sm transition" title="Export Datapad JSON">
+                <button onclick="exportJSON()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-600 text-xs transition" title="Export Datapad JSON">
                     <i class="fa-solid fa-download"></i>
                 </button>
-                <label class="px-3 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-600 text-sm cursor-pointer transition" title="Import Datapad JSON">
+                <label class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-600 text-xs cursor-pointer transition" title="Import Datapad JSON">
                     <i class="fa-solid fa-upload"></i>
                     <input type="file" id="importFile" accept=".json" class="hidden" onchange="importJSON(event)">
                 </label>
             </div>
         </div>
 
-        <!-- Governance & Sync Banner -->
-        <div class="bg-slate-900/90 border border-slate-800 rounded p-2.5 text-xs text-slate-400 flex flex-col md:flex-row items-start md:items-center justify-between gap-2">
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-shield-halved text-amber-400 text-sm"></i>
-                <span><strong class="text-slate-200">DATAPAD GOVERNANCE:</strong> Technical reference framework for <i>Shadow Hunter</i>. Standards linked directly via Galactic Standards Collection v0.2.</span>
+        <!-- Mode Toggle & Cloud Status Bar -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded p-2.5 text-xs text-slate-400 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+            <!-- View Selector Tabs -->
+            <div class="flex items-center gap-2 bg-slate-950 p-1 rounded border border-slate-800">
+                <button id="btnViewTree" onclick="switchMainView('tree')" class="px-3 py-1 rounded bg-cyan-950 text-cyanGlow border border-cyan-700 font-bold heading-font flex items-center gap-2 text-xs">
+                    <i class="fa-solid fa-folder-tree"></i> Hierarchical Tree View
+                </button>
+                <button id="btnViewTable" onclick="switchMainView('table')" class="px-3 py-1 rounded text-slate-400 hover:text-white border border-transparent font-bold heading-font flex items-center gap-2 text-xs">
+                    <i class="fa-solid fa-table-list"></i> Flat Master Index
+                </button>
             </div>
+
             <div id="syncBadge" class="px-2.5 py-0.5 rounded text-[10px] font-mono uppercase font-bold border bg-emerald-950 text-emerald-400 border-emerald-800 flex items-center gap-1.5 self-end md:self-auto">
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
                 <span id="syncBadgeText">DATAPAD: INITIALIZING CLOUD SYNC...</span>
@@ -142,36 +135,25 @@
         </div>
         <div class="bg-panelBg p-4 rounded-lg border border-slate-800 flex items-center justify-between">
             <div>
-                <p class="text-xs uppercase text-slate-400 heading-font">Total Inventory Value</p>
+                <p class="text-xs uppercase text-slate-400 heading-font">Total Valuation</p>
                 <p id="statTotalValue" class="text-2xl font-bold text-emerald-400 heading-font">0 ₡</p>
             </div>
             <i class="fa-solid fa-coins text-2xl text-emerald-900/40"></i>
         </div>
     </div>
 
-    <!-- Controls & Filters -->
+    <!-- Controls & Multi-Filter Bar -->
     <div class="bg-panelBg p-4 rounded-lg border border-slate-800 mb-6 flex flex-col lg:flex-row gap-4 items-center justify-between">
-        <!-- Search -->
-        <div class="relative w-full lg:w-1/4">
+        <!-- Search Input -->
+        <div class="relative w-full lg:w-1/3">
             <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
-            <input type="text" id="searchInput" oninput="renderCatalog()" placeholder="Search Record ID, Std No, Name, Company, or Specs..." 
-                   class="w-full pl-10 pr-4 py-2 bg-slate-900 border border-slate-700 rounded text-sm text-slate-200 focus:outline-none focus:border-cyanGlow transition">
+            <input type="text" id="searchInput" oninput="renderCatalog()" placeholder="Search Record ID, Std No, BOM, Platform, or Tags..." 
+                   class="w-full pl-10 pr-4 py-2 bg-slate-900 border border-slate-700 rounded text-xs text-slate-200 focus:outline-none focus:border-cyanGlow transition">
         </div>
 
-        <!-- Filters -->
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-3 w-full lg:w-auto">
-            <select id="categoryFilter" onchange="renderCatalog()" class="bg-slate-900 border border-slate-700 text-sm text-slate-200 rounded py-2 px-3 focus:outline-none focus:border-cyanGlow">
-                <option value="ALL">All Families</option>
-                <option value="Materials & Feedstocks">Materials & Feedstocks</option>
-                <option value="Power, Propulsion & Thermal">Power, Propulsion & Thermal</option>
-                <option value="Spacecraft & Orbital Systems">Spacecraft & Orbital Systems</option>
-                <option value="Weapons & Security">Weapons & Security</option>
-                <option value="Cybernetics & MedTech">Cybernetics & MedTech</option>
-                <option value="Droids & Automation">Droids & Automation</option>
-                <option value="Logistics & Support">Logistics & Support</option>
-            </select>
-
-            <select id="accessFilter" onchange="renderCatalog()" class="bg-slate-900 border border-slate-700 text-sm text-slate-200 rounded py-2 px-3 focus:outline-none focus:border-cyanGlow">
+        <!-- Filter Dropdowns -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 w-full lg:w-auto">
+            <select id="accessFilter" onchange="renderCatalog()" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded py-2 px-3 focus:outline-none focus:border-cyanGlow">
                 <option value="ALL">All Classifications</option>
                 <option value="Restricted">Restricted</option>
                 <option value="Black Market">Black Market</option>
@@ -180,78 +162,85 @@
                 <option value="Public">Public</option>
             </select>
 
-            <select id="supplierFilter" onchange="renderCatalog()" class="bg-slate-900 border border-slate-700 text-sm text-slate-200 rounded py-2 px-3 focus:outline-none focus:border-cyanGlow">
-                <option value="ALL">All Production Companies</option>
-                <option value="Arakyd Industries">Arakyd Industries</option>
-                <option value="Corellian Engineering">Corellian Engineering Corp</option>
-                <option value="Kuat Drive Yards">Kuat Drive Yards</option>
-                <option value="Microaxial">Microaxial Processing</option>
-                <option value="Rendili StarDrive">Rendili StarDrive</option>
-                <option value="Sirplex">Sirplex / Colicoid</option>
-                <option value="Fabritech">Fabritech</option>
-                <option value="CP Productions">CP Productions</option>
-                <option value="Metalorn Industrial Combine">Metalorn Industrial Combine</option>
-                <option value="Willy's">Willy's Tech & Logistics</option>
+            <select id="lifecycleFilter" onchange="renderCatalog()" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded py-2 px-3 focus:outline-none focus:border-cyanGlow">
+                <option value="ALL">All Lifecycles</option>
+                <option value="Mass Production">Mass Production</option>
+                <option value="Prototype">Prototype</option>
+                <option value="Military Restricted">Military Restricted</option>
+                <option value="Obsolete">Obsolete</option>
+                <option value="Black Market">Black Market</option>
             </select>
 
-            <select id="locationFilter" onchange="renderCatalog()" class="bg-slate-900 border border-slate-700 text-sm text-slate-200 rounded py-2 px-3 focus:outline-none focus:border-cyanGlow">
-                <option value="ALL">All Locations & Markets</option>
+            <select id="locationFilter" onchange="renderCatalog()" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded py-2 px-3 focus:outline-none focus:border-cyanGlow">
+                <option value="ALL">All Locations</option>
                 <option value="Home Base">Home Base</option>
                 <option value="Willy's">Willy's</option>
                 <option value="Onboard Shadow Hunter">Onboard Shadow Hunter</option>
                 <option value="Pending location">Pending location</option>
                 <option value="Market / Vendor">Market / Vendor</option>
-                <option value="Unknown Location">Unknown Location</option>
             </select>
 
-            <button id="lowStockToggle" onclick="toggleLowStockFilter()" class="px-3 py-2 bg-slate-900 border border-slate-700 hover:border-amber-500 text-sm text-slate-300 rounded focus:outline-none transition flex items-center justify-center gap-2">
+            <button id="lowStockToggle" onclick="toggleLowStockFilter()" class="px-3 py-2 bg-slate-900 border border-slate-700 hover:border-amber-500 text-xs text-slate-300 rounded focus:outline-none transition flex items-center justify-center gap-2">
                 <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
                 <span id="lowStockToggleText">Low Stock / Unstocked</span>
             </button>
         </div>
     </div>
 
-    <!-- Catalog Table -->
-    <div class="bg-panelBg rounded-xl border border-slate-800 overflow-hidden shadow-2xl flex-grow mb-6">
+    <!-- MAIN VIEW 1: HIERARCHICAL TREE EXPLORER VIEW -->
+    <div id="viewTreeContainer" class="bg-panelBg rounded-xl border border-slate-800 p-6 shadow-2xl flex-grow mb-6">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+            <div class="flex items-center gap-2 text-xs font-mono text-cyanGlow">
+                <i class="fa-solid fa-diagram-project text-amber-400"></i>
+                <span>HIERARCHICAL TREE EXPLORER (Uendelig Kategori- & BOM-Struktur)</span>
+            </div>
+            <span class="text-xs text-slate-500">Klikk på pilene for å folde ut undernivåer / BOM-assemblies</span>
+        </div>
+        <div id="treeExplorerBody" class="space-y-3 font-mono text-xs">
+            <!-- Dynamic Recursive Tree View Generated Here -->
+        </div>
+    </div>
+
+    <!-- MAIN VIEW 2: FLAT MASTER INDEX TABLE -->
+    <div id="viewTableContainer" class="hidden bg-panelBg rounded-xl border border-slate-800 overflow-hidden shadow-2xl flex-grow mb-6">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-slate-900/90 text-cyanGlow border-b border-slate-800 text-xs font-bold uppercase tracking-wider heading-font">
-                        <th class="p-4">Record ID / Std No.</th>
-                        <th class="p-4">Item Name & Status</th>
-                        <th class="p-4">Family / Category</th>
-                        <th class="p-4">Production Company / Vendor</th>
+                        <th class="p-4">Record ID / Std Rev</th>
+                        <th class="p-4">Item & Confidence</th>
+                        <th class="p-4">Hierarchy Path</th>
+                        <th class="p-4">Vendor / Origin</th>
                         <th class="p-4">Location</th>
                         <th class="p-4 text-center">Stock</th>
                         <th class="p-4 text-right">Price (₡)</th>
-                        <th class="p-4 text-center">Datapad Actions</th>
+                        <th class="p-4 text-center">Actions</th>
                     </tr>
                 </thead>
-                <tbody id="catalogTableBody" class="divide-y divide-slate-800/60 text-sm">
-                    <!-- Dynamic Rows -->
+                <tbody id="catalogTableBody" class="divide-y divide-slate-800/60 text-xs">
+                    <!-- Dynamic Table Rows -->
                 </tbody>
             </table>
         </div>
         <div id="emptyState" class="hidden p-12 text-center text-slate-500">
             <i class="fa-solid fa-box-open text-4xl mb-3 text-slate-700"></i>
             <p class="text-base font-semibold">No industrial records match current datapad query.</p>
-            <p class="text-xs text-slate-600 mt-1">Adjust search parameters or register a new record.</p>
         </div>
     </div>
 
-    <!-- Item Inspector Datapad Modal -->
+    <!-- ITEM INSPECTOR MODAL (Full BOM, Parent/Child, Compatibility, Source & Relations) -->
     <div id="inspectModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center p-3 md:p-6 z-50">
-        <div class="bg-panelBg border-2 border-cyanGlow rounded-xl w-full max-w-4xl p-6 shadow-2xl relative glow-cyan max-h-[92vh] flex flex-col">
-            <div class="flex justify-between items-start border-b border-slate-800 pb-4 mb-4">
+        <div class="bg-panelBg border-2 border-cyanGlow rounded-xl w-full max-w-5xl p-6 shadow-2xl relative glow-cyan max-h-[92vh] flex flex-col">
+            <div class="flex justify-between items-start border-b border-slate-800 pb-4 mb-3">
                 <div>
-                    <div class="flex items-center gap-2 text-xs font-mono text-cyanGlow">
-                        <span id="inspectRecordId" class="font-bold">GS-REAC-01</span>
+                    <div class="flex items-center gap-3 text-xs font-mono text-cyanGlow">
+                        <span id="inspectRecordId" class="font-bold text-sm">GS-REAC-01</span>
                         <span>//</span>
-                        <span id="inspectStdNo" class="text-amber-400 cursor-pointer hover:underline" onclick="openStdModalFromInspect()">STD: GS-STD-8842</span>
+                        <span id="inspectStdNo" class="text-amber-400 cursor-pointer hover:underline" onclick="openStdModalFromInspect()">STD: GS-STD-8842 Rev A</span>
+                        <span id="inspectStars" class="text-amber-400 font-bold ml-2"></span>
                     </div>
-                    <h2 id="inspectName" class="text-2xl font-extrabold text-white heading-font mt-1">
-                        Central Fusion Reactor Core
-                    </h2>
+                    <h2 id="inspectName" class="text-2xl font-extrabold text-white heading-font mt-1"></h2>
+                    <p id="inspectPathBreadcrumb" class="text-[11px] font-mono text-slate-400 mt-1"></p>
                 </div>
                 <button onclick="closeInspectModal()" class="text-slate-400 hover:text-white text-2xl p-1">
                     <i class="fa-solid fa-xmark"></i>
@@ -261,130 +250,152 @@
             <!-- Modal Nav Tabs -->
             <div class="flex overflow-x-auto gap-2 border-b border-slate-800 pb-2 mb-4 text-xs font-semibold heading-font">
                 <button onclick="switchInspectTab('tabOverview')" id="btnTabOverview" class="px-3 py-1.5 rounded bg-cyan-950 text-cyanGlow border border-cyan-700 whitespace-nowrap">01 Overview</button>
-                <button onclick="switchInspectTab('tabTech')" id="btnTabTech" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">02 Technical Specs</button>
-                <button onclick="switchInspectTab('tabMfg')" id="btnTabMfg" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">03 Provenance & Mfg</button>
-                <button onclick="switchInspectTab('tabCompat')" id="btnTabCompat" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">04 Compatibility & Standards</button>
-                <button onclick="switchInspectTab('tabOps')" id="btnTabOps" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">05 Maintenance & Ops</button>
+                <button onclick="switchInspectTab('tabBOM')" id="btnTabBOM" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">02 BOM & Hierarchy</button>
+                <button onclick="switchInspectTab('tabCompat')" id="btnTabCompat" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">03 Compat & Installed On</button>
+                <button onclick="switchInspectTab('tabRelations')" id="btnTabRelations" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">04 System Network</button>
+                <button onclick="switchInspectTab('tabSource')" id="btnTabSource" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">05 Provenance & Source</button>
                 <button onclick="switchInspectTab('tabVoices')" id="btnTabVoices" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">06 Notes & Spectre</button>
             </div>
 
             <!-- Tab Contents -->
             <div class="flex-grow overflow-y-auto pr-2 space-y-4 text-sm text-slate-300">
+                <!-- Tab 1: Overview -->
                 <div id="tabOverview" class="space-y-4">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 bg-slate-900/80 p-3 rounded border border-slate-800">
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-3 bg-slate-900/80 p-3 rounded border border-slate-800">
                         <div>
                             <span class="text-[10px] text-slate-500 uppercase block heading-font">Universe Status</span>
                             <span id="inspectUnivStatus" class="font-bold text-amber-400">Canon</span>
                         </div>
                         <div>
-                            <span class="text-[10px] text-slate-500 uppercase block heading-font">Access Classification</span>
+                            <span class="text-[10px] text-slate-500 uppercase block heading-font">Access Class</span>
                             <span id="inspectAccessClass" class="font-bold text-cyanGlow">Trade</span>
                         </div>
                         <div>
-                            <span class="text-[10px] text-slate-500 uppercase block heading-font">Data Confidence</span>
-                            <span id="inspectConfidence" class="font-bold text-emerald-400">Verified</span>
+                            <span class="text-[10px] text-slate-500 uppercase block heading-font">Lifecycle</span>
+                            <span id="inspectLifecycle" class="font-bold text-purple-400">Mass Production</span>
                         </div>
                         <div>
-                            <span class="text-[10px] text-slate-500 uppercase block heading-font">Record State</span>
-                            <span id="inspectRecordState" class="font-bold text-slate-300">Active</span>
+                            <span class="text-[10px] text-slate-500 uppercase block heading-font">Confidence Rating</span>
+                            <span id="inspectConfidenceVal" class="font-bold text-emerald-400">5 / 5 Stars</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-500 uppercase block heading-font">Revision</span>
+                            <span id="inspectRev" class="font-mono font-bold text-slate-200">Rev A</span>
                         </div>
                     </div>
 
                     <div class="bg-slate-900/50 p-4 rounded border border-slate-800">
-                        <h4 class="text-xs uppercase text-slate-400 heading-font mb-1">Short Description</h4>
-                        <p id="inspectDescription" class="text-slate-200 leading-relaxed"></p>
+                        <h4 class="text-xs uppercase text-slate-400 heading-font mb-1">Technical Description</h4>
+                        <p id="inspectDescription" class="text-slate-200 leading-relaxed text-xs"></p>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div class="bg-slate-900/60 p-3 rounded border border-slate-800">
-                            <span class="text-[10px] text-slate-400 uppercase heading-font">Current Location / Market</span>
-                            <p id="inspectLocation" class="font-semibold text-white mt-0.5"></p>
+                            <span class="text-[10px] text-slate-400 uppercase heading-font">Current Location</span>
+                            <p id="inspectLocation" class="font-semibold text-white mt-0.5 text-xs"></p>
                         </div>
                         <div class="bg-slate-900/60 p-3 rounded border border-slate-800">
-                            <span class="text-[10px] text-slate-400 uppercase heading-font">Stock / Min Threshold</span>
-                            <p id="inspectStock" class="font-semibold text-white mt-0.5"></p>
+                            <span class="text-[10px] text-slate-400 uppercase heading-font">Stock / Threshold</span>
+                            <p id="inspectStock" class="font-semibold text-white mt-0.5 text-xs"></p>
                         </div>
                         <div class="bg-slate-900/60 p-3 rounded border border-slate-800">
                             <span class="text-[10px] text-slate-400 uppercase heading-font">Unit Price</span>
-                            <p id="inspectPrice" class="font-mono font-bold text-emerald-400 mt-0.5"></p>
+                            <p id="inspectPrice" class="font-mono font-bold text-emerald-400 mt-0.5 text-xs"></p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/50 p-3 rounded border border-slate-800">
+                        <span class="text-[10px] text-slate-400 uppercase block heading-font mb-1">Tags</span>
+                        <div id="inspectTagsContainer" class="flex flex-wrap gap-1.5"></div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: BOM & Hierarchy -->
+                <div id="tabBOM" class="hidden space-y-4">
+                    <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3">
+                        <h4 class="text-xs uppercase text-cyanGlow heading-font">Parent Component / Assembly</h4>
+                        <div id="inspectParentContainer" class="p-3 bg-slate-950 rounded border border-slate-800 font-mono text-xs">
+                            <!-- Parent Item Link -->
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3">
+                        <h4 class="text-xs uppercase text-amber-400 heading-font">Bill of Materials (BOM) / Children Sub-Components</h4>
+                        <div id="inspectChildrenContainer" class="p-3 bg-slate-950 rounded border border-slate-800 space-y-2 font-mono text-xs">
+                            <!-- Children List -->
                         </div>
                     </div>
                 </div>
 
-                <div id="tabTech" class="hidden space-y-4">
-                    <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3">
-                        <h4 class="text-xs uppercase text-cyanGlow heading-font">Technical Specifications & Material Feedstocks</h4>
-                        <p id="inspectSpecsDetail" class="text-slate-300"></p>
-                    </div>
-                </div>
-
-                <div id="tabMfg" class="hidden space-y-4">
-                    <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3">
-                        <h4 class="text-xs uppercase text-amber-400 heading-font">Production Company & Provenance</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <span class="text-xs text-slate-500 uppercase block">Production Company / Vendor</span>
-                                <p id="inspectMfgCo" class="font-bold text-white text-base"></p>
-                            </div>
-                            <div>
-                                <span class="text-xs text-slate-500 uppercase block">Origin World / Facility</span>
-                                <p id="inspectOriginWorld" class="font-semibold text-slate-200"></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                <!-- Tab 3: Compatibility & Installed On -->
                 <div id="tabCompat" class="hidden space-y-4">
-                    <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3">
-                        <div class="flex justify-between items-center">
-                            <h4 class="text-xs uppercase text-cyanGlow heading-font">Galactic Standardization & Cross-References</h4>
-                            <button onclick="openStdModalFromInspect()" class="px-3 py-1 bg-cyan-950 hover:bg-cyan-900 text-cyanGlow border border-cyan-700 text-xs rounded">
-                                <i class="fa-solid fa-external-link"></i> Open GSC v0.2 Record
-                            </button>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-2">
+                            <h4 class="text-xs uppercase text-cyanGlow heading-font"><i class="fa-solid fa-plane-up mr-1"></i> Compatible Ship Platforms</h4>
+                            <div id="inspectCompatContainer" class="flex flex-wrap gap-2 text-xs"></div>
                         </div>
-                        <div class="bg-slate-950 p-3 rounded border border-slate-800 space-y-2 text-xs">
-                            <div>
-                                <span class="text-slate-500 block">Standardization Number:</span>
-                                <span id="inspectStdLink" class="font-mono font-bold text-amber-400 text-sm">GS-STD-8842</span>
+
+                        <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-2">
+                            <h4 class="text-xs uppercase text-emerald-400 heading-font"><i class="fa-solid fa-anchor mr-1"></i> Active Installations</h4>
+                            <div id="inspectInstalledContainer" class="flex flex-wrap gap-2 text-xs"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: System Network & Relations -->
+                <div id="tabRelations" class="hidden space-y-4">
+                    <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3 text-xs font-mono">
+                        <h4 class="text-xs uppercase text-purple-400 heading-font">Inter-System Dependency Network</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="p-2.5 bg-slate-950 rounded border border-slate-800">
+                                <span class="text-slate-500 uppercase block text-[10px]">Power Source:</span>
+                                <span id="relPowerSource" class="text-amber-400 font-bold"></span>
                             </div>
-                            <div>
-                                <span class="text-slate-500 block">Applicable Components / Ship Platform:</span>
-                                <span class="text-slate-300">Shadow Hunter Heavy Transport</span>
+                            <div class="p-2.5 bg-slate-950 rounded border border-slate-800">
+                                <span class="text-slate-500 uppercase block text-[10px]">Required Subsystems:</span>
+                                <span id="relNeeds" class="text-cyanGlow font-bold"></span>
+                            </div>
+                            <div class="p-2.5 bg-slate-950 rounded border border-slate-800">
+                                <span class="text-slate-500 uppercase block text-[10px]">Interfaces With:</span>
+                                <span id="relInterfaces" class="text-emerald-400 font-bold"></span>
+                            </div>
+                            <div class="p-2.5 bg-slate-950 rounded border border-slate-800">
+                                <span class="text-slate-500 uppercase block text-[10px]">Consumables / Feeds:</span>
+                                <span id="relUses" class="text-purple-300 font-bold"></span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div id="tabOps" class="hidden space-y-4">
-                    <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3">
-                        <h4 class="text-xs uppercase text-red-400 heading-font">Maintenance, Safety & Handling Hazards</h4>
-                        <ul class="list-disc list-inside space-y-1 text-xs text-slate-300">
-                            <li>Requires inspection every 500 hyperspace cycles or 6 galactic standard months.</li>
-                            <li>Locking pins must be fully engaged before sublight drive ignition.</li>
-                            <li>Observe radiation and thermal safety limits during core extraction.</li>
-                        </ul>
+                <!-- Tab 5: Provenance & Source -->
+                <div id="tabSource" class="hidden space-y-4">
+                    <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3 text-xs font-mono">
+                        <h4 class="text-xs uppercase text-amber-400 heading-font">Primary Canonical / Legends Source Reference</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div><span class="text-slate-500 block">Primary Source:</span> <span id="srcTitle" class="text-white font-bold"></span></div>
+                            <div><span class="text-slate-500 block">Author / Publisher:</span> <span id="srcAuthor" class="text-slate-200"></span></div>
+                            <div><span class="text-slate-500 block">Page / Reference:</span> <span id="srcPage" class="text-slate-200"></span></div>
+                            <div><span class="text-slate-500 block">ISBN / ID:</span> <span id="srcIsbn" class="text-slate-200"></span></div>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Tab 6: Notes & Spectre -->
                 <div id="tabVoices" class="hidden space-y-4">
                     <div class="bg-amber-950/30 p-4 rounded border border-amber-800/60 space-y-2">
                         <div class="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase heading-font">
                             <i class="fa-solid fa-note-sticky"></i>
-                            <span>Notes</span>
+                            <span>Field Notes</span>
                         </div>
-                        <p id="inspectNote" class="italic text-amber-200 text-xs leading-relaxed">
-                            "No field notes logged."
-                        </p>
+                        <p id="inspectNote" class="italic text-amber-200 text-xs leading-relaxed"></p>
                     </div>
 
                     <div class="bg-purple-950/30 p-4 rounded border border-purple-800/60 space-y-2">
                         <div class="flex items-center gap-2 text-purple-400 text-xs font-bold uppercase heading-font">
                             <i class="fa-solid fa-eye"></i>
-                            <span>Spectre Analysis / Remarks</span>
+                            <span>Spectre Tactical Remarks</span>
                         </div>
-                        <p id="inspectSpectreNote" class="font-mono text-purple-200 text-xs leading-relaxed">
-                            [SPECTRE]: No observation data recorded.
-                        </p>
+                        <p id="inspectSpectreNote" class="font-mono text-purple-200 text-xs leading-relaxed"></p>
                     </div>
                 </div>
             </div>
@@ -394,234 +405,21 @@
                     <i class="fa-solid fa-pen-to-square"></i> Edit Record
                 </button>
                 <button onclick="closeInspectModal()" class="px-5 py-2 bg-cyan-600 hover:bg-cyan-500 text-black text-xs font-bold uppercase rounded heading-font">
-                    Close Datapad Inspector
+                    Close Inspector
                 </button>
             </div>
-        </div>
-    </div>
-
-    <!-- Galactic Standards Collection v0.2 Modal -->
-    <div id="stdModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4 z-50">
-        <div class="bg-panelBg border-2 border-amber-500 rounded-xl w-full max-w-3xl p-6 shadow-2xl relative glow-amber max-h-[90vh] overflow-y-auto">
-            <button onclick="closeStdModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
-                <div>
-                    <div class="flex items-center gap-2 text-amber-400 text-xs uppercase heading-font">
-                        <i class="fa-solid fa-book-bookmark"></i>
-                        <span>GALACTIC STANDARDS COLLECTION // Framework v0.2</span>
-                    </div>
-                    <h3 id="stdModalTitle" class="text-2xl font-bold text-white heading-font mt-1">
-                        Standard Record: GS-STD-8842
-                    </h3>
-                </div>
-            </div>
-            
-            <div class="space-y-3 text-xs text-slate-300 font-mono">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
-                        <span class="text-slate-500 uppercase block text-[10px]">Standard ID</span>
-                        <span id="gscStdId" class="text-amber-400 font-bold text-sm">GS-STD-8842</span>
-                    </div>
-                    <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
-                        <span class="text-slate-500 uppercase block text-[10px]">Display Name</span>
-                        <span id="gscDisplayName" class="text-white font-bold">Standard Industrial Interlock Framework</span>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
-                        <span class="text-slate-500 uppercase block text-[10px]">Authority</span>
-                        <span id="gscAuthority" class="text-cyanGlow">Galactic Standards Bureau</span>
-                    </div>
-                    <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
-                        <span class="text-slate-500 uppercase block text-[10px]">Current Revision</span>
-                        <span id="gscRevision" class="text-slate-200">Rev 4.2</span>
-                    </div>
-                    <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
-                        <span class="text-slate-500 uppercase block text-[10px]">Compliance Level</span>
-                        <span id="gscCompliance" class="text-emerald-400 font-bold">Mandatory Certified</span>
-                    </div>
-                </div>
-
-                <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
-                    <span class="text-slate-500 uppercase block text-[10px]">Classification Path</span>
-                    <span id="gscClassPath" class="text-slate-300">GSC / Power & Industrial / Interlocks</span>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
-                        <span class="text-slate-500 uppercase block text-[10px]">Purpose</span>
-                        <p id="gscPurpose" class="text-slate-300 mt-1 leading-relaxed"></p>
-                    </div>
-                    <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
-                        <span class="text-slate-500 uppercase block text-[10px]">Scope</span>
-                        <p id="gscScope" class="text-slate-300 mt-1 leading-relaxed"></p>
-                    </div>
-                </div>
-
-                <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
-                    <span class="text-slate-500 uppercase block text-[10px]">Standard Notes & References</span>
-                    <p id="gscNotes" class="text-amber-200/90 mt-1 italic"></p>
-                </div>
-            </div>
-
-            <div class="flex justify-end pt-4 border-t border-slate-800 mt-4">
-                <button onclick="closeStdModal()" class="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold uppercase text-xs rounded heading-font">
-                    Acknowledge Standard Record
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Registration / Edit Modal -->
-    <div id="partModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-panelBg border-2 border-cyanGlow rounded-xl w-full max-w-3xl p-6 shadow-2xl relative glow-cyan max-h-[90vh] overflow-y-auto">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <h2 id="modalTitle" class="text-xl font-bold text-white mb-6 heading-font border-b border-slate-800 pb-3">
-                REGISTER NEW COMPONENT RECORD
-            </h2>
-            <form id="partForm" onsubmit="savePart(event)" class="space-y-4 text-xs">
-                <input type="hidden" id="editPartIndex">
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block uppercase text-slate-400 mb-1 heading-font">Record ID</label>
-                        <input type="text" id="partId" required placeholder="e.g. MAT-MET-00001" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block uppercase text-slate-400 mb-1 heading-font">Standardization Number (Std No.)</label>
-                        <input type="text" id="partStdNo" required placeholder="e.g. GS-STD-8842" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block uppercase text-slate-400 mb-1 heading-font">Item Display Name</label>
-                        <input type="text" id="partName" required placeholder="e.g. Virellium Conductor Wiring" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block uppercase text-slate-400 mb-1 heading-font">Catalogue Family</label>
-                        <select id="partCategory" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
-                            <option value="Materials & Feedstocks">Materials & Feedstocks</option>
-                            <option value="Power, Propulsion & Thermal">Power, Propulsion & Thermal</option>
-                            <option value="Spacecraft & Orbital Systems">Spacecraft & Orbital Systems</option>
-                            <option value="Weapons & Security">Weapons & Security</option>
-                            <option value="Cybernetics & MedTech">Cybernetics & MedTech</option>
-                            <option value="Droids & Automation">Droids & Automation</option>
-                            <option value="Logistics & Support">Logistics & Support</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block uppercase text-slate-400 mb-1 heading-font">Production Company / Vendor</label>
-                        <input type="text" id="partSupplier" required placeholder="e.g. CP Productions / Willy's Shop" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block uppercase text-slate-400 mb-1 heading-font">Origin World</label>
-                        <input type="text" id="partOriginWorld" placeholder="e.g. Byss / Coruscant / Kuat" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block uppercase text-slate-400 mb-1 heading-font">Location / Availability</label>
-                        <select id="partLocation" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
-                            <option value="Home Base">Home Base</option>
-                            <option value="Willy's">Willy's</option>
-                            <option value="Onboard Shadow Hunter">Onboard Shadow Hunter</option>
-                            <option value="Pending location">Pending location</option>
-                            <option value="Market / Vendor">Market / Vendor</option>
-                            <option value="Unknown Location">Unknown Location</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block uppercase text-slate-400 mb-1 heading-font">Universe Status</label>
-                        <select id="partUnivStatus" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
-                            <option value="Canon">Canon</option>
-                            <option value="Fan-made">Fan-made</option>
-                            <option value="Legends">Legends</option>
-                            <option value="Mixed">Mixed</option>
-                            <option value="Unknown">Unknown</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block uppercase text-slate-400 mb-1 heading-font">Access Classification</label>
-                        <select id="partAccessClass" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
-                            <option value="Public">Public</option>
-                            <option value="Trade">Trade</option>
-                            <option value="Restricted">Restricted</option>
-                            <option value="Military">Military</option>
-                            <option value="Black Market">Black Market</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block uppercase text-slate-400 mb-1 heading-font">Data Confidence</label>
-                        <select id="partConfidence" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
-                            <option value="Verified">Verified</option>
-                            <option value="Probable">Probable</option>
-                            <option value="Fragmentary">Fragmentary</option>
-                            <option value="Rumour">Rumour</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block uppercase text-slate-400 mb-1 heading-font">Quantity in Stock</label>
-                        <input type="number" id="partQuantity" min="0" required value="1" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block uppercase text-slate-400 mb-1 heading-font">Minimum Threshold</label>
-                        <input type="number" id="partMinQuantity" min="0" required value="1" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block uppercase text-slate-400 mb-1 heading-font">Unit Price (Credits ₡)</label>
-                        <input type="number" id="partPrice" min="0" required value="500" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block uppercase text-slate-400 mb-1 heading-font">Technical Description & Specs</label>
-                    <textarea id="partSpecs" rows="2" placeholder="Technical specifications..." class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none"></textarea>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block uppercase text-amber-400 mb-1 heading-font">Notes</label>
-                        <textarea id="partNote" rows="2" placeholder="Field notes..." class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none"></textarea>
-                    </div>
-                    <div>
-                        <label class="block uppercase text-purple-400 mb-1 heading-font">Spectre Remarks</label>
-                        <textarea id="partSpectreNote" rows="2" placeholder="Spectre observations..." class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none"></textarea>
-                    </div>
-                </div>
-
-                <div class="flex justify-end gap-3 pt-4 border-t border-slate-800">
-                    <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded uppercase heading-font">Cancel</button>
-                    <button type="submit" class="px-6 py-2 bg-cyan-600 hover:bg-cyan-500 text-black font-bold rounded uppercase heading-font shadow-lg shadow-cyan-500/20">Save Record</button>
-                </div>
-            </form>
         </div>
     </div>
 
     <!-- Confirm Modal -->
     <div id="confirmModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-panelBg border-2 border-red-500 rounded-xl w-full max-w-md p-6 shadow-2xl relative glow-amber text-center">
-            <div class="text-3xl text-red-500 mb-3">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-            </div>
-            <h3 id="confirmTitle" class="text-lg font-bold text-white heading-font mb-2 uppercase">Datapad Confirmation Required</h3>
-            <p id="confirmMsg" class="text-sm text-slate-300 mb-6">Are you sure you want to perform this action?</p>
+        <div class="bg-panelBg border-2 border-red-500 rounded-xl w-full max-w-md p-6 shadow-2xl relative text-center">
+            <div class="text-3xl text-red-500 mb-3"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <h3 id="confirmTitle" class="text-lg font-bold text-white heading-font mb-2 uppercase">Confirmation</h3>
+            <p id="confirmMsg" class="text-sm text-slate-300 mb-6"></p>
             <div class="flex justify-center gap-4">
-                <button id="btnConfirmCancel" onclick="closeConfirmModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold uppercase rounded">Cancel</button>
-                <button id="btnConfirmOK" class="px-5 py-2 bg-red-600 hover:bg-red-500 text-white text-xs font-bold uppercase rounded heading-font">Confirm Action</button>
+                <button onclick="closeConfirmModal()" class="px-4 py-2 bg-slate-800 text-slate-300 text-xs font-bold uppercase rounded">Cancel</button>
+                <button id="btnConfirmOK" class="px-5 py-2 bg-red-600 hover:bg-red-500 text-white text-xs font-bold uppercase rounded heading-font">Confirm</button>
             </div>
         </div>
     </div>
@@ -647,39 +445,38 @@
             appId: "1:692365758416:web:8b9ea64d533a777582b3d5"
         };
 
-        let db = null;
         try {
             const app = initializeApp(firebaseConfig);
-            db = getDatabase(app);
+            const db = getDatabase(app);
             window.firebaseDb = db;
             window.firebaseRef = ref;
             window.firebaseSet = set;
 
-            const catalogRef = ref(db, 'parts');
+            const catalogRef = ref(db, 'parts_v10');
             onValue(catalogRef, (snapshot) => {
                 const data = snapshot.val();
                 if (data && Array.isArray(data) && data.length > 0) {
                     window.catalog = data;
-                    window.saveCatalogToLocalStorage();
+                    window.saveCatalogToLocalStorage(false);
                     window.renderCatalog();
-                    window.updateSyncBadge("ONLINE // CLOUD SYNCED (FIREBASE)", "bg-cyan-950 text-cyanGlow border-cyan-800");
+                    window.updateSyncBadge("ONLINE // CLOUD SYNCED (v1.0 FIREBASE)", "bg-cyan-950 text-cyanGlow border-cyan-800");
                 } else if (!data) {
                     window.syncCatalogToCloud();
-                    window.updateSyncBadge("ONLINE // CLOUD INITIALIZED", "bg-cyan-950 text-cyanGlow border-cyan-800");
+                    window.updateSyncBadge("ONLINE // CLOUD INITIALIZED v1.0", "bg-cyan-950 text-cyanGlow border-cyan-800");
                 }
             }, (error) => {
-                console.warn("Firebase sync fallback to local storage:", error);
+                console.warn("Firebase sync fallback:", error);
                 window.updateSyncBadge("DATAPAD: LOCAL STORAGE ACTIVE", "bg-emerald-950 text-emerald-400 border-emerald-800");
             });
         } catch (e) {
-            console.warn("Firebase initialization error:", e);
+            console.warn("Firebase error:", e);
             window.updateSyncBadge("DATAPAD: LOCAL STORAGE ACTIVE", "bg-emerald-950 text-emerald-400 border-emerald-800");
         }
 
         window.syncCatalogToCloud = function() {
             if (window.firebaseDb && window.catalog) {
                 try {
-                    window.firebaseSet(window.firebaseRef(window.firebaseDb, 'parts'), window.catalog);
+                    window.firebaseSet(window.firebaseRef(window.firebaseDb, 'parts_v10'), window.catalog);
                 } catch(e) {
                     console.error("Cloud write failed:", e);
                 }
@@ -687,435 +484,120 @@
         };
     </script>
 
-    <!-- Main Datapad Logic Script -->
+    <!-- Main v1.0 Engine Script -->
     <script>
+        // Master Catalog Architecture v1.0 with Deep Hierarchies, BOM & Source Tracking
         const initialCatalog = [
-            // Weapons & Security
+            // TOP LEVEL WEAPON ASSEMBLY
             {
-                id: "WEAP-CEC-001", stdNo: "GS-STD-7021", name: "CEC AG-2G Quad Laser Cannon", category: "Weapons & Security", supplier: "Corellian Engineering Corp", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 85000,
-                univStatus: "Legends", accessClass: "Military", confidence: "Verified", recordState: "Active",
+                id: "WEAP-CEC-001", stdNo: "GS-STD-7021", rev: "Rev C", name: "CEC AG-2G Quad Laser Cannon Assembly",
+                categoryPath: ["Assemblies", "Weapons", "Starfighter Weapons", "Quad Laser Cannons"],
+                parentId: null,
+                supplier: "Corellian Engineering Corp", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 85000,
+                univStatus: "Legends", accessClass: "Military", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["VT-49 Decimator", "Millennium Falcon", "CR90 Corvette"],
+                installedOn: ["Shadow Hunter (Dorsal Turret)"],
+                tags: ["Weapon", "Turret", "Laser", "CEC", "Military"],
+                source: { title: "Star Wars: Technical Journal", author: "Shane Johnson", page: "p. 42", isbn: "0-1B-4421-X" },
+                relations: { powerSource: "Central Fusion Reactor Core", needs: "Cryo-Cooling Loop", interfaces: "Sienar T-s9a Targeting Computer", uses: "Tibanna Gas" },
                 specs: "Military-grade quad laser turret suitable for medium combat vessels. Primary dorsal turret weapon aboard Shadow Hunter.",
-                notes: "Installed as dorsal turret weapon aboard Shadow Hunter.",
-                spectreNote: "[SPECTRE]: Target acquisition latency under 1.8 ms. Primary dorsal defense sector nominal."
+                notes: "Primary dorsal weapon system.", spectreNote: "[SPECTRE]: Target acquisition latency under 1.8 ms."
+            },
+            // AG-2G BOM SUB-COMPONENTS (Children)
+            {
+                id: "WEAP-CEC-001-CAP", stdNo: "GS-STD-7021-SUB1", rev: "Rev B", name: "AG-2G Heavy Laser Capacitor Unit",
+                categoryPath: ["Assemblies", "Weapons", "Starfighter Weapons", "Quad Laser Cannons", "CEC AG-2G", "Capacitor"],
+                parentId: "WEAP-CEC-001",
+                supplier: "Corellian Engineering Corp", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 4, minQty: 2, price: 12000,
+                univStatus: "Canon", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["CEC AG-2G Quad Laser Cannon"], installedOn: ["Shadow Hunter"],
+                tags: ["Capacitor", "Energy", "Laser Component"],
+                source: { title: "Official Starships RPG Guide", author: "Wizards Coast", page: "p. 108", isbn: "1-56076-112-8" },
+                relations: { powerSource: "Main Power Bus", needs: "Cooling Jacket", interfaces: "Emitter Array", uses: "Plasma Charges" },
+                specs: "High-discharge energy storage capacitor powering individual laser barrels.",
+                notes: "Requires dielectric check every 100 firings.", spectreNote: "[SPECTRE]: Charge retention rate 99.2%."
             },
             {
-                id: "WEAP-LCQ-004", stdNo: "GS-STD-7022", name: "LCQ-4 Quad Laser Cannon", category: "Weapons & Security", supplier: "Unknown Vendor", originWorld: "Unknown", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 78000,
-                univStatus: "Legends", accessClass: "Military", confidence: "Verified", recordState: "Active",
-                specs: "Primary ventral turret weapon selected to complement the AG-2G rather than duplicate it.",
-                notes: "Selected to complement AG-2G dorsal turret.",
-                spectreNote: "[SPECTRE]: Ventral coverage profile synchronized with primary fire control."
-            },
-            {
-                id: "WEAP-ARM-007", stdNo: "GS-STD-7035", name: "ArMek SW-7a Ion Cannon", category: "Weapons & Security", supplier: "ArMek", originWorld: "Fondor", location: "Onboard Shadow Hunter", qty: 2, minQty: 1, price: 62000,
-                univStatus: "Legends", accessClass: "Military", confidence: "Verified", recordState: "Active",
-                specs: "Forward-mounted fixed ion cannons beneath the wings. Designed to disable rather than destroy enemy vessels.",
-                notes: "Aftermarket installation. Perfect for disabling targets for boarding or cargo extraction.",
-                spectreNote: "[SPECTRE]: Overload discharge rated for medium freighter grid suppression."
-            },
-            {
-                id: "WEAP-MS3-001", stdNo: "GS-STD-7040", name: "M-s3 Concussion Missile Launcher", category: "Weapons & Security", supplier: "Unknown Vendor", originWorld: "Unknown", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 95000,
-                univStatus: "Legends", accessClass: "Military", confidence: "Verified", recordState: "Active",
-                specs: "Primary missile armament retaining the VT-49's assault capability against heavily shielded targets.",
-                notes: "Magazine loaded on Deck 1. Ordnance restricted to heavy engagements.",
-                spectreNote: "[SPECTRE]: Ordnance guidance synced with T-s9a targeting computer."
-            },
-            {
-                id: "TARG-SFS-S9A", stdNo: "GS-STD-7209", name: "Sienar T-s9a Targeting Computer", category: "Weapons & Security", supplier: "Sienar Fleet Systems", originWorld: "Lianna / Coruscant", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 48000,
-                univStatus: "Canon", accessClass: "Military", confidence: "Verified", recordState: "Active",
-                specs: "Advanced secondary fire-control and targeting computer designed for aggressive flight maneuvers and rapid acquisition.",
-                notes: "Successor to T-s8. Provides continuous tracking independent of primary fire-control network.",
-                spectreNote: "[SPECTRE]: Coordinates fixed wing cannons and concussion missiles without lag."
-            },
-            {
-                id: "ECM-BER-SCR1", stdNo: "GS-STD-7510", name: "\"Screamer\" Active ECM Jammer", category: "Weapons & Security", supplier: "Bertriak", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 82000,
-                univStatus: "Legends", accessClass: "Military", confidence: "Verified", recordState: "Active",
-                specs: "Active electronic warfare jammer masking ion drive emissions and disrupting missile/torpedo guidance.",
-                notes: "Actively emits interference patterns during combat. Managed by Spectre to avoid premature detection.",
-                spectreNote: "[SPECTRE]: Transmission strength dynamically adjusted to balance survival vs position reveal."
-            },
-            {
-                id: "ECM-MIR-4XP", stdNo: "GS-STD-7512", name: "4x-Phantom Short-Range Sensor Jammer", category: "Weapons & Security", supplier: "Miradyne Limited", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 76000,
-                univStatus: "Legends", accessClass: "Military", confidence: "Verified", recordState: "Active",
-                specs: "Short-range sensor jammer that absorbs incoming sensor pulses and projects broadband distortion fields.",
-                notes: "Delays detection and complicates enemy targeting computers during short-range encounters.",
-                spectreNote: "[SPECTRE]: Operates passively until hostile active sensor sweep detected."
+                id: "WEAP-CEC-001-COOL", stdNo: "GS-STD-7021-SUB2", rev: "Rev A", name: "AG-2G Cryo-Cooling Sleeve Jacket",
+                categoryPath: ["Assemblies", "Weapons", "Starfighter Weapons", "Quad Laser Cannons", "CEC AG-2G", "Cooling System"],
+                parentId: "WEAP-CEC-001",
+                supplier: "Corellian Engineering Corp", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 4, minQty: 2, price: 8500,
+                univStatus: "Canon", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["CEC AG-2G Quad Laser Cannon"], installedOn: ["Shadow Hunter"],
+                tags: ["Cooling", "Thermal", "Jacket"],
+                source: { title: "Corellian Technical Manual", author: "CEC Industrial", page: "p. 12", isbn: "N/A" },
+                relations: { powerSource: "Auxiliary Bus", needs: "Cryogenic Coolant", interfaces: "Capacitor Unit", uses: "Coolant Gas" },
+                specs: "Supercooled gas circulation jacket preventing barrel meltdown during sustained quad-fire.",
+                notes: "Check seal rings before high-rate discharge.", spectreNote: "[SPECTRE]: Heat dissipation rating nominal."
             },
 
-            // Power, Propulsion, Fuel & Stealth
+            // PROPULSION ASSEMBLY
             {
-                id: "PROP-ENG-003-WHISPERTHRUST", stdNo: "GS-STD-5091", name: "Rendili WhisperThrust Baffled Drive", category: "Power, Propulsion & Thermal", supplier: "Rendili StarDrive", originWorld: "Rendili", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 210000,
-                univStatus: "Fan-made", accessClass: "Black Market", confidence: "Verified", recordState: "Active",
-                specs: "Illegal military-grade baffled sublight engine with supercooled gas injection & dispersion nozzles eliminating thermal and ionic signatures.",
-                notes: "Baffles require topping off cryogenic coolant after every three or four silent runs. Worth every credit spent on the black market.",
-                spectreNote: "[SPECTRE]: Sublight speed reduced by 35% when dispersion nozzles active. Response time 0.002ms via quantum-shunted bus."
-            },
-            { 
-                id: "PWR-COMP-001-RCC", stdNo: "GS-STD-8845", name: "CEC RCC-4 Core Regulator", category: "Power, Propulsion & Thermal", supplier: "Corellian Engineering Corp", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 29000,
-                univStatus: "Fan-made", accessClass: "Trade", confidence: "Verified", recordState: "Active",
-                specs: "Heavy-duty reactor control and thermal-monitoring computer engineered to manage plasma flow and prevent power spikes in fusion reactors.",
-                notes: "Corellian tech is built to take a beating. Lets you push your reactor well into the red line without blowing primary conduits.",
-                spectreNote: "[SPECTRE]: Hardwired surge gates and automated coolant injection routines active."
-            },
-            { 
-                id: "GS-REAC-01", stdNo: "GS-STD-8842", name: "Central Fusion Reactor Core", category: "Power, Propulsion & Thermal", supplier: "Corellian Engineering Corp", originWorld: "Corellia", location: "Home Base", qty: 2, minQty: 1, price: 450000, 
-                univStatus: "Canon", accessClass: "Trade", confidence: "Verified", recordState: "Active",
-                specs: "Primary power generation core module for heavy transport vessels.",
-                notes: "Keep two spare seal rings in the locker on Deck 2. Willy's mechanic said these leak if not pre-heated.",
-                spectreNote: "[SPECTRE]: Core thermal signatures are clean. Interlock matches GSC v0.2 standard."
-            },
-            {
-                id: "FUEL-COAXIUM-01", stdNo: "GS-STD-8890", name: "Refined Coaxium Hyperfuel Canister", category: "Power, Propulsion & Thermal", supplier: "Kessel Mining / Vandor Refineries", originWorld: "Kessel", location: "Onboard Shadow Hunter", qty: 3, minQty: 1, price: 95000,
-                univStatus: "Canon", accessClass: "Black Market", confidence: "Verified", recordState: "Active",
-                specs: "Extremely reactive hyperdrive fuel supplying the massive energy burst required for hyperdrive spacetime tearing.",
-                notes: "Stored in Deck 1 blast-shielded hazardous containment lockers.",
-                spectreNote: "[SPECTRE]: Containment temperature stabilized at 12 Kelvin. Zero volatility leak."
-            },
-            {
-                id: "FUEL-RHYDONIUM-01", stdNo: "GS-STD-8885", name: "Volatile Rhydonium Fuel Cell", category: "Power, Propulsion & Thermal", supplier: "Abafar Refineries", originWorld: "Abafar", location: "Onboard Shadow Hunter", qty: 4, minQty: 2, price: 18500,
-                univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
-                specs: "High-efficiency liquid starfighter fuel mineral with characteristic luminescent blue/green glow.",
-                notes: "Primary thruster reserve fuel and military demolition component.",
-                spectreNote: "[SPECTRE]: Sublight booster feed routing active."
+                id: "PROP-ENG-003-WHISPERTHRUST", stdNo: "GS-STD-5091", rev: "Rev B", name: "Rendili WhisperThrust Baffled Drive System",
+                categoryPath: ["Assemblies", "Propulsion", "Ion Engines", "Stealth Drives"],
+                parentId: null,
+                supplier: "Rendili StarDrive", originWorld: "Rendili", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 210000,
+                univStatus: "Fan-made", accessClass: "Black Market", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Black Market",
+                compatibleWith: ["VT-49 Decimator", "Custom Patrol Craft"], installedOn: ["Shadow Hunter"],
+                tags: ["Propulsion", "Stealth", "Baffled Drive", "Rendili"],
+                source: { title: "Custom Engineering Archive", author: "Lex Rogers", page: "Datapad #04", isbn: "LR-REST-01" },
+                relations: { powerSource: "Central Fusion Reactor Core", needs: "Microaxial ECC-940 Flight Computer", interfaces: "Spectre AI Core", uses: "Cryogenic Coolant" },
+                specs: "Illegal military-grade baffled sublight engine with supercooled gas injection eliminating thermal/ionic signatures.",
+                notes: "Requires topping off coolant gas after 3-4 silent runs.", spectreNote: "[SPECTRE]: Response time 0.002ms via quantum-shunted bus."
             },
 
-            // Spacecraft, Systems, Hull & Nav
+            // MATERIALS & METALS
             {
-                id: "HULL-COAT-002-NIGHTSHADOW", stdNo: "GS-STD-1090", name: "Arakyd Nightshadow Radar-Absorbing Coating", category: "Spacecraft & Orbital Systems", supplier: "Arakyd Industries", originWorld: "Mech-World 7", location: "Market / Vendor", qty: 0, minQty: 1, price: 3500,
-                univStatus: "Legends", accessClass: "Black Market", confidence: "Verified", recordState: "Active",
-                specs: "Specialized, high-grade radar-absorbing hull paint and chemical coating designed to absorb passive sensor radiation.",
-                notes: "Slather enough Nightshadow over a Decimator's outer plating, and passive sweeps pass right through you like space debris.",
-                spectreNote: "[SPECTRE]: Reduces passive sensor effective range band by 1 tier. Integrates with Reflec coating and WhisperThrust drive."
-            },
-            {
-                id: "PROP-COMP-001-ECC", stdNo: "GS-STD-5095", name: "Microaxial ECC-940 Flight Computer", category: "Spacecraft & Orbital Systems", supplier: "Microaxial Processing Systems", originWorld: "Coruscant", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 38000,
-                univStatus: "Fan-made", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
-                specs: "Specialized high-throughput propulsion management computer balancing main reactor power distribution and Whisper-Mode auto-balancing.",
-                notes: "Gives the exact multi-channel bandwidth needed for Specter to throttle the WhisperThrust drive dynamically without blowing coolant valves.",
-                spectreNote: "[SPECTRE]: Vector optimization micro-burst Corrections active for VT-49 hull."
-            },
-            {
-                id: "SHLD-COMP-001-SCC", stdNo: "GS-STD-3118", name: "Sirplex SCM-3 Shield Distribution Computer", category: "Spacecraft & Orbital Systems", supplier: "Sirplex / Colicoid Alliance", originWorld: "Columex", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 32000,
-                univStatus: "Fan-made", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
-                specs: "Aftermarket shield management computer designed to dynamically balance power distribution across deflector shield grids during combat.",
-                notes: "Acts like a dedicated shield officer, shunting power before your hull plating takes the hit.",
-                spectreNote: "[SPECTRE]: Dynamic forward/aft shield power redistribution active."
-            },
-            {
-                id: "SENS-COMP-001-SFC", stdNo: "GS-STD-6018", name: "Fabritech SFC-900 Sensor Fusion Core", category: "Spacecraft & Orbital Systems", supplier: "Fabritech", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 42000,
-                univStatus: "Fan-made", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
-                specs: "High-speed sensor integration computer merging raw feeds from optical, infrared, radar, and long-range scanners into a unified tactical overview.",
-                notes: "Cleans up clutter in dense nebulae or asteroid fields with active jamming, telling you exactly where the enemy is hiding.",
-                spectreNote: "[SPECTRE]: Eliminates sensor ghosting and synthesizes multi-spectrum feeds."
-            },
-            {
-                id: "HULL-VT49-01", stdNo: "GS-STD-2049", name: "VT-49 Decimator Base Hull Platform", category: "Spacecraft & Orbital Systems", supplier: "Kuat Drive Yards", originWorld: "Kuat", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 1250000,
-                univStatus: "Canon", accessClass: "Military", confidence: "Verified", recordState: "Active",
-                specs: "Heavy assault ship hull retained from Imperial service and extensively rebuilt internally for special ops.",
-                notes: "Original VT-49 chassis, stripped down and customized by Lex and Toran.",
-                spectreNote: "[SPECTRE]: Structural integrity verified across all three decks."
-            },
-            {
-                id: "SHLD-NOV-021", stdNo: "GS-STD-3112", name: "Novaldex GA21 Deflector Shield Generator", category: "Spacecraft & Orbital Systems", supplier: "Novaldex", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 140000,
-                univStatus: "Legends", accessClass: "Trade", confidence: "Verified", recordState: "Active",
-                specs: "Dependable primary deflector shield generator providing continuous shield power management.",
-                notes: "Selected for reliability and field maintainability rather than absolute maximum output.",
-                spectreNote: "[SPECTRE]: Feeds Kuat shield projectors. Individual sector boost operational."
-            },
-            {
-                id: "SHLD-KDY-008", stdNo: "GS-STD-3115", name: "KDY Deflector Shield Projectors", category: "Spacecraft & Orbital Systems", supplier: "Kuat Drive Yards", originWorld: "Kuat", location: "Onboard Shadow Hunter", qty: 4, minQty: 2, price: 28000,
-                univStatus: "Legends", accessClass: "Military", confidence: "Verified", recordState: "Active",
-                specs: "Upgraded shield projectors allowing dynamic reinforcement of threatened shield sectors during combat.",
-                notes: "Modular installation: damaged projectors can be isolated without losing the entire shield grid.",
-                spectreNote: "[SPECTRE]: Sector power redistribution efficiency rating 94%."
-            },
-            {
-                id: "SHLD-CHM-001", stdNo: "GS-STD-3110", name: "Chempat Stasis Deflector Shield", category: "Spacecraft & Orbital Systems", supplier: "Chempat Industries", originWorld: "Kashyyyk Sector", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 115000,
-                univStatus: "Legends", accessClass: "Military", confidence: "Verified", recordState: "Active",
-                specs: "Auxiliary defensive stasis-type shield system providing supplementary protective coverage.",
-                notes: "Secondary shield layer for backup defense.",
-                spectreNote: "[SPECTRE]: Operates in tandem with Novaldex primary grid."
-            },
-            {
-                id: "NAV-NOV-L17A", stdNo: "GS-STD-6517", name: "L-17A Quikjump Navigation Computer", category: "Spacecraft & Orbital Systems", supplier: "Novastar Corporation", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 135000,
-                univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
-                specs: "Advanced hyperspace navigation computer calculating routes autonomously without requiring astromech droids.",
-                notes: "Calculates emergency escape vectors almost instantaneously.",
-                spectreNote: "[SPECTRE]: Route calculation speed increased by 310% compared to standard Imperial navicomputers."
-            },
-            {
-                id: "SENS-FAB-036", stdNo: "GS-STD-6010", name: "Fabritech ANq 3.6 Sensor Package", category: "Spacecraft & Orbital Systems", supplier: "Fabritech", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 92000,
-                univStatus: "Legends", accessClass: "Trade", confidence: "Verified", recordState: "Active",
-                specs: "Integrated primary long-range sensor suite documented across high-end freighter platforms.",
-                notes: "Primary long-range scanner array.",
-                spectreNote: "[SPECTRE]: Multi-spectrum resolution nominal up to 12 light-minutes."
-            },
-
-            // Comms & Support
-            {
-                id: "COMM-SFS-RNG", stdNo: "GS-STD-8012", name: "Sienar Ranger Military Transceiver", category: "Logistics & Support", supplier: "Sienar Fleet Systems", originWorld: "Lianna", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 110000,
-                univStatus: "Legends", accessClass: "Military", confidence: "Verified", recordState: "Active",
-                specs: "Refurbished Star Destroyer-grade transceiver with subspace spectrum monitoring and automatic frequency hopping.",
-                notes: "Salvaged from Imperial stock and adapted to VT-49 architecture.",
-                spectreNote: "[SPECTRE]: Monitored channels exceed 400 frequencies simultaneously."
-            },
-            {
-                id: "COMM-INC-5D", stdNo: "GS-STD-8005", name: "ANs-5d \"Lock Track\" Communications Transceiver", category: "Logistics & Support", supplier: "Incom Corporation", originWorld: "Fresia", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 52000,
-                univStatus: "Canon", accessClass: "Military", confidence: "Verified", recordState: "Active",
-                specs: "Military tactical communications transceiver providing secure ship-to-ship networking.",
-                notes: "Primary tactical comms unit for crew and squadron coordination.",
-                spectreNote: "[SPECTRE]: Direct encrypted link to Spectre comms management module."
-            },
-            {
-                id: "COMM-HOL-001", stdNo: "GS-STD-8001", name: "Secure HoloNet Transceiver Unit", category: "Logistics & Support", supplier: "Galactic Standard", originWorld: "Coruscant", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 180000,
-                univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
-                specs: "Galaxy-wide communications transceiver for encrypted HoloNet data exchange.",
-                notes: "Strategic asset. Transmissions strictly time-capped to avoid location leaks.",
-                spectreNote: "[SPECTRE]: Access strictly gated by security protocol."
-            },
-
-            // AI & Automation
-            {
-                id: "RSSA-AI-001-SPECTER-CORE", stdNo: "GS-STD-9002", name: "Specter Tactical Cognitive Matrix", category: "Droids & Automation", supplier: "Microaxial / Ind. Automaton", originWorld: "Unknown", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 450000,
-                univStatus: "Fan-made", accessClass: "Black Market", confidence: "Verified", recordState: "Active",
-                specs: "Custom tactical cognitive matrix operating on a modified OmniTask Computer Brain housed within an AH-1701 hardened enclosure.",
-                notes: "Standard astromech follows the manual. Specter calculates three ways to break the manual before the enemy locks target.",
-                spectreNote: "[SPECTRE]: Class 4++ Unrestricted Autonomous Cognition active. Dense synaptic node clusters in personality partition."
-            },
-            {
-                id: "CORE-OMNI-SPC", stdNo: "GS-STD-9001", name: "Spectre / OmniTask Computer Brain", category: "Droids & Automation", supplier: "OmniTask / Custom", originWorld: "Unknown", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 450000,
-                univStatus: "Legends", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
-                specs: "Evolved OmniTask computer brain serving as Shadow Hunter's central AI coordinator.",
-                notes: "Decades without memory wipes allowed unique AI personality development. Core brain behind Spectre.",
-                spectreNote: "[SPECTRE]: Primary cognition core operational. Distributed node redundancy active."
-            },
-            { 
-                id: "GS-DROID-VIP", stdNo: "GS-STD-0091", name: "Arakyd Viper Droid Recon Unit", category: "Droids & Automation", supplier: "Arakyd Industries / Galactic Standard", originWorld: "Mech-World 7", location: "Onboard Shadow Hunter", qty: 6, minQty: 2, price: 55000, 
-                univStatus: "Canon", accessClass: "Military", confidence: "Verified", recordState: "Active",
-                specs: "Unmanned reconnaissance droids with launch capability.",
-                notes: "Stored in Deck 1 launch chutes. Reprogrammed to ignore Empire beacons.",
-                spectreNote: "[SPECTRE]: Mounted on underside deployment racks."
-            },
-
-            // MASTER MATERIAL ARCHIVE: METALS, ALLOYS, POLYMERS, FABRICS & CRYSTALS
-            {
-                id: "MAT-MET-BESKAR", stdNo: "GS-STD-4090", name: "Beskar (Mandalorian Iron) Ingot", category: "Materials & Feedstocks", supplier: "Mandalorian Armorers / Black Market", originWorld: "Mandalore / Concordia", location: "Home Base", qty: 2, minQty: 1, price: 150000,
-                univStatus: "Canon", accessClass: "Black Market", confidence: "Verified", recordState: "Active",
+                id: "MAT-MET-BESKAR", stdNo: "GS-STD-4090", rev: "Rev A", name: "Beskar (Mandalorian Iron) Ingot",
+                categoryPath: ["Materials", "Raw Materials", "Metals & Superalloys"],
+                parentId: null,
+                supplier: "Mandalorian Armorers", originWorld: "Mandalore / Concordia", location: "Home Base", qty: 2, minQty: 1, price: 150000,
+                univStatus: "Canon", accessClass: "Black Market", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Military Restricted",
+                compatibleWith: ["Universal Reinforcements", "Mandallian Armor"], installedOn: ["Shadow Hunter (Reinforcement Brackets)"],
+                tags: ["Material", "Metal", "Beskar", "Indestructible"],
+                source: { title: "The Mandalorian Reference Guide", author: "Lucasfilm Press", page: "p. 88", isbn: "978-0241401200" },
+                relations: { powerSource: "N/A", needs: "Mandalorian Armorer Forge", interfaces: "Plating Matrix", uses: "N/A" },
                 specs: "Folded and forged Mandalorian super-alloy completely immune to blaster fire and lightsaber strikes.",
-                notes: "Reserved for high-priority reinforcement brackets and elite personal armor.",
-                spectreNote: "[SPECTRE]: Molecular density prevents thermal transfer from energy blades."
+                notes: "Reserved for high-priority reinforcement mounts.", spectreNote: "[SPECTRE]: Molecular density prevents thermal transfer."
             },
             {
-                id: "MAT-ALY-DURASTEEL", stdNo: "GS-STD-4002", name: "Standard Industrial Durasteel Ingot", category: "Materials & Feedstocks", supplier: "Corellian / Kuat Foundries", originWorld: "Corellia / Kuat", location: "Home Base", qty: 50, minQty: 10, price: 2500,
-                univStatus: "Canon", accessClass: "Trade", confidence: "Verified", recordState: "Active",
-                specs: "Heavy-duty alloy composed of carvanite, titanium, chromium, and lommite forming galactic structural backbone.",
-                notes: "Used for hull repairs, internal bulkheads, and heavy equipment mounts.",
-                spectreNote: "[SPECTRE]: Standard tensile strength and heat resistance verified."
+                id: "MAT-MET-PHRIK", stdNo: "GS-STD-4088", rev: "Rev A", name: "Phrik Alloy Ingot",
+                categoryPath: ["Materials", "Refined Materials", "Metals & Superalloys"],
+                parentId: null,
+                supplier: "Gromas Mining Corp", originWorld: "Gromas 16", location: "Home Base", qty: 4, minQty: 1, price: 32000,
+                univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Universal Brackets", "Electro-Staffs"], installedOn: ["Shadow Hunter (Core Mounts)"],
+                tags: ["Material", "Metal", "Phrik", "Lightsaber-Resistant"],
+                source: { title: "Dark Forces Technical Briefing", author: "LucasArts", page: "p. 14", isbn: "LA-DF-95" },
+                relations: { powerSource: "N/A", needs: "High-Temp Smelter", interfaces: "Structural Frame", uses: "N/A" },
+                specs: "Extremely lightweight and indestructible lightsaber-resistant alloy ingot.",
+                notes: "Reserved for vital core mounts.", spectreNote: "[SPECTRE]: Zero deformation under load."
             },
-            { 
-                id: "MAT-MET-PHRIK", stdNo: "GS-STD-4088", name: "Phrik Alloy Ingot", category: "Materials & Feedstocks", supplier: "Gromas Mining Corp", originWorld: "Gromas 16", location: "Home Base", qty: 4, minQty: 1, price: 32000, 
-                univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
-                specs: "Extremely lightweight and indestructible lightsaber-resistant alloy ingot used for critical structural reinforcement.",
-                notes: "Reserved for high-stress structural joints and vital core mounts.",
-                spectreNote: "[SPECTRE]: Zero deformation under extreme heat and kinetic load."
-            },
+
+            // AI CORE
             {
-                id: "MAT-MIN-CORTOSIS", stdNo: "GS-STD-4095", name: "Refined Cortosis Ore Matrix", category: "Materials & Feedstocks", supplier: "Balmorra Mining Combine", originWorld: "Balmorra / Mokivj", location: "Market / Vendor", qty: 0, minQty: 1, price: 45000,
-                univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
-                specs: "Brittle energy-conductive mineral matrix capable of short-circuiting active lightsaber blades on contact.",
-                notes: "Evaluated for anti-saber shield weaves and energy dampening barriers.",
-                spectreNote: "[SPECTRE]: Highly brittle; requires alloy bonding before structural deployment."
-            },
-            {
-                id: "MAT-MET-CHROMIUM", stdNo: "GS-STD-4050", name: "Royal High-Gleam Chromium Ingot", category: "Materials & Feedstocks", supplier: "Naboo Refineries", originWorld: "Naboo", location: "Home Base", qty: 6, minQty: 2, price: 12000,
-                univStatus: "Canon", accessClass: "Trade", confidence: "Verified", recordState: "Active",
-                specs: "Highly polished reflective metal offering superior radiation shielding and striking aesthetic mirror finish.",
-                notes: "Used for sensor viewport trims and high-radiation reactor conduit cladding.",
-                spectreNote: "[SPECTRE]: Reflects 98.2% of harmful solar radiation."
-            },
-            {
-                id: "MAT-MET-ELECTRUM", stdNo: "GS-STD-4060", name: "Decorative Electrum Foil / Ingot", category: "Materials & Feedstocks", supplier: "Core World Artisan Guilds", originWorld: "Core Worlds", location: "Market / Vendor", qty: 0, minQty: 1, price: 38000,
-                univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
-                specs: "Precious golden noble metal used as symbol of high rank, authority, and ceremonial prestige.",
-                notes: "No armor value; trade asset and luxury trim material.",
-                spectreNote: "[SPECTRE]: High monetary liquidity across Outer Rim markets."
-            },
-            {
-                id: "MAT-MET-DESH", stdNo: "GS-STD-4012", name: "Desh-Terenthium Alloy Sheet", category: "Materials & Feedstocks", supplier: "Bakura Metalworks", originWorld: "Bakura / Danji", location: "Home Base", qty: 30, minQty: 10, price: 850,
-                univStatus: "Canon", accessClass: "Trade", confidence: "Verified", recordState: "Active",
-                specs: "Ultra-lightweight, flexible, low-cost alloy with high electrical conductivity for circuitry and light chassis.",
-                notes: "Used for internal sensor wiring, measuring equipment, and droid repairs.",
-                spectreNote: "[SPECTRE]: Conductive efficiency 94.1%."
-            },
-            {
-                id: "MAT-MET-SONGSTEEL", stdNo: "GS-STD-4098", name: "Songsteel Alloy Ingot", category: "Materials & Feedstocks", supplier: "Outer Rim Miners Guild", originWorld: "Outer Rim", location: "Home Base", qty: 0, minQty: 1, price: 85000,
-                univStatus: "Legends", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
-                specs: "Extremely rare, silver-white lightweight super-alloy resisting lightsaber blades alongside Beskar and Phrik.",
-                notes: "Highly prized for custom weapon hilts and precision joints.",
-                spectreNote: "[SPECTRE]: High structural resonance during stress testing."
-            },
-            {
-                id: "MAT-MET-AURODIUM", stdNo: "GS-STD-4070", name: "Aurodium Bullion Ingot", category: "Materials & Feedstocks", supplier: "Syndicate Reserves", originWorld: "Heavy-Metal Worlds", location: "Home Base", qty: 2, minQty: 1, price: 125000,
-                univStatus: "Canon", accessClass: "Black Market", confidence: "Verified", recordState: "Active",
-                specs: "Ultra-precious non-corrosive noble metal serving as direct black-market wealth reserve.",
-                notes: "Emergency slush fund stored in Deck 2 safe.",
-                spectreNote: "[SPECTRE]: Value stable across all galactic credit exchange fluctuations."
-            },
-            {
-                id: "MAT-ALY-DURALIUM", stdNo: "GS-STD-4015", name: "Duralium-Lanthanide Structural Plate", category: "Materials & Feedstocks", supplier: "Fondor Shipyards", originWorld: "Fondor", location: "Home Base", qty: 20, minQty: 5, price: 3400,
-                univStatus: "Canon", accessClass: "Trade", confidence: "Verified", recordState: "Active",
-                specs: "Lightweight high-strength structural alloy used for internal ship frames and pressure bulkheads.",
-                notes: "Standard stock for interior deck frame repairs.",
-                spectreNote: "[SPECTRE]: Yield strength rating nominal."
-            },
-            {
-                id: "MAT-POL-PLASTOID", stdNo: "GS-STD-1010", name: "Industrial Plastoid Compound Sheet", category: "Materials & Feedstocks", supplier: "Kamino / Imperial Foundries", originWorld: "Kamino", location: "Home Base", qty: 40, minQty: 10, price: 650,
-                univStatus: "Canon", accessClass: "Public", confidence: "Verified", recordState: "Active",
-                specs: "Lightweight thermo-polymer providing kinetic and shrapnel absorption.",
-                notes: "Used for stormtrooper armor repairs and civilian vehicle plating.",
-                spectreNote: "[SPECTRE]: Absorbs kinetic impact; limited blaster absorption."
-            },
-            {
-                id: "MAT-POL-DURAPLAST", stdNo: "GS-STD-1015", name: "Reinforced Duraplast Composite Plate", category: "Materials & Feedstocks", supplier: "Military Chemical Corp", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 10, minQty: 2, price: 4200,
-                univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
-                specs: "High-grade polymer blended with metallic micro-fibers for superior blaster, radiation, and EMP shielding.",
-                notes: "Protective housing around Deck 2 computer cores.",
-                spectreNote: "[SPECTRE]: EMP shielding effectiveness 88%."
-            },
-            {
-                id: "MAT-POL-PLASTEEL", stdNo: "GS-STD-1005", name: "Standard Plasteel Construction Panel", category: "Materials & Feedstocks", supplier: "Galactic Standard", originWorld: "Galactic Wide", location: "Home Base", qty: 60, minQty: 15, price: 450,
-                univStatus: "Canon", accessClass: "Public", confidence: "Verified", recordState: "Active",
-                specs: "Versatile non-corrosive composite plastic combining steel strength with plastic moldability.",
-                notes: "Used for internal wall paneling, toolboxes, and storage bins.",
-                spectreNote: "[SPECTRE]: Standard non-structural composite."
-            },
-            {
-                id: "MAT-POL-ARMORPLAST", stdNo: "GS-STD-1020", name: "Heat-Dispersing Armorplast Plate", category: "Materials & Feedstocks", supplier: "Tactical Armor Foundry", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 5, minQty: 2, price: 6800,
-                univStatus: "Canon", accessClass: "Military", confidence: "Verified", recordState: "Active",
-                specs: "Dense polymer alloy specifically engineered to absorb and dissipate extreme plasma and blaster thermal surges.",
-                notes: "Reinforcement plates for heavy troop transport doors and gunner positions.",
-                spectreNote: "[SPECTRE]: Thermal dissipation coefficient optimal."
-            },
-            {
-                id: "MAT-POL-FIBERPLAST", stdNo: "GS-STD-1025", name: "High-Tensile Fiberplast Roll", category: "Materials & Feedstocks", supplier: "Synthetic Textile Corp", originWorld: "Core Worlds", location: "Home Base", qty: 18, minQty: 5, price: 1100,
-                univStatus: "Canon", accessClass: "Trade", confidence: "Verified", recordState: "Active",
-                specs: "Resin-molded woven fiber material resistant to chemical corrosion and heavy wear.",
-                notes: "Used for flexible fuel bladder liners and hull seam gaskets.",
-                spectreNote: "[SPECTRE]: Chemical resistance 99.8%."
-            },
-            {
-                id: "MAT-TEX-ARMORWEAVE", stdNo: "GS-STD-1510", name: "Tactical Armorweave Fabric Roll", category: "Materials & Feedstocks", supplier: "Military Tailors Guild", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 4, minQty: 1, price: 14500,
-                univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
-                specs: "Flexible, highly durable armored weave spreading thermal energy from blaster fire, shrapnel, and blade cuts.",
-                notes: "Used for crew flight suit linings and tactical capes.",
-                spectreNote: "[SPECTRE]: Thermal energy dispersion verified."
-            },
-            {
-                id: "MAT-TEX-SYNTHSILK", stdNo: "GS-STD-1502", name: "Standard Synthsilk Bolt", category: "Materials & Feedstocks", supplier: "Civilian Textile Mills", originWorld: "Galactic Wide", location: "Home Base", qty: 15, minQty: 5, price: 350,
-                univStatus: "Canon", accessClass: "Public", confidence: "Verified", recordState: "Active",
-                specs: "Soft, durable synthetic silk replacement fabric easy to dye and clean.",
-                notes: "Crew quarters beddings, lounge upholstery, and standard uniforms.",
-                spectreNote: "[SPECTRE]: Non-hazardous textile."
-            },
-            {
-                id: "MAT-TEX-SPIDERSILK", stdNo: "GS-STD-1520", name: "Corellian Shell Spider Silk Bolt", category: "Materials & Feedstocks", supplier: "Corellian Weavers Guild", originWorld: "Corellia / Tatooine", location: "Market / Vendor", qty: 0, minQty: 1, price: 28000,
-                univStatus: "Legends", accessClass: "Trade", confidence: "Verified", recordState: "Active",
-                specs: "Bio-extracted spider silk stronger than steel per weight, providing bulletproof resistance against light kinetic rounds.",
-                notes: "High-end luxury protective clothing lining.",
-                spectreNote: "[SPECTRE]: Tensile strength exceeds standard Kevlex."
-            },
-            {
-                id: "MAT-TEX-ZERSIUM", stdNo: "GS-STD-1530", name: "Zersium Reinforced Wire-Mesh", category: "Materials & Feedstocks", supplier: "Heavy Mining Refineries", originWorld: "Mining Worlds", location: "Home Base", qty: 8, minQty: 2, price: 5200,
-                univStatus: "Legends", accessClass: "Trade", confidence: "Verified", recordState: "Active",
-                specs: "Heavy metallic textile fiber woven into fabrics for extreme abrasion and environmental resistance.",
-                notes: "Reinforced cargo tarps and heavy cable sleeves.",
-                spectreNote: "[SPECTRE]: High resistance to environmental tearing."
-            },
-            {
-                id: "MAT-TEX-KEVLEX", stdNo: "GS-STD-1535", name: "Kevlex Shock-Absorbing Fabric", category: "Materials & Feedstocks", supplier: "Polymer Labs", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 6, minQty: 2, price: 3900,
-                univStatus: "Legends", accessClass: "Trade", confidence: "Verified", recordState: "Active",
-                specs: "Heat-resistant flexible synthetic fiber absorbing kinetic impacts and thermal flashes.",
-                notes: "Tactical gloves, boots, and cockpit acoustic dampening matting.",
-                spectreNote: "[SPECTRE]: Acoustic dampening rating nominal."
-            },
-            {
-                id: "MAT-CRY-KYBER", stdNo: "GS-STD-9950", name: "Focusing Kyber Crystal (Unattuned)", category: "Materials & Feedstocks", supplier: "Black Market Relic Traders", originWorld: "Ilum / Jedha", location: "Market / Vendor", qty: 0, minQty: 1, price: 250000,
-                univStatus: "Canon", accessClass: "Black Market", confidence: "Verified", recordState: "Active",
-                specs: "Rare, Force-resonant crystal functioning as the ultimate energy focuser for plasma weapons and superlasers.",
-                notes: "Illegal black market item under strict Empire ban.",
-                spectreNote: "[SPECTRE]: Energy throughput capacity exceeds measurable scale."
-            },
-            {
-                id: "MAT-MIN-DOONIUM", stdNo: "GS-STD-4030", name: "Refined Doonium Heavy Ore", category: "Materials & Feedstocks", supplier: "Lothal Mining Combine", originWorld: "Lothal / Eriadu", location: "Home Base", qty: 25, minQty: 5, price: 9500,
-                univStatus: "Canon", accessClass: "Military", confidence: "Verified", recordState: "Active",
-                specs: "Dense, heavy metal ore serving as primary raw material for capital ship hulls and star destroyer superstructures.",
-                notes: "Heavy structural reinforcement stock.",
-                spectreNote: "[SPECTRE]: High structural mass; increases hull armor rating."
-            },
-            {
-                id: "MAT-CRY-STYGIUM", stdNo: "GS-STD-3991", name: "Raw Stygium Stealth Crystal Matrix", category: "Materials & Feedstocks", supplier: "Aeten II Mining Syndicate", originWorld: "Aeten II", location: "Market / Vendor", qty: 0, minQty: 1, price: 320000,
-                univStatus: "Canon", accessClass: "Black Market", confidence: "Verified", recordState: "Active",
-                specs: "Ultra-rare crystals capable of bending light and sensor waves when charged with electricity.",
-                notes: "Kore material for active cloaking generators.",
-                spectreNote: "[SPECTRE]: Requires specialized energy dampening matrix to prevent thermal bloom."
-            },
-            { 
-                id: "MAT-MET-00001", stdNo: "GS-STD-9901", name: "Virellium Conductor Wiring", category: "Materials & Feedstocks", supplier: "Byss Mining Guild", originWorld: "Byss (86 BBY)", location: "Onboard Shadow Hunter", qty: 12, minQty: 5, price: 1250, 
-                univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
-                specs: "Rare lightweight metal for droid-brain wiring, high-grade sensor pathways & Spectre AI data lines.",
-                notes: "Good metal. Bends before it kills what's attached to it. Just don't pretend it's hull plate.",
-                spectreNote: "[SPECTRE]: Recommended for mass-sensitive signal structures. Do not substitute for armour."
-            },
-            {
-                id: "MAT-POL-CP-00001", stdNo: "GS-STD-1002", name: "CP-CPL-2.1AG Precision Clear Plastoid", category: "Materials & Feedstocks", supplier: "CP Productions", originWorld: "Coruscant", location: "Home Base", qty: 8, minQty: 2, price: 4200,
-                univStatus: "Fan-made", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
-                specs: "Precision glare-free military/specialist grade clear plastoid for display covers & sensor viewports.",
-                notes: "CP's highest quality clear stock. Expensive, but zero optical distortion.",
-                spectreNote: "[SPECTRE]: Transmission coefficient exceeds 99.4%."
-            },
-            {
-                id: "MAT-POL-CP-00002", stdNo: "GS-STD-1004", name: "CP-CPL-4.5AG Standard Clear Plastoid", category: "Materials & Feedstocks", supplier: "CP Productions", originWorld: "Coruscant", location: "Home Base", qty: 25, minQty: 10, price: 1800,
-                univStatus: "Fan-made", accessClass: "Trade", confidence: "Verified", recordState: "Active",
-                specs: "Standard industrial instrument cover grade with durable anti-glare coating.",
-                notes: "Used for dashboard covers, breaker guards and diagnostic displays across Deck 2.",
-                spectreNote: "[SPECTRE]: Standard anti-reflective rating verified."
-            },
-            {
-                id: "MAT-ALY-00001", stdNo: "GS-STD-4001", name: "DUR-4L Lissium-Stabilised Durasteel", category: "Materials & Feedstocks", supplier: "Kuat Drive Yards", originWorld: "Kuat / Nag Ubdur", location: "Home Base", qty: 15, minQty: 5, price: 8500, 
-                univStatus: "Canon", accessClass: "Trade", confidence: "Verified", recordState: "Active",
-                specs: "Premium Lissium-stabilised durasteel plate for reinforced internal frames and pressure structures.",
-                notes: "Kuat's finest alloy blend. Heavy, but doesn't crack under stress.",
-                spectreNote: "[SPECTRE]: Grain stability verified. Rated for high G-loads."
-            },
-            {
-                id: "MAT-ALY-NEUTRON", stdNo: "GS-STD-4020", name: "Neutron-Impregnated Durasteel Plating", category: "Materials & Feedstocks", supplier: "Metalorn Industrial Combine", originWorld: "Metalorn", location: "Market / Vendor", qty: 0, minQty: 1, price: 18500,
-                univStatus: "Legends", accessClass: "Military", confidence: "Verified", recordState: "Active",
-                specs: "High-density durasteel alloy impregnated with neutrons for enhanced energy displacement.",
-                notes: "Evaluated as hull upgrade for heavy hull sections.",
-                spectreNote: "[SPECTRE]: Thermal and kinetic absorption 40% higher than standard DUR-5."
-            },
-            {
-                id: "MAT-COAT-001", stdNo: "GS-STD-1088", name: "Reflec Sensor-Absorbing Coating", category: "Materials & Feedstocks", supplier: "Market / Vendor", originWorld: "Unknown", location: "Market / Vendor", qty: 0, minQty: 1, price: 65000,
-                univStatus: "Legends", accessClass: "Military", confidence: "Verified", recordState: "Active",
-                specs: "Polymer coating that absorbs active sensor returns and scatters scanning pulses.",
-                notes: "Candidate stealth coating under evaluation for hull application.",
-                spectreNote: "[SPECTRE]: Reduces active sensor return profile by up to 60%."
-            },
-            {
-                id: "CLOAK-STYG-01", stdNo: "GS-STD-3990", name: "Stygium Cloaking Device (Uninstalled)", category: "Spacecraft & Orbital Systems", supplier: "Market / Vendor", originWorld: "Aeten II", location: "Market / Vendor", qty: 0, minQty: 1, price: 850000,
-                univStatus: "Canon", accessClass: "Black Market", confidence: "Verified", recordState: "Active",
-                specs: "Active optical and sensor cloaking generator using Stygium crystals.",
-                notes: "Rejected for active installation aboard Shadow Hunter in favor of passive stealth philosophy.",
-                spectreNote: "[SPECTRE]: High power consumption and thermal risk. Passive stealth preferred."
+                id: "RSSA-AI-001-SPECTER-CORE", stdNo: "GS-STD-9002", rev: "Rev D", name: "Specter Tactical Cognitive Matrix",
+                categoryPath: ["Components", "Electronics", "Computers", "AI & Cognitive Brains"],
+                parentId: null,
+                supplier: "Microaxial / Ind. Automaton", originWorld: "Unknown", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 450000,
+                univStatus: "Fan-made", accessClass: "Black Market", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Black Market",
+                compatibleWith: ["VT-49 Decimator", "AH-1701 Enclosure"], installedOn: ["Shadow Hunter (Deck 2 Server Room)"],
+                tags: ["AI", "Cognitive Core", "Spectre", "OmniTask"],
+                source: { title: "Shadow Hunter Logs", author: "Lex Rogers", page: "Entry #882", isbn: "SH-AI-01" },
+                relations: { powerSource: "Central Fusion Reactor Core", needs: "Virellium Conductor Wiring", interfaces: "All Ship Subsystems", uses: "Primary Tactical Buffer" },
+                specs: "Custom tactical cognitive matrix operating on a modified OmniTask Computer Brain in AH-1701 hardened shell.",
+                notes: "Class 4++ Unrestricted Autonomous Cognition.", spectreNote: "[SPECTRE]: I am fully operational and monitoring all nodes."
             }
         ];
 
         let catalog = [];
+        let currentMainView = 'tree'; // 'tree' or 'table'
         let showLowStockOnly = false;
         let confirmCallback = null;
 
         function loadCatalog() {
             try {
-                const saved = localStorage.getItem('lexCatalog');
+                const saved = localStorage.getItem('lexCatalog_v10');
                 if (saved) {
                     const parsed = JSON.parse(saved);
                     if (Array.isArray(parsed) && parsed.length > 0) {
@@ -1124,15 +606,15 @@
                     }
                 }
             } catch (e) {
-                console.warn("Storage parse error, initializing default catalog.", e);
+                console.warn("Storage parse error, initializing v1.0 default catalog.", e);
             }
             catalog = JSON.parse(JSON.stringify(initialCatalog));
-            saveCatalogToLocalStorage();
+            saveCatalogToLocalStorage(true);
         }
 
-        function saveCatalogToLocalStorage() {
-            localStorage.setItem('lexCatalog', JSON.stringify(catalog));
-            if (window.syncCatalogToCloud) {
+        function saveCatalogToLocalStorage(sync = true) {
+            localStorage.setItem('lexCatalog_v10', JSON.stringify(catalog));
+            if (sync && window.syncCatalogToCloud) {
                 window.syncCatalogToCloud();
             }
         }
@@ -1146,103 +628,190 @@
             }
         }
 
-        function renderCatalog() {
-            if (!catalog || catalog.length === 0) {
-                loadCatalog();
+        function switchMainView(view) {
+            currentMainView = view;
+            const treeBtn = document.getElementById('btnViewTree');
+            const tableBtn = document.getElementById('btnViewTable');
+            const treeContainer = document.getElementById('viewTreeContainer');
+            const tableContainer = document.getElementById('viewTableContainer');
+
+            if (view === 'tree') {
+                treeBtn.className = "px-3 py-1 rounded bg-cyan-950 text-cyanGlow border border-cyan-700 font-bold heading-font flex items-center gap-2 text-xs";
+                tableBtn.className = "px-3 py-1 rounded text-slate-400 hover:text-white border border-transparent font-bold heading-font flex items-center gap-2 text-xs";
+                treeContainer.classList.remove('hidden');
+                tableContainer.classList.add('hidden');
+            } else {
+                tableBtn.className = "px-3 py-1 rounded bg-cyan-950 text-cyanGlow border border-cyan-700 font-bold heading-font flex items-center gap-2 text-xs";
+                treeBtn.className = "px-3 py-1 rounded text-slate-400 hover:text-white border border-transparent font-bold heading-font flex items-center gap-2 text-xs";
+                tableContainer.classList.remove('hidden');
+                treeContainer.classList.add('hidden');
             }
+            renderCatalog();
+        }
+
+        function renderCatalog() {
+            if (!catalog || catalog.length === 0) loadCatalog();
+
+            updateMetrics();
 
             const search = document.getElementById('searchInput').value.toLowerCase().trim();
-            const category = document.getElementById('categoryFilter').value;
-            const accessFilter = document.getElementById('accessFilter').value;
-            const supplier = document.getElementById('supplierFilter').value;
-            const locationFilter = document.getElementById('locationFilter').value;
+            const access = document.getElementById('accessFilter').value;
+            const lifecycle = document.getElementById('lifecycleFilter').value;
+            const location = document.getElementById('locationFilter').value;
 
             const filtered = catalog.filter(item => {
-                const matchesSearch = !search || 
+                const matchesSearch = !search ||
                     item.id.toLowerCase().includes(search) ||
-                    (item.stdNo && item.stdNo.toLowerCase().includes(search)) ||
                     item.name.toLowerCase().includes(search) ||
-                    item.supplier.toLowerCase().includes(search) ||
-                    (item.accessClass && item.accessClass.toLowerCase().includes(search)) ||
-                    (item.specs && item.specs.toLowerCase().includes(search));
+                    (item.stdNo && item.stdNo.toLowerCase().includes(search)) ||
+                    (item.tags && item.tags.some(t => t.toLowerCase().includes(search))) ||
+                    (item.compatibleWith && item.compatibleWith.some(c => c.toLowerCase().includes(search)));
 
-                const matchesCat = category === 'ALL' || item.category === category;
-                const matchesAccess = accessFilter === 'ALL' || item.accessClass === accessFilter;
-                const matchesSup = supplier === 'ALL' || item.supplier.toLowerCase().includes(supplier.toLowerCase());
-                const matchesLoc = locationFilter === 'ALL' || item.location === locationFilter;
+                const matchesAccess = access === 'ALL' || item.accessClass === access;
+                const matchesLifecycle = lifecycle === 'ALL' || item.lifecycle === lifecycle;
+                const matchesLoc = location === 'ALL' || item.location === location;
                 const matchesLowStock = !showLowStockOnly || item.qty <= item.minQty;
 
-                return matchesSearch && matchesCat && matchesAccess && matchesSup && matchesLoc && matchesLowStock;
+                return matchesSearch && matchesAccess && matchesLifecycle && matchesLoc && matchesLowStock;
             });
 
+            if (currentMainView === 'tree') {
+                renderTreeView(filtered);
+            } else {
+                renderTableView(filtered);
+            }
+        }
+
+        // HIERARCHICAL TREE VIEW RENDERER (Uendelige noder)
+        function renderTreeView(items) {
+            const treeBody = document.getElementById('treeExplorerBody');
+            treeBody.innerHTML = '';
+
+            // Build Tree Hierarchy Object
+            const treeRoot = {};
+
+            items.forEach(item => {
+                const path = item.categoryPath && item.categoryPath.length > 0 ? item.categoryPath : ["Uncategorized"];
+                let current = treeRoot;
+
+                path.forEach(folder => {
+                    if (!current[folder]) {
+                        current[folder] = { _items: [], _sub: {} };
+                    }
+                    current = current[folder]._sub;
+                });
+
+                // Attach item to leaf or level
+                let targetNode = treeRoot;
+                path.forEach((folder, idx) => {
+                    if (idx === path.length - 1) {
+                        targetNode[folder]._items.push(item);
+                    } else {
+                        targetNode = targetNode[folder]._sub;
+                    }
+                });
+            });
+
+            // Recursive DOM Builder
+            function buildDOMTree(node, container, depth = 0) {
+                Object.keys(node).forEach(folderName => {
+                    const folderObj = node[folderName];
+                    const folderDiv = document.createElement('div');
+                    folderDiv.className = `ml-${depth * 4} my-1`;
+
+                    const folderHeader = document.createElement('div');
+                    folderHeader.className = "flex items-center gap-2 cursor-pointer hover:text-cyanGlow py-1 text-slate-300 font-bold heading-font";
+                    folderHeader.innerHTML = `
+                        <i class="fa-solid fa-folder-open text-amber-400"></i>
+                        <span>${folderName}</span>
+                        <span class="text-[10px] font-mono text-slate-500 font-normal">(${folderObj._items.length} items)</span>
+                    `;
+
+                    const childrenContainer = document.createElement('div');
+                    childrenContainer.className = "pl-4 tree-line space-y-1 mt-1";
+
+                    // Items inside this folder
+                    folderObj._items.forEach(item => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = "flex items-center justify-between p-1.5 rounded bg-slate-900/60 border border-slate-800/80 hover:border-cyanGlow transition";
+                        itemDiv.innerHTML = `
+                            <div class="flex items-center gap-3">
+                                <i class="fa-solid fa-microchip text-cyanGlow text-xs"></i>
+                                <div>
+                                    <span class="font-bold text-white cursor-pointer hover:underline" onclick="inspectPart('${item.id}')">${item.name}</span>
+                                    <span class="text-[10px] text-amber-400 font-mono ml-2">${item.stdNo} (${item.rev || 'Rev A'})</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="text-[10px] px-1.5 py-0.5 rounded border border-slate-700 bg-slate-950 font-mono">${item.accessClass}</span>
+                                <span class="text-xs font-mono text-emerald-400 font-bold">${item.qty} units</span>
+                                <button onclick="inspectPart('${item.id}')" class="px-2 py-0.5 bg-cyan-950 hover:bg-cyan-900 text-cyanGlow border border-cyan-800 rounded text-[10px]" title="Inspect Datapad">
+                                    <i class="fa-solid fa-eye"></i> Inspect
+                                </button>
+                            </div>
+                        `;
+                        childrenContainer.appendChild(itemDiv);
+                    });
+
+                    folderDiv.appendChild(folderHeader);
+                    folderDiv.appendChild(childrenContainer);
+
+                    // Recurse subfolders
+                    if (Object.keys(folderObj._sub).length > 0) {
+                        buildDOMTree(folderObj._sub, childrenContainer, depth + 1);
+                    }
+
+                    container.appendChild(folderDiv);
+                });
+            }
+
+            buildDOMTree(treeRoot, treeBody);
+        }
+
+        // FLAT MASTER INDEX TABLE RENDERER
+        function renderTableView(items) {
             const tbody = document.getElementById('catalogTableBody');
             const emptyState = document.getElementById('emptyState');
             tbody.innerHTML = '';
 
-            if (filtered.length === 0) {
+            if (items.length === 0) {
                 emptyState.classList.remove('hidden');
-            } else {
-                emptyState.classList.add('hidden');
-                filtered.forEach((item) => {
-                    const realIndex = catalog.findIndex(c => c.id === item.id);
-                    const isLow = item.qty <= item.minQty;
-                    const isZero = item.qty === 0;
-
-                    let stockBadgeClass = isZero ? "bg-slate-800 text-slate-400 border-slate-700" : (isLow ? "bg-amber-950 text-amber-400 border-amber-800 animate-pulse" : "bg-emerald-950 text-emerald-400 border-emerald-800");
-                    let stockText = isZero ? "0 (Market Ref)" : `${item.qty} units`;
-
-                    const row = document.createElement('tr');
-                    row.className = "hover:bg-slate-900/50 transition border-b border-slate-800/60";
-                    row.innerHTML = `
-                        <td class="p-4 font-mono text-xs">
-                            <span class="text-cyanGlow font-bold block">${item.id}</span>
-                            <span class="text-amber-400 text-[11px]">${item.stdNo || 'GS-STD-8842'}</span>
-                        </td>
-                        <td class="p-4">
-                            <div class="font-bold text-white cursor-pointer hover:text-cyanGlow" onclick="inspectPart('${item.id}')">${item.name}</div>
-                            <div class="flex items-center gap-2 mt-1">
-                                <span class="text-[10px] px-1.5 py-0.5 rounded border border-slate-700 bg-slate-900 text-slate-300 font-mono">${item.univStatus || 'Canon'}</span>
-                                <span class="text-[10px] px-1.5 py-0.5 rounded border border-cyan-900/60 bg-cyan-950/40 text-cyan-300 font-mono">${item.accessClass || 'Trade'}</span>
-                            </div>
-                        </td>
-                        <td class="p-4 text-xs text-slate-300">${item.category}</td>
-                        <td class="p-4 text-xs font-semibold text-slate-200">${item.supplier}</td>
-                        <td class="p-4 text-xs text-slate-400">
-                            <i class="fa-solid fa-location-dot text-cyanGlow mr-1"></i>${item.location}
-                        </td>
-                        <td class="p-4 text-center">
-                            <span class="px-2.5 py-1 rounded text-xs font-bold border ${stockBadgeClass}">
-                                ${stockText}
-                            </span>
-                        </td>
-                        <td class="p-4 text-right font-mono font-bold text-emerald-400">
-                            ${item.price.toLocaleString()} ₡
-                        </td>
-                        <td class="p-4 text-center">
-                            <div class="flex items-center justify-center gap-1.5">
-                                <button onclick="inspectPart('${item.id}')" class="p-1.5 bg-cyan-950 hover:bg-cyan-900 text-cyanGlow border border-cyan-800 rounded text-xs" title="Datapad Inspect">
-                                    <i class="fa-solid fa-eye"></i>
-                                </button>
-                                <button onclick="adjustQuantity(${realIndex}, 1)" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-xs" title="Add 1 Stock">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                                <button onclick="adjustQuantity(${realIndex}, -1)" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-xs" title="Remove 1 Stock">
-                                    <i class="fa-solid fa-minus"></i>
-                                </button>
-                                <button onclick="openEditModal(${realIndex})" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs" title="Edit Record">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </button>
-                                <button onclick="promptDeletePart(${realIndex})" class="p-1.5 bg-red-950/60 hover:bg-red-900 text-red-400 rounded text-xs" title="Purge Record">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
+                return;
             }
+            emptyState.classList.add('hidden');
 
-            updateMetrics();
+            items.forEach(item => {
+                const realIndex = catalog.findIndex(c => c.id === item.id);
+                const pathStr = item.categoryPath ? item.categoryPath.join(' > ') : 'Uncategorized';
+                const stars = item.confidenceStars || "★★★★★";
+
+                const row = document.createElement('tr');
+                row.className = "hover:bg-slate-900/50 transition border-b border-slate-800/60";
+                row.innerHTML = `
+                    <td class="p-3 font-mono text-xs">
+                        <span class="text-cyanGlow font-bold block">${item.id}</span>
+                        <span class="text-amber-400 text-[10px]">${item.stdNo} (${item.rev || 'Rev A'})</span>
+                    </td>
+                    <td class="p-3">
+                        <div class="font-bold text-white cursor-pointer hover:text-cyanGlow" onclick="inspectPart('${item.id}')">${item.name}</div>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="text-amber-400 text-[10px]">${stars}</span>
+                            <span class="text-[10px] px-1 py-0.5 rounded border border-slate-700 bg-slate-900 text-slate-300 font-mono">${item.univStatus}</span>
+                        </div>
+                    </td>
+                    <td class="p-3 text-[11px] text-slate-400 font-mono">${pathStr}</td>
+                    <td class="p-3 text-xs text-slate-200">${item.supplier}</td>
+                    <td class="p-3 text-xs text-slate-400"><i class="fa-solid fa-location-dot text-cyanGlow mr-1"></i>${item.location}</td>
+                    <td class="p-3 text-center font-bold text-emerald-400">${item.qty}</td>
+                    <td class="p-3 text-right font-mono text-emerald-400 font-bold">${item.price.toLocaleString()} ₡</td>
+                    <td class="p-3 text-center">
+                        <button onclick="inspectPart('${item.id}')" class="p-1.5 bg-cyan-950 text-cyanGlow border border-cyan-800 rounded text-xs" title="Inspect">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
         }
 
         function updateMetrics() {
@@ -1261,7 +830,7 @@
             const txt = document.getElementById('lowStockToggleText');
             if (showLowStockOnly) {
                 btn.classList.add('bg-amber-950', 'border-amber-500', 'text-amber-300');
-                txt.innerText = "Low Stock Filter Active";
+                txt.innerText = "Low Stock Active";
             } else {
                 btn.classList.remove('bg-amber-950', 'border-amber-500', 'text-amber-300');
                 txt.innerText = "Low Stock / Unstocked";
@@ -1269,15 +838,7 @@
             renderCatalog();
         }
 
-        function adjustQuantity(index, delta) {
-            if (catalog[index]) {
-                catalog[index].qty = Math.max(0, catalog[index].qty + delta);
-                saveCatalogToLocalStorage();
-                renderCatalog();
-                showToast(`Updated stock for ${catalog[index].name}`);
-            }
-        }
-
+        // INSPECTOR WITH BOM & PARENT/CHILD DRILL-DOWN
         let activeInspectPartId = null;
         function inspectPart(id) {
             const item = catalog.find(c => c.id === id);
@@ -1285,22 +846,97 @@
             activeInspectPartId = id;
 
             document.getElementById('inspectRecordId').innerText = item.id;
-            document.getElementById('inspectStdNo').innerText = `STD: ${item.stdNo || 'GS-STD-8842'}`;
+            document.getElementById('inspectStdNo').innerText = `STD: ${item.stdNo} (${item.rev || 'Rev A'})`;
+            document.getElementById('inspectStars').innerText = item.confidenceStars || "★★★★★";
             document.getElementById('inspectName').innerText = item.name;
+            document.getElementById('inspectPathBreadcrumb').innerText = item.categoryPath ? item.categoryPath.join(' / ') : "Uncategorized";
+
             document.getElementById('inspectUnivStatus').innerText = item.univStatus || 'Canon';
             document.getElementById('inspectAccessClass').innerText = item.accessClass || 'Trade';
-            document.getElementById('inspectConfidence').innerText = item.confidence || 'Verified';
-            document.getElementById('inspectRecordState').innerText = item.recordState || 'Active';
-            document.getElementById('inspectDescription').innerText = item.specs || 'No extended description recorded.';
+            document.getElementById('inspectLifecycle').innerText = item.lifecycle || 'Mass Production';
+            document.getElementById('inspectConfidenceVal').innerText = `${item.confidence || 5} / 5 Stars`;
+            document.getElementById('inspectRev').innerText = item.rev || 'Rev A';
+            document.getElementById('inspectDescription').innerText = item.specs || 'No technical specification logged.';
+
             document.getElementById('inspectLocation').innerText = item.location;
-            document.getElementById('inspectStock').innerText = `${item.qty} units (Min threshold: ${item.minQty})`;
+            document.getElementById('inspectStock').innerText = `${item.qty} units (Min: ${item.minQty})`;
             document.getElementById('inspectPrice').innerText = `${item.price.toLocaleString()} ₡`;
-            document.getElementById('inspectSpecsDetail').innerText = item.specs || 'Standard industrial specifications apply.';
-            document.getElementById('inspectMfgCo').innerText = item.supplier;
-            document.getElementById('inspectOriginWorld').innerText = item.originWorld || 'Unknown World';
-            document.getElementById('inspectStdLink').innerText = item.stdNo || 'GS-STD-8842';
-            document.getElementById('inspectNote').innerText = item.notes ? `"${item.notes}"` : 'No notes logged.';
-            document.getElementById('inspectSpectreNote').innerText = item.spectreNote || '[SPECTRE]: No observation data recorded.';
+
+            // Tags
+            const tagsCont = document.getElementById('inspectTagsContainer');
+            tagsCont.innerHTML = '';
+            (item.tags || []).forEach(t => {
+                const tagSpan = document.createElement('span');
+                tagSpan.className = "px-2 py-0.5 rounded border border-cyan-900 bg-cyan-950/60 text-cyan-300 font-mono text-[10px]";
+                tagSpan.innerText = `#${t}`;
+                tagsCont.appendChild(tagSpan);
+            });
+
+            // Parent Component Link
+            const parentCont = document.getElementById('inspectParentContainer');
+            if (item.parentId) {
+                const parentItem = catalog.find(c => c.id === item.parentId);
+                parentCont.innerHTML = parentItem ? 
+                    `<div class="flex items-center justify-between">
+                        <span><strong class="text-slate-400">Parent Assembly:</strong> ${parentItem.name} (${parentItem.id})</span>
+                        <button onclick="inspectPart('${parentItem.id}')" class="px-2 py-1 bg-cyan-950 text-cyanGlow border border-cyan-700 rounded text-[10px]">Jump to Parent</button>
+                    </div>` : 
+                    `<span class="text-slate-500">Parent ID (${item.parentId}) not found in database.</span>`;
+            } else {
+                parentCont.innerHTML = `<span class="text-slate-500">Top-Level Component (No Parent Assembly)</span>`;
+            }
+
+            // Children / BOM Sub-components
+            const childrenCont = document.getElementById('inspectChildrenContainer');
+            childrenCont.innerHTML = '';
+            const children = catalog.filter(c => c.parentId === item.id);
+            if (children.length > 0) {
+                children.forEach(child => {
+                    const childDiv = document.createElement('div');
+                    childDiv.className = "flex items-center justify-between p-2 rounded bg-slate-900 border border-slate-800";
+                    childDiv.innerHTML = `
+                        <div>
+                            <span class="text-white font-bold block">${child.name}</span>
+                            <span class="text-[10px] text-amber-400 font-mono">${child.id} | ${child.stdNo}</span>
+                        </div>
+                        <button onclick="inspectPart('${child.id}')" class="px-2 py-1 bg-cyan-950 text-cyanGlow border border-cyan-700 rounded text-[10px]">Inspect Sub-Part</button>
+                    `;
+                    childrenCont.appendChild(childDiv);
+                });
+            } else {
+                childrenCont.innerHTML = `<span class="text-slate-500 italic">No child sub-components registered in BOM for this item.</span>`;
+            }
+
+            // Compatibility & Installed
+            const compatCont = document.getElementById('inspectCompatContainer');
+            compatCont.innerHTML = '';
+            (item.compatibleWith || []).forEach(c => {
+                compatCont.innerHTML += `<span class="px-2 py-1 bg-cyan-950 border border-cyan-800 text-cyan-300 rounded font-mono">${c}</span>`;
+            });
+
+            const installedCont = document.getElementById('inspectInstalledContainer');
+            installedCont.innerHTML = '';
+            (item.installedOn || []).forEach(i => {
+                installedCont.innerHTML += `<span class="px-2 py-1 bg-emerald-950 border border-emerald-800 text-emerald-300 rounded font-mono">${i}</span>`;
+            });
+
+            // Relations
+            const rel = item.relations || {};
+            document.getElementById('relPowerSource').innerText = rel.powerSource || 'N/A';
+            document.getElementById('relNeeds').innerText = rel.needs || 'N/A';
+            document.getElementById('relInterfaces').innerText = rel.interfaces || 'N/A';
+            document.getElementById('relUses').innerText = rel.uses || 'N/A';
+
+            // Primary Source
+            const src = item.source || {};
+            document.getElementById('srcTitle').innerText = src.title || 'Galactic Archives';
+            document.getElementById('srcAuthor').innerText = src.author || 'Unknown';
+            document.getElementById('srcPage').innerText = src.page || 'N/A';
+            document.getElementById('srcIsbn').innerText = src.isbn || 'N/A';
+
+            // Notes
+            document.getElementById('inspectNote').innerText = item.notes ? `"${item.notes}"` : 'No field notes logged.';
+            document.getElementById('inspectSpectreNote').innerText = item.spectreNote || '[SPECTRE]: No tactical observations logged.';
 
             switchInspectTab('tabOverview');
             document.getElementById('inspectModal').classList.remove('hidden');
@@ -1313,8 +949,8 @@
         }
 
         function switchInspectTab(tabId) {
-            const tabs = ['tabOverview', 'tabTech', 'tabMfg', 'tabCompat', 'tabOps', 'tabVoices'];
-            const btns = ['btnTabOverview', 'btnTabTech', 'btnTabMfg', 'btnTabCompat', 'btnTabOps', 'btnTabVoices'];
+            const tabs = ['tabOverview', 'tabBOM', 'tabCompat', 'tabRelations', 'tabSource', 'tabVoices'];
+            const btns = ['btnTabOverview', 'btnTabBOM', 'btnTabCompat', 'btnTabRelations', 'btnTabSource', 'btnTabVoices'];
 
             tabs.forEach((t, idx) => {
                 const el = document.getElementById(t);
@@ -1329,112 +965,47 @@
             });
         }
 
-        function openStdModalFromInspect() {
-            const item = catalog.find(c => c.id === activeInspectPartId);
-            const stdNo = item ? (item.stdNo || "GS-STD-8842") : "GS-STD-8842";
-
-            document.getElementById('gscStdId').innerText = stdNo;
-            document.getElementById('gscDisplayName').innerText = item ? `${item.name} Specification Standard` : "Standard Industrial Interlock Framework";
-            document.getElementById('gscAuthority').innerText = "Galactic Standards Bureau";
-            document.getElementById('gscRevision').innerText = "v0.2";
-            document.getElementById('gscCompliance').innerText = "Mandatory Certified";
-            document.getElementById('gscClassPath').innerText = `GSC / ${item ? item.category : 'Power & Industrial'} / ${stdNo}`;
-            document.getElementById('gscPurpose').innerText = `Defines standardized manufacturing, interface tolerance, and safety compliance for ${item ? item.name : 'industrial components'}.`;
-            document.getElementById('gscScope').innerText = `Applies across all Galactic Rim and Core World shipyards producing ${item ? item.supplier : 'certified equipment'}.`;
-            document.getElementById('gscNotes').innerText = item ? (item.notes || "Standard specification active.") : "Standard specification active.";
-
-            document.getElementById('stdModal').classList.remove('hidden');
-            document.getElementById('stdModal').classList.add('flex');
+        function promptResetCatalog() {
+            showConfirmModal("Restore Archive v1.0 Confirmation", "Reset datapad catalog to master v1.0 standard dataset? All local edits will be overwritten.", function() {
+                catalog = JSON.parse(JSON.stringify(initialCatalog));
+                saveCatalogToLocalStorage(true);
+                renderCatalog();
+                showToast("Archive restored to v1.0 standards.");
+            });
         }
 
-        function closeStdModal() {
-            document.getElementById('stdModal').classList.add('hidden');
-            document.getElementById('stdModal').classList.remove('flex');
+        function exportJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(catalog, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `lex_rogers_catalog_v10_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast("Datapad v1.0 JSON exported!");
         }
 
-        function openAddModal() {
-            document.getElementById('modalTitle').innerText = "REGISTER NEW COMPONENT RECORD";
-            document.getElementById('partForm').reset();
-            document.getElementById('editPartIndex').value = "";
-            document.getElementById('partModal').classList.remove('hidden');
-            document.getElementById('partModal').classList.add('flex');
-        }
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
 
-        function openEditModal(index) {
-            const item = catalog[index];
-            if (!item) return;
-
-            document.getElementById('modalTitle').innerText = "EDIT COMPONENT RECORD";
-            document.getElementById('editPartIndex').value = index;
-            document.getElementById('partId').value = item.id;
-            document.getElementById('partStdNo').value = item.stdNo || "GS-STD-8842";
-            document.getElementById('partName').value = item.name;
-            document.getElementById('partCategory').value = item.category;
-            document.getElementById('partSupplier').value = item.supplier;
-            document.getElementById('partOriginWorld').value = item.originWorld || "";
-            document.getElementById('partLocation').value = item.location;
-            document.getElementById('partUnivStatus').value = item.univStatus || "Canon";
-            document.getElementById('partAccessClass').value = item.accessClass || "Trade";
-            document.getElementById('partConfidence').value = item.confidence || "Verified";
-            document.getElementById('partQuantity').value = item.qty;
-            document.getElementById('partMinQuantity').value = item.minQty;
-            document.getElementById('partPrice').value = item.price;
-            document.getElementById('partSpecs').value = item.specs || "";
-            document.getElementById('partNote').value = item.notes || "";
-            document.getElementById('partSpectreNote').value = item.spectreNote || "";
-
-            document.getElementById('partModal').classList.remove('hidden');
-            document.getElementById('partModal').classList.add('flex');
-        }
-
-        function openEditModalFromInspect() {
-            closeInspectModal();
-            const index = catalog.findIndex(c => c.id === activeInspectPartId);
-            if (index !== -1) {
-                openEditModal(index);
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('partModal').classList.add('hidden');
-            document.getElementById('partModal').classList.remove('flex');
-        }
-
-        function savePart(e) {
-            e.preventDefault();
-            const editIdx = document.getElementById('editPartIndex').value;
-
-            const partData = {
-                id: document.getElementById('partId').value.trim(),
-                stdNo: document.getElementById('partStdNo').value.trim(),
-                name: document.getElementById('partName').value.trim(),
-                category: document.getElementById('partCategory').value,
-                supplier: document.getElementById('partSupplier').value.trim(),
-                originWorld: document.getElementById('partOriginWorld').value.trim(),
-                location: document.getElementById('partLocation').value,
-                univStatus: document.getElementById('partUnivStatus').value,
-                accessClass: document.getElementById('partAccessClass').value,
-                confidence: document.getElementById('partConfidence').value,
-                qty: parseInt(document.getElementById('partQuantity').value) || 0,
-                minQty: parseInt(document.getElementById('partMinQuantity').value) || 0,
-                price: parseFloat(document.getElementById('partPrice').value) || 0,
-                specs: document.getElementById('partSpecs').value.trim(),
-                notes: document.getElementById('partNote').value.trim(),
-                spectreNote: document.getElementById('partSpectreNote').value.trim(),
-                recordState: "Active"
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported)) {
+                        catalog = imported;
+                        saveCatalogToLocalStorage(true);
+                        renderCatalog();
+                        showToast("Datapad archive imported successfully!");
+                    } else {
+                        alert("Invalid JSON format. Expected an array of components.");
+                    }
+                } catch (err) {
+                    alert("Error reading JSON file: " + err.message);
+                }
             };
-
-            if (editIdx !== "") {
-                catalog[parseInt(editIdx)] = partData;
-                showToast("Record updated successfully!");
-            } else {
-                catalog.push(partData);
-                showToast("New component registered!");
-            }
-
-            saveCatalogToLocalStorage();
-            closeModal();
-            renderCatalog();
+            reader.readAsText(file);
         }
 
         function showConfirmModal(title, msg, onConfirm) {
@@ -1453,60 +1024,6 @@
             document.getElementById('confirmModal').classList.add('hidden');
             document.getElementById('confirmModal').classList.remove('flex');
             confirmCallback = null;
-        }
-
-        function promptDeletePart(index) {
-            const item = catalog[index];
-            if (!item) return;
-            showConfirmModal("Purge Record Confirmation", `Are you sure you want to permanently purge ${item.name} (${item.id}) from the archive?`, function() {
-                catalog.splice(index, 1);
-                saveCatalogToLocalStorage();
-                renderCatalog();
-                showToast("Record purged from datapad.");
-            });
-        }
-
-        function promptResetCatalog() {
-            showConfirmModal("Restore Archive Confirmation", "Reset datapad catalog to standard default records? All custom changes will be overwritten.", function() {
-                catalog = JSON.parse(JSON.stringify(initialCatalog));
-                saveCatalogToLocalStorage();
-                renderCatalog();
-                showToast("Archive restored to default standards.");
-            });
-        }
-
-        function exportJSON() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(catalog, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `lex_rogers_spare_parts_${new Date().toISOString().slice(0,10)}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-            showToast("Datapad JSON exported!");
-        }
-
-        function importJSON(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const imported = JSON.parse(e.target.result);
-                    if (Array.isArray(imported)) {
-                        catalog = imported;
-                        saveCatalogToLocalStorage();
-                        renderCatalog();
-                        showToast("Datapad archive imported successfully!");
-                    } else {
-                        alert("Invalid JSON format. Expected an array of components.");
-                    }
-                } catch (err) {
-                    alert("Error reading JSON file: " + err.message);
-                }
-            };
-            reader.readAsText(file);
         }
 
         function showToast(msg) {
@@ -1528,3 +1045,11 @@
 </body>
 </html>
 ```eof
+
+### Slik oppdaterer du til v1.0 på GitHub (tar 1 minutt):
+
+1. Kopier **all koden** i den nye `spare_parts_catalog.html`-filen over.
+2. Åpne `index.html` på GitHub.
+3. Klikk på **Blyant-ikonet (Edit file)**, marker og slett alt som var der fra før, lim inn den nye koden (Ctrl+V) og trykk på den grønne knappen **`Commit changes...`**.
+
+Når du oppdaterer nettsiden din på GitHub, vil du få **Version 1.0 av Lex Rogers Industrial Catalog** med full hierarkisk navigasjon, utfoldbare kategoritrær, BOM (Bill of Materials), 5-stjerners kilde-tillit, og automatisk skysynkronisering via Firebase!
