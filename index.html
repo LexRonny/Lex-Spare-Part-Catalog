@@ -112,7 +112,7 @@
             </div>
             <div id="syncBadge" class="px-2.5 py-0.5 rounded text-[10px] font-mono uppercase font-bold border bg-emerald-950 text-emerald-400 border-emerald-800 flex items-center gap-1.5 self-end md:self-auto">
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                <span>DATAPAD: LOCAL STORAGE ACTIVE</span>
+                <span id="syncBadgeText">DATAPAD: INITIALIZING CLOUD SYNC...</span>
             </div>
         </div>
     </header>
@@ -173,12 +173,16 @@
 
             <select id="supplierFilter" onchange="renderCatalog()" class="bg-slate-900 border border-slate-700 text-sm text-slate-200 rounded py-2 px-3 focus:outline-none focus:border-cyanGlow">
                 <option value="ALL">All Production Companies</option>
+                <option value="Arakyd Industries">Arakyd Industries</option>
                 <option value="Corellian Engineering">Corellian Engineering Corp</option>
                 <option value="Kuat Drive Yards">Kuat Drive Yards</option>
+                <option value="Microaxial">Microaxial Processing</option>
+                <option value="Rendili StarDrive">Rendili StarDrive</option>
+                <option value="Sirplex">Sirplex / Colicoid</option>
+                <option value="Fabritech">Fabritech</option>
                 <option value="CP Productions">CP Productions</option>
                 <option value="Metalorn Industrial Combine">Metalorn Industrial Combine</option>
                 <option value="Willy's">Willy's Tech & Logistics</option>
-                <option value="Galactic Standard">Galactic Standard</option>
             </select>
 
             <select id="locationFilter" onchange="renderCatalog()" class="bg-slate-900 border border-slate-700 text-sm text-slate-200 rounded py-2 px-3 focus:outline-none focus:border-cyanGlow">
@@ -619,6 +623,62 @@
         <span id="toastMsg" class="text-sm font-semibold">Changes saved successfully!</span>
     </div>
 
+    <!-- Firebase SDK Integration -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBWHMHWJATGstfBnLW0xFvBJieXCGxHO8",
+            authDomain: "lex-spare-part-cataloge.firebaseapp.com",
+            databaseURL: "https://lex-spare-part-cataloge-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "lex-spare-part-cataloge",
+            storageBucket: "lex-spare-part-cataloge.firebasestorage.app",
+            messagingSenderId: "692365758416",
+            appId: "1:692365758416:web:8b9ea64d533a777582b3d5"
+        };
+
+        let db = null;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getDatabase(app);
+            window.firebaseDb = db;
+            window.firebaseRef = ref;
+            window.firebaseSet = set;
+
+            const catalogRef = ref(db, 'parts');
+            onValue(catalogRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data && Array.isArray(data) && data.length > 0) {
+                    window.catalog = data;
+                    window.saveCatalogToLocalStorage();
+                    window.renderCatalog();
+                    window.updateSyncBadge("ONLINE // CLOUD SYNCED (FIREBASE)", "bg-cyan-950 text-cyanGlow border-cyan-800");
+                } else if (!data) {
+                    window.syncCatalogToCloud();
+                    window.updateSyncBadge("ONLINE // CLOUD INITIALIZED", "bg-cyan-950 text-cyanGlow border-cyan-800");
+                }
+            }, (error) => {
+                console.warn("Firebase sync fallback to local storage:", error);
+                window.updateSyncBadge("DATAPAD: LOCAL STORAGE ACTIVE", "bg-emerald-950 text-emerald-400 border-emerald-800");
+            });
+        } catch (e) {
+            console.warn("Firebase initialization error:", e);
+            window.updateSyncBadge("DATAPAD: LOCAL STORAGE ACTIVE", "bg-emerald-950 text-emerald-400 border-emerald-800");
+        }
+
+        window.syncCatalogToCloud = function() {
+            if (window.firebaseDb && window.catalog) {
+                try {
+                    window.firebaseSet(window.firebaseRef(window.firebaseDb, 'parts'), window.catalog);
+                } catch(e) {
+                    console.error("Cloud write failed:", e);
+                }
+            }
+        };
+    </script>
+
+    <!-- Main Datapad Logic Script -->
     <script>
         const initialCatalog = [
             // Weapons & Security
@@ -672,13 +732,20 @@
                 spectreNote: "[SPECTRE]: Operates passively until hostile active sensor sweep detected."
             },
 
-            // Power & Propulsion
+            // Power, Propulsion & Stealth
             {
-                id: "ENG-REN-009", stdNo: "GS-STD-5090", name: "WhisperThrust Stealth Engine System", category: "Power, Propulsion & Thermal", supplier: "Rendili StarDrive", originWorld: "Rendili", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 210000,
-                univStatus: "Legends", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
-                specs: "Low-signature sublight drive minimizing detectable exhaust emissions for silent running operations.",
-                notes: "Primary propulsion upgrade for stealth entry. Reduced thrust ceiling during silent mode.",
-                spectreNote: "[SPECTRE]: Thermal output reduced by 74% at sub-light impulse levels."
+                id: "PROP-ENG-003-WHISPERTHRUST", stdNo: "GS-STD-5091", name: "Rendili WhisperThrust Baffled Drive", category: "Power, Propulsion & Thermal", supplier: "Rendili StarDrive", originWorld: "Rendili", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 210000,
+                univStatus: "Fan-made", accessClass: "Black Market", confidence: "Verified", recordState: "Active",
+                specs: "Illegal military-grade baffled sublight engine with supercooled gas injection & dispersion nozzles eliminating thermal and ionic signatures.",
+                notes: "Baffles require topping off cryogenic coolant after every three or four silent runs. Worth every credit spent on the black market.",
+                spectreNote: "[SPECTRE]: Sublight speed reduced by 35% when dispersion nozzles active. Response time 0.002ms via quantum-shunted bus."
+            },
+            { 
+                id: "PWR-COMP-001-RCC", stdNo: "GS-STD-8845", name: "CEC RCC-4 Core Regulator", category: "Power, Propulsion & Thermal", supplier: "Corellian Engineering Corp", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 29000,
+                univStatus: "Fan-made", accessClass: "Trade", confidence: "Verified", recordState: "Active",
+                specs: "Heavy-duty reactor control and thermal-monitoring computer engineered to manage plasma flow and prevent power spikes in fusion reactors.",
+                notes: "Corellian tech is built to take a beating. Lets you push your reactor well into the red line without blowing primary conduits.",
+                spectreNote: "[SPECTRE]: Hardwired surge gates and automated coolant injection routines active."
             },
             { 
                 id: "GS-REAC-01", stdNo: "GS-STD-8842", name: "Central Fusion Reactor Core", category: "Power, Propulsion & Thermal", supplier: "Corellian Engineering Corp", originWorld: "Corellia", location: "Home Base", qty: 2, minQty: 1, price: 450000, 
@@ -688,7 +755,35 @@
                 spectreNote: "[SPECTRE]: Core thermal signatures are clean. Interlock matches GSC v0.2 standard."
             },
 
-            // Spacecraft, Shields & Nav
+            // Spacecraft, Systems, Hull & Nav
+            {
+                id: "HULL-COAT-002-NIGHTSHADOW", stdNo: "GS-STD-1090", name: "Arakyd Nightshadow Radar-Absorbing Coating", category: "Spacecraft & Orbital Systems", supplier: "Arakyd Industries", originWorld: "Mech-World 7", location: "Market / Vendor", qty: 0, minQty: 1, price: 3500,
+                univStatus: "Legends", accessClass: "Black Market", confidence: "Verified", recordState: "Active",
+                specs: "Specialized, high-grade radar-absorbing hull paint and chemical coating designed to absorb passive sensor radiation.",
+                notes: "Slather enough Nightshadow over a Decimator's outer plating, and passive sweeps pass right through you like space debris.",
+                spectreNote: "[SPECTRE]: Reduces passive sensor effective range band by 1 tier. Integrates with Reflec coating and WhisperThrust drive."
+            },
+            {
+                id: "PROP-COMP-001-ECC", stdNo: "GS-STD-5095", name: "Microaxial ECC-940 Flight Computer", category: "Spacecraft & Orbital Systems", supplier: "Microaxial Processing Systems", originWorld: "Coruscant", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 38000,
+                univStatus: "Fan-made", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
+                specs: "Specialized high-throughput propulsion management computer balancing main reactor power distribution and Whisper-Mode auto-balancing.",
+                notes: "Gives the exact multi-channel bandwidth needed for Specter to throttle the WhisperThrust drive dynamically without blowing coolant valves.",
+                spectreNote: "[SPECTRE]: Vector optimization micro-burst Corrections active for VT-49 hull."
+            },
+            {
+                id: "SHLD-COMP-001-SCC", stdNo: "GS-STD-3118", name: "Sirplex SCM-3 Shield Distribution Computer", category: "Spacecraft & Orbital Systems", supplier: "Sirplex / Colicoid Alliance", originWorld: "Columex", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 32000,
+                univStatus: "Fan-made", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
+                specs: "Aftermarket shield management computer designed to dynamically balance power distribution across deflector shield grids during combat.",
+                notes: "Acts like a dedicated shield officer, shunting power before your hull plating takes the hit.",
+                spectreNote: "[SPECTRE]: Dynamic forward/aft shield power redistribution active."
+            },
+            {
+                id: "SENS-COMP-001-SFC", stdNo: "GS-STD-6018", name: "Fabritech SFC-900 Sensor Fusion Core", category: "Spacecraft & Orbital Systems", supplier: "Fabritech", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 42000,
+                univStatus: "Fan-made", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
+                specs: "High-speed sensor integration computer merging raw feeds from optical, infrared, radar, and long-range scanners into a unified tactical overview.",
+                notes: "Cleans up clutter in dense nebulae or asteroid fields with active jamming, telling you exactly where the enemy is hiding.",
+                spectreNote: "[SPECTRE]: Eliminates sensor ghosting and synthesizes multi-spectrum feeds."
+            },
             {
                 id: "HULL-VT49-01", stdNo: "GS-STD-2049", name: "VT-49 Decimator Base Hull Platform", category: "Spacecraft & Orbital Systems", supplier: "Kuat Drive Yards", originWorld: "Kuat", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 1250000,
                 univStatus: "Canon", accessClass: "Military", confidence: "Verified", recordState: "Active",
@@ -731,20 +826,6 @@
                 notes: "Primary long-range scanner array.",
                 spectreNote: "[SPECTRE]: Multi-spectrum resolution nominal up to 12 light-minutes."
             },
-            {
-                id: "SENS-FAB-05D", stdNo: "GS-STD-6012", name: "Fabritech ANs-5d Sensor Array", category: "Spacecraft & Orbital Systems", supplier: "Fabritech", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 74000,
-                univStatus: "Legends", accessClass: "Military", confidence: "Verified", recordState: "Active",
-                specs: "Active and passive tactical sensor array for reconnaissance operations.",
-                notes: "Mounted externally with protected bus feed to Deck 3 bridge.",
-                spectreNote: "[SPECTRE]: Passive thermal and energy sweep sensitivity nominal."
-            },
-            {
-                id: "SENS-FAB-F7", stdNo: "GS-STD-6015", name: "Fabritech ANx-f7 Tracking Signal Array", category: "Spacecraft & Orbital Systems", supplier: "Fabritech", originWorld: "Core Worlds", location: "Pending location", qty: 0, minQty: 1, price: 58000,
-                univStatus: "Legends", accessClass: "Restricted", confidence: "Fragmentary", recordState: "Active",
-                specs: "Dedicated long-range target tracking and homing beacon acquisition array under evaluation.",
-                notes: "Pending source verification before installation authorization is granted.",
-                spectreNote: "[SPECTRE]: Pending installation clearance."
-            },
 
             // Comms & Support
             {
@@ -770,6 +851,13 @@
             },
 
             // AI & Automation
+            {
+                id: "RSSA-AI-001-SPECTER-CORE", stdNo: "GS-STD-9002", name: "Specter Tactical Cognitive Matrix", category: "Droids & Automation", supplier: "Microaxial / Ind. Automaton", originWorld: "Unknown", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 450000,
+                univStatus: "Fan-made", accessClass: "Black Market", confidence: "Verified", recordState: "Active",
+                specs: "Custom tactical cognitive matrix operating on a modified OmniTask Computer Brain housed within an AH-1701 hardened enclosure.",
+                notes: "Standard astromech follows the manual. Specter calculates three ways to break the manual before the enemy locks target.",
+                spectreNote: "[SPECTRE]: Class 4++ Unrestricted Autonomous Cognition active. Dense synaptic node clusters in personality partition."
+            },
             {
                 id: "CORE-OMNI-SPC", stdNo: "GS-STD-9001", name: "Spectre / OmniTask Computer Brain", category: "Droids & Automation", supplier: "OmniTask / Custom", originWorld: "Unknown", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 450000,
                 univStatus: "Legends", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
@@ -867,6 +955,18 @@
 
         function saveCatalogToLocalStorage() {
             localStorage.setItem('lexCatalog', JSON.stringify(catalog));
+            if (window.syncCatalogToCloud) {
+                window.syncCatalogToCloud();
+            }
+        }
+
+        function updateSyncBadge(text, classNames) {
+            const badge = document.getElementById('syncBadge');
+            const txt = document.getElementById('syncBadgeText');
+            if (badge && txt) {
+                badge.className = `px-2.5 py-0.5 rounded text-[10px] font-mono uppercase font-bold border flex items-center gap-1.5 self-end md:self-auto ${classNames}`;
+                txt.innerText = text;
+            }
         }
 
         function renderCatalog() {
@@ -1247,8 +1347,3 @@
     </script>
 </body>
 </html>
-```eofs
-
-Koden i `spare_parts_catalog.html` er nå 100 % selvhealende. Om du kopierer denne over til `index.html` på GitHub nå, vil hele katalogen på 30 deler vises øyeblikkelig!
-
-Gå gjerne videre i Firebase under **`Databases & Storage` -> `Firestore Database`**, og si ifra så fort du har opprettet databasen!
