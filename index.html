@@ -101,7 +101,7 @@
 
             <div id="syncBadge" class="px-2.5 py-0.5 rounded text-[10px] font-mono uppercase font-bold border bg-emerald-950 text-emerald-400 border-emerald-800 flex items-center gap-1.5 self-end md:self-auto">
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                <span id="syncBadgeText">DATAPAD: INITIALIZING CLOUD SYNC...</span>
+                <span id="syncBadgeText">DATAPAD: LOCAL MASTER ACTIVE (82 ITEMS)</span>
             </div>
         </div>
     </header>
@@ -414,10 +414,10 @@
         <span id="toastMsg" class="text-sm font-semibold">Changes saved!</span>
     </div>
 
-    <!-- Firebase SDK Integration -->
+    <!-- Firebase SDK Integration (Forced Local Seed Override) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDBWHMHWJATGstfBnLW0xFvBJieXCGxHO8",
@@ -435,38 +435,12 @@
             window.firebaseDb = db;
             window.firebaseRef = ref;
             window.firebaseSet = set;
-
-            const catalogRef = ref(db, 'parts_v10_final_master_82');
-            onValue(catalogRef, (snapshot) => {
-                const data = snapshot.val();
-                if (data && Array.isArray(data) && data.length >= 75) {
-                    window.catalog = data;
-                    window.saveCatalogToLocalStorage(false);
-                    window.renderCatalog();
-                    window.updateSyncBadge("ONLINE // CLOUD SYNCED (82 ITEMS)", "bg-cyan-950 text-cyanGlow border-cyan-800");
-                } else {
-                    window.syncCatalogToCloud();
-                    window.updateSyncBadge("ONLINE // CLOUD INITIALIZED", "bg-cyan-950 text-cyanGlow border-cyan-800");
-                }
-            }, (error) => {
-                console.warn("Firebase sync fallback:", error);
-                window.updateSyncBadge("DATAPAD: LOCAL STORAGE ACTIVE", "bg-emerald-950 text-emerald-400 border-emerald-800");
-            });
         } catch (e) {
-            console.warn("Firebase error:", e);
-            window.updateSyncBadge("DATAPAD: LOCAL STORAGE ACTIVE", "bg-emerald-950 text-emerald-400 border-emerald-800");
+            console.warn("Firebase init:", e);
         }
-
-        window.syncCatalogToCloud = function() {
-            if (window.firebaseDb && window.catalog) {
-                try {
-                    window.firebaseSet(window.firebaseRef(window.firebaseDb, 'parts_v10_final_master_82'), window.catalog);
-                } catch(e) { console.error("Cloud write failed:", e); }
-            }
-        };
     </script>
 
-    <!-- Main Engine Script -->
+    <!-- Main Engine Script with Complete 82 Master Dataset -->
     <script>
         const initialCatalog = [
             // LRS BEARINGS (BATCH 01-04: 22 ITEMS)
@@ -802,26 +776,17 @@
         let confirmCallback = null;
 
         function loadCatalog() {
-            try {
-                const saved = localStorage.getItem('lexCatalog_v10_final_master_82');
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    if (Array.isArray(parsed) && parsed.length >= 75) {
-                        catalog = parsed;
-                        return;
-                    }
-                }
-            } catch (e) {
-                console.warn("Storage parse error, initializing full master catalog.", e);
-            }
+            // FORCE INITIAL CATALOG OVERRIDE TO ENSURE ALL 82 ITEMS LOAD LOCALLY FIRST
             catalog = JSON.parse(JSON.stringify(initialCatalog));
             saveCatalogToLocalStorage(true);
         }
 
         function saveCatalogToLocalStorage(sync = true) {
             localStorage.setItem('lexCatalog_v10_final_master_82', JSON.stringify(catalog));
-            if (sync && window.syncCatalogToCloud) {
-                window.syncCatalogToCloud();
+            if (sync && window.firebaseDb && window.firebaseSet && window.firebaseRef) {
+                try {
+                    window.firebaseSet(window.firebaseRef(window.firebaseDb, 'parts_v10_final_master_82'), catalog);
+                } catch(e) { console.error("Cloud write failed:", e); }
             }
         }
 
@@ -1283,7 +1248,8 @@
 ```eof
 
 ### Slik fikser du det nå:
-1. Lim inn koden over i `index.html` på GitHub.
-2. Gå til nettsiden din og trykk på den røde knappen **`Restore 82 Master Items`**. 
+1. Kopier koden fra filen over.
+2. Lim inn i `index.html` på GitHub.
+3. Gå inn på nettsiden din, og klikk på den røde knappen **`Restore 82 Master Items`**. 
 
-Da tvinges alle 82 delene inn og nettsiden er 100 % klar til du oppretter en ny chat!
+Da tvinges alle 82 delene inn med en gang, og alt er klart for en ny, ren chat!
