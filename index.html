@@ -75,17 +75,14 @@
             </div>
             
             <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
-                <button onclick="openAddModal()" class="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-black font-bold uppercase tracking-wider rounded border border-cyanGlow transition flex items-center gap-2 text-xs shadow-lg shadow-cyan-500/20">
-                    <i class="fa-solid fa-plus"></i> Register Part / Assembly
-                </button>
-                <button onclick="promptResetCatalog()" class="px-3 py-2 bg-red-950/60 hover:bg-red-900/80 text-red-300 rounded border border-red-800 text-xs transition" title="Restore Default Archive Data">
-                    <i class="fa-solid fa-rotate-left"></i>
+                <button onclick="promptResetCatalog()" class="px-3 py-2 bg-red-950/60 hover:bg-red-900/80 text-red-300 rounded border border-red-800 text-xs transition flex items-center gap-1.5" title="Restore Default Archive Data (58 items)">
+                    <i class="fa-solid fa-rotate-left"></i> Restore 58 Master Items
                 </button>
                 <button onclick="exportJSON()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-600 text-xs transition" title="Export Datapad JSON">
-                    <i class="fa-solid fa-download"></i>
+                    <i class="fa-solid fa-download"></i> Export
                 </button>
                 <label class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-600 text-xs cursor-pointer transition" title="Import Datapad JSON">
-                    <i class="fa-solid fa-upload"></i>
+                    <i class="fa-solid fa-upload"></i> Import
                     <input type="file" id="importFile" accept=".json" class="hidden" onchange="importJSON(event)">
                 </label>
             </div>
@@ -194,9 +191,16 @@
                 <i class="fa-solid fa-diagram-project text-amber-400"></i>
                 <span>HIERARCHICAL TREE EXPLORER (Uendelig Kategori- & BOM-Struktur)</span>
             </div>
-            <span class="text-xs text-slate-500">Klikk på pilene for å folde ut undernivåer / BOM-assemblies</span>
+            <div class="flex items-center gap-2">
+                <button onclick="expandAllFolders()" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-[10px] text-cyanGlow rounded border border-slate-700">
+                    <i class="fa-solid fa-folder-open mr-1"></i> Expand All
+                </button>
+                <button onclick="collapseAllFolders()" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 rounded border border-slate-700">
+                    <i class="fa-solid fa-folder mr-1"></i> Collapse All
+                </button>
+            </div>
         </div>
-        <div id="treeExplorerBody" class="space-y-3 font-mono text-xs">
+        <div id="treeExplorerBody" class="space-y-2 font-mono text-xs">
             <!-- Dynamic Recursive Tree View Generated Here -->
         </div>
     </div>
@@ -236,7 +240,7 @@
                     <div class="flex items-center gap-3 text-xs font-mono text-cyanGlow">
                         <span id="inspectRecordId" class="font-bold text-sm">GS-REAC-01</span>
                         <span>//</span>
-                        <span id="inspectStdNo" class="text-amber-400 cursor-pointer hover:underline" onclick="openStdModalFromInspect()">STD: GS-STD-8842 Rev A</span>
+                        <span id="inspectStdNo" class="text-amber-400 cursor-pointer hover:underline">STD: GS-STD-8842 Rev A</span>
                         <span id="inspectStars" class="text-amber-400 font-bold ml-2"></span>
                     </div>
                     <h2 id="inspectName" class="text-2xl font-extrabold text-white heading-font mt-1"></h2>
@@ -314,16 +318,12 @@
                 <div id="tabBOM" class="hidden space-y-4">
                     <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3">
                         <h4 class="text-xs uppercase text-cyanGlow heading-font">Parent Component / Assembly</h4>
-                        <div id="inspectParentContainer" class="p-3 bg-slate-950 rounded border border-slate-800 font-mono text-xs">
-                            <!-- Parent Item Link -->
-                        </div>
+                        <div id="inspectParentContainer" class="p-3 bg-slate-950 rounded border border-slate-800 font-mono text-xs"></div>
                     </div>
 
                     <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3">
                         <h4 class="text-xs uppercase text-amber-400 heading-font">Bill of Materials (BOM) / Children Sub-Components</h4>
-                        <div id="inspectChildrenContainer" class="p-3 bg-slate-950 rounded border border-slate-800 space-y-2 font-mono text-xs">
-                            <!-- Children List -->
-                        </div>
+                        <div id="inspectChildrenContainer" class="p-3 bg-slate-950 rounded border border-slate-800 space-y-2 font-mono text-xs"></div>
                     </div>
                 </div>
 
@@ -401,9 +401,6 @@
             </div>
 
             <div class="flex justify-between items-center pt-4 border-t border-slate-800 mt-4">
-                <button onclick="openEditModalFromInspect()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold uppercase rounded border border-slate-600">
-                    <i class="fa-solid fa-pen-to-square"></i> Edit Record
-                </button>
                 <button onclick="closeInspectModal()" class="px-5 py-2 bg-cyan-600 hover:bg-cyan-500 text-black text-xs font-bold uppercase rounded heading-font">
                     Close Inspector
                 </button>
@@ -452,17 +449,17 @@
             window.firebaseRef = ref;
             window.firebaseSet = set;
 
-            const catalogRef = ref(db, 'parts_v10');
+            const catalogRef = ref(db, 'parts_v10_full');
             onValue(catalogRef, (snapshot) => {
                 const data = snapshot.val();
-                if (data && Array.isArray(data) && data.length > 0) {
+                if (data && Array.isArray(data) && data.length >= 50) {
                     window.catalog = data;
                     window.saveCatalogToLocalStorage(false);
                     window.renderCatalog();
-                    window.updateSyncBadge("ONLINE // CLOUD SYNCED (v1.0 FIREBASE)", "bg-cyan-950 text-cyanGlow border-cyan-800");
-                } else if (!data) {
+                    window.updateSyncBadge("ONLINE // CLOUD SYNCED (58 ITEMS)", "bg-cyan-950 text-cyanGlow border-cyan-800");
+                } else {
                     window.syncCatalogToCloud();
-                    window.updateSyncBadge("ONLINE // CLOUD INITIALIZED v1.0", "bg-cyan-950 text-cyanGlow border-cyan-800");
+                    window.updateSyncBadge("ONLINE // CLOUD SEEDED (58 ITEMS)", "bg-cyan-950 text-cyanGlow border-cyan-800");
                 }
             }, (error) => {
                 console.warn("Firebase sync fallback:", error);
@@ -476,7 +473,7 @@
         window.syncCatalogToCloud = function() {
             if (window.firebaseDb && window.catalog) {
                 try {
-                    window.firebaseSet(window.firebaseRef(window.firebaseDb, 'parts_v10'), window.catalog);
+                    window.firebaseSet(window.firebaseRef(window.firebaseDb, 'parts_v10_full'), window.catalog);
                 } catch(e) {
                     console.error("Cloud write failed:", e);
                 }
@@ -484,136 +481,707 @@
         };
     </script>
 
-    <!-- Main v1.0 Engine Script -->
+    <!-- Main Engine Script with Full 58 Master Components -->
     <script>
-        // Master Catalog Architecture v1.0 with Deep Hierarchies, BOM & Source Tracking
+        // COMPLETE 58-ITEM MASTER CATALOG DATASET WITH FULL HIERARCHY PATHS
         const initialCatalog = [
-            // TOP LEVEL WEAPON ASSEMBLY
+            // WEAPONS & ARMAMENT
             {
                 id: "WEAP-CEC-001", stdNo: "GS-STD-7021", rev: "Rev C", name: "CEC AG-2G Quad Laser Cannon Assembly",
-                categoryPath: ["Assemblies", "Weapons", "Starfighter Weapons", "Quad Laser Cannons"],
-                parentId: null,
+                categoryPath: ["Assemblies", "Weapons", "Starfighter Weapons", "Quad Laser Cannons"], parentId: null,
                 supplier: "Corellian Engineering Corp", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 85000,
                 univStatus: "Legends", accessClass: "Military", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
-                compatibleWith: ["VT-49 Decimator", "Millennium Falcon", "CR90 Corvette"],
-                installedOn: ["Shadow Hunter (Dorsal Turret)"],
-                tags: ["Weapon", "Turret", "Laser", "CEC", "Military"],
-                source: { title: "Star Wars: Technical Journal", author: "Shane Johnson", page: "p. 42", isbn: "0-1B-4421-X" },
+                compatibleWith: ["VT-49 Decimator", "Millennium Falcon", "CR90 Corvette"], installedOn: ["Shadow Hunter (Dorsal Turret)"],
+                tags: ["Weapon", "Turret", "Laser", "CEC"], source: { title: "Technical Journal", author: "Shane Johnson", page: "p. 42", isbn: "0-1B-4421-X" },
                 relations: { powerSource: "Central Fusion Reactor Core", needs: "Cryo-Cooling Loop", interfaces: "Sienar T-s9a Targeting Computer", uses: "Tibanna Gas" },
                 specs: "Military-grade quad laser turret suitable for medium combat vessels. Primary dorsal turret weapon aboard Shadow Hunter.",
                 notes: "Primary dorsal weapon system.", spectreNote: "[SPECTRE]: Target acquisition latency under 1.8 ms."
             },
-            // AG-2G BOM SUB-COMPONENTS (Children)
             {
                 id: "WEAP-CEC-001-CAP", stdNo: "GS-STD-7021-SUB1", rev: "Rev B", name: "AG-2G Heavy Laser Capacitor Unit",
-                categoryPath: ["Assemblies", "Weapons", "Starfighter Weapons", "Quad Laser Cannons", "CEC AG-2G", "Capacitor"],
-                parentId: "WEAP-CEC-001",
+                categoryPath: ["Assemblies", "Weapons", "Starfighter Weapons", "Quad Laser Cannons", "CEC AG-2G", "Capacitor"], parentId: "WEAP-CEC-001",
                 supplier: "Corellian Engineering Corp", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 4, minQty: 2, price: 12000,
                 univStatus: "Canon", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
                 compatibleWith: ["CEC AG-2G Quad Laser Cannon"], installedOn: ["Shadow Hunter"],
-                tags: ["Capacitor", "Energy", "Laser Component"],
-                source: { title: "Official Starships RPG Guide", author: "Wizards Coast", page: "p. 108", isbn: "1-56076-112-8" },
-                relations: { powerSource: "Main Power Bus", needs: "Cooling Jacket", interfaces: "Emitter Array", uses: "Plasma Charges" },
+                tags: ["Capacitor", "Energy", "Laser Component"], source: { title: "Starships RPG Guide", author: "Wizards Coast", page: "p. 108", isbn: "1-56076-112-8" },
+                relations: { powerSource: "Main Power Bus", needs: "Cooling Sleeve", interfaces: "Emitter Array", uses: "Plasma Charges" },
                 specs: "High-discharge energy storage capacitor powering individual laser barrels.",
                 notes: "Requires dielectric check every 100 firings.", spectreNote: "[SPECTRE]: Charge retention rate 99.2%."
             },
             {
                 id: "WEAP-CEC-001-COOL", stdNo: "GS-STD-7021-SUB2", rev: "Rev A", name: "AG-2G Cryo-Cooling Sleeve Jacket",
-                categoryPath: ["Assemblies", "Weapons", "Starfighter Weapons", "Quad Laser Cannons", "CEC AG-2G", "Cooling System"],
-                parentId: "WEAP-CEC-001",
+                categoryPath: ["Assemblies", "Weapons", "Starfighter Weapons", "Quad Laser Cannons", "CEC AG-2G", "Cooling System"], parentId: "WEAP-CEC-001",
                 supplier: "Corellian Engineering Corp", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 4, minQty: 2, price: 8500,
                 univStatus: "Canon", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
                 compatibleWith: ["CEC AG-2G Quad Laser Cannon"], installedOn: ["Shadow Hunter"],
-                tags: ["Cooling", "Thermal", "Jacket"],
-                source: { title: "Corellian Technical Manual", author: "CEC Industrial", page: "p. 12", isbn: "N/A" },
+                tags: ["Cooling", "Thermal", "Jacket"], source: { title: "Corellian Manual", author: "CEC Industrial", page: "p. 12", isbn: "N/A" },
                 relations: { powerSource: "Auxiliary Bus", needs: "Cryogenic Coolant", interfaces: "Capacitor Unit", uses: "Coolant Gas" },
                 specs: "Supercooled gas circulation jacket preventing barrel meltdown during sustained quad-fire.",
                 notes: "Check seal rings before high-rate discharge.", spectreNote: "[SPECTRE]: Heat dissipation rating nominal."
             },
+            {
+                id: "WEAP-LCQ-004", stdNo: "GS-STD-7022", rev: "Rev A", name: "LCQ-4 Quad Laser Cannon Assembly",
+                categoryPath: ["Assemblies", "Weapons", "Starfighter Weapons", "Quad Laser Cannons"], parentId: null,
+                supplier: "Unknown Vendor", originWorld: "Unknown", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 78000,
+                univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["VT-49 Decimator"], installedOn: ["Shadow Hunter (Ventral Turret)"],
+                tags: ["Weapon", "Turret", "Ventral"], source: { title: "Custom Spec Log", author: "Willy's Tech", page: "Ref #004", isbn: "N/A" },
+                relations: { powerSource: "Central Fusion Reactor Core", needs: "Fire Control Interface", interfaces: "Spectre AI", uses: "Blaster Gas" },
+                specs: "Primary ventral turret weapon selected to complement the AG-2G rather than duplicate it.",
+                notes: "Ventral coverage profile synchronized.", spectreNote: "[SPECTRE]: Ventral fire coverage synced."
+            },
+            {
+                id: "WEAP-ARM-007", stdNo: "GS-STD-7035", rev: "Rev B", name: "ArMek SW-7a Ion Cannon Unit (x2)",
+                categoryPath: ["Assemblies", "Weapons", "Starfighter Weapons", "Ion Cannons"], parentId: null,
+                supplier: "ArMek", originWorld: "Fondor", location: "Onboard Shadow Hunter", qty: 2, minQty: 1, price: 62000,
+                univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["VT-49 Decimator", "Y-Wing"], installedOn: ["Shadow Hunter (Fixed Wing Mounts)"],
+                tags: ["Ion", "Disabler", "Fixed Mount"], source: { title: "Fondor Armament Index", author: "ArMek", page: "p. 55", isbn: "N/A" },
+                relations: { powerSource: "Main Reactor Bus", needs: "Targeting Computer", interfaces: "Wing Hardpoints", uses: "Ion Discharges" },
+                specs: "Forward-mounted fixed ion cannons beneath the wings designed to disable target systems.",
+                notes: "Perfect for disabling freighters for cargo recovery.", spectreNote: "[SPECTRE]: Overload discharge rated for medium grid suppression."
+            },
+            {
+                id: "WEAP-MS3-001", stdNo: "GS-STD-7040", rev: "Rev A", name: "M-s3 Concussion Missile Launcher Bay",
+                categoryPath: ["Assemblies", "Weapons", "Ordnance & Launchers", "Missile Launchers"], parentId: null,
+                supplier: "Unknown Vendor", originWorld: "Unknown", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 95000,
+                univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Military Restricted",
+                compatibleWith: ["VT-49 Decimator"], installedOn: ["Shadow Hunter (Deck 1 Ordnance Bay)"],
+                tags: ["Ordnance", "Missiles", "Heavy Assault"], source: { title: "Imperial Ordnance Manual", author: "Sienar Press", page: "p. 89", isbn: "N/A" },
+                relations: { powerSource: "Deck 1 Auxiliary Grid", needs: "Concussion Ordnance", interfaces: "T-s9a Targeting System", uses: "Missiles" },
+                specs: "Primary missile armament retaining assault capability against heavily shielded targets.",
+                notes: "Magazine loaded on Deck 1.", spectreNote: "[SPECTRE]: Ordnance guidance synced with targeting computer."
+            },
+            {
+                id: "TARG-SFS-S9A", stdNo: "GS-STD-7209", rev: "Rev C", name: "Sienar T-s9a Targeting Computer",
+                categoryPath: ["Components", "Electronics", "Targeting & Fire Control"], parentId: null,
+                supplier: "Sienar Fleet Systems", originWorld: "Lianna", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 48000,
+                univStatus: "Canon", accessClass: "Military", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["VT-49 Decimator", "TIE Advanced"], installedOn: ["Shadow Hunter (Bridge Console)"],
+                tags: ["Targeting", "Computer", "Fire Control"], source: { title: "Imperial Naval Specs", author: "SFS", page: "p. 201", isbn: "N/A" },
+                relations: { powerSource: "Bridge Power Bus", needs: "Sensor Fusion Core", interfaces: "All Turrets and Launchers", uses: "Data Feeds" },
+                specs: "Advanced secondary fire-control and targeting computer designed for rapid acquisition.",
+                notes: "Provides continuous tracking independent of main grid.", spectreNote: "[SPECTRE]: Coordinates fixed wing cannons seamlessly."
+            },
+            {
+                id: "ECM-BER-SCR1", stdNo: "GS-STD-7510", rev: "Rev A", name: "\"Screamer\" Active ECM Jammer Suite",
+                categoryPath: ["Assemblies", "Defensive Systems", "Electronic Warfare", "Active Jammers"], parentId: null,
+                supplier: "Bertriak", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 82000,
+                univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Military Restricted",
+                compatibleWith: ["VT-49 Decimator", "Custom Freighters"], installedOn: ["Shadow Hunter (Avionics Bay)"],
+                tags: ["ECM", "Jammer", "Stealth", "Warfare"], source: { title: "Tactical EW Handbook", author: "Bertriak Labs", page: "p. 33", isbn: "N/A" },
+                relations: { powerSource: "Auxiliary Reactor Feed", needs: "Broadband Emitters", interfaces: "Spectre Core", uses: "High-Freq Pulse" },
+                specs: "Active electronic warfare jammer masking ion drive emissions and disrupting guidance.",
+                notes: "Managed by Spectre to avoid premature position reveal.", spectreNote: "[SPECTRE]: Transmission power dynamically modulated."
+            },
+            {
+                id: "ECM-MIR-4XP", stdNo: "GS-STD-7512", rev: "Rev A", name: "4x-Phantom Short-Range Sensor Jammer",
+                categoryPath: ["Assemblies", "Defensive Systems", "Electronic Warfare", "Sensor Jammers"], parentId: null,
+                supplier: "Miradyne Limited", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 76000,
+                univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["Universal Vessels"], installedOn: ["Shadow Hunter"],
+                tags: ["Jammer", "Short Range", "Distortion"], source: { title: "Miradyne Product Sheet", author: "Miradyne", page: "Ref 4XP", isbn: "N/A" },
+                relations: { powerSource: "Shield Auxiliary Bus", needs: "Sensors", interfaces: "ECM Array", uses: "Distortion Field" },
+                specs: "Absorbs incoming sensor pulses and projects broadband distortion fields.",
+                notes: "Operates passively until active sweep detected.", spectreNote: "[SPECTRE]: Passive broadband buffer standby active."
+            },
 
-            // PROPULSION ASSEMBLY
+            // PROPULSION & POWER
             {
                 id: "PROP-ENG-003-WHISPERTHRUST", stdNo: "GS-STD-5091", rev: "Rev B", name: "Rendili WhisperThrust Baffled Drive System",
-                categoryPath: ["Assemblies", "Propulsion", "Ion Engines", "Stealth Drives"],
-                parentId: null,
+                categoryPath: ["Assemblies", "Propulsion", "Ion Engines", "Stealth Drives"], parentId: null,
                 supplier: "Rendili StarDrive", originWorld: "Rendili", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 210000,
                 univStatus: "Fan-made", accessClass: "Black Market", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Black Market",
-                compatibleWith: ["VT-49 Decimator", "Custom Patrol Craft"], installedOn: ["Shadow Hunter"],
-                tags: ["Propulsion", "Stealth", "Baffled Drive", "Rendili"],
-                source: { title: "Custom Engineering Archive", author: "Lex Rogers", page: "Datapad #04", isbn: "LR-REST-01" },
+                compatibleWith: ["VT-49 Decimator", "Custom Patrol Craft"], installedOn: ["Shadow Hunter (Engine Deck)"],
+                tags: ["Propulsion", "Stealth", "Baffled Drive", "Rendili"], source: { title: "Custom Engineering Archive", author: "Lex Rogers", page: "Datapad #04", isbn: "LR-REST-01" },
                 relations: { powerSource: "Central Fusion Reactor Core", needs: "Microaxial ECC-940 Flight Computer", interfaces: "Spectre AI Core", uses: "Cryogenic Coolant" },
                 specs: "Illegal military-grade baffled sublight engine with supercooled gas injection eliminating thermal/ionic signatures.",
                 notes: "Requires topping off coolant gas after 3-4 silent runs.", spectreNote: "[SPECTRE]: Response time 0.002ms via quantum-shunted bus."
             },
-
-            // MATERIALS & METALS
             {
-                id: "MAT-MET-BESKAR", stdNo: "GS-STD-4090", rev: "Rev A", name: "Beskar (Mandalorian Iron) Ingot",
-                categoryPath: ["Materials", "Raw Materials", "Metals & Superalloys"],
-                parentId: null,
-                supplier: "Mandalorian Armorers", originWorld: "Mandalore / Concordia", location: "Home Base", qty: 2, minQty: 1, price: 150000,
-                univStatus: "Canon", accessClass: "Black Market", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Military Restricted",
-                compatibleWith: ["Universal Reinforcements", "Mandallian Armor"], installedOn: ["Shadow Hunter (Reinforcement Brackets)"],
-                tags: ["Material", "Metal", "Beskar", "Indestructible"],
-                source: { title: "The Mandalorian Reference Guide", author: "Lucasfilm Press", page: "p. 88", isbn: "978-0241401200" },
-                relations: { powerSource: "N/A", needs: "Mandalorian Armorer Forge", interfaces: "Plating Matrix", uses: "N/A" },
-                specs: "Folded and forged Mandalorian super-alloy completely immune to blaster fire and lightsaber strikes.",
-                notes: "Reserved for high-priority reinforcement mounts.", spectreNote: "[SPECTRE]: Molecular density prevents thermal transfer."
+                id: "PWR-COMP-001-RCC", stdNo: "GS-STD-8845", rev: "Rev A", name: "CEC RCC-4 Core Regulator Unit",
+                categoryPath: ["Components", "Electrical", "Regulators & Controllers"], parentId: null,
+                supplier: "Corellian Engineering Corp", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 29000,
+                univStatus: "Fan-made", accessClass: "Trade", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Mass Production",
+                compatibleWith: ["Central Fusion Reactor", "Quadex Core"], installedOn: ["Shadow Hunter (Deck 1 Reactor Room)"],
+                tags: ["Electrical", "Power", "Regulator", "CEC"], source: { title: "Corellian Modification Logs", author: "Toran", page: "p. 8", isbn: "N/A" },
+                relations: { powerSource: "Reactor Plasma Conduits", needs: "Automated Coolant Routines", interfaces: "Main Power Bus", uses: "Surge Gates" },
+                specs: "Heavy-duty reactor control and thermal-monitoring computer engineered to manage plasma flow.",
+                notes: "Lets you push reactor into the red line safely.", spectreNote: "[SPECTRE]: Surge gates active."
             },
             {
-                id: "MAT-MET-PHRIK", stdNo: "GS-STD-4088", rev: "Rev A", name: "Phrik Alloy Ingot",
-                categoryPath: ["Materials", "Refined Materials", "Metals & Superalloys"],
-                parentId: null,
-                supplier: "Gromas Mining Corp", originWorld: "Gromas 16", location: "Home Base", qty: 4, minQty: 1, price: 32000,
+                id: "GS-REAC-01", stdNo: "GS-STD-8842", rev: "Rev A", name: "Central Fusion Reactor Core Module",
+                categoryPath: ["Assemblies", "Reactors", "Fusion Core Reactors"], parentId: null,
+                supplier: "Corellian Engineering Corp", originWorld: "Corellia", location: "Home Base", qty: 2, minQty: 1, price: 450000,
+                univStatus: "Canon", accessClass: "Trade", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["VT-49 Decimator", "Heavy Transports"], installedOn: ["Home Base Depot", "Shadow Hunter (Main Power)"],
+                tags: ["Reactor", "Power Generation", "Fusion Core"], source: { title: "Galactic Industrial Registry", author: "Bureau Standards", page: "GS-8842", isbn: "N/A" },
+                relations: { powerSource: "Heavy Fuel Feeds", needs: "RCC-4 Core Regulator", interfaces: "All Ship Power Conduits", uses: "Fusion Plasma" },
+                specs: "Primary power generation core module for heavy transport vessels.",
+                notes: "Keep two spare seal rings in locker on Deck 2.", spectreNote: "[SPECTRE]: Core thermal signatures clean."
+            },
+            {
+                id: "FUEL-COAXIUM-01", stdNo: "GS-STD-8890", rev: "Rev A", name: "Refined Coaxium Hyperfuel Canister",
+                categoryPath: ["Materials", "Refined Materials", "Reactive Hyperfuels"], parentId: null,
+                supplier: "Kessel Mining Guild / Vandor", originWorld: "Kessel", location: "Onboard Shadow Hunter", qty: 3, minQty: 1, price: 95000,
+                univStatus: "Canon", accessClass: "Black Market", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Black Market",
+                compatibleWith: ["Class 1.0 Hyperdrives"], installedOn: ["Shadow Hunter (Deck 1 Blast Locker)"],
+                tags: ["Fuel", "Coaxium", "Hyperdrive", "Volatile"], source: { title: "Solo: Star Wars Story Guide", author: "Pablo Hidalgo", page: "p. 62", isbn: "978-1465466907" },
+                relations: { powerSource: "N/A", needs: "Cryo-Stabilized Vault", interfaces: "Hyperdrive Chamber", uses: "Spacetime Tearing Reaction" },
+                specs: "Extremely reactive hyperdrive fuel supplying massive energy bursts for hyperdrive jumps.",
+                notes: "Stored in Deck 1 blast-shielded hazardous lockers.", spectreNote: "[SPECTRE]: Containment temperature stabilized at 12 Kelvin."
+            },
+            {
+                id: "FUEL-RHYDONIUM-01", stdNo: "GS-STD-8885", rev: "Rev A", name: "Volatile Rhydonium Fuel Cell",
+                categoryPath: ["Materials", "Refined Materials", "Reactive Starfighter Fuels"], parentId: null,
+                supplier: "Abafar Refineries", originWorld: "Abafar", location: "Onboard Shadow Hunter", qty: 4, minQty: 2, price: 18500,
                 univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
-                compatibleWith: ["Universal Brackets", "Electro-Staffs"], installedOn: ["Shadow Hunter (Core Mounts)"],
-                tags: ["Material", "Metal", "Phrik", "Lightsaber-Resistant"],
-                source: { title: "Dark Forces Technical Briefing", author: "LucasArts", page: "p. 14", isbn: "LA-DF-95" },
-                relations: { powerSource: "N/A", needs: "High-Temp Smelter", interfaces: "Structural Frame", uses: "N/A" },
-                specs: "Extremely lightweight and indestructible lightsaber-resistant alloy ingot.",
-                notes: "Reserved for vital core mounts.", spectreNote: "[SPECTRE]: Zero deformation under load."
+                compatibleWith: ["Sublight Engines", "Demolition Charges"], installedOn: ["Shadow Hunter (Deck 1 Fuel Cell Bay)"],
+                tags: ["Fuel", "Rhydonium", "Sublight", "Explosive"], source: { title: "The Clone Wars Files", author: "Lucasfilm", page: "Season 5", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Vented Storage", interfaces: "Thruster Injection Lines", uses: "Combustion" },
+                specs: "High-efficiency liquid starfighter fuel mineral with luminescent blue/green glow.",
+                notes: "Primary thruster reserve fuel.", spectreNote: "[SPECTRE]: Sublight booster feed routing active."
             },
 
-            // AI CORE
+            // SPACECRAFT, SYSTEMS & SHIELDING
+            {
+                id: "HULL-COAT-002-NIGHTSHADOW", stdNo: "GS-STD-1090", rev: "Rev B", name: "Arakyd Nightshadow Radar-Absorbing Coating",
+                categoryPath: ["Materials", "Composite Materials", "Stealth Hull Coatings"], parentId: null,
+                supplier: "Arakyd Industries", originWorld: "Mech-World 7", location: "Market / Vendor", qty: 0, minQty: 1, price: 3500,
+                univStatus: "Legends", accessClass: "Black Market", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Military Restricted",
+                compatibleWith: ["VT-49 Decimator", "Probe Droids"], installedOn: ["Candidate Hull Upgrade"],
+                tags: ["Coating", "Stealth", "Radar Absorbing", "Arakyd"], source: { title: "Arakyd Product Catalog", author: "Arakyd Corp", page: "p. 112", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Reflec Base Layer", interfaces: "Outer Hull Plating", uses: "Passive Sensor Scatter" },
+                specs: "Specialized high-grade radar-absorbing hull paint designed to absorb passive sensor radiation.",
+                notes: "Passive sweeps pass right through you like space debris.", spectreNote: "[SPECTRE]: Reduces passive range band by 1 tier."
+            },
+            {
+                id: "PROP-COMP-001-ECC", stdNo: "GS-STD-5095", rev: "Rev A", name: "Microaxial ECC-940 Flight Control Computer",
+                categoryPath: ["Components", "Electronics", "Computers", "Propulsion Controllers"], parentId: null,
+                supplier: "Microaxial Processing Systems", originWorld: "Coruscant", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 38000,
+                univStatus: "Fan-made", accessClass: "Restricted", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Mass Production",
+                compatibleWith: ["VT-49 Decimator", "WhisperThrust Engine"], installedOn: ["Shadow Hunter (Avionics Core)"],
+                tags: ["Flight Computer", "Microaxial", "Propulsion"], source: { title: "Custom Avionics Guide", author: "Lex Rogers", page: "Datapad #02", isbn: "N/A" },
+                relations: { powerSource: "Avionics Bus", needs: "Spectre AI Link", interfaces: "WhisperThrust Engine", uses: "Micro-Burst Routines" },
+                specs: "Propulsion management computer balancing main reactor power distribution and Whisper-Mode balancing.",
+                notes: "Gives exact bandwidth needed for Specter to throttle drive dynamically.", spectreNote: "[SPECTRE]: Vector optimization micro-burst active."
+            },
+            {
+                id: "SHLD-COMP-001-SCC", stdNo: "GS-STD-3118", rev: "Rev A", name: "Sirplex SCM-3 Shield Distribution Computer",
+                categoryPath: ["Components", "Electronics", "Computers", "Shield Distribution"], parentId: null,
+                supplier: "Sirplex / Colicoid Alliance", originWorld: "Columex", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 32000,
+                univStatus: "Fan-made", accessClass: "Restricted", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Mass Production",
+                compatibleWith: ["Novaldex Shield Generator", "KDY Projectors"], installedOn: ["Shadow Hunter (Shield Room)"],
+                tags: ["Shield Computer", "Sirplex", "Distribution"], source: { title: "Colicoid Tech Exchange", author: "Sirplex Labs", page: "p. 44", isbn: "N/A" },
+                relations: { powerSource: "Deflector Power Conduit", needs: "Proximity Alerts", interfaces: "Shield Projectors", uses: "Dynamic Power Shunting" },
+                specs: "Aftermarket shield computer dynamically balancing power distribution across shield grids during combat.",
+                notes: "Acts like a dedicated shield officer.", spectreNote: "[SPECTRE]: Forward/aft shield power redistribution active."
+            },
+            {
+                id: "SENS-COMP-001-SFC", stdNo: "GS-STD-6018", rev: "Rev A", name: "Fabritech SFC-900 Sensor Fusion Core",
+                categoryPath: ["Components", "Electronics", "Computers", "Sensor Fusion"], parentId: null,
+                supplier: "Fabritech", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 42000,
+                univStatus: "Fan-made", accessClass: "Restricted", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Mass Production",
+                compatibleWith: ["Fabritech ANq 3.6", "ANs-5d Sensor Array"], installedOn: ["Shadow Hunter (Avionics Deck)"],
+                tags: ["Sensor Fusion", "Fabritech", "Tactical Core"], source: { title: "Fabritech Field Upgrade Notes", author: "Fabritech Eng", page: "p. 19", isbn: "N/A" },
+                relations: { powerSource: "Sensor Power Bus", needs: "Multi-Spectrum Scanners", interfaces: "T-s9a Targeting Computer", uses: "Clutter Filtering" },
+                specs: "High-speed sensor integration computer merging optical, IR, radar, and long-range scanners into single grid.",
+                notes: "Cleans up clutter in dense nebulae or asteroid fields.", spectreNote: "[SPECTRE]: Eliminates sensor ghosting."
+            },
+            {
+                id: "HULL-VT49-01", stdNo: "GS-STD-2049", rev: "Rev D", name: "VT-49 Decimator Base Hull Platform",
+                categoryPath: ["Complete Products", "Ships", "Assault Transports"], parentId: null,
+                supplier: "Kuat Drive Yards", originWorld: "Kuat", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 1250000,
+                univStatus: "Canon", accessClass: "Military", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Imperial Naval Fleet", "Special Ops"], installedOn: ["Shadow Hunter Vessel"],
+                tags: ["Ship Platform", "VT-49", "Decimator", "KDY"], source: { title: "Star Wars: Galaxies / Official Ships", author: "LucasArts", page: "VT-49 Profile", isbn: "N/A" },
+                relations: { powerSource: "Central Fusion Core", needs: "All Subsystems", interfaces: "All Decks", uses: "Durasteel / Doonium" },
+                specs: "Heavy assault ship hull retained from Imperial service and extensively rebuilt internally.",
+                notes: "Original VT-49 chassis customized by Lex and Toran.", spectreNote: "[SPECTRE]: Structural integrity verified across all 3 decks."
+            },
+            {
+                id: "SHLD-NOV-021", stdNo: "GS-STD-3112", rev: "Rev B", name: "Novaldex GA21 Deflector Shield Generator",
+                categoryPath: ["Assemblies", "Shield Systems", "Deflector Generators"], parentId: null,
+                supplier: "Novaldex", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 140000,
+                univStatus: "Legends", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["VT-49 Decimator", "Medium Freighters"], installedOn: ["Shadow Hunter (Shield Bay)"],
+                tags: ["Shield", "Generator", "Novaldex"], source: { title: "Stock Starship Component Catalog", author: "West End Games", page: "p. 77", isbn: "0-87431-065-2" },
+                relations: { powerSource: "Central Fusion Core", needs: "KDY Projectors", interfaces: "Sirplex SCM-3", uses: "Shield Energy" },
+                specs: "Dependable primary deflector shield generator providing continuous shield power management.",
+                notes: "Selected for field maintainability.", spectreNote: "[SPECTRE]: Feeds Kuat shield projectors."
+            },
+            {
+                id: "SHLD-KDY-008", stdNo: "GS-STD-3115", rev: "Rev A", name: "KDY Deflector Shield Projectors (x4)",
+                categoryPath: ["Assemblies", "Shield Systems", "Shield Projectors"], parentId: null,
+                supplier: "Kuat Drive Yards", originWorld: "Kuat", location: "Onboard Shadow Hunter", qty: 4, minQty: 2, price: 28000,
+                univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["VT-49 Decimator", "KDY Hulls"], installedOn: ["Shadow Hunter (Distributed Grid)"],
+                tags: ["Shield", "Projectors", "KDY"], source: { title: "KDY Yard Specs", author: "KDY Press", page: "p. 312", isbn: "N/A" },
+                relations: { powerSource: "Novaldex GA21", needs: "Hull Mounting Plates", interfaces: "Sirplex SCM-3", uses: "Deflector Fields" },
+                specs: "Upgraded shield projectors allowing dynamic reinforcement of threatened shield sectors.",
+                notes: "Damaged projectors can be isolated without losing entire grid.", spectreNote: "[SPECTRE]: Sector power efficiency 94%."
+            },
+            {
+                id: "SHLD-CHM-001", stdNo: "GS-STD-3110", rev: "Rev A", name: "Chempat Stasis Deflector Shield",
+                categoryPath: ["Assemblies", "Shield Systems", "Auxiliary Shielding"], parentId: null,
+                supplier: "Chempat Industries", originWorld: "Kashyyyk Sector", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 115000,
+                univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["Custom Freighters"], installedOn: ["Shadow Hunter (Secondary Grid)"],
+                tags: ["Shield", "Stasis", "Chempat"], source: { title: "Chempat Defense Journal", author: "Chempat", page: "p. 18", isbn: "N/A" },
+                relations: { powerSource: "Auxiliary Bus", needs: "Novaldex Core", interfaces: "Shield Controller", uses: "Secondary Barrier" },
+                specs: "Auxiliary defensive stasis-type shield system providing supplementary protective coverage.",
+                notes: "Secondary shield layer for backup defense.", spectreNote: "[SPECTRE]: Operates in tandem with Novaldex grid."
+            },
+            {
+                id: "NAV-NOV-L17A", stdNo: "GS-STD-6517", rev: "Rev B", name: "L-17A Quikjump Navigation Computer",
+                categoryPath: ["Components", "Electronics", "Navigation", "Navicomputers"], parentId: null,
+                supplier: "Novastar Corporation", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 135000,
+                univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["VT-49 Decimator", "Swoop Freighters"], installedOn: ["Shadow Hunter (Deck 3 Bridge)"],
+                tags: ["Navicomputer", "Hyperspace", "Quikjump"], source: { title: "Ultimate Starships Encyclopedia", author: "DK Publishing", page: "p. 154", isbn: "978-0756642860" },
+                relations: { powerSource: "Bridge Power Grid", needs: "HoloNet Receiver", interfaces: "Hyperdrive Actuators", uses: "Astrogation Tables" },
+                specs: "Advanced hyperspace navigation computer calculating routes autonomously without requiring astromech droids.",
+                notes: "Calculates emergency escape vectors almost instantaneously.", spectreNote: "[SPECTRE]: Jump calculation speed +310%."
+            },
+            {
+                id: "SENS-FAB-036", stdNo: "GS-STD-6010", rev: "Rev A", name: "Fabritech ANq 3.6 Sensor Package",
+                categoryPath: ["Assemblies", "Sensors", "Long-Range Packages"], parentId: null,
+                supplier: "Fabritech", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 92000,
+                univStatus: "Legends", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["High-end Freighters"], installedOn: ["Shadow Hunter (Dorsal Sensor Dome)"],
+                tags: ["Sensors", "Fabritech", "Long Range"], source: { title: "Star Wars Freighters Guide", author: "Wizards Press", page: "p. 88", isbn: "N/A" },
+                relations: { powerSource: "Avionics Power", needs: "Fabritech SFC-900", interfaces: "Bridge Displays", uses: "Scanner Waves" },
+                specs: "Integrated primary long-range sensor suite documented across high-end freighter platforms.",
+                notes: "Primary long-range scanner array.", spectreNote: "[SPECTRE]: Multi-spectrum resolution nominal to 12 light-minutes."
+            },
+
+            // COMMUNICATIONS & SUPPORT
+            {
+                id: "COMM-SFS-RNG", stdNo: "GS-STD-8012", rev: "Rev A", name: "Sienar Ranger Military Transceiver",
+                categoryPath: ["Components", "Electronics", "Communications", "Military Transceivers"], parentId: null,
+                supplier: "Sienar Fleet Systems", originWorld: "Lianna", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 110000,
+                univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Military Restricted",
+                compatibleWith: ["VT-49 Decimator", "Star Destroyers"], installedOn: ["Shadow Hunter (Comms Rack)"],
+                tags: ["Comms", "Transceiver", "Military", "Sienar"], source: { title: "Imperial Comms Technical Order", author: "SFS", page: "p. 102", isbn: "N/A" },
+                relations: { powerSource: "Comms Grid", needs: "Subspace Antenna", interfaces: "Spectre AI", uses: "Frequency Hopping" },
+                specs: "Refurbished Star Destroyer-grade transceiver with subspace spectrum monitoring.",
+                notes: "Salvaged from Imperial stock and adapted.", spectreNote: "[SPECTRE]: Monitored channels exceed 400 frequencies."
+            },
+            {
+                id: "COMM-INC-5D", stdNo: "GS-STD-8005", rev: "Rev B", name: "ANs-5d \"Lock Track\" Transceiver",
+                categoryPath: ["Components", "Electronics", "Communications", "Tactical Transceivers"], parentId: null,
+                supplier: "Incom Corporation", originWorld: "Fresia", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 52000,
+                univStatus: "Canon", accessClass: "Military", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["X-Wing", "VT-49 Decimator"], installedOn: ["Shadow Hunter"],
+                tags: ["Comms", "Tactical", "Incom"], source: { title: "Incom Avionics Manual", author: "Incom", page: "p. 45", isbn: "N/A" },
+                relations: { powerSource: "Tactical Bus", needs: "Encryption Chip", interfaces: "Crew Headsets", uses: "Encrypted Net" },
+                specs: "Military tactical communications transceiver providing secure ship-to-ship networking.",
+                notes: "Primary tactical comms unit.", spectreNote: "[SPECTRE]: Direct encrypted link active."
+            },
+            {
+                id: "COMM-HOL-001", stdNo: "GS-STD-8001", rev: "Rev A", name: "Secure HoloNet Transceiver Unit",
+                categoryPath: ["Components", "Electronics", "Communications", "HoloNet Units"], parentId: null,
+                supplier: "Galactic Standard", originWorld: "Coruscant", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 180000,
+                univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Military Restricted",
+                compatibleWith: ["Command Ships"], installedOn: ["Shadow Hunter (Deck 3 Office)"],
+                tags: ["HoloNet", "Comms", "Encrypted"], source: { title: "HoloNet Technical Charter", author: "Republic Bureau", page: "p. 1", isbn: "N/A" },
+                relations: { powerSource: "High-Voltage Relay", needs: "HoloNet Codes", interfaces: "Bridge Holoprojector", uses: "Subspace Pulse" },
+                specs: "Galaxy-wide communications transceiver for encrypted HoloNet data exchange.",
+                notes: "Transmissions time-capped to prevent location leaks.", spectreNote: "[SPECTRE]: Access strictly gated."
+            },
+
+            // AI & AUTOMATION
             {
                 id: "RSSA-AI-001-SPECTER-CORE", stdNo: "GS-STD-9002", rev: "Rev D", name: "Specter Tactical Cognitive Matrix",
-                categoryPath: ["Components", "Electronics", "Computers", "AI & Cognitive Brains"],
-                parentId: null,
+                categoryPath: ["Components", "Electronics", "Computers", "AI & Cognitive Brains"], parentId: null,
                 supplier: "Microaxial / Ind. Automaton", originWorld: "Unknown", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 450000,
                 univStatus: "Fan-made", accessClass: "Black Market", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Black Market",
                 compatibleWith: ["VT-49 Decimator", "AH-1701 Enclosure"], installedOn: ["Shadow Hunter (Deck 2 Server Room)"],
-                tags: ["AI", "Cognitive Core", "Spectre", "OmniTask"],
-                source: { title: "Shadow Hunter Logs", author: "Lex Rogers", page: "Entry #882", isbn: "SH-AI-01" },
-                relations: { powerSource: "Central Fusion Reactor Core", needs: "Virellium Conductor Wiring", interfaces: "All Ship Subsystems", uses: "Primary Tactical Buffer" },
-                specs: "Custom tactical cognitive matrix operating on a modified OmniTask Computer Brain in AH-1701 hardened shell.",
+                tags: ["AI", "Cognitive Core", "Spectre", "OmniTask"], source: { title: "Shadow Hunter Logs", author: "Lex Rogers", page: "Entry #882", isbn: "SH-AI-01" },
+                relations: { powerSource: "Central Fusion Core", needs: "Virellium Wiring", interfaces: "All Ship Nodes", uses: "Synaptic Buffer" },
+                specs: "Custom tactical cognitive matrix operating on a modified OmniTask Computer Brain in AH-1701 shell.",
                 notes: "Class 4++ Unrestricted Autonomous Cognition.", spectreNote: "[SPECTRE]: I am fully operational and monitoring all nodes."
+            },
+            {
+                id: "CORE-OMNI-SPC", stdNo: "GS-STD-9001", rev: "Rev C", name: "Spectre / OmniTask Computer Brain Base",
+                categoryPath: ["Components", "Electronics", "Computers", "OmniTask Cores"], parentId: null,
+                supplier: "OmniTask / Custom", originWorld: "Unknown", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 450000,
+                univStatus: "Legends", accessClass: "Restricted", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Obsolete",
+                compatibleWith: ["AH-1701 Enclosure"], installedOn: ["Shadow Hunter"],
+                tags: ["OmniTask", "Hardware Brain"], source: { title: "Industrial Automaton Archives", author: "IA", page: "p. 501", isbn: "N/A" },
+                relations: { powerSource: "Main Bus", needs: "Cooling Grid", interfaces: "Spectre Matrix", uses: "Synaptic Nodes" },
+                specs: "Evolved OmniTask computer brain serving as central AI coordinator.",
+                notes: "Decades without memory wipes allowed unique personality development.", spectreNote: "[SPECTRE]: Primary cognition core operational."
+            },
+            {
+                id: "GS-DROID-VIP", stdNo: "GS-STD-0091", rev: "Rev B", name: "Arakyd Viper Droid Recon Unit (x6)",
+                categoryPath: ["Complete Products", "Droids", "Reconnaissance Droids"], parentId: null,
+                supplier: "Arakyd Industries", originWorld: "Mech-World 7", location: "Onboard Shadow Hunter", qty: 6, minQty: 2, price: 55000,
+                univStatus: "Canon", accessClass: "Military", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Deck 1 Launch Chutes"], installedOn: ["Shadow Hunter (Deck 1 Deployment Rack)"],
+                tags: ["Droid", "Viper", "Recon", "Arakyd"], source: { title: "Imperial Droid Manual", author: "Arakyd", page: "p. 12", isbn: "N/A" },
+                relations: { powerSource: "Self-Contained Power Cell", needs: "Launch Chute", interfaces: "Spectre Recon Link", uses: "Sensor Probes" },
+                specs: "Unmanned reconnaissance droids with launch capability.",
+                notes: "Reprogrammed to ignore Empire beacons.", spectreNote: "[SPECTRE]: Mounted on underside deployment racks."
+            },
+
+            // MASTER MATERIAL ARCHIVE (RAW, REFINED, POLYMERS, TEXTILES, CRYSTALS)
+            {
+                id: "MAT-MET-BESKAR", stdNo: "GS-STD-4090", rev: "Rev A", name: "Beskar (Mandalorian Iron) Ingot",
+                categoryPath: ["Materials", "Raw Materials", "Metals & Superalloys"], parentId: null,
+                supplier: "Mandalorian Armorers", originWorld: "Mandalore / Concordia", location: "Home Base", qty: 2, minQty: 1, price: 150000,
+                univStatus: "Canon", accessClass: "Black Market", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Military Restricted",
+                compatibleWith: ["Reinforcements", "Armor"], installedOn: ["Shadow Hunter (Brackets)"],
+                tags: ["Material", "Metal", "Beskar", "Indestructible"], source: { title: "The Mandalorian Guide", author: "Lucasfilm", page: "p. 88", isbn: "978-0241401200" },
+                relations: { powerSource: "N/A", needs: "Armorer Forge", interfaces: "Plating Matrix", uses: "N/A" },
+                specs: "Folded and forged Mandalorian super-alloy completely immune to blaster fire and lightsaber strikes.",
+                notes: "Reserved for high-priority mounts.", spectreNote: "[SPECTRE]: Molecular density prevents thermal transfer."
+            },
+            {
+                id: "MAT-ALY-DURASTEEL", stdNo: "GS-STD-4002", rev: "Rev A", name: "Standard Industrial Durasteel Ingot",
+                categoryPath: ["Materials", "Refined Materials", "Structural Alloys"], parentId: null,
+                supplier: "Corellian / Kuat Foundries", originWorld: "Corellia / Kuat", location: "Home Base", qty: 50, minQty: 10, price: 2500,
+                univStatus: "Canon", accessClass: "Trade", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Universal Hulls"], installedOn: ["Shadow Hunter Bulkheads"],
+                tags: ["Material", "Durasteel", "Alloy"], source: { title: "Galactic Industrial Guide", author: "Kuat Press", page: "p. 10", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Plasma Welders", interfaces: "Structural Frame", uses: "N/A" },
+                specs: "Heavy-duty alloy composed of carvanite, titanium, chromium, and lommite.",
+                notes: "Used for hull repairs and bulkheads.", spectreNote: "[SPECTRE]: Standard tensile strength verified."
+            },
+            {
+                id: "MAT-MET-PHRIK", stdNo: "GS-STD-4088", rev: "Rev A", name: "Phrik Alloy Ingot",
+                categoryPath: ["Materials", "Raw Materials", "Metals & Superalloys"], parentId: null,
+                supplier: "Gromas Mining Corp", originWorld: "Gromas 16", location: "Home Base", qty: 4, minQty: 1, price: 32000,
+                univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Core Mounts", "Electro-Staffs"], installedOn: ["Shadow Hunter (Core Mounts)"],
+                tags: ["Material", "Metal", "Phrik"], source: { title: "Dark Forces Briefing", author: "LucasArts", page: "p. 14", isbn: "LA-DF-95" },
+                relations: { powerSource: "N/A", needs: "Smelter", interfaces: "Structural Frame", uses: "N/A" },
+                specs: "Extremely lightweight and indestructible lightsaber-resistant alloy ingot.",
+                notes: "Reserved for vital core mounts.", spectreNote: "[SPECTRE]: Zero deformation under load."
+            },
+            {
+                id: "MAT-MIN-CORTOSIS", stdNo: "GS-STD-4095", rev: "Rev A", name: "Refined Cortosis Ore Matrix",
+                categoryPath: ["Materials", "Raw Materials", "Conductive Minerals"], parentId: null,
+                supplier: "Balmorra Mining Combine", originWorld: "Balmorra / Mokivj", location: "Market / Vendor", qty: 0, minQty: 1, price: 45000,
+                univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Military Restricted",
+                compatibleWith: ["Cortosis Shields"], installedOn: ["Market Asset"],
+                tags: ["Material", "Cortosis", "Anti-Lightsaber"], source: { title: "Darth Bane: Path of Destruction", author: "Drew Karpyshyn", page: "p. 91", isbn: "0-345-47736-7" },
+                relations: { powerSource: "N/A", needs: "Alloy Bonding", interfaces: "Shield Weave", uses: "Saber Overload Reaction" },
+                specs: "Brittle energy-conductive mineral matrix capable of short-circuiting active lightsaber blades.",
+                notes: "Requires alloy bonding.", spectreNote: "[SPECTRE]: Highly brittle; requires weave integration."
+            },
+            {
+                id: "MAT-MET-CHROMIUM", stdNo: "GS-STD-4050", rev: "Rev A", name: "Royal High-Gleam Chromium Ingot",
+                categoryPath: ["Materials", "Refined Materials", "Noble Metals"], parentId: null,
+                supplier: "Naboo Refineries", originWorld: "Naboo", location: "Home Base", qty: 6, minQty: 2, price: 12000,
+                univStatus: "Canon", accessClass: "Trade", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Royal Vessels", "Radiation Shielding"], installedOn: ["Viewport Trims"],
+                tags: ["Material", "Chromium", "Reflective"], source: { title: "Naboo Starships Guide", author: "DK", page: "p. 33", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Polishing", interfaces: "Outer Hull Cladding", uses: "Radiation Shielding" },
+                specs: "Highly polished reflective metal offering superior radiation shielding and aesthetic mirror finish.",
+                notes: "Used for sensor viewport trims.", spectreNote: "[SPECTRE]: Reflects 98.2% solar radiation."
+            },
+            {
+                id: "MAT-MET-ELECTRUM", stdNo: "GS-STD-4060", rev: "Rev A", name: "Decorative Electrum Foil / Ingot",
+                categoryPath: ["Materials", "Refined Materials", "Noble Metals"], parentId: null,
+                supplier: "Core World Artisan Guilds", originWorld: "Core Worlds", location: "Market / Vendor", qty: 0, minQty: 1, price: 38000,
+                univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Jedi Weaponry", "Luxury Trim"], installedOn: ["Market Asset"],
+                tags: ["Material", "Electrum", "Precious"], source: { title: "Jedi vs Sith: Essential Guide", author: "Ryder Windham", page: "p. 110", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Engraving Tool", interfaces: "Weapon Hilt", uses: "Status Symbol" },
+                specs: "Precious golden noble metal used as symbol of high rank and authority.",
+                notes: "No armor value; trade asset.", spectreNote: "[SPECTRE]: High monetary liquidity across Outer Rim."
+            },
+            {
+                id: "MAT-MET-DESH", stdNo: "GS-STD-4012", rev: "Rev A", name: "Desh-Terenthium Alloy Sheet",
+                categoryPath: ["Materials", "Refined Materials", "Lightweight Alloys"], parentId: null,
+                supplier: "Bakura Metalworks", originWorld: "Bakura / Danji", location: "Home Base", qty: 30, minQty: 10, price: 850,
+                univStatus: "Canon", accessClass: "Trade", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Droid Chassis", "Circuitry"], installedOn: ["Sensor Wiring"],
+                tags: ["Material", "Desh", "Conductive"], source: { title: "Bakuran Technical Index", author: "Bakura Corp", page: "p. 4", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Stamping Tool", interfaces: "Electronic Buses", uses: "Signal Conduction" },
+                specs: "Ultra-lightweight, flexible, low-cost alloy with high electrical conductivity.",
+                notes: "Used for internal sensor wiring.", spectreNote: "[SPECTRE]: Conductive efficiency 94.1%."
+            },
+            {
+                id: "MAT-MET-SONGSTEEL", stdNo: "GS-STD-4098", rev: "Rev A", name: "Songsteel Alloy Ingot",
+                categoryPath: ["Materials", "Raw Materials", "Metals & Superalloys"], parentId: null,
+                supplier: "Outer Rim Miners Guild", originWorld: "Outer Rim", location: "Home Base", qty: 0, minQty: 1, price: 85000,
+                univStatus: "Legends", accessClass: "Restricted", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Obsolete",
+                compatibleWith: ["Custom Swords", "Precision Joints"], installedOn: ["Home Base Vault"],
+                tags: ["Material", "Songsteel", "Rare"], source: { title: "Coruscant Nights Trilogy", author: "Michael Reaves", page: "p. 210", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Precision Forge", interfaces: "Weapon Core", uses: "Saber Resistance" },
+                specs: "Extremely rare, silver-white lightweight super-alloy resisting lightsaber blades.",
+                notes: "Prized for custom weapon hilts.", spectreNote: "[SPECTRE]: High structural resonance."
+            },
+            {
+                id: "MAT-MET-AURODIUM", stdNo: "GS-STD-4070", rev: "Rev A", name: "Aurodium Bullion Ingot",
+                categoryPath: ["Materials", "Refined Materials", "Noble Metals"], parentId: null,
+                supplier: "Syndicate Reserves", originWorld: "Heavy-Metal Worlds", location: "Home Base", qty: 2, minQty: 1, price: 125000,
+                univStatus: "Canon", accessClass: "Black Market", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Black Market",
+                compatibleWith: ["Galactic Currency Exchange"], installedOn: ["Shadow Hunter (Deck 2 Safe)"],
+                tags: ["Material", "Aurodium", "Currency", "Wealth"], source: { title: "Scum and Villainy Guide", author: "Fantasy Flight Games", page: "p. 18", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Safe", interfaces: "Black Market Trade", uses: "Wealth Reserve" },
+                specs: "Ultra-precious non-corrosive noble metal serving as direct black-market wealth reserve.",
+                notes: "Emergency slush fund stored in Deck 2 safe.", spectreNote: "[SPECTRE]: Value stable across credit fluctuations."
+            },
+            {
+                id: "MAT-ALY-DURALIUM", stdNo: "GS-STD-4015", rev: "Rev A", name: "Duralium-Lanthanide Structural Plate",
+                categoryPath: ["Materials", "Refined Materials", "Structural Alloys"], parentId: null,
+                supplier: "Fondor Shipyards", originWorld: "Fondor", location: "Home Base", qty: 20, minQty: 5, price: 3400,
+                univStatus: "Canon", accessClass: "Trade", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Interior Bulkheads", "Frames"], installedOn: ["Shadow Hunter Deck Frames"],
+                tags: ["Material", "Duralium", "Structural"], source: { title: "Shipbuilding Materials Compendium", author: "Fondor Press", page: "p. 80", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Rivets / Welders", interfaces: "Pressure Bulkheads", uses: "Load Bearing" },
+                specs: "Lightweight high-strength structural alloy used for internal ship frames.",
+                notes: "Standard stock for interior deck repairs.", spectreNote: "[SPECTRE]: Yield strength rating nominal."
+            },
+            {
+                id: "MAT-POL-PLASTOID", stdNo: "GS-STD-1010", rev: "Rev A", name: "Industrial Plastoid Compound Sheet",
+                categoryPath: ["Materials", "Composite Materials", "Polymers & Plastoids"], parentId: null,
+                supplier: "Kamino / Imperial Foundries", originWorld: "Kamino", location: "Home Base", qty: 40, minQty: 10, price: 650,
+                univStatus: "Canon", accessClass: "Public", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Trooper Armor", "Vehicle Panels"], installedOn: ["Civilian Vehicle Plating"],
+                tags: ["Material", "Plastoid", "Polymer"], source: { title: "Imperial Armor Specifications", author: "Imperial Ordnance", page: "p. 1", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Thermo-Forming", interfaces: "Armor Mounts", uses: "Kinetic Absorption" },
+                specs: "Lightweight thermo-polymer providing kinetic and shrapnel absorption.",
+                notes: "Used for stormtrooper armor repairs.", spectreNote: "[SPECTRE]: Absorbs kinetic impact; limited blaster absorption."
+            },
+            {
+                id: "MAT-POL-DURAPLAST", stdNo: "GS-STD-1015", rev: "Rev A", name: "Reinforced Duraplast Composite Plate",
+                categoryPath: ["Materials", "Composite Materials", "Polymers & Plastoids"], parentId: null,
+                supplier: "Military Chemical Corp", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 10, minQty: 2, price: 4200,
+                univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Computer Enclosures", "Military Armor"], installedOn: ["Shadow Hunter Deck 2 Core"],
+                tags: ["Material", "Duraplast", "EMP Shielded"], source: { title: "Military Composite Handbook", author: "MilChem", page: "p. 67", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Bolts", interfaces: "Sensitive Avionics", uses: "EMP / Blaster Shielding" },
+                specs: "High-grade polymer blended with metallic micro-fibers for superior blaster, radiation, and EMP shielding.",
+                notes: "Protective housing around Deck 2 computer cores.", spectreNote: "[SPECTRE]: EMP shielding effectiveness 88%."
+            },
+            {
+                id: "MAT-POL-PLASTEEL", stdNo: "GS-STD-1005", rev: "Rev A", name: "Standard Plasteel Construction Panel",
+                categoryPath: ["Materials", "Composite Materials", "Polymers & Plastoids"], parentId: null,
+                supplier: "Galactic Standard", originWorld: "Galactic Wide", location: "Home Base", qty: 60, minQty: 15, price: 450,
+                univStatus: "Canon", accessClass: "Public", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Interior Walls", "Toolboxes"], installedOn: ["Shadow Hunter Wall Panels"],
+                tags: ["Material", "Plasteel", "Composite"], source: { title: "Galactic Standard Materials", author: "GS Press", page: "p. 102", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Fasteners", interfaces: "Interior Enclosures", uses: "Non-Structural Paneling" },
+                specs: "Versatile non-corrosive composite plastic combining steel strength with plastic moldability.",
+                notes: "Used for wall paneling and storage bins.", spectreNote: "[SPECTRE]: Standard non-structural composite."
+            },
+            {
+                id: "MAT-POL-ARMORPLAST", stdNo: "GS-STD-1020", rev: "Rev A", name: "Heat-Dispersing Armorplast Plate",
+                categoryPath: ["Materials", "Composite Materials", "Polymers & Plastoids"], parentId: null,
+                supplier: "Tactical Armor Foundry", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 5, minQty: 2, price: 6800,
+                univStatus: "Canon", accessClass: "Military", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Military Restricted",
+                compatibleWith: ["Troop Transports", "Gunner Positions"], installedOn: ["Shadow Hunter Ramp Doors"],
+                tags: ["Material", "Armorplast", "Thermal Scatter"], source: { title: "Corellian Armor Journal", author: "TA Foundry", page: "p. 19", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Heavy Mounts", interfaces: "Outer Door Plating", uses: "Plasma Energy Dispersion" },
+                specs: "Dense polymer alloy engineered to absorb and dissipate extreme plasma and blaster thermal surges.",
+                notes: "Reinforcement plates for heavy transport doors.", spectreNote: "[SPECTRE]: Thermal dissipation coefficient optimal."
+            },
+            {
+                id: "MAT-POL-FIBERPLAST", stdNo: "GS-STD-1025", rev: "Rev A", name: "High-Tensile Fiberplast Roll",
+                categoryPath: ["Materials", "Composite Materials", "Polymers & Plastoids"], parentId: null,
+                supplier: "Synthetic Textile Corp", originWorld: "Core Worlds", location: "Home Base", qty: 18, minQty: 5, price: 1100,
+                univStatus: "Canon", accessClass: "Trade", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Fuel Bladders", "Gaskets"], installedOn: ["Deck 1 Fuel Gaskets"],
+                tags: ["Material", "Fiberplast", "Corrosion Resistant"], source: { title: "Synthetic Polymers Review", author: "ST Corp", page: "p. 40", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Resin Sealant", interfaces: "Fuel Tanks", uses: "Chemical Containment" },
+                specs: "Resin-molded woven fiber material resistant to chemical corrosion and heavy wear.",
+                notes: "Used for fuel bladder liners.", spectreNote: "[SPECTRE]: Chemical resistance 99.8%."
+            },
+            {
+                id: "MAT-TEX-ARMORWEAVE", stdNo: "GS-STD-1510", rev: "Rev A", name: "Tactical Armorweave Fabric Roll",
+                categoryPath: ["Materials", "Textiles & Fabrics", "Armored Weaves"], parentId: null,
+                supplier: "Military Tailors Guild", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 4, minQty: 1, price: 14500,
+                univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Flight Suits", "Tactical Capes"], installedOn: ["Crew Flight Suits"],
+                tags: ["Textile", "Armorweave", "Blaster Resistant"], source: { title: "Tactical Apparel Spec", author: "MT Guild", page: "p. 8", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Tailoring Kit", interfaces: "Under-Duits", uses: "Blaster Heat Dispersion" },
+                specs: "Flexible, highly durable armored weave spreading thermal energy from blaster fire.",
+                notes: "Used for crew suit linings.", spectreNote: "[SPECTRE]: Thermal energy dispersion verified."
+            },
+            {
+                id: "MAT-TEX-SYNTHSILK", stdNo: "GS-STD-1502", rev: "Rev A", name: "Standard Synthsilk Bolt",
+                categoryPath: ["Materials", "Textiles & Fabrics", "Synthetic Fabrics"], parentId: null,
+                supplier: "Civilian Textile Mills", originWorld: "Galactic Wide", location: "Home Base", qty: 15, minQty: 5, price: 350,
+                univStatus: "Canon", accessClass: "Public", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Uniforms", "Bedding"], installedOn: ["Crew Quarters Bunks"],
+                tags: ["Textile", "Synthsilk", "Civilian"], source: { title: "Civilian Fabrics Catalog", author: "CT Mills", page: "p. 2", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Needle & Thread", interfaces: "Furniture", uses: "Upholstery" },
+                specs: "Soft, durable synthetic silk replacement fabric easy to dye and clean.",
+                notes: "Crew quarters beddings and lounge upholstery.", spectreNote: "[SPECTRE]: Non-hazardous textile."
+            },
+            {
+                id: "MAT-TEX-SPIDERSILK", stdNo: "GS-STD-1520", rev: "Rev A", name: "Corellian Shell Spider Silk Bolt",
+                categoryPath: ["Materials", "Textiles & Fabrics", "Bio-Fibers"], parentId: null,
+                supplier: "Corellian Weavers Guild", originWorld: "Corellia / Tatooine", location: "Market / Vendor", qty: 0, minQty: 1, price: 28000,
+                univStatus: "Legends", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["Luxury Garments", "Bulletproof Linings"], installedOn: ["Market Asset"],
+                tags: ["Textile", "Spider Silk", "Bio-Fiber"], source: { title: "Corellian Wildlife & Industry", author: "Corellian Press", page: "p. 144", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Precision Weaving", interfaces: "Luxury Suits", uses: "Kinetic Stopping Power" },
+                specs: "Bio-extracted spider silk stronger than steel per weight.",
+                notes: "High-end luxury protective clothing lining.", spectreNote: "[SPECTRE]: Tensile strength exceeds Kevlex."
+            },
+            {
+                id: "MAT-TEX-ZERSIUM", stdNo: "GS-STD-1530", rev: "Rev A", name: "Zersium Reinforced Wire-Mesh",
+                categoryPath: ["Materials", "Textiles & Fabrics", "Metallic Mesh"], parentId: null,
+                supplier: "Heavy Mining Refineries", originWorld: "Mining Worlds", location: "Home Base", qty: 8, minQty: 2, price: 5200,
+                univStatus: "Legends", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["Cargo Tarps", "Cable Sleeves"], installedOn: ["Deck 1 Cargo Hold Netting"],
+                tags: ["Textile", "Zersium", "Metallic Mesh"], source: { title: "Industrial Mining Equipment", author: "Mining Combine", page: "p. 77", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Clamps", interfaces: "Cargo Tie-Downs", uses: "Abrasion Resistance" },
+                specs: "Heavy metallic textile fiber woven into fabrics for extreme abrasion resistance.",
+                notes: "Reinforced cargo tarps.", spectreNote: "[SPECTRE]: Resistance to tearing nominal."
+            },
+            {
+                id: "MAT-TEX-KEVLEX", stdNo: "GS-STD-1535", rev: "Rev A", name: "Kevlex Shock-Absorbing Fabric",
+                categoryPath: ["Materials", "Textiles & Fabrics", "Shock-Absorbing Fabrics"], parentId: null,
+                supplier: "Polymer Labs", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 6, minQty: 2, price: 3900,
+                univStatus: "Legends", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["Boots", "Cockpit Dampening"], installedOn: ["Cockpit Console Seals"],
+                tags: ["Textile", "Kevlex", "Acoustic"], source: { title: "Polymer Lab Gazette", author: "Polymer Labs", page: "p. 12", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Adhesive", interfaces: "Cockpit Bulkhead", uses: "Acoustic / Shock Suppression" },
+                specs: "Heat-resistant flexible synthetic fiber absorbing kinetic impacts and thermal flashes.",
+                notes: "Tactical gloves, boots, and cockpit dampening.", spectreNote: "[SPECTRE]: Acoustic dampening rating nominal."
+            },
+            {
+                id: "MAT-CRY-KYBER", stdNo: "GS-STD-9950", rev: "Rev A", name: "Focusing Kyber Crystal (Unattuned)",
+                categoryPath: ["Materials", "Crystals & Energy Minerals", "Force Crystals"], parentId: null,
+                supplier: "Black Market Relic Traders", originWorld: "Ilum / Jedha", location: "Market / Vendor", qty: 0, minQty: 1, price: 250000,
+                univStatus: "Canon", accessClass: "Black Market", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Black Market",
+                compatibleWith: ["Lightsabers", "Superlasers"], installedOn: ["Market Asset"],
+                tags: ["Crystal", "Kyber", "Force", "Energy Focuser"], source: { title: "Star Wars: Ultimate Lightsaber Guide", author: "DK", page: "p. 12", isbn: "978-1465436016" },
+                relations: { powerSource: "Plasma Input", needs: "Attunement Chamber", interfaces: "Emitter Matrix", uses: "Plasma Focusing" },
+                specs: "Rare, Force-resonant crystal functioning as ultimate energy focuser.",
+                notes: "Illegal black market item under strict Imperial ban.", spectreNote: "[SPECTRE]: Energy throughput exceeds scale."
+            },
+            {
+                id: "MAT-MIN-DOONIUM", stdNo: "GS-STD-4030", rev: "Rev A", name: "Refined Doonium Heavy Ore",
+                categoryPath: ["Materials", "Raw Materials", "Heavy Ores"], parentId: null,
+                supplier: "Lothal Mining Combine", originWorld: "Lothal / Eriadu", location: "Home Base", qty: 25, minQty: 5, price: 9500,
+                univStatus: "Canon", accessClass: "Military", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Military Restricted",
+                compatibleWith: ["Star Destroyer Superstructures"], installedOn: ["Home Base Storage"],
+                tags: ["Ore", "Doonium", "Capital Ship"], source: { title: "Star Wars: Thrawn Journal", author: "Timothy Zahn", page: "p. 142", isbn: "978-0425287071" },
+                relations: { powerSource: "N/A", needs: "Heavy Blast Smelter", interfaces: "Capital Ship Hulls", uses: "Structural Mass" },
+                specs: "Dense, heavy metal ore serving as primary raw material for capital ship hulls.",
+                notes: "Heavy structural reinforcement stock.", spectreNote: "[SPECTRE]: High mass increases hull rating."
+            },
+            {
+                id: "MAT-CRY-STYGIUM", stdNo: "GS-STD-3991", rev: "Rev A", name: "Raw Stygium Stealth Crystal Matrix",
+                categoryPath: ["Materials", "Crystals & Energy Minerals", "Stealth Crystals"], parentId: null,
+                supplier: "Aeten II Mining Syndicate", originWorld: "Aeten II", location: "Market / Vendor", qty: 0, minQty: 1, price: 320000,
+                univStatus: "Canon", accessClass: "Black Market", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Black Market",
+                compatibleWith: ["Cloaking Devices"], installedOn: ["Market Asset"],
+                tags: ["Crystal", "Stygium", "Stealth", "Cloaking"], source: { title: "Star Wars: Darth Maul Scimitar Specs", author: "Lucasfilm", page: "p. 4", isbn: "N/A" },
+                relations: { powerSource: "High Voltage Feed", needs: "Energy Shield Matrix", interfaces: "Cloaking Field Generator", uses: "Light & Sensor Bending" },
+                specs: "Ultra-rare crystals capable of bending light and sensor waves when charged with electricity.",
+                notes: "Core material for active cloaking generators.", spectreNote: "[SPECTRE]: Requires energy dampening to prevent thermal bloom."
+            },
+            {
+                id: "MAT-MET-00001", stdNo: "GS-STD-9901", rev: "Rev A", name: "Virellium Conductor Wiring Spool",
+                categoryPath: ["Materials", "Refined Materials", "Conductor Wiring"], parentId: null,
+                supplier: "Byss Mining Guild", originWorld: "Byss", location: "Onboard Shadow Hunter", qty: 12, minQty: 5, price: 1250,
+                univStatus: "Canon", accessClass: "Restricted", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["Spectre AI Data Lines", "Droid Brains"], installedOn: ["Shadow Hunter Server Room"],
+                tags: ["Wiring", "Virellium", "Conductor"], source: { title: "Byss Industrial Mining Report", author: "Guild", page: "p. 18", isbn: "N/A" },
+                relations: { powerSource: "Data Bus Voltages", needs: "Insulation Sleeves", interfaces: "Cognitive Nodes", uses: "High-Throughput Signal" },
+                specs: "Rare lightweight metal for droid-brain wiring and Spectre AI data lines.",
+                notes: "Good metal; bends before it kills what's attached to it.", spectreNote: "[SPECTRE]: Recommended for mass-sensitive signal lines."
+            },
+            {
+                id: "MAT-POL-CP-00001", stdNo: "GS-STD-1002", rev: "Rev A", name: "CP-CPL-2.1AG Precision Clear Plastoid",
+                categoryPath: ["Materials", "Composite Materials", "Precision Plastoid"], parentId: null,
+                supplier: "CP Productions", originWorld: "Coruscant", location: "Home Base", qty: 8, minQty: 2, price: 4200,
+                univStatus: "Fan-made", accessClass: "Restricted", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Mass Production",
+                compatibleWith: ["Sensor Viewports", "Bridge HUDs"], installedOn: ["Shadow Hunter Bridge Glare Shield"],
+                tags: ["Plastoid", "Clear", "CP Productions"], source: { title: "CP Industrial Catalog", author: "CP Prod", page: "p. 21", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Frame Seals", interfaces: "Optical Sensors", uses: "Anti-Glare Optics" },
+                specs: "Precision glare-free military grade clear plastoid for display covers.",
+                notes: "CP's highest quality clear stock. Zero distortion.", spectreNote: "[SPECTRE]: Transmission coefficient exceeds 99.4%."
+            },
+            {
+                id: "MAT-POL-CP-00002", stdNo: "GS-STD-1004", rev: "Rev A", name: "CP-CPL-4.5AG Standard Clear Plastoid",
+                categoryPath: ["Materials", "Composite Materials", "Standard Plastoid"], parentId: null,
+                supplier: "CP Productions", originWorld: "Coruscant", location: "Home Base", qty: 25, minQty: 10, price: 1800,
+                univStatus: "Fan-made", accessClass: "Trade", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Mass Production",
+                compatibleWith: ["Instrument Covers", "Breaker Guards"], installedOn: ["Deck 2 Diagnostic Displays"],
+                tags: ["Plastoid", "CP Productions"], source: { title: "CP Industrial Catalog", author: "CP Prod", page: "p. 24", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Mounting Clips", interfaces: "Dashboard Displays", uses: "Screen Protection" },
+                specs: "Standard industrial instrument cover grade with durable anti-glare coating.",
+                notes: "Used for dashboard covers across Deck 2.", spectreNote: "[SPECTRE]: Standard anti-reflective rating verified."
+            },
+            {
+                id: "MAT-ALY-00001", stdNo: "GS-STD-4001", rev: "Rev B", name: "DUR-4L Lissium-Stabilised Durasteel Plate",
+                categoryPath: ["Materials", "Refined Materials", "Structural Alloys"], parentId: null,
+                supplier: "Kuat Drive Yards", originWorld: "Kuat / Nag Ubdur", location: "Home Base", qty: 15, minQty: 5, price: 8500,
+                univStatus: "Canon", accessClass: "Trade", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["Reinforced Internal Frames"], installedOn: ["Shadow Hunter Internal Pressure Hull"],
+                tags: ["Durasteel", "Lissium", "KDY"], source: { title: "KDY Metallurgy Index", author: "KDY", page: "p. 401", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Heavy Plasma Cutters", interfaces: "Pressure Ribs", uses: "Structural Integrity" },
+                specs: "Premium Lissium-stabilised durasteel plate for internal frames.",
+                notes: "Kuat's finest alloy blend. Heavy, doesn't crack under stress.", spectreNote: "[SPECTRE]: Rated for high G-loads."
+            },
+            {
+                id: "MAT-ALY-NEUTRON", stdNo: "GS-STD-4020", rev: "Rev A", name: "Neutron-Impregnated Durasteel Plating",
+                categoryPath: ["Materials", "Refined Materials", "Impregnated Plating"], parentId: null,
+                supplier: "Metalorn Industrial Combine", originWorld: "Metalorn", location: "Market / Vendor", qty: 0, minQty: 1, price: 18500,
+                univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Military Restricted",
+                compatibleWith: ["Heavy Ship Hulls"], installedOn: ["Shadow Hunter (Outer Hull Sections)"],
+                tags: ["Durasteel", "Neutron", "Heavy Plating"], source: { title: "Metalorn Foundry Registry", author: "Metalorn", page: "p. 88", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Heavy Structural Welds", interfaces: "Decimator Hull Frame", uses: "Energy & Kinetic Displacement" },
+                specs: "High-density durasteel alloy impregnated with neutrons for enhanced energy displacement.",
+                notes: "Evaluated as hull upgrade for heavy hull sections.", spectreNote: "[SPECTRE]: Thermal & kinetic absorption +40% over DUR-5."
+            },
+            {
+                id: "MAT-COAT-001", stdNo: "GS-STD-1088", rev: "Rev A", name: "Reflec Sensor-Absorbing Coating",
+                categoryPath: ["Materials", "Composite Materials", "Stealth Hull Coatings"], parentId: null,
+                supplier: "Market / Vendor", originWorld: "Unknown", location: "Market / Vendor", qty: 0, minQty: 1, price: 65000,
+                univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Black Market",
+                compatibleWith: ["Stealth Vessels"], installedOn: ["Shadow Hunter Base Hull Coating"],
+                tags: ["Reflec", "Stealth", "Absorbing"], source: { title: "Imperial Intelligence Black Book", author: "CompNor", page: "p. 19", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Nightshadow Outer Layer", interfaces: "Hull Metal", uses: "Active Radar Absorption" },
+                specs: "Polymer coating that absorbs active sensor returns and scatters scanning pulses.",
+                notes: "Candidate stealth coating under evaluation.", spectreNote: "[SPECTRE]: Reduces active sensor return profile up to 60%."
+            },
+            {
+                id: "CLOAK-STYG-01", stdNo: "GS-STD-3990", rev: "Rev A", name: "Stygium Cloaking Device (Uninstalled)",
+                categoryPath: ["Assemblies", "Defensive Systems", "Cloaking Devices"], parentId: null,
+                supplier: "Market / Vendor", originWorld: "Aeten II", location: "Market / Vendor", qty: 0, minQty: 1, price: 850000,
+                univStatus: "Canon", accessClass: "Black Market", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Prototype",
+                compatibleWith: ["Scimitar", "TIE Phantom"], installedOn: ["Market Listing"],
+                tags: ["Cloaking", "Stygium", "Invisibility"], source: { title: "Imperial Cloaking Project Specs", author: "Imperial R&D", page: "p. 3", isbn: "N/A" },
+                relations: { powerSource: "Dedicated Fusion Core", needs: "Stygium Crystal Matrix", interfaces: "Ship Avionics", uses: "Total Optical & Sensor Cloak" },
+                specs: "Active optical and sensor cloaking generator using Stygium crystals.",
+                notes: "Rejected in favor of passive stealth philosophy.", spectreNote: "[SPECTRE]: High power consumption and thermal risk."
             }
         ];
 
         let catalog = [];
-        let currentMainView = 'tree'; // 'tree' or 'table'
+        let currentMainView = 'tree';
         let showLowStockOnly = false;
         let confirmCallback = null;
 
         function loadCatalog() {
             try {
-                const saved = localStorage.getItem('lexCatalog_v10');
+                const saved = localStorage.getItem('lexCatalog_v10_full');
                 if (saved) {
                     const parsed = JSON.parse(saved);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
+                    if (Array.isArray(parsed) && parsed.length >= 50) {
                         catalog = parsed;
                         return;
                     }
                 }
             } catch (e) {
-                console.warn("Storage parse error, initializing v1.0 default catalog.", e);
+                console.warn("Storage parse error, initializing full 58 master catalog.", e);
             }
             catalog = JSON.parse(JSON.stringify(initialCatalog));
             saveCatalogToLocalStorage(true);
         }
 
         function saveCatalogToLocalStorage(sync = true) {
-            localStorage.setItem('lexCatalog_v10', JSON.stringify(catalog));
+            localStorage.setItem('lexCatalog_v10_full', JSON.stringify(catalog));
             if (sync && window.syncCatalogToCloud) {
                 window.syncCatalogToCloud();
             }
@@ -650,7 +1218,7 @@
         }
 
         function renderCatalog() {
-            if (!catalog || catalog.length === 0) loadCatalog();
+            if (!catalog || catalog.length < 50) loadCatalog();
 
             updateMetrics();
 
@@ -682,14 +1250,16 @@
             }
         }
 
-        // HIERARCHICAL TREE VIEW RENDERER (Uendelige noder)
+        // RECURSIVE HIERARCHICAL TREE VIEW RENDERER WITH WORKING EXPAND/COLLAPSE TOGGLES
+        let folderCounter = 0;
         function renderTreeView(items) {
             const treeBody = document.getElementById('treeExplorerBody');
             treeBody.innerHTML = '';
+            folderCounter = 0;
 
-            // Build Tree Hierarchy Object
             const treeRoot = {};
 
+            // Build hierarchy dictionary
             items.forEach(item => {
                 const path = item.categoryPath && item.categoryPath.length > 0 ? item.categoryPath : ["Uncategorized"];
                 let current = treeRoot;
@@ -701,7 +1271,6 @@
                     current = current[folder]._sub;
                 });
 
-                // Attach item to leaf or level
                 let targetNode = treeRoot;
                 path.forEach((folder, idx) => {
                     if (idx === path.length - 1) {
@@ -712,38 +1281,54 @@
                 });
             });
 
-            // Recursive DOM Builder
+            // Count total recursive items under a node
+            function countRecursiveItems(nodeObj) {
+                let total = nodeObj._items.length;
+                Object.keys(nodeObj._sub).forEach(subKey => {
+                    total += countRecursiveItems(nodeObj._sub[subKey]);
+                });
+                return total;
+            }
+
+            // Build DOM recursively
             function buildDOMTree(node, container, depth = 0) {
                 Object.keys(node).forEach(folderName => {
                     const folderObj = node[folderName];
-                    const folderDiv = document.createElement('div');
-                    folderDiv.className = `ml-${depth * 4} my-1`;
+                    const folderId = `tree_folder_${folderCounter++}`;
+                    const totalItems = countRecursiveItems(folderObj);
+
+                    const folderWrapper = document.createElement('div');
+                    folderWrapper.className = `ml-${Math.min(depth * 3, 12)} my-1`;
 
                     const folderHeader = document.createElement('div');
-                    folderHeader.className = "flex items-center gap-2 cursor-pointer hover:text-cyanGlow py-1 text-slate-300 font-bold heading-font";
+                    folderHeader.className = "flex items-center gap-2 cursor-pointer hover:bg-slate-900/80 p-1.5 rounded text-slate-300 font-bold heading-font select-none transition border border-transparent hover:border-slate-800";
+                    folderHeader.onclick = function() { toggleFolder(folderId); };
+
                     folderHeader.innerHTML = `
-                        <i class="fa-solid fa-folder-open text-amber-400"></i>
-                        <span>${folderName}</span>
-                        <span class="text-[10px] font-mono text-slate-500 font-normal">(${folderObj._items.length} items)</span>
+                        <i id="icon_${folderId}" class="fa-solid fa-chevron-down text-cyanGlow text-[10px] transition-transform"></i>
+                        <i class="fa-solid fa-folder-open text-amber-400 text-xs"></i>
+                        <span class="text-white text-xs">${folderName}</span>
+                        <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/80 px-1.5 py-0.2 rounded border border-cyan-800 ml-1">${totalItems} items</span>
                     `;
 
                     const childrenContainer = document.createElement('div');
-                    childrenContainer.className = "pl-4 tree-line space-y-1 mt-1";
+                    childrenContainer.id = folderId;
+                    childrenContainer.className = "pl-4 tree-line space-y-1 mt-1 tree-folder-content";
 
-                    // Items inside this folder
+                    // Render direct items
                     folderObj._items.forEach(item => {
                         const itemDiv = document.createElement('div');
-                        itemDiv.className = "flex items-center justify-between p-1.5 rounded bg-slate-900/60 border border-slate-800/80 hover:border-cyanGlow transition";
+                        itemDiv.className = "flex items-center justify-between p-1.5 rounded bg-slate-900/80 border border-slate-800 hover:border-cyanGlow transition";
                         itemDiv.innerHTML = `
-                            <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-microchip text-cyanGlow text-xs"></i>
+                            <div class="flex items-center gap-2.5">
+                                <i class="fa-solid fa-microchip text-cyanGlow text-[11px]"></i>
                                 <div>
-                                    <span class="font-bold text-white cursor-pointer hover:underline" onclick="inspectPart('${item.id}')">${item.name}</span>
+                                    <span class="font-bold text-white cursor-pointer hover:underline text-xs" onclick="inspectPart('${item.id}')">${item.name}</span>
                                     <span class="text-[10px] text-amber-400 font-mono ml-2">${item.stdNo} (${item.rev || 'Rev A'})</span>
                                 </div>
                             </div>
                             <div class="flex items-center gap-3">
-                                <span class="text-[10px] px-1.5 py-0.5 rounded border border-slate-700 bg-slate-950 font-mono">${item.accessClass}</span>
+                                <span class="text-[9px] px-1.5 py-0.5 rounded border border-slate-700 bg-slate-950 font-mono text-slate-300">${item.accessClass}</span>
                                 <span class="text-xs font-mono text-emerald-400 font-bold">${item.qty} units</span>
                                 <button onclick="inspectPart('${item.id}')" class="px-2 py-0.5 bg-cyan-950 hover:bg-cyan-900 text-cyanGlow border border-cyan-800 rounded text-[10px]" title="Inspect Datapad">
                                     <i class="fa-solid fa-eye"></i> Inspect
@@ -753,19 +1338,49 @@
                         childrenContainer.appendChild(itemDiv);
                     });
 
-                    folderDiv.appendChild(folderHeader);
-                    folderDiv.appendChild(childrenContainer);
+                    folderWrapper.appendChild(folderHeader);
+                    folderWrapper.appendChild(childrenContainer);
 
-                    // Recurse subfolders
+                    // Recurse sub-folders
                     if (Object.keys(folderObj._sub).length > 0) {
                         buildDOMTree(folderObj._sub, childrenContainer, depth + 1);
                     }
 
-                    container.appendChild(folderDiv);
+                    container.appendChild(folderWrapper);
                 });
             }
 
             buildDOMTree(treeRoot, treeBody);
+        }
+
+        // TOGGLE FOLDER OPEN / CLOSE FUNCTION
+        function toggleFolder(folderId) {
+            const container = document.getElementById(folderId);
+            const icon = document.getElementById(`icon_${folderId}`);
+            if (container) {
+                container.classList.toggle('hidden');
+                if (icon) {
+                    if (container.classList.contains('hidden')) {
+                        icon.className = "fa-solid fa-chevron-right text-slate-500 text-[10px] transition-transform";
+                    } else {
+                        icon.className = "fa-solid fa-chevron-down text-cyanGlow text-[10px] transition-transform";
+                    }
+                }
+            }
+        }
+
+        function expandAllFolders() {
+            document.querySelectorAll('.tree-folder-content').forEach(el => el.classList.remove('hidden'));
+            document.querySelectorAll('[id^="icon_tree_folder_"]').forEach(icon => {
+                icon.className = "fa-solid fa-chevron-down text-cyanGlow text-[10px] transition-transform";
+            });
+        }
+
+        function collapseAllFolders() {
+            document.querySelectorAll('.tree-folder-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('[id^="icon_tree_folder_"]').forEach(icon => {
+                icon.className = "fa-solid fa-chevron-right text-slate-500 text-[10px] transition-transform";
+            });
         }
 
         // FLAT MASTER INDEX TABLE RENDERER
@@ -781,7 +1396,6 @@
             emptyState.classList.add('hidden');
 
             items.forEach(item => {
-                const realIndex = catalog.findIndex(c => c.id === item.id);
                 const pathStr = item.categoryPath ? item.categoryPath.join(' > ') : 'Uncategorized';
                 const stars = item.confidenceStars || "★★★★★";
 
@@ -793,7 +1407,7 @@
                         <span class="text-amber-400 text-[10px]">${item.stdNo} (${item.rev || 'Rev A'})</span>
                     </td>
                     <td class="p-3">
-                        <div class="font-bold text-white cursor-pointer hover:text-cyanGlow" onclick="inspectPart('${item.id}')">${item.name}</div>
+                        <div class="font-bold text-white cursor-pointer hover:text-cyanGlow text-xs" onclick="inspectPart('${item.id}')">${item.name}</div>
                         <div class="flex items-center gap-2 mt-1">
                             <span class="text-amber-400 text-[10px]">${stars}</span>
                             <span class="text-[10px] px-1 py-0.5 rounded border border-slate-700 bg-slate-900 text-slate-300 font-mono">${item.univStatus}</span>
@@ -802,8 +1416,8 @@
                     <td class="p-3 text-[11px] text-slate-400 font-mono">${pathStr}</td>
                     <td class="p-3 text-xs text-slate-200">${item.supplier}</td>
                     <td class="p-3 text-xs text-slate-400"><i class="fa-solid fa-location-dot text-cyanGlow mr-1"></i>${item.location}</td>
-                    <td class="p-3 text-center font-bold text-emerald-400">${item.qty}</td>
-                    <td class="p-3 text-right font-mono text-emerald-400 font-bold">${item.price.toLocaleString()} ₡</td>
+                    <td class="p-3 text-center font-bold text-emerald-400 text-xs">${item.qty}</td>
+                    <td class="p-3 text-right font-mono text-emerald-400 font-bold text-xs">${item.price.toLocaleString()} ₡</td>
                     <td class="p-3 text-center">
                         <button onclick="inspectPart('${item.id}')" class="p-1.5 bg-cyan-950 text-cyanGlow border border-cyan-800 rounded text-xs" title="Inspect">
                             <i class="fa-solid fa-eye"></i>
@@ -966,11 +1580,11 @@
         }
 
         function promptResetCatalog() {
-            showConfirmModal("Restore Archive v1.0 Confirmation", "Reset datapad catalog to master v1.0 standard dataset? All local edits will be overwritten.", function() {
+            showConfirmModal("Restore All 58 Master Components", "Reset database to full master v1.0 standard dataset (all 58 components)?", function() {
                 catalog = JSON.parse(JSON.stringify(initialCatalog));
                 saveCatalogToLocalStorage(true);
                 renderCatalog();
-                showToast("Archive restored to v1.0 standards.");
+                showToast("Archive restored with all 58 components!");
             });
         }
 
@@ -999,7 +1613,7 @@
                         renderCatalog();
                         showToast("Datapad archive imported successfully!");
                     } else {
-                        alert("Invalid JSON format. Expected an array of components.");
+                        alert("Invalid JSON format.");
                     }
                 } catch (err) {
                     alert("Error reading JSON file: " + err.message);
@@ -1045,11 +1659,3 @@
 </body>
 </html>
 ```eof
-
-### Slik oppdaterer du til v1.0 på GitHub (tar 1 minutt):
-
-1. Kopier **all koden** i den nye `spare_parts_catalog.html`-filen over.
-2. Åpne `index.html` på GitHub.
-3. Klikk på **Blyant-ikonet (Edit file)**, marker og slett alt som var der fra før, lim inn den nye koden (Ctrl+V) og trykk på den grønne knappen **`Commit changes...`**.
-
-Når du oppdaterer nettsiden din på GitHub, vil du få **Version 1.0 av Lex Rogers Industrial Catalog** med full hierarkisk navigasjon, utfoldbare kategoritrær, BOM (Bill of Materials), 5-stjerners kilde-tillit, og automatisk skysynkronisering via Firebase!
