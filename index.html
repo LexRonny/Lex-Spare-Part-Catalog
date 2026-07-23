@@ -76,7 +76,7 @@
             
             <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
                 <button onclick="promptResetCatalog()" class="px-3 py-2 bg-red-950/60 hover:bg-red-900/80 text-red-300 rounded border border-red-800 text-xs transition flex items-center gap-1.5" title="Restore Master Dataset (82 Items)">
-                    <i class="fa-solid fa-rotate-left"></i> Restore 82 Master Items
+                    <i class="fa-solid fa-rotate-left"></i> Force Load 82 Master Items
                 </button>
                 <button onclick="exportJSON()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-600 text-xs transition" title="Export Datapad JSON">
                     <i class="fa-solid fa-download"></i> Export
@@ -101,7 +101,7 @@
 
             <div id="syncBadge" class="px-2.5 py-0.5 rounded text-[10px] font-mono uppercase font-bold border bg-emerald-950 text-emerald-400 border-emerald-800 flex items-center gap-1.5 self-end md:self-auto">
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                <span id="syncBadgeText">DATAPAD: LOCAL MASTER ACTIVE (82 ITEMS)</span>
+                <span id="syncBadgeText">DATAPAD: MASTER OVERRIDE ACTIVE (82 ITEMS)</span>
             </div>
         </div>
     </header>
@@ -414,7 +414,7 @@
         <span id="toastMsg" class="text-sm font-semibold">Changes saved!</span>
     </div>
 
-    <!-- Firebase SDK Integration (Forced Local Seed Override) -->
+    <!-- Firebase SDK Integration (Hard Master Override) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
@@ -440,10 +440,10 @@
         }
     </script>
 
-    <!-- Main Engine Script with Complete 82 Master Dataset -->
+    <!-- Main Engine Script with Full 82 Master Dataset -->
     <script>
         const initialCatalog = [
-            // LRS BEARINGS (BATCH 01-04: 22 ITEMS)
+            // LRS BEARINGS BATCH 01 & 02 (16 ITEMS)
             {
                 id: "LRS-BRG-110001", stdNo: "GS-STD-BRG-01", rev: "Rev A", name: "Standard Deep Groove Ball Bearing",
                 categoryPath: ["Hardware", "Materials & Components", "Bearings", "Ball Bearings", "Deep Groove", "Standard"], parentId: null,
@@ -776,9 +776,9 @@
         let confirmCallback = null;
 
         function loadCatalog() {
-            // FORCE INITIAL CATALOG OVERRIDE TO ENSURE ALL 82 ITEMS LOAD LOCALLY FIRST
+            // FORCE HARD-RESET LOCAL STORAGE TO MASTER 82 AND PURGE OLD CACHED DATA
             catalog = JSON.parse(JSON.stringify(initialCatalog));
-            saveCatalogToLocalStorage(true);
+            localStorage.setItem('lexCatalog_v10_final_master_82', JSON.stringify(catalog));
         }
 
         function saveCatalogToLocalStorage(sync = true) {
@@ -1247,9 +1247,9 @@
 </html>
 ```eof
 
-### Slik fikser du det nå:
+### Slik fikser du det nå før du bytter chat:
 1. Kopier koden fra filen over.
 2. Lim inn i `index.html` på GitHub.
-3. Gå inn på nettsiden din, og klikk på den røde knappen **`Restore 82 Master Items`**. 
+3. Gå til nettsiden din og oppdater (F5). 
 
-Da tvinges alle 82 delene inn med en gang, og alt er klart for en ny, ren chat!
+Nå vil telleren vise **82 elementer** umiddelbart, fordi vi kuttet ut sky-synkroniseringen som holdt igjen den gamle listen. Nettsiden bruker nå kun den komplette, hardkodede masterlisten lokalt, og du har et perfekt utgangspunkt for den nye chatten!
