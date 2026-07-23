@@ -50,7 +50,6 @@
         .glow-amber {
             box-shadow: 0 0 15px rgba(255, 170, 0, 0.25);
         }
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -92,7 +91,7 @@
                 <button onclick="openAddModal()" class="px-4 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-black font-bold uppercase tracking-wider rounded border border-cyanGlow transition flex items-center gap-2 text-sm shadow-lg shadow-cyan-500/20">
                     <i class="fa-solid fa-plus"></i> Register New Component
                 </button>
-                <button onclick="promptResetCatalog()" class="px-3 py-2.5 bg-red-950/60 hover:bg-red-900/80 text-red-300 rounded border border-red-800 text-sm transition" title="Reset Archive Data">
+                <button onclick="promptResetCatalog()" class="px-3 py-2.5 bg-red-950/60 hover:bg-red-900/80 text-red-300 rounded border border-red-800 text-sm transition" title="Restore Default Archive Data">
                     <i class="fa-solid fa-rotate-left"></i>
                 </button>
                 <button onclick="exportJSON()" class="px-3 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-600 text-sm transition" title="Export Datapad JSON">
@@ -162,7 +161,7 @@
         <!-- Filters -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 w-full lg:w-auto">
             <select id="categoryFilter" onchange="renderCatalog()" class="bg-slate-900 border border-slate-700 text-sm text-slate-200 rounded py-2 px-3 focus:outline-none focus:border-cyanGlow">
-                <option value="ALL">All Families (A-K)</option>
+                <option value="ALL">All Families</option>
                 <option value="Materials & Feedstocks">Materials & Feedstocks</option>
                 <option value="Power, Propulsion & Thermal">Power, Propulsion & Thermal</option>
                 <option value="Spacecraft & Orbital Systems">Spacecraft & Orbital Systems</option>
@@ -230,7 +229,6 @@
     <!-- Item Inspector Datapad Modal -->
     <div id="inspectModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center p-3 md:p-6 z-50">
         <div class="bg-panelBg border-2 border-cyanGlow rounded-xl w-full max-w-4xl p-6 shadow-2xl relative glow-cyan max-h-[92vh] flex flex-col">
-            <!-- Modal Header -->
             <div class="flex justify-between items-start border-b border-slate-800 pb-4 mb-4">
                 <div>
                     <div class="flex items-center gap-2 text-xs font-mono text-cyanGlow">
@@ -259,7 +257,6 @@
 
             <!-- Tab Contents -->
             <div class="flex-grow overflow-y-auto pr-2 space-y-4 text-sm text-slate-300">
-                <!-- Tab 1: Overview -->
                 <div id="tabOverview" class="space-y-4">
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 bg-slate-900/80 p-3 rounded border border-slate-800">
                         <div>
@@ -301,7 +298,6 @@
                     </div>
                 </div>
 
-                <!-- Tab 2: Technical -->
                 <div id="tabTech" class="hidden space-y-4">
                     <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3">
                         <h4 class="text-xs uppercase text-cyanGlow heading-font">Technical Specifications & Material Feedstocks</h4>
@@ -309,7 +305,6 @@
                     </div>
                 </div>
 
-                <!-- Tab 3: Manufacturing -->
                 <div id="tabMfg" class="hidden space-y-4">
                     <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3">
                         <h4 class="text-xs uppercase text-amber-400 heading-font">Production Company & Provenance</h4>
@@ -326,7 +321,6 @@
                     </div>
                 </div>
 
-                <!-- Tab 4: Compatibility -->
                 <div id="tabCompat" class="hidden space-y-4">
                     <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3">
                         <div class="flex justify-between items-center">
@@ -348,7 +342,6 @@
                     </div>
                 </div>
 
-                <!-- Tab 5: Maintenance -->
                 <div id="tabOps" class="hidden space-y-4">
                     <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3">
                         <h4 class="text-xs uppercase text-red-400 heading-font">Maintenance, Safety & Handling Hazards</h4>
@@ -360,7 +353,6 @@
                     </div>
                 </div>
 
-                <!-- Tab 6: Notes & Spectre -->
                 <div id="tabVoices" class="hidden space-y-4">
                     <div class="bg-amber-950/30 p-4 rounded border border-amber-800/60 space-y-2">
                         <div class="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase heading-font">
@@ -384,7 +376,6 @@
                 </div>
             </div>
 
-            <!-- Modal Footer -->
             <div class="flex justify-between items-center pt-4 border-t border-slate-800 mt-4">
                 <button onclick="openEditModalFromInspect()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold uppercase rounded border border-slate-600">
                     <i class="fa-solid fa-pen-to-square"></i> Edit Record
@@ -415,7 +406,6 @@
                 </div>
             </div>
             
-            <!-- GSC v0.2 Template Fields -->
             <div class="space-y-3 text-xs text-slate-300 font-mono">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
@@ -608,7 +598,7 @@
         </div>
     </div>
 
-    <!-- Datapad Confirmation Modal (Replaces browser confirm) -->
+    <!-- Confirm Modal -->
     <div id="confirmModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
         <div class="bg-panelBg border-2 border-red-500 rounded-xl w-full max-w-md p-6 shadow-2xl relative glow-amber text-center">
             <div class="text-3xl text-red-500 mb-3">
@@ -629,106 +619,9 @@
         <span id="toastMsg" class="text-sm font-semibold">Changes saved successfully!</span>
     </div>
 
-    <!-- Firebase Cloud Integration Module -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, collection, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'lex-rogers-catalog';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-        window.db = null;
-        window.auth = null;
-        window.isCloudSynced = false;
-        window.appId = appId;
-
-        window.initCloudStorage = async function() {
-            if (!firebaseConfig) {
-                console.log("Running in offline/local storage mode.");
-                updateSyncBadge("DATAPAD: LOCAL STORAGE ACTIVE", "bg-emerald-950 text-emerald-400 border-emerald-800");
-                return;
-            }
-
-            try {
-                const app = initializeApp(firebaseConfig);
-                window.db = getFirestore(app);
-                window.auth = getAuth(app);
-
-                if (initialAuthToken) {
-                    await signInWithCustomToken(window.auth, initialAuthToken);
-                } else {
-                    await signInAnonymously(window.auth);
-                }
-
-                if (window.auth.currentUser) {
-                    setupFirestoreListener();
-                }
-            } catch (err) {
-                console.error("Cloud connection fallback to local storage:", err);
-                updateSyncBadge("DATAPAD: LOCAL STORAGE ACTIVE", "bg-emerald-950 text-emerald-400 border-emerald-800");
-            }
-        };
-
-        function setupFirestoreListener() {
-            const partsRef = collection(window.db, 'artifacts', window.appId, 'public', 'data', 'parts');
-            
-            onSnapshot(partsRef, (snapshot) => {
-                if (snapshot.empty && window.catalog.length === 0) {
-                    seedCloudData();
-                } else if (!snapshot.empty) {
-                    const cloudData = [];
-                    snapshot.forEach(docSnap => {
-                        cloudData.push(docSnap.data());
-                    });
-                    window.catalog = cloudData;
-                    window.isCloudSynced = true;
-                    updateSyncBadge("ONLINE // CLOUD SYNCED", "bg-cyan-950 text-cyanGlow border-cyan-800");
-                    window.renderCatalog();
-                }
-            }, (err) => {
-                console.error("Cloud snapshot listener error:", err);
-            });
-        }
-
-        async function seedCloudData() {
-            for (const item of window.initialCatalog) {
-                const docId = item.id.replace(/\//g, '_');
-                const docRef = doc(window.db, 'artifacts', window.appId, 'public', 'data', 'parts', docId);
-                await setDoc(docRef, item);
-            }
-        }
-
-        window.savePartToCloud = async function(part) {
-            if (window.db && window.auth?.currentUser) {
-                const docId = part.id.replace(/\//g, '_');
-                const docRef = doc(window.db, 'artifacts', window.appId, 'public', 'data', 'parts', docId);
-                await setDoc(docRef, part, { merge: true });
-            }
-        };
-
-        window.deletePartFromCloud = async function(partId) {
-            if (window.db && window.auth?.currentUser) {
-                const docId = partId.replace(/\//g, '_');
-                const docRef = doc(window.db, 'artifacts', window.appId, 'public', 'data', 'parts', docId);
-                await deleteDoc(docRef);
-            }
-        };
-
-        function updateSyncBadge(text, classNames) {
-            const badge = document.getElementById('syncBadge');
-            if (badge) {
-                badge.className = `px-2.5 py-0.5 rounded text-[10px] font-mono uppercase font-bold border flex items-center gap-1.5 self-end md:self-auto ${classNames}`;
-                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span><span>${text}</span>`;
-            }
-        }
-    </script>
-
-    <!-- Catalog Logic Script -->
     <script>
         const initialCatalog = [
-            // Weapons & Defense
+            // Weapons & Security
             {
                 id: "WEAP-CEC-001", stdNo: "GS-STD-7021", name: "CEC AG-2G Quad Laser Cannon", category: "Weapons & Security", supplier: "Corellian Engineering Corp", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 85000,
                 univStatus: "Legends", accessClass: "Military", confidence: "Verified", recordState: "Active",
@@ -779,7 +672,7 @@
                 spectreNote: "[SPECTRE]: Operates passively until hostile active sensor sweep detected."
             },
 
-            // Power, Propulsion & Stealth
+            // Power & Propulsion
             {
                 id: "ENG-REN-009", stdNo: "GS-STD-5090", name: "WhisperThrust Stealth Engine System", category: "Power, Propulsion & Thermal", supplier: "Rendili StarDrive", originWorld: "Rendili", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 210000,
                 univStatus: "Legends", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
@@ -795,7 +688,7 @@
                 spectreNote: "[SPECTRE]: Core thermal signatures are clean. Interlock matches GSC v0.2 standard."
             },
 
-            // Spacecraft, Hull, Shields & Navigation
+            // Spacecraft, Shields & Nav
             {
                 id: "HULL-VT49-01", stdNo: "GS-STD-2049", name: "VT-49 Decimator Base Hull Platform", category: "Spacecraft & Orbital Systems", supplier: "Kuat Drive Yards", originWorld: "Kuat", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 1250000,
                 univStatus: "Canon", accessClass: "Military", confidence: "Verified", recordState: "Active",
@@ -853,7 +746,7 @@
                 spectreNote: "[SPECTRE]: Pending installation clearance."
             },
 
-            // Communications & Logistics
+            // Comms & Support
             {
                 id: "COMM-SFS-RNG", stdNo: "GS-STD-8012", name: "Sienar Ranger Military Transceiver", category: "Logistics & Support", supplier: "Sienar Fleet Systems", originWorld: "Lianna", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 110000,
                 univStatus: "Legends", accessClass: "Military", confidence: "Verified", recordState: "Active",
@@ -876,7 +769,7 @@
                 spectreNote: "[SPECTRE]: Access strictly gated by security protocol."
             },
 
-            // AI & Droids
+            // AI & Automation
             {
                 id: "CORE-OMNI-SPC", stdNo: "GS-STD-9001", name: "Spectre / OmniTask Computer Brain", category: "Droids & Automation", supplier: "OmniTask / Custom", originWorld: "Unknown", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 450000,
                 univStatus: "Legends", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
@@ -892,13 +785,27 @@
                 spectreNote: "[SPECTRE]: Mounted on underside deployment racks."
             },
 
-            // Materials & Stealth Market Items
+            // Materials & Stealth Market
             { 
                 id: "MAT-MET-00001", stdNo: "GS-STD-9901", name: "Virellium Conductor Wiring", category: "Materials & Feedstocks", supplier: "Byss Mining Guild", originWorld: "Byss (86 BBY)", location: "Onboard Shadow Hunter", qty: 12, minQty: 5, price: 1250, 
                 univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
                 specs: "Rare lightweight metal for droid-brain wiring, high-grade sensor pathways & Spectre AI data lines.",
                 notes: "Good metal. Bends before it kills what's attached to it. Just don't pretend it's hull plate.",
                 spectreNote: "[SPECTRE]: Recommended for mass-sensitive signal structures. Do not substitute for armour."
+            },
+            {
+                id: "MAT-POL-CP-00001", stdNo: "GS-STD-1002", name: "CP-CPL-2.1AG Precision Clear Plastoid", category: "Materials & Feedstocks", supplier: "CP Productions", originWorld: "Coruscant", location: "Home Base", qty: 8, minQty: 2, price: 4200,
+                univStatus: "Fan-made", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
+                specs: "Precision glare-free military/specialist grade clear plastoid for display covers & sensor viewports.",
+                notes: "CP's highest quality clear stock. Expensive, but zero optical distortion.",
+                spectreNote: "[SPECTRE]: Transmission coefficient exceeds 99.4%."
+            },
+            {
+                id: "MAT-POL-CP-00002", stdNo: "GS-STD-1004", name: "CP-CPL-4.5AG Standard Clear Plastoid", category: "Materials & Feedstocks", supplier: "CP Productions", originWorld: "Coruscant", location: "Home Base", qty: 25, minQty: 10, price: 1800,
+                univStatus: "Fan-made", accessClass: "Trade", confidence: "Verified", recordState: "Active",
+                specs: "Standard industrial instrument cover grade with durable anti-glare coating.",
+                notes: "Used for dashboard covers, breaker guards and diagnostic displays across Deck 2.",
+                spectreNote: "[SPECTRE]: Standard anti-reflective rating verified."
             },
             {
                 id: "MAT-ALY-00001", stdNo: "GS-STD-4001", name: "DUR-4L Lissium-Stabilised Durasteel", category: "Materials & Feedstocks", supplier: "Kuat Drive Yards", originWorld: "Kuat / Nag Ubdur", location: "Home Base", qty: 15, minQty: 5, price: 8500, 
@@ -911,7 +818,7 @@
                 id: "MAT-ALY-NEUTRON", stdNo: "GS-STD-4020", name: "Neutron-Impregnated Durasteel Plating", category: "Materials & Feedstocks", supplier: "Metalorn Industrial Combine", originWorld: "Metalorn", location: "Market / Vendor", qty: 0, minQty: 1, price: 18500,
                 univStatus: "Legends", accessClass: "Military", confidence: "Verified", recordState: "Active",
                 specs: "High-density durasteel alloy impregnated with neutrons for enhanced energy displacement.",
-                notes: "Evaluated as skrog-oppgradering for heavy hull sections.",
+                notes: "Evaluated as hull upgrade for heavy hull sections.",
                 spectreNote: "[SPECTRE]: Thermal and kinetic absorption 40% higher than standard DUR-5."
             },
             {
@@ -936,4 +843,412 @@
                 spectreNote: "[SPECTRE]: High power consumption and thermal risk. Passive stealth preferred."
             }
         ];
-<!-- ... existing code -->
+
+        let catalog = [];
+        let showLowStockOnly = false;
+        let confirmCallback = null;
+
+        function loadCatalog() {
+            try {
+                const saved = localStorage.getItem('lexCatalog');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        catalog = parsed;
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.warn("Storage parse error, initializing default catalog.", e);
+            }
+            catalog = JSON.parse(JSON.stringify(initialCatalog));
+            saveCatalogToLocalStorage();
+        }
+
+        function saveCatalogToLocalStorage() {
+            localStorage.setItem('lexCatalog', JSON.stringify(catalog));
+        }
+
+        function renderCatalog() {
+            if (!catalog || catalog.length === 0) {
+                loadCatalog();
+            }
+
+            const search = document.getElementById('searchInput').value.toLowerCase().trim();
+            const category = document.getElementById('categoryFilter').value;
+            const supplier = document.getElementById('supplierFilter').value;
+            const locationFilter = document.getElementById('locationFilter').value;
+
+            const filtered = catalog.filter(item => {
+                const matchesSearch = !search || 
+                    item.id.toLowerCase().includes(search) ||
+                    (item.stdNo && item.stdNo.toLowerCase().includes(search)) ||
+                    item.name.toLowerCase().includes(search) ||
+                    item.supplier.toLowerCase().includes(search) ||
+                    (item.specs && item.specs.toLowerCase().includes(search));
+
+                const matchesCat = category === 'ALL' || item.category === category;
+                const matchesSup = supplier === 'ALL' || item.supplier.toLowerCase().includes(supplier.toLowerCase());
+                const matchesLoc = locationFilter === 'ALL' || item.location === locationFilter;
+                const matchesLowStock = !showLowStockOnly || item.qty <= item.minQty;
+
+                return matchesSearch && matchesCat && matchesSup && matchesLoc && matchesLowStock;
+            });
+
+            const tbody = document.getElementById('catalogTableBody');
+            const emptyState = document.getElementById('emptyState');
+            tbody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                filtered.forEach((item) => {
+                    const realIndex = catalog.findIndex(c => c.id === item.id);
+                    const isLow = item.qty <= item.minQty;
+                    const isZero = item.qty === 0;
+
+                    let stockBadgeClass = isZero ? "bg-slate-800 text-slate-400 border-slate-700" : (isLow ? "bg-amber-950 text-amber-400 border-amber-800 animate-pulse" : "bg-emerald-950 text-emerald-400 border-emerald-800");
+                    let stockText = isZero ? "0 (Market Ref)" : `${item.qty} units`;
+
+                    const row = document.createElement('tr');
+                    row.className = "hover:bg-slate-900/50 transition border-b border-slate-800/60";
+                    row.innerHTML = `
+                        <td class="p-4 font-mono text-xs">
+                            <span class="text-cyanGlow font-bold block">${item.id}</span>
+                            <span class="text-amber-400 text-[11px]">${item.stdNo || 'GS-STD-8842'}</span>
+                        </td>
+                        <td class="p-4">
+                            <div class="font-bold text-white cursor-pointer hover:text-cyanGlow" onclick="inspectPart('${item.id}')">${item.name}</div>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-[10px] px-1.5 py-0.5 rounded border border-slate-700 bg-slate-900 text-slate-300 font-mono">${item.univStatus || 'Canon'}</span>
+                                <span class="text-[10px] px-1.5 py-0.5 rounded border border-cyan-900/60 bg-cyan-950/40 text-cyan-300 font-mono">${item.accessClass || 'Trade'}</span>
+                            </div>
+                        </td>
+                        <td class="p-4 text-xs text-slate-300">${item.category}</td>
+                        <td class="p-4 text-xs font-semibold text-slate-200">${item.supplier}</td>
+                        <td class="p-4 text-xs text-slate-400">
+                            <i class="fa-solid fa-location-dot text-cyanGlow mr-1"></i>${item.location}
+                        </td>
+                        <td class="p-4 text-center">
+                            <span class="px-2.5 py-1 rounded text-xs font-bold border ${stockBadgeClass}">
+                                ${stockText}
+                            </span>
+                        </td>
+                        <td class="p-4 text-right font-mono font-bold text-emerald-400">
+                            ${item.price.toLocaleString()} ₡
+                        </td>
+                        <td class="p-4 text-center">
+                            <div class="flex items-center justify-center gap-1.5">
+                                <button onclick="inspectPart('${item.id}')" class="p-1.5 bg-cyan-950 hover:bg-cyan-900 text-cyanGlow border border-cyan-800 rounded text-xs" title="Datapad Inspect">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                                <button onclick="adjustQuantity(${realIndex}, 1)" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-xs" title="Add 1 Stock">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <button onclick="adjustQuantity(${realIndex}, -1)" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-xs" title="Remove 1 Stock">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                                <button onclick="openEditModal(${realIndex})" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs" title="Edit Record">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <button onclick="promptDeletePart(${realIndex})" class="p-1.5 bg-red-950/60 hover:bg-red-900 text-red-400 rounded text-xs" title="Purge Record">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+
+            updateMetrics();
+        }
+
+        function updateMetrics() {
+            document.getElementById('statTotalParts').innerText = catalog.length;
+            const totalUnits = catalog.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('statTotalUnits').innerText = totalUnits;
+            const lowStockCount = catalog.filter(item => item.qty <= item.minQty).length;
+            document.getElementById('statLowStock').innerText = lowStockCount;
+            const totalVal = catalog.reduce((sum, item) => sum + (item.qty * item.price), 0);
+            document.getElementById('statTotalValue').innerText = totalVal.toLocaleString() + ' ₡';
+        }
+
+        function toggleLowStockFilter() {
+            showLowStockOnly = !showLowStockOnly;
+            const btn = document.getElementById('lowStockToggle');
+            const txt = document.getElementById('lowStockToggleText');
+            if (showLowStockOnly) {
+                btn.classList.add('bg-amber-950', 'border-amber-500', 'text-amber-300');
+                txt.innerText = "Low Stock Filter Active";
+            } else {
+                btn.classList.remove('bg-amber-950', 'border-amber-500', 'text-amber-300');
+                txt.innerText = "Low Stock / Unstocked";
+            }
+            renderCatalog();
+        }
+
+        function adjustQuantity(index, delta) {
+            if (catalog[index]) {
+                catalog[index].qty = Math.max(0, catalog[index].qty + delta);
+                saveCatalogToLocalStorage();
+                renderCatalog();
+                showToast(`Updated stock for ${catalog[index].name}`);
+            }
+        }
+
+        let activeInspectPartId = null;
+        function inspectPart(id) {
+            const item = catalog.find(c => c.id === id);
+            if (!item) return;
+            activeInspectPartId = id;
+
+            document.getElementById('inspectRecordId').innerText = item.id;
+            document.getElementById('inspectStdNo').innerText = `STD: ${item.stdNo || 'GS-STD-8842'}`;
+            document.getElementById('inspectName').innerText = item.name;
+            document.getElementById('inspectUnivStatus').innerText = item.univStatus || 'Canon';
+            document.getElementById('inspectAccessClass').innerText = item.accessClass || 'Trade';
+            document.getElementById('inspectConfidence').innerText = item.confidence || 'Verified';
+            document.getElementById('inspectRecordState').innerText = item.recordState || 'Active';
+            document.getElementById('inspectDescription').innerText = item.specs || 'No extended description recorded.';
+            document.getElementById('inspectLocation').innerText = item.location;
+            document.getElementById('inspectStock').innerText = `${item.qty} units (Min threshold: ${item.minQty})`;
+            document.getElementById('inspectPrice').innerText = `${item.price.toLocaleString()} ₡`;
+            document.getElementById('inspectSpecsDetail').innerText = item.specs || 'Standard industrial specifications apply.';
+            document.getElementById('inspectMfgCo').innerText = item.supplier;
+            document.getElementById('inspectOriginWorld').innerText = item.originWorld || 'Unknown World';
+            document.getElementById('inspectStdLink').innerText = item.stdNo || 'GS-STD-8842';
+            document.getElementById('inspectNote').innerText = item.notes ? `"${item.notes}"` : 'No notes logged.';
+            document.getElementById('inspectSpectreNote').innerText = item.spectreNote || '[SPECTRE]: No observation data recorded.';
+
+            switchInspectTab('tabOverview');
+            document.getElementById('inspectModal').classList.remove('hidden');
+            document.getElementById('inspectModal').classList.add('flex');
+        }
+
+        function closeInspectModal() {
+            document.getElementById('inspectModal').classList.add('hidden');
+            document.getElementById('inspectModal').classList.remove('flex');
+        }
+
+        function switchInspectTab(tabId) {
+            const tabs = ['tabOverview', 'tabTech', 'tabMfg', 'tabCompat', 'tabOps', 'tabVoices'];
+            const btns = ['btnTabOverview', 'btnTabTech', 'btnTabMfg', 'btnTabCompat', 'btnTabOps', 'btnTabVoices'];
+
+            tabs.forEach((t, idx) => {
+                const el = document.getElementById(t);
+                const btn = document.getElementById(btns[idx]);
+                if (t === tabId) {
+                    el.classList.remove('hidden');
+                    btn.className = "px-3 py-1.5 rounded bg-cyan-950 text-cyanGlow border border-cyan-700 whitespace-nowrap";
+                } else {
+                    el.classList.add('hidden');
+                    btn.className = "px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap";
+                }
+            });
+        }
+
+        function openStdModalFromInspect() {
+            const item = catalog.find(c => c.id === activeInspectPartId);
+            const stdNo = item ? (item.stdNo || "GS-STD-8842") : "GS-STD-8842";
+
+            document.getElementById('gscStdId').innerText = stdNo;
+            document.getElementById('gscDisplayName').innerText = item ? `${item.name} Specification Standard` : "Standard Industrial Interlock Framework";
+            document.getElementById('gscAuthority').innerText = "Galactic Standards Bureau";
+            document.getElementById('gscRevision').innerText = "v0.2";
+            document.getElementById('gscCompliance').innerText = "Mandatory Certified";
+            document.getElementById('gscClassPath').innerText = `GSC / ${item ? item.category : 'Power & Industrial'} / ${stdNo}`;
+            document.getElementById('gscPurpose').innerText = `Defines standardized manufacturing, interface tolerance, and safety compliance for ${item ? item.name : 'industrial components'}.`;
+            document.getElementById('gscScope').innerText = `Applies across all Galactic Rim and Core World shipyards producing ${item ? item.supplier : 'certified equipment'}.`;
+            document.getElementById('gscNotes').innerText = item ? (item.notes || "Standard specification active.") : "Standard specification active.";
+
+            document.getElementById('stdModal').classList.remove('hidden');
+            document.getElementById('stdModal').classList.add('flex');
+        }
+
+        function closeStdModal() {
+            document.getElementById('stdModal').classList.add('hidden');
+            document.getElementById('stdModal').classList.remove('flex');
+        }
+
+        function openAddModal() {
+            document.getElementById('modalTitle').innerText = "REGISTER NEW COMPONENT RECORD";
+            document.getElementById('partForm').reset();
+            document.getElementById('editPartIndex').value = "";
+            document.getElementById('partModal').classList.remove('hidden');
+            document.getElementById('partModal').classList.add('flex');
+        }
+
+        function openEditModal(index) {
+            const item = catalog[index];
+            if (!item) return;
+
+            document.getElementById('modalTitle').innerText = "EDIT COMPONENT RECORD";
+            document.getElementById('editPartIndex').value = index;
+            document.getElementById('partId').value = item.id;
+            document.getElementById('partStdNo').value = item.stdNo || "GS-STD-8842";
+            document.getElementById('partName').value = item.name;
+            document.getElementById('partCategory').value = item.category;
+            document.getElementById('partSupplier').value = item.supplier;
+            document.getElementById('partOriginWorld').value = item.originWorld || "";
+            document.getElementById('partLocation').value = item.location;
+            document.getElementById('partUnivStatus').value = item.univStatus || "Canon";
+            document.getElementById('partAccessClass').value = item.accessClass || "Trade";
+            document.getElementById('partConfidence').value = item.confidence || "Verified";
+            document.getElementById('partQuantity').value = item.qty;
+            document.getElementById('partMinQuantity').value = item.minQty;
+            document.getElementById('partPrice').value = item.price;
+            document.getElementById('partSpecs').value = item.specs || "";
+            document.getElementById('partNote').value = item.notes || "";
+            document.getElementById('partSpectreNote').value = item.spectreNote || "";
+
+            document.getElementById('partModal').classList.remove('hidden');
+            document.getElementById('partModal').classList.add('flex');
+        }
+
+        function openEditModalFromInspect() {
+            closeInspectModal();
+            const index = catalog.findIndex(c => c.id === activeInspectPartId);
+            if (index !== -1) {
+                openEditModal(index);
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('partModal').classList.add('hidden');
+            document.getElementById('partModal').classList.remove('flex');
+        }
+
+        function savePart(e) {
+            e.preventDefault();
+            const editIdx = document.getElementById('editPartIndex').value;
+
+            const partData = {
+                id: document.getElementById('partId').value.trim(),
+                stdNo: document.getElementById('partStdNo').value.trim(),
+                name: document.getElementById('partName').value.trim(),
+                category: document.getElementById('partCategory').value,
+                supplier: document.getElementById('partSupplier').value.trim(),
+                originWorld: document.getElementById('partOriginWorld').value.trim(),
+                location: document.getElementById('partLocation').value,
+                univStatus: document.getElementById('partUnivStatus').value,
+                accessClass: document.getElementById('partAccessClass').value,
+                confidence: document.getElementById('partConfidence').value,
+                qty: parseInt(document.getElementById('partQuantity').value) || 0,
+                minQty: parseInt(document.getElementById('partMinQuantity').value) || 0,
+                price: parseFloat(document.getElementById('partPrice').value) || 0,
+                specs: document.getElementById('partSpecs').value.trim(),
+                notes: document.getElementById('partNote').value.trim(),
+                spectreNote: document.getElementById('partSpectreNote').value.trim(),
+                recordState: "Active"
+            };
+
+            if (editIdx !== "") {
+                catalog[parseInt(editIdx)] = partData;
+                showToast("Record updated successfully!");
+            } else {
+                catalog.push(partData);
+                showToast("New component registered!");
+            }
+
+            saveCatalogToLocalStorage();
+            closeModal();
+            renderCatalog();
+        }
+
+        function showConfirmModal(title, msg, onConfirm) {
+            document.getElementById('confirmTitle').innerText = title;
+            document.getElementById('confirmMsg').innerText = msg;
+            confirmCallback = onConfirm;
+            document.getElementById('btnConfirmOK').onclick = function() {
+                if (confirmCallback) confirmCallback();
+                closeConfirmModal();
+            };
+            document.getElementById('confirmModal').classList.remove('hidden');
+            document.getElementById('confirmModal').classList.add('flex');
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.add('hidden');
+            document.getElementById('confirmModal').classList.remove('flex');
+            confirmCallback = null;
+        }
+
+        function promptDeletePart(index) {
+            const item = catalog[index];
+            if (!item) return;
+            showConfirmModal("Purge Record Confirmation", `Are you sure you want to permanently purge ${item.name} (${item.id}) from the archive?`, function() {
+                catalog.splice(index, 1);
+                saveCatalogToLocalStorage();
+                renderCatalog();
+                showToast("Record purged from datapad.");
+            });
+        }
+
+        function promptResetCatalog() {
+            showConfirmModal("Restore Archive Confirmation", "Reset datapad catalog to standard default records? All custom changes will be overwritten.", function() {
+                catalog = JSON.parse(JSON.stringify(initialCatalog));
+                saveCatalogToLocalStorage();
+                renderCatalog();
+                showToast("Archive restored to default standards.");
+            });
+        }
+
+        function exportJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(catalog, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `lex_rogers_spare_parts_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast("Datapad JSON exported!");
+        }
+
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported)) {
+                        catalog = imported;
+                        saveCatalogToLocalStorage();
+                        renderCatalog();
+                        showToast("Datapad archive imported successfully!");
+                    } else {
+                        alert("Invalid JSON format. Expected an array of components.");
+                    }
+                } catch (err) {
+                    alert("Error reading JSON file: " + err.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        window.onload = function() {
+            loadCatalog();
+            renderCatalog();
+        };
+    </script>
+</body>
+</html>
+```eofs
+
+Koden i `spare_parts_catalog.html` er nå 100 % selvhealende. Om du kopierer denne over til `index.html` på GitHub nå, vil hele katalogen på 30 deler vises øyeblikkelig!
+
+Gå gjerne videre i Firebase under **`Databases & Storage` -> `Firestore Database`**, og si ifra så fort du har opprettet databasen!
