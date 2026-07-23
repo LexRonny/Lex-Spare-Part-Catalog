@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lex Rogers - Industrial Catalog v1.0</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,121 +13,141 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        sans: ['Rajdhani', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    },
+                    colors: {
+                        cyanGlow: '#00f0ff',
+                        amberGlow: '#ffaa00',
+                        redGlow: '#ff0055',
+                        purpleGlow: '#a855f7',
+                        darkBg: '#080c14',
+                        panelBg: '#0f172a',
+                        panelBorder: '#1e293b',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             background-color: #080c14;
             color: #cbd5e1;
             font-family: 'Rajdhani', sans-serif;
             font-size: 1.05rem;
-            padding: 1rem;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
-        @media(min-width: 768px) { body { padding: 1.5rem; } }
         .heading-font { font-family: 'Orbitron', sans-serif; }
         .glow-cyan { box-shadow: 0 0 15px rgba(0, 240, 255, 0.2); }
         .glow-amber { box-shadow: 0 0 15px rgba(255, 170, 0, 0.2); }
-        
-        header { background-color: #0f172a; border-bottom: 2px solid #00f0ff; border-top-left-radius: 0.75rem; border-top-right-radius: 0.75rem; padding: 1.25rem; margin-bottom: 1rem; }
-        .panel { background-color: #0f172a; border: 1px solid #1e293b; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.5rem; }
-        
-        .grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
-        @media(min-width: 768px) { .grid-4 { grid-template-columns: repeat(4, 1fr); } }
-
-        input, select { background-color: #090d16; border: 1px solid #334155; color: #f8fafc; padding: 0.5rem 0.75rem; border-radius: 0.25rem; font-family: 'Rajdhani', sans-serif; font-size: 0.95rem; }
-        input:focus, select:focus { outline: none; border-color: #00f0ff; }
-        
-        button { font-family: 'Rajdhani', sans-serif; cursor: pointer; transition: all 0.2s; font-weight: 600; }
-        .btn-cyan { background-color: #00f0ff; color: #080c14; border: none; padding: 0.5rem 1rem; border-radius: 0.25rem; }
-        .btn-cyan:hover { background-color: #33f3ff; }
-        .btn-dark { background-color: #1e293b; color: #f8fafc; border: 1px solid #334155; padding: 0.5rem 1rem; border-radius: 0.25rem; }
-        .btn-dark:hover { background-color: #334155; }
-        .btn-red { background-color: #7f1d1d; color: #fca5a5; border: 1px solid #991b1b; padding: 0.5rem 1rem; border-radius: 0.25rem; }
-        .btn-red:hover { background-color: #991b1b; color: #fff; }
-
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        th { background-color: #090d16; color: #00f0ff; padding: 0.75rem; font-size: 0.85rem; font-family: 'Orbitron', sans-serif; border-bottom: 1px solid #1e293b; }
-        td { padding: 0.75rem; border-bottom: 1px solid rgba(30, 41, 59, 0.6); font-size: 0.95rem; }
-        tr:hover { background-color: rgba(15, 23, 42, 0.5); }
-
-        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; padding: 1rem; z-index: 50; }
-        .modal-box { background-color: #0f172a; border: 2px solid #00f0ff; border-radius: 0.75rem; width: 100%; max-width: 900px; max-height: 90vh; display: flex; flex-direction: column; padding: 1.5rem; }
-        
-        .tree-line { border-left: 1px dashed #334155; margin-left: 0.5rem; padding-left: 1rem; }
-        .hidden { display: none !important; }
-        
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #080c14; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; border: 1px solid #00f0ff; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f0ff; }
+        .tree-line { border-left: 1px dashed #334155; }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col p-3 md:p-6 text-slate-200">
 
-    <!-- Header -->
-    <header class="glow-cyan">
-        <div style="display: flex; flex-direction: column; gap: 1rem; justify-content: space-between; align-items: flex-start;" class="md-flex-row">
-            <div>
-                <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: #fbbf24; font-family: 'Orbitron';" class="heading-font">
-                    <span style="background: #450a0a; color: #f87171; padding: 0.15rem 0.5rem; border-radius: 0.25rem; border: 1px solid #991b1b;">INDUSTRIAL ENGINEERING DATABASE</span>
-                    <span>//</span>
-                    <span style="color: #00f0ff;">v1.0 MASTER ARCHITECTURE</span>
+    <!-- Header & System Governance -->
+    <header class="bg-panelBg border-b-2 border-cyanGlow rounded-t-xl p-4 md:p-6 mb-4 glow-cyan flex flex-col gap-3">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="p-3 bg-red-950/80 border border-red-500 text-red-400 rounded-lg text-2xl animate-pulse">
+                    <i class="fa-solid fa-sitemap"></i>
                 </div>
-                <h1 style="font-size: 1.75rem; font-weight: 900; color: #ffffff; letter-spacing: 0.05em; margin-top: 0.25rem;" class="heading-font">
-                    LEX ROGERS <span style="color: #00f0ff;">INDUSTRIAL CATALOGUE v1.0</span>
-                </h1>
+                <div>
+                    <div class="flex items-center gap-2 text-xs font-semibold text-amber-400 uppercase tracking-widest heading-font">
+                        <span class="bg-red-950/90 text-red-400 px-2 py-0.5 rounded border border-red-800">INDUSTRIAL ENGINEERING DATABASE</span>
+                        <span>//</span>
+                        <span class="text-cyanGlow">v1.0 MASTER ARCHITECTURE</span>
+                    </div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-wider heading-font mt-1">
+                        LEX ROGERS <span class="text-cyanGlow">INDUSTRIAL CATALOGUE v1.0</span>
+                    </h1>
+                </div>
             </div>
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                <button onclick="promptResetCatalog()" class="btn-red" style="font-size: 0.75rem;"><i class="fa-solid fa-rotate-left"></i> Reset Master Dataset</button>
-                <button onclick="exportJSON()" class="btn-dark" style="font-size: 0.75rem;"><i class="fa-solid fa-download"></i> Export</button>
-                <label class="btn-dark" style="font-size: 0.75rem; cursor: pointer;">
+            
+            <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
+                <button onclick="promptResetCatalog()" class="px-3 py-2 bg-red-950/60 hover:bg-red-900/80 text-red-300 rounded border border-red-800 text-xs transition flex items-center gap-1.5" title="Reset Master Dataset">
+                    <i class="fa-solid fa-rotate-left"></i> Reset Master Dataset
+                </button>
+                <button onclick="exportJSON()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-600 text-xs transition" title="Export Datapad JSON">
+                    <i class="fa-solid fa-download"></i> Export
+                </button>
+                <label class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-600 text-xs cursor-pointer transition" title="Import Datapad JSON">
                     <i class="fa-solid fa-upload"></i> Import
                     <input type="file" id="importFile" accept=".json" class="hidden" onchange="importJSON(event)">
                 </label>
             </div>
         </div>
 
-        <div style="background: rgba(15, 23, 42, 0.9); border: 1px solid #1e293b; border-radius: 0.25rem; padding: 0.75rem; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
-            <div style="display: flex; gap: 0.5rem; background: #020617; padding: 0.25rem; border-radius: 0.25rem; border: 1px solid #1e293b;">
-                <button id="btnViewTree" onclick="switchMainView('tree')" class="btn-cyan" style="font-size: 0.75rem; padding: 0.35rem 0.75rem;"><i class="fa-solid fa-folder-tree"></i> Hierarchical Tree View</button>
-                <button id="btnViewTable" onclick="switchMainView('table')" class="btn-dark" style="font-size: 0.75rem; padding: 0.35rem 0.75rem; background: transparent; border: none; color: #94a3b8;"><i class="fa-solid fa-table-list"></i> Flat Master Index</button>
+        <!-- Mode Toggle & Status Bar -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded p-2.5 text-xs text-slate-400 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+            <div class="flex items-center gap-2 bg-slate-950 p-1 rounded border border-slate-800">
+                <button id="btnViewTree" onclick="switchMainView('tree')" class="px-3 py-1 rounded bg-cyan-950 text-cyanGlow border border-cyan-700 font-bold heading-font flex items-center gap-2 text-xs">
+                    <i class="fa-solid fa-folder-tree"></i> Hierarchical Tree View
+                </button>
+                <button id="btnViewTable" onclick="switchMainView('table')" class="px-3 py-1 rounded text-slate-400 hover:text-white border border-transparent font-bold heading-font flex items-center gap-2 text-xs">
+                    <i class="fa-solid fa-table-list"></i> Flat Master Index
+                </button>
             </div>
-            <div id="syncBadge" style="font-size: 0.75rem; font-family: monospace; padding: 0.25rem 0.75rem; border-radius: 0.25rem; background: #064e3b; color: #34d399; border: 1px solid #047857; display: flex; align-items: center; gap: 0.5rem;">
-                <span style="width: 8px; height: 8px; background: #34d399; border-radius: 50%;"></span>
+
+            <div id="syncBadge" class="px-2.5 py-0.5 rounded text-[10px] font-mono uppercase font-bold border bg-emerald-950 text-emerald-400 border-emerald-800 flex items-center gap-1.5 self-end md:self-auto">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
                 <span id="syncBadgeText">DATAPAD: LOCAL STORAGE MASTER ACTIVE (82 ITEMS)</span>
             </div>
         </div>
     </header>
 
     <!-- Metrics Bar -->
-    <div class="grid-4">
-        <div class="panel" style="margin-bottom:0; display:flex; justify-content:space-between; align-items:center;">
-            <div><p style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;" class="heading-font">Catalogued Records</p><p id="statTotalParts" style="font-size: 1.5rem; font-weight: bold; color: #00f0ff;" class="heading-font">0</p></div>
-            <i class="fa-solid fa-boxes-stacked" style="font-size: 1.5rem; color: #334155;"></i>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-panelBg p-4 rounded-lg border border-slate-800 flex items-center justify-between">
+            <div>
+                <p class="text-xs uppercase text-slate-400 heading-font">Catalogued Records</p>
+                <p id="statTotalParts" class="text-2xl font-bold text-cyanGlow heading-font">0</p>
+            </div>
+            <i class="fa-solid fa-boxes-stacked text-2xl text-slate-700"></i>
         </div>
-        <div class="panel" style="margin-bottom:0; display:flex; justify-content:space-between; align-items:center;">
-            <div><p style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;" class="heading-font">Total Units in Inventory</p><p id="statTotalUnits" style="font-size: 1.5rem; font-weight: bold; color: #ffffff;" class="heading-font">0</p></div>
-            <i class="fa-solid fa-cubes" style="font-size: 1.5rem; color: #334155;"></i>
+        <div class="bg-panelBg p-4 rounded-lg border border-slate-800 flex items-center justify-between">
+            <div>
+                <p class="text-xs uppercase text-slate-400 heading-font">Total Units in Inventory</p>
+                <p id="statTotalUnits" class="text-2xl font-bold text-white heading-font">0</p>
+            </div>
+            <i class="fa-solid fa-cubes text-2xl text-slate-700"></i>
         </div>
-        <div class="panel" style="margin-bottom:0; display:flex; justify-content:space-between; align-items:center;">
-            <div><p style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;" class="heading-font">Low Stock / Unstocked</p><p id="statLowStock" style="font-size: 1.5rem; font-weight: bold; color: #fbbf24;" class="heading-font">0</p></div>
-            <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.5rem; color: #78350f;"></i>
+        <div class="bg-panelBg p-4 rounded-lg border border-slate-800 flex items-center justify-between">
+            <div>
+                <p class="text-xs uppercase text-slate-400 heading-font">Low Stock / Unstocked</p>
+                <p id="statLowStock" class="text-2xl font-bold text-amber-400 heading-font">0</p>
+            </div>
+            <i class="fa-solid fa-triangle-exclamation text-2xl text-amber-900/40"></i>
         </div>
-        <div class="panel" style="margin-bottom:0; display:flex; justify-content:space-between; align-items:center;">
-            <div><p style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase;" class="heading-font">Total Inventory Value</p><p id="statTotalValue" style="font-size: 1.5rem; font-weight: bold; color: #34d399;" class="heading-font">0 ₡</p></div>
-            <i class="fa-solid fa-coins" style="font-size: 1.5rem; color: #064e3b;"></i>
+        <div class="bg-panelBg p-4 rounded-lg border border-slate-800 flex items-center justify-between">
+            <div>
+                <p class="text-xs uppercase text-slate-400 heading-font">Total Inventory Value</p>
+                <p id="statTotalValue" class="text-2xl font-bold text-emerald-400 heading-font">0 ₡</p>
+            </div>
+            <i class="fa-solid fa-coins text-2xl text-emerald-900/40"></i>
         </div>
     </div>
 
-    <!-- Filter & Controls -->
-    <div class="panel" style="display: flex; flex-direction: column; gap: 1rem; align-items: center;" class="lg-flex-row">
-        <div style="width: 100%; position: relative;" class="lg-w-1-3">
-            <i class="fa-solid fa-search" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: #64748b;"></i>
-            <input type="text" id="searchInput" oninput="renderCatalog()" placeholder="Search Record ID, Std No, Bearing, Material, or Tags..." style="width: 100%; padding-left: 2.25rem;">
+    <!-- Controls & Multi-Filter Bar -->
+    <div class="bg-panelBg p-4 rounded-lg border border-slate-800 mb-6 flex flex-col lg:flex-row gap-4 items-center justify-between">
+        <div class="relative w-full lg:w-1/3">
+            <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
+            <input type="text" id="searchInput" oninput="renderCatalog()" placeholder="Search Record ID, Std No, Bearing, Material, or Tags..." 
+                   class="w-full pl-10 pr-4 py-2 bg-slate-900 border border-slate-700 rounded text-xs text-slate-200 focus:outline-none focus:border-cyanGlow transition">
         </div>
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; width: 100%;" class="md-grid-4">
-            <select id="accessFilter" onchange="renderCatalog()">
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 w-full lg:w-auto">
+            <select id="accessFilter" onchange="renderCatalog()" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded py-2 px-3 focus:outline-none focus:border-cyanGlow">
                 <option value="ALL">All Classifications</option>
                 <option value="Restricted">Restricted</option>
                 <option value="Black Market">Black Market</option>
@@ -133,7 +155,8 @@
                 <option value="Trade">Trade</option>
                 <option value="Public">Public</option>
             </select>
-            <select id="lifecycleFilter" onchange="renderCatalog()">
+
+            <select id="lifecycleFilter" onchange="renderCatalog()" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded py-2 px-3 focus:outline-none focus:border-cyanGlow">
                 <option value="ALL">All Lifecycles</option>
                 <option value="Mass Production">Mass Production</option>
                 <option value="Prototype">Prototype</option>
@@ -141,7 +164,8 @@
                 <option value="Obsolete">Obsolete</option>
                 <option value="Black Market">Black Market</option>
             </select>
-            <select id="locationFilter" onchange="renderCatalog()">
+
+            <select id="locationFilter" onchange="renderCatalog()" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded py-2 px-3 focus:outline-none focus:border-cyanGlow">
                 <option value="ALL">All Locations</option>
                 <option value="Home Base">Home Base</option>
                 <option value="Willy's">Willy's</option>
@@ -149,173 +173,248 @@
                 <option value="Pending location">Pending location</option>
                 <option value="Market / Vendor">Market / Vendor</option>
             </select>
-            <button id="lowStockToggle" onclick="toggleLowStockFilter()" class="btn-dark" style="font-size: 0.75rem;"><i class="fa-solid fa-triangle-exclamation" style="color: #fbbf24;"></i> <span id="lowStockToggleText">Low Stock / Unstocked</span></button>
+
+            <button id="lowStockToggle" onclick="toggleLowStockFilter()" class="px-3 py-2 bg-slate-900 border border-slate-700 hover:border-amber-500 text-xs text-slate-300 rounded focus:outline-none transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
+                <span id="lowStockToggleText">Low Stock / Unstocked</span>
+            </button>
         </div>
     </div>
 
-    <!-- MAIN VIEW 1: TREE -->
-    <div id="viewTreeContainer" class="panel" style="flex-grow: 1;">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 0.75rem; margin-bottom: 1rem;">
-            <div style="font-size: 0.75rem; font-family: monospace; color: #00f0ff;"><i class="fa-solid fa-diagram-project" style="color: #fbbf24;"></i> HIERARCHICAL TREE EXPLORER (Category & BOM Architecture)</div>
-            <div style="display: flex; gap: 0.5rem;">
-                <button onclick="expandAllFolders()" class="btn-dark" style="font-size: 0.7rem; padding: 0.25rem 0.5rem;"><i class="fa-solid fa-folder-open"></i> Expand All</button>
-                <button onclick="collapseAllFolders()" class="btn-dark" style="font-size: 0.7rem; padding: 0.25rem 0.5rem;"><i class="fa-solid fa-folder"></i> Collapse All</button>
+    <!-- MAIN VIEW 1: HIERARCHICAL TREE EXPLORER VIEW -->
+    <div id="viewTreeContainer" class="bg-panelBg rounded-xl border border-slate-800 p-6 shadow-2xl flex-grow mb-6">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+            <div class="flex items-center gap-2 text-xs font-mono text-cyanGlow">
+                <i class="fa-solid fa-diagram-project text-amber-400"></i>
+                <span>HIERARCHICAL TREE EXPLORER (Category & BOM Architecture)</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="expandAllFolders()" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-[10px] text-cyanGlow rounded border border-slate-700">
+                    <i class="fa-solid fa-folder-open mr-1"></i> Expand All
+                </button>
+                <button onclick="collapseAllFolders()" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 rounded border border-slate-700">
+                    <i class="fa-solid fa-folder mr-1"></i> Collapse All
+                </button>
             </div>
         </div>
-        <div id="treeExplorerBody" style="font-family: monospace; font-size: 0.8rem;"></div>
+        <div id="treeExplorerBody" class="space-y-2 font-mono text-xs"></div>
     </div>
 
-    <!-- MAIN VIEW 2: TABLE -->
-    <div id="viewTableContainer" class="panel hidden" style="flex-grow: 1; padding: 0; overflow: hidden;">
-        <div style="overflow-x: auto;">
-            <table>
+    <!-- MAIN VIEW 2: FLAT MASTER INDEX TABLE -->
+    <div id="viewTableContainer" class="hidden bg-panelBg rounded-xl border border-slate-800 overflow-hidden shadow-2xl flex-grow mb-6">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr>
-                        <th>Record ID / Std Rev</th>
-                        <th>Component & Source Confidence</th>
-                        <th>Category Path</th>
-                        <th>Manufacturer / Origin</th>
-                        <th>Location</th>
-                        <th style="text-align: center;">Stock</th>
-                        <th style="text-align: right;">Price (₡)</th>
-                        <th style="text-align: center;">Actions</th>
+                    <tr class="bg-slate-900/90 text-cyanGlow border-b border-slate-800 text-xs font-bold uppercase tracking-wider heading-font">
+                        <th class="p-4">Record ID / Std Rev</th>
+                        <th class="p-4">Component & Source Confidence</th>
+                        <th class="p-4">Category Path</th>
+                        <th class="p-4">Manufacturer / Origin</th>
+                        <th class="p-4">Location</th>
+                        <th class="p-4 text-center">Stock</th>
+                        <th class="p-4 text-right">Price (₡)</th>
+                        <th class="p-4 text-center">Actions</th>
                     </tr>
                 </thead>
-                <tbody id="catalogTableBody"></tbody>
+                <tbody id="catalogTableBody" class="divide-y divide-slate-800/60 text-xs"></tbody>
             </table>
         </div>
-        <div id="emptyState" class="hidden" style="padding: 3rem; text-align: center; color: #64748b;">
-            <i class="fa-solid fa-box-open" style="font-size: 2.5rem; margin-bottom: 0.75rem; color: #334155;"></i>
-            <p>No industrial records match current datapad query.</p>
+        <div id="emptyState" class="hidden p-12 text-center text-slate-500">
+            <i class="fa-solid fa-box-open text-4xl mb-3 text-slate-700"></i>
+            <p class="text-base font-semibold">No industrial records match current datapad query.</p>
         </div>
     </div>
 
-    <!-- INSPECT MODAL -->
-    <div id="inspectModal" class="modal">
-        <div class="modal-box glow-cyan">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #1e293b; padding-bottom: 1rem; margin-bottom: 1rem;">
+    <!-- ITEM INSPECTOR MODAL -->
+    <div id="inspectModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center p-3 md:p-6 z-50">
+        <div class="bg-panelBg border-2 border-cyanGlow rounded-xl w-full max-w-5xl p-6 shadow-2xl relative glow-cyan max-h-[92vh] flex flex-col">
+            <div class="flex justify-between items-start border-b border-slate-800 pb-4 mb-3">
                 <div>
-                    <div style="font-size: 0.75rem; font-family: monospace; color: #00f0ff; display: flex; gap: 0.5rem; align-items: center;">
-                        <span id="inspectRecordId" style="font-weight: bold;"></span>
+                    <div class="flex items-center gap-3 text-xs font-mono text-cyanGlow">
+                        <span id="inspectRecordId" class="font-bold text-sm"></span>
                         <span>//</span>
-                        <span id="inspectStdNo" style="color: #fbbf24;"></span>
-                        <span id="inspectStars" style="color: #fbbf24; font-weight: bold;"></span>
+                        <span id="inspectStdNo" class="text-amber-400 cursor-pointer hover:underline"></span>
+                        <span id="inspectStars" class="text-amber-400 font-bold ml-2"></span>
                     </div>
-                    <h2 id="inspectName" style="font-size: 1.5rem; font-weight: 800; color: #fff; margin-top: 0.25rem;" class="heading-font"></h2>
-                    <p id="inspectPathBreadcrumb" style="font-size: 0.75rem; font-family: monospace; color: #94a3b8; margin-top: 0.25rem;"></p>
+                    <h2 id="inspectName" class="text-2xl font-extrabold text-white heading-font mt-1"></h2>
+                    <p id="inspectPathBreadcrumb" class="text-[11px] font-mono text-slate-400 mt-1"></p>
                 </div>
-                <button onclick="closeInspectModal()" style="background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="closeInspectModal()" class="text-slate-400 hover:text-white text-2xl p-1">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
 
-            <!-- Tabs -->
-            <div style="display: flex; gap: 0.5rem; border-bottom: 1px solid #1e293b; padding-bottom: 0.5rem; margin-bottom: 1rem; overflow-x: auto; font-size: 0.8rem;" class="heading-font">
-                <button onclick="switchInspectTab('tabOverview')" id="btnTabOverview" class="btn-cyan" style="font-size: 0.75rem;">01 Overview</button>
-                <button onclick="switchInspectTab('tabBOM')" id="btnTabBOM" class="btn-dark" style="font-size: 0.75rem;">02 BOM & Hierarchy</button>
-                <button onclick="switchInspectTab('tabCompat')" id="btnTabCompat" class="btn-dark" style="font-size: 0.75rem;">03 Compatibility</button>
-                <button onclick="switchInspectTab('tabRelations')" id="btnTabRelations" class="btn-dark" style="font-size: 0.75rem;">04 System Network</button>
-                <button onclick="switchInspectTab('tabSource')" id="btnTabSource" class="btn-dark" style="font-size: 0.75rem;">05 Provenance & Source</button>
-                <button onclick="switchInspectTab('tabVoices')" id="btnTabVoices" class="btn-dark" style="font-size: 0.75rem;">06 Notes & Spectre</button>
+            <!-- Modal Nav Tabs -->
+            <div class="flex overflow-x-auto gap-2 border-b border-slate-800 pb-2 mb-4 text-xs font-semibold heading-font">
+                <button onclick="switchInspectTab('tabOverview')" id="btnTabOverview" class="px-3 py-1.5 rounded bg-cyan-950 text-cyanGlow border border-cyan-700 whitespace-nowrap">01 Overview</button>
+                <button onclick="switchInspectTab('tabBOM')" id="btnTabBOM" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">02 BOM & Hierarchy</button>
+                <button onclick="switchInspectTab('tabCompat')" id="btnTabCompat" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">03 Compatibility</button>
+                <button onclick="switchInspectTab('tabRelations')" id="btnTabRelations" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">04 System Network</button>
+                <button onclick="switchInspectTab('tabSource')" id="btnTabSource" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">05 Provenance & Source</button>
+                <button onclick="switchInspectTab('tabVoices')" id="btnTabVoices" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">06 Notes & Spectre</button>
             </div>
 
-            <div style="flex-grow: 1; overflow-y: auto; padding-right: 0.5rem; display: flex; flex-direction: column; gap: 1rem; font-size: 0.9rem; color: #cbd5e1;">
-                <!-- Tab 1 -->
-                <div id="tabOverview" style="display: flex; flex-direction: column; gap: 1rem;">
-                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; background: #090d16; padding: 0.75rem; border-radius: 0.25rem; border: 1px solid #1e293b; font-size: 0.8rem;">
-                        <div><span style="font-size: 0.65rem; color: #64748b; text-transform: uppercase;" class="heading-font">Universe</span><span id="inspectUnivStatus" style="font-weight: bold; color: #fbbf24;"></span></div>
-                        <div><span style="font-size: 0.65rem; color: #64748b; text-transform: uppercase;" class="heading-font">Access</span><span id="inspectAccessClass" style="font-weight: bold; color: #00f0ff;"></span></div>
-                        <div><span style="font-size: 0.65rem; color: #64748b; text-transform: uppercase;" class="heading-font">Lifecycle</span><span id="inspectLifecycle" style="font-weight: bold; color: #a855f7;"></span></div>
-                        <div><span style="font-size: 0.65rem; color: #64748b; text-transform: uppercase;" class="heading-font">Confidence</span><span id="inspectConfidenceVal" style="font-weight: bold; color: #34d399;"></span></div>
-                        <div><span style="font-size: 0.65rem; color: #64748b; text-transform: uppercase;" class="heading-font">Revision</span><span id="inspectRev" style="font-family: monospace; font-weight: bold; color: #fff;"></span></div>
+            <!-- Tab Contents -->
+            <div class="flex-grow overflow-y-auto pr-2 space-y-4 text-sm text-slate-300">
+                <div id="tabOverview" class="space-y-4">
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-3 bg-slate-900/80 p-3 rounded border border-slate-800">
+                        <div>
+                            <span class="text-[10px] text-slate-500 uppercase block heading-font">Universe Status</span>
+                            <span id="inspectUnivStatus" class="font-bold text-amber-400">Canon</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-500 uppercase block heading-font">Access Class</span>
+                            <span id="inspectAccessClass" class="font-bold text-cyanGlow">Trade</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-500 uppercase block heading-font">Lifecycle</span>
+                            <span id="inspectLifecycle" class="font-bold text-purple-400">Mass Production</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-500 uppercase block heading-font">Source Confidence</span>
+                            <span id="inspectConfidenceVal" class="font-bold text-emerald-400">5 / 5 Stars</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-500 uppercase block heading-font">Revision</span>
+                            <span id="inspectRev" class="font-mono font-bold text-slate-200">Rev A</span>
+                        </div>
                     </div>
-                    <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: 0.25rem; border: 1px solid #1e293b;">
-                        <h4 style="font-size: 0.75rem; text-transform: uppercase; color: #94a3b8; margin-bottom: 0.25rem;" class="heading-font">Technical Description & Specifications</h4>
-                        <p id="inspectDescription" style="font-size: 0.85rem; line-height: 1.5; color: #f8fafc;"></p>
+
+                    <div class="bg-slate-900/50 p-4 rounded border border-slate-800">
+                        <h4 class="text-xs uppercase text-slate-400 heading-font mb-1">Technical Description & Specifications</h4>
+                        <p id="inspectDescription" class="text-slate-200 leading-relaxed text-xs"></p>
                     </div>
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;">
-                        <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: 0.25rem; border: 1px solid #1e293b;"><span style="font-size: 0.65rem; color: #94a3b8; text-transform: uppercase;" class="heading-font">Location</span><p id="inspectLocation" style="font-weight: 600; color: #fff; margin-top: 0.25rem; font-size: 0.85rem;"></p></div>
-                        <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: 0.25rem; border: 1px solid #1e293b;"><span style="font-size: 0.65rem; color: #94a3b8; text-transform: uppercase;" class="heading-font">Stock / Min</span><p id="inspectStock" style="font-weight: 600; color: #fff; margin-top: 0.25rem; font-size: 0.85rem;"></p></div>
-                        <div style="background: rgba(15, 23, 42, 0.6); padding: 0.75rem; border-radius: 0.25rem; border: 1px solid #1e293b;"><span style="font-size: 0.65rem; color: #94a3b8; text-transform: uppercase;" class="heading-font">Price</span><p id="inspectPrice" style="font-family: monospace; font-weight: bold; color: #34d399; margin-top: 0.25rem; font-size: 0.85rem;"></p></div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="bg-slate-900/60 p-3 rounded border border-slate-800">
+                            <span class="text-[10px] text-slate-400 uppercase heading-font">Current Location</span>
+                            <p id="inspectLocation" class="font-semibold text-white mt-0.5 text-xs"></p>
+                        </div>
+                        <div class="bg-slate-900/60 p-3 rounded border border-slate-800">
+                            <span class="text-[10px] text-slate-400 uppercase heading-font">Stock / Minimum</span>
+                            <p id="inspectStock" class="font-semibold text-white mt-0.5 text-xs"></p>
+                        </div>
+                        <div class="bg-slate-900/60 p-3 rounded border border-slate-800">
+                            <span class="text-[10px] text-slate-400 uppercase heading-font">Unit Price</span>
+                            <p id="inspectPrice" class="font-mono font-bold text-emerald-400 mt-0.5 text-xs"></p>
+                        </div>
                     </div>
-                    <div style="background: rgba(15, 23, 42, 0.5); padding: 0.75rem; border-radius: 0.25rem; border: 1px solid #1e293b;"><span style="font-size: 0.65rem; color: #94a3b8; text-transform: uppercase; display: block; margin-bottom: 0.5rem;" class="heading-font">Tags</span><div id="inspectTagsContainer" style="display: flex; flex-wrap: wrap; gap: 0.35rem;"></div></div>
+
+                    <div class="bg-slate-900/50 p-3 rounded border border-slate-800">
+                        <span class="text-[10px] text-slate-400 uppercase block heading-font mb-1">Tags</span>
+                        <div id="inspectTagsContainer" class="flex flex-wrap gap-1.5"></div>
+                    </div>
                 </div>
 
-                <!-- Tab 2: BOM -->
-                <div id="tabBOM" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
-                    <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: 0.25rem; border: 1px solid #1e293b;"><h4 style="font-size: 0.75rem; text-transform: uppercase; color: #00f0ff; margin-bottom: 0.5rem;" class="heading-font">Parent Component / Assembly</h4><div id="inspectParentContainer" style="padding: 0.75rem; background: #020617; border-radius: 0.25rem; border: 1px solid #1e293b; font-family: monospace; font-size: 0.8rem;"></div></div>
-                    <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: 0.25rem; border: 1px solid #1e293b;"><h4 style="font-size: 0.75rem; text-transform: uppercase; color: #fbbf24; margin-bottom: 0.5rem;" class="heading-font">Bill of Materials (BOM) / Sub-Components</h4><div id="inspectChildrenContainer" style="padding: 0.75rem; background: #020617; border-radius: 0.25rem; border: 1px solid #1e293b; font-family: monospace; font-size: 0.8rem; display: flex; flex-direction: column; gap: 0.5rem;"></div></div>
+                <div id="tabBOM" class="hidden space-y-4">
+                    <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3">
+                        <h4 class="text-xs uppercase text-cyanGlow heading-font">Parent Component / Assembly</h4>
+                        <div id="inspectParentContainer" class="p-3 bg-slate-950 rounded border border-slate-800 font-mono text-xs"></div>
+                    </div>
+
+                    <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3">
+                        <h4 class="text-xs uppercase text-amber-400 heading-font">Bill of Materials (BOM) / Sub-Components</h4>
+                        <div id="inspectChildrenContainer" class="p-3 bg-slate-950 rounded border border-slate-800 space-y-2 font-mono text-xs"></div>
+                    </div>
                 </div>
 
-                <!-- Tab 3: Compat -->
-                <div id="tabCompat" class="hidden" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-                    <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: 0.25rem; border: 1px solid #1e293b;"><h4 style="font-size: 0.75rem; text-transform: uppercase; color: #00f0ff; margin-bottom: 0.5rem;" class="heading-font"><i class="fa-solid fa-plane-up"></i> Compatible Platforms</h4><div id="inspectCompatContainer" style="display: flex; flex-wrap: wrap; gap: 0.5rem; font-size: 0.8rem;"></div></div>
-                    <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: 0.25rem; border: 1px solid #1e293b;"><h4 style="font-size: 0.75rem; text-transform: uppercase; color: #34d399; margin-bottom: 0.5rem;" class="heading-font"><i class="fa-solid fa-anchor"></i> Active Installations</h4><div id="inspectInstalledContainer" style="display: flex; flex-wrap: wrap; gap: 0.5rem; font-size: 0.8rem;"></div></div>
-                </div>
+                <div id="tabCompat" class="hidden space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-2">
+                            <h4 class="text-xs uppercase text-cyanGlow heading-font"><i class="fa-solid fa-plane-up mr-1"></i> Compatible Platforms & Vehicles</h4>
+                            <div id="inspectCompatContainer" class="flex flex-wrap gap-2 text-xs"></div>
+                        </div>
 
-                <!-- Tab 4: Relations -->
-                <div id="tabRelations" class="hidden">
-                    <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: 0.25rem; border: 1px solid #1e293b; font-family: monospace; font-size: 0.8rem;">
-                        <h4 style="font-size: 0.75rem; text-transform: uppercase; color: #a855f7; margin-bottom: 0.75rem;" class="heading-font">Inter-System Dependency Network</h4>
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
-                            <div style="padding: 0.75rem; background: #020617; border-radius: 0.25rem; border: 1px solid #1e293b;"><span style="color: #64748b; text-transform: uppercase; display: block; font-size: 0.65rem;">Power Source:</span><span id="relPowerSource" style="color: #fbbf24; font-weight: bold;"></span></div>
-                            <div style="padding: 0.75rem; background: #020617; border-radius: 0.25rem; border: 1px solid #1e293b;"><span style="color: #64748b; text-transform: uppercase; display: block; font-size: 0.65rem;">Required Subsystems:</span><span id="relNeeds" style="color: #00f0ff; font-weight: bold;"></span></div>
-                            <div style="padding: 0.75rem; background: #020617; border-radius: 0.25rem; border: 1px solid #1e293b;"><span style="color: #64748b; text-transform: uppercase; display: block; font-size: 0.65rem;">Interfaces With:</span><span id="relInterfaces" style="color: #34d399; font-weight: bold;"></span></div>
-                            <div style="padding: 0.75rem; background: #020617; border-radius: 0.25rem; border: 1px solid #1e293b;"><span style="color: #64748b; text-transform: uppercase; display: block; font-size: 0.65rem;">Consumables / Feeds:</span><span id="relUses" style="color: #e879f9; font-weight: bold;"></span></div>
+                        <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-2">
+                            <h4 class="text-xs uppercase text-emerald-400 heading-font"><i class="fa-solid fa-anchor mr-1"></i> Active Installations</h4>
+                            <div id="inspectInstalledContainer" class="flex flex-wrap gap-2 text-xs"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Tab 5: Source -->
-                <div id="tabSource" class="hidden">
-                    <div style="background: rgba(15, 23, 42, 0.5); padding: 1rem; border-radius: 0.25rem; border: 1px solid #1e293b; font-family: monospace; font-size: 0.8rem;">
-                        <h4 style="font-size: 0.75rem; text-transform: uppercase; color: #fbbf24; margin-bottom: 0.75rem;" class="heading-font">Primary Source Reference</h4>
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
-                            <div><span style="color: #64748b;">Primary Source:</span> <span id="srcTitle" style="color: #fff; font-weight: bold;"></span></div>
-                            <div><span style="color: #64748b;">Author / Publisher:</span> <span id="srcAuthor" style="color: #e2e8f0;"></span></div>
-                            <div><span style="color: #64748b;">Page / Reference:</span> <span id="srcPage" style="color: #e2e8f0;"></span></div>
-                            <div><span style="color: #64748b;">ISBN / Ref-ID:</span> <span id="srcIsbn" style="color: #e2e8f0;"></span></div>
+                <div id="tabRelations" class="hidden space-y-4">
+                    <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3 text-xs font-mono">
+                        <h4 class="text-xs uppercase text-purple-400 heading-font">Inter-System Dependency Network</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="p-2.5 bg-slate-950 rounded border border-slate-800">
+                                <span class="text-slate-500 uppercase block text-[10px]">Power Source:</span>
+                                <span id="relPowerSource" class="text-amber-400 font-bold"></span>
+                            </div>
+                            <div class="p-2.5 bg-slate-950 rounded border border-slate-800">
+                                <span class="text-slate-500 uppercase block text-[10px]">Required Subsystems:</span>
+                                <span id="relNeeds" class="text-cyanGlow font-bold"></span>
+                            </div>
+                            <div class="p-2.5 bg-slate-950 rounded border border-slate-800">
+                                <span class="text-slate-500 uppercase block text-[10px]">Interfaces With:</span>
+                                <span id="relInterfaces" class="text-emerald-400 font-bold"></span>
+                            </div>
+                            <div class="p-2.5 bg-slate-950 rounded border border-slate-800">
+                                <span class="text-slate-500 uppercase block text-[10px]">Consumables / Feeds:</span>
+                                <span id="relUses" class="text-purple-300 font-bold"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Tab 6: Voices -->
-                <div id="tabVoices" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
-                    <div style="background: rgba(69, 26, 3, 0.3); padding: 1rem; border-radius: 0.25rem; border: 1px solid rgba(146, 64, 14, 0.6);">
-                        <div style="display: flex; align-items: center; gap: 0.5rem; color: #fbbf24; font-size: 0.75rem; font-weight: bold; margin-bottom: 0.5rem;" class="heading-font"><i class="fa-solid fa-note-sticky"></i><span>Lex Rogers Field Notes</span></div>
-                        <p id="inspectNote" style="font-style: italic; color: #fde68a; font-size: 0.85rem; line-height: 1.5;"></p>
+                <div id="tabSource" class="hidden space-y-4">
+                    <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3 text-xs font-mono">
+                        <h4 class="text-xs uppercase text-amber-400 heading-font">Primary Source Reference</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div><span class="text-slate-500 block">Primary Source:</span> <span id="srcTitle" class="text-white font-bold"></span></div>
+                            <div><span class="text-slate-500 block">Author / Publisher:</span> <span id="srcAuthor" class="text-slate-200"></span></div>
+                            <div><span class="text-slate-500 block">Page / Reference:</span> <span id="srcPage" class="text-slate-200"></span></div>
+                            <div><span class="text-slate-500 block">ISBN / Ref-ID:</span> <span id="srcIsbn" class="text-slate-200"></span></div>
+                        </div>
                     </div>
-                    <div style="background: rgba(88, 28, 135, 0.3); padding: 1rem; border-radius: 0.25rem; border: 1px solid rgba(126, 34, 206, 0.6);">
-                        <div style="display: flex; align-items: center; gap: 0.5rem; color: #c084fc; font-size: 0.75rem; font-weight: bold; margin-bottom: 0.5rem;" class="heading-font"><i class="fa-solid fa-eye"></i><span>Spectre Tactical Analysis</span></div>
-                        <p id="inspectSpectreNote" style="font-family: monospace; color: #e9d5ff; font-size: 0.8rem; line-height: 1.5;"></p>
+                </div>
+
+                <div id="tabVoices" class="hidden space-y-4">
+                    <div class="bg-amber-950/30 p-4 rounded border border-amber-800/60 space-y-2">
+                        <div class="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase heading-font">
+                            <i class="fa-solid fa-note-sticky"></i>
+                            <span>Lex Rogers Field Notes</span>
+                        </div>
+                        <p id="inspectNote" class="italic text-amber-200 text-xs leading-relaxed"></p>
+                    </div>
+
+                    <div class="bg-purple-950/30 p-4 rounded border border-purple-800/60 space-y-2">
+                        <div class="flex items-center gap-2 text-purple-400 text-xs font-bold uppercase heading-font">
+                            <i class="fa-solid fa-eye"></i>
+                            <span>Spectre Tactical Analysis</span>
+                        </div>
+                        <p id="inspectSpectreNote" class="font-mono text-purple-200 text-xs leading-relaxed"></p>
                     </div>
                 </div>
             </div>
 
-            <div style="display: flex; justify-content: flex-end; padding-top: 1rem; border-top: 1px solid #1e293b; margin-top: 1rem;">
-                <button onclick="closeInspectModal()" class="btn-cyan" style="font-size: 0.75rem;">Close Inspector</button>
+            <div class="flex justify-end pt-4 border-t border-slate-800 mt-4">
+                <button onclick="closeInspectModal()" class="px-5 py-2 bg-cyan-600 hover:bg-cyan-500 text-black text-xs font-bold uppercase rounded heading-font">
+                    Close
+                </button>
             </div>
         </div>
     </div>
 
     <!-- Confirm Modal -->
-    <div id="confirmModal" class="modal">
-        <div class="panel" style="width: 100%; max-width: 400px; text-align: center; border-color: #ef4444;">
-            <div style="font-size: 2rem; color: #ef4444; margin-bottom: 0.75rem;"><i class="fa-solid fa-triangle-exclamation"></i></div>
-            <h3 id="confirmTitle" style="font-size: 1rem; font-weight: bold; color: #fff; margin-bottom: 0.5rem; text-transform: uppercase;" class="heading-font">Confirmation</h3>
-            <p id="confirmMsg" style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 1.5rem;"></p>
-            <div style="display: flex; justify-content: center; gap: 1rem;">
-                <button onclick="closeConfirmModal()" class="btn-dark" style="font-size: 0.75rem;">Cancel</button>
-                <button id="btnConfirmOK" class="btn-red" style="font-size: 0.75rem;">Confirm</button>
+    <div id="confirmModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-panelBg border-2 border-red-500 rounded-xl w-full max-w-md p-6 shadow-2xl relative text-center">
+            <div class="text-3xl text-red-500 mb-3"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <h3 id="confirmTitle" class="text-lg font-bold text-white heading-font mb-2 uppercase">Confirmation</h3>
+            <p id="confirmMsg" class="text-sm text-slate-300 mb-6"></p>
+            <div class="flex justify-center gap-4">
+                <button onclick="closeConfirmModal()" class="px-4 py-2 bg-slate-800 text-slate-300 text-xs font-bold uppercase rounded">Cancel</button>
+                <button id="btnConfirmOK" class="px-5 py-2 bg-red-600 hover:bg-red-500 text-white text-xs font-bold uppercase rounded heading-font">Confirm</button>
             </div>
         </div>
     </div>
 
-    <!-- Toast -->
-    <div id="toast" style="position: fixed; bottom: 1.5rem; right: 1.5rem; padding: 0.75rem 1rem; background: #022329; border: 1px solid #00f0ff; color: #00f0ff; border-radius: 0.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 0.75rem; transition: opacity 0.3s; opacity: 0; pointer-events: none; z-index: 60; font-size: 0.85rem; font-weight: 600;">
-        <i class="fa-solid fa-circle-check" style="font-size: 1.1rem;"></i>
-        <span id="toastMsg">Changes saved!</span>
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 px-4 py-3 bg-cyan-950 border border-cyanGlow text-cyanGlow rounded-lg shadow-2xl flex items-center gap-3 transition-opacity duration-300 opacity-0 pointer-events-none z-50">
+        <i class="fa-solid fa-circle-check text-lg"></i>
+        <span id="toastMsg" class="text-sm font-semibold">Changes saved!</span>
     </div>
 
-    <!-- Main Engine Script with Complete Master Dataset (82 Items) -->
+    <!-- Main Engine Script with Complete Master Dataset (ALL 82 ITEMS) -->
     <script>
         const initialCatalog = [
             // LRS BEARINGS (BATCH 01-04: 22 ITEMS)
@@ -598,7 +697,7 @@
                 notes: "Passive stealth is usually worth more than active stealth.", spectreNote: "[SPECTRE]: Threat Reduction Value: High."
             },
 
-            // WEAPONS & ARMAMENT (6 ITEMS)
+            // WEAPONS & ARMAMENT
             {
                 id: "WEAP-CEC-001", stdNo: "GS-STD-7021", rev: "Rev C", name: "CEC AG-2G Quad Laser Cannon Assembly",
                 categoryPath: ["Assemblies", "Weapons", "Starfighter Weapons", "Quad Laser Cannons"], parentId: null,
@@ -616,7 +715,7 @@
                 supplier: "Corellian Engineering Corp", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 4, minQty: 2, price: 12000,
                 univStatus: "Canon", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
                 compatibleWith: ["CEC AG-2G Quad Laser Cannon"], installedOn: ["Shadow Hunter"],
-                tags: ["Capacitor", "Energy"], source: { title: "Starships RPG Guide", author: "Wizards Coast", page: "p. 108", isbn: "1-56076-112-8" },
+                tags: ["Capacitor", "Energy", "Laser Component"], source: { title: "Starships RPG Guide", author: "Wizards Coast", page: "p. 108", isbn: "1-56076-112-8" },
                 relations: { powerSource: "Main Power Bus", needs: "Cooling Sleeve", interfaces: "Emitter Array", uses: "Plasma Charges" },
                 specs: "High-discharge energy storage capacitor powering individual laser barrels.",
                 notes: "Requires dielectric check every 100 firings.", spectreNote: "[SPECTRE]: Charge retention rate 99.2%."
@@ -627,7 +726,7 @@
                 supplier: "Corellian Engineering Corp", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 4, minQty: 2, price: 8500,
                 univStatus: "Canon", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
                 compatibleWith: ["CEC AG-2G Quad Laser Cannon"], installedOn: ["Shadow Hunter"],
-                tags: ["Cooling", "Thermal"], source: { title: "Corellian Manual", author: "CEC Industrial", page: "p. 12", isbn: "N/A" },
+                tags: ["Cooling", "Thermal", "Jacket"], source: { title: "Corellian Manual", author: "CEC Industrial", page: "p. 12", isbn: "N/A" },
                 relations: { powerSource: "Auxiliary Bus", needs: "Cryogenic Coolant", interfaces: "Capacitor Unit", uses: "Coolant Gas" },
                 specs: "Supercooled gas circulation jacket preventing barrel meltdown during sustained quad-fire.",
                 notes: "Check seal rings before high-rate discharge.", spectreNote: "[SPECTRE]: Heat dissipation rating nominal."
@@ -649,7 +748,7 @@
                 supplier: "ArMek", originWorld: "Fondor", location: "Onboard Shadow Hunter", qty: 2, minQty: 1, price: 62000,
                 univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
                 compatibleWith: ["VT-49 Decimator", "Y-Wing"], installedOn: ["Shadow Hunter (Fixed Wing Mounts)"],
-                tags: ["Ion", "Disabler"], source: { title: "Fondor Armament Index", author: "ArMek", page: "p. 55", isbn: "N/A" },
+                tags: ["Ion", "Disabler", "Fixed Mount"], source: { title: "Fondor Armament Index", author: "ArMek", page: "p. 55", isbn: "N/A" },
                 relations: { powerSource: "Main Reactor Bus", needs: "Targeting Computer", interfaces: "Wing Hardpoints", uses: "Ion Discharges" },
                 specs: "Forward-mounted fixed ion cannons beneath the wings designed to disable target systems.",
                 notes: "Perfect for disabling freighters for cargo recovery.", spectreNote: "[SPECTRE]: Overload discharge rated for medium grid suppression."
@@ -660,20 +759,53 @@
                 supplier: "Unknown Vendor", originWorld: "Unknown", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 95000,
                 univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Military Restricted",
                 compatibleWith: ["VT-49 Decimator"], installedOn: ["Shadow Hunter (Deck 1 Ordnance Bay)"],
-                tags: ["Ordnance", "Missiles"], source: { title: "Imperial Ordnance Manual", author: "Sienar Press", page: "p. 89", isbn: "N/A" },
+                tags: ["Ordnance", "Missiles", "Heavy Assault"], source: { title: "Imperial Ordnance Manual", author: "Sienar Press", page: "p. 89", isbn: "N/A" },
                 relations: { powerSource: "Deck 1 Auxiliary Grid", needs: "Concussion Ordnance", interfaces: "T-s9a Targeting System", uses: "Missiles" },
                 specs: "Primary missile armament retaining assault capability against heavily shielded targets.",
                 notes: "Magazine loaded on Deck 1.", spectreNote: "[SPECTRE]: Ordnance guidance synced with targeting computer."
             },
+            {
+                id: "TARG-SFS-S9A", stdNo: "GS-STD-7209", rev: "Rev C", name: "Sienar T-s9a Targeting Computer",
+                categoryPath: ["Components", "Electronics", "Targeting & Fire Control"], parentId: null,
+                supplier: "Sienar Fleet Systems", originWorld: "Lianna", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 48000,
+                univStatus: "Canon", accessClass: "Military", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
+                compatibleWith: ["VT-49 Decimator", "TIE Advanced"], installedOn: ["Shadow Hunter (Bridge Console)"],
+                tags: ["Targeting", "Computer", "Fire Control"], source: { title: "Imperial Naval Specs", author: "SFS", page: "p. 201", isbn: "N/A" },
+                relations: { powerSource: "Bridge Power Bus", needs: "Sensor Fusion Core", interfaces: "All Turrets and Launchers", uses: "Data Feeds" },
+                specs: "Advanced secondary fire-control and targeting computer designed for rapid acquisition.",
+                notes: "Provides continuous tracking independent of main grid.", spectreNote: "[SPECTRE]: Coordinates fixed wing cannons seamlessly."
+            },
+            {
+                id: "ECM-BER-SCR1", stdNo: "GS-STD-7510", rev: "Rev A", name: "\"Screamer\" Active ECM Jammer Suite",
+                categoryPath: ["Assemblies", "Defensive Systems", "Electronic Warfare", "Active Jammers"], parentId: null,
+                supplier: "Bertriak", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 82000,
+                univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Military Restricted",
+                compatibleWith: ["VT-49 Decimator", "Custom Freighters"], installedOn: ["Shadow Hunter (Avionics Bay)"],
+                tags: ["ECM", "Jammer", "Stealth", "Warfare"], source: { title: "Tactical EW Handbook", author: "Bertriak Labs", page: "p. 33", isbn: "N/A" },
+                relations: { powerSource: "Auxiliary Reactor Feed", needs: "Broadband Emitters", interfaces: "Spectre Core", uses: "High-Freq Pulse" },
+                specs: "Active electronic warfare jammer masking ion drive emissions and disrupting guidance.",
+                notes: "Managed by Spectre to avoid premature position reveal.", spectreNote: "[SPECTRE]: Transmission power dynamically modulated."
+            },
+            {
+                id: "ECM-MIR-4XP", stdNo: "GS-STD-7512", rev: "Rev A", name: "4x-Phantom Short-Range Sensor Jammer",
+                categoryPath: ["Assemblies", "Defensive Systems", "Electronic Warfare", "Sensor Jammers"], parentId: null,
+                supplier: "Miradyne Limited", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 76000,
+                univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["Universal Vessels"], installedOn: ["Shadow Hunter"],
+                tags: ["Jammer", "Short Range", "Distortion"], source: { title: "Miradyne Product Sheet", author: "Miradyne", page: "Ref 4XP", isbn: "N/A" },
+                relations: { powerSource: "Shield Auxiliary Bus", needs: "Sensors", interfaces: "ECM Array", uses: "Distortion Field" },
+                specs: "Absorbs incoming sensor pulses and projects broadband distortion fields.",
+                notes: "Operates passively until active sweep detected.", spectreNote: "[SPECTRE]: Passive broadband buffer standby active."
+            },
 
-            // PROPULSION, POWER & COMPUTERS (10 ITEMS)
+            // PROPULSION & POWER
             {
                 id: "PROP-ENG-003-WHISPERTHRUST", stdNo: "GS-STD-5091", rev: "Rev B", name: "Rendili WhisperThrust Baffled Drive System",
                 categoryPath: ["Assemblies", "Propulsion", "Ion Engines", "Stealth Drives"], parentId: null,
                 supplier: "Rendili StarDrive", originWorld: "Rendili", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 210000,
                 univStatus: "Fan-made", accessClass: "Black Market", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Black Market",
-                compatibleWith: ["VT-49 Decimator"], installedOn: ["Shadow Hunter (Engine Deck)"],
-                tags: ["Propulsion", "Stealth", "Baffled Drive"], source: { title: "Custom Engineering Archive", author: "Lex Rogers", page: "Datapad #04", isbn: "LR-REST-01" },
+                compatibleWith: ["VT-49 Decimator", "Custom Patrol Craft"], installedOn: ["Shadow Hunter (Engine Deck)"],
+                tags: ["Propulsion", "Stealth", "Baffled Drive", "Rendili"], source: { title: "Custom Engineering Archive", author: "Lex Rogers", page: "Datapad #04", isbn: "LR-REST-01" },
                 relations: { powerSource: "Central Fusion Reactor Core", needs: "Microaxial ECC-940 Flight Computer", interfaces: "Spectre AI Core", uses: "Cryogenic Coolant" },
                 specs: "Illegal military-grade baffled sublight engine with supercooled gas injection eliminating thermal/ionic signatures.",
                 notes: "Requires topping off coolant gas after 3-4 silent runs.", spectreNote: "[SPECTRE]: Response time 0.002ms via quantum-shunted bus."
@@ -683,8 +815,8 @@
                 categoryPath: ["Components", "Electrical", "Regulators & Controllers"], parentId: null,
                 supplier: "Corellian Engineering Corp", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 29000,
                 univStatus: "Fan-made", accessClass: "Trade", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Mass Production",
-                compatibleWith: ["Central Fusion Reactor"], installedOn: ["Shadow Hunter (Deck 1 Reactor Room)"],
-                tags: ["Electrical", "Power", "Regulator"], source: { title: "Corellian Modification Logs", author: "Toran", page: "p. 8", isbn: "N/A" },
+                compatibleWith: ["Central Fusion Reactor", "Quadex Core"], installedOn: ["Shadow Hunter (Deck 1 Reactor Room)"],
+                tags: ["Electrical", "Power", "Regulator", "CEC"], source: { title: "Corellian Modification Logs", author: "Toran", page: "p. 8", isbn: "N/A" },
                 relations: { powerSource: "Reactor Plasma Conduits", needs: "Automated Coolant Routines", interfaces: "Main Power Bus", uses: "Surge Gates" },
                 specs: "Heavy-duty reactor control and thermal-monitoring computer engineered to manage plasma flow.",
                 notes: "Lets you push reactor into the red line safely.", spectreNote: "[SPECTRE]: Surge gates active."
@@ -706,7 +838,7 @@
                 supplier: "Kessel Mining Guild / Vandor", originWorld: "Kessel", location: "Onboard Shadow Hunter", qty: 3, minQty: 1, price: 95000,
                 univStatus: "Canon", accessClass: "Black Market", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Black Market",
                 compatibleWith: ["Class 1.0 Hyperdrives"], installedOn: ["Shadow Hunter (Deck 1 Blast Locker)"],
-                tags: ["Fuel", "Coaxium", "Hyperdrive"], source: { title: "Solo: Star Wars Story Guide", author: "Pablo Hidalgo", page: "p. 62", isbn: "978-1465466907" },
+                tags: ["Fuel", "Coaxium", "Hyperdrive", "Volatile"], source: { title: "Solo: Star Wars Story Guide", author: "Pablo Hidalgo", page: "p. 62", isbn: "978-1465466907" },
                 relations: { powerSource: "N/A", needs: "Cryo-Stabilized Vault", interfaces: "Hyperdrive Chamber", uses: "Spacetime Tearing Reaction" },
                 specs: "Extremely reactive hyperdrive fuel supplying massive energy bursts for hyperdrive jumps.",
                 notes: "Stored in Deck 1 blast-shielded hazardous lockers.", spectreNote: "[SPECTRE]: Containment temperature stabilized at 12 Kelvin."
@@ -716,19 +848,21 @@
                 categoryPath: ["Materials", "Refined Materials", "Reactive Starfighter Fuels"], parentId: null,
                 supplier: "Abafar Refineries", originWorld: "Abafar", location: "Onboard Shadow Hunter", qty: 4, minQty: 2, price: 18500,
                 univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
-                compatibleWith: ["Sublight Engines"], installedOn: ["Shadow Hunter (Deck 1 Fuel Cell Bay)"],
-                tags: ["Fuel", "Rhydonium"], source: { title: "The Clone Wars Files", author: "Lucasfilm", page: "Season 5", isbn: "N/A" },
+                compatibleWith: ["Sublight Engines", "Demolition Charges"], installedOn: ["Shadow Hunter (Deck 1 Fuel Cell Bay)"],
+                tags: ["Fuel", "Rhydonium", "Sublight", "Explosive"], source: { title: "The Clone Wars Files", author: "Lucasfilm", page: "Season 5", isbn: "N/A" },
                 relations: { powerSource: "N/A", needs: "Vented Storage", interfaces: "Thruster Injection Lines", uses: "Combustion" },
                 specs: "High-efficiency liquid starfighter fuel mineral with luminescent blue/green glow.",
                 notes: "Primary thruster reserve fuel.", spectreNote: "[SPECTRE]: Sublight booster feed routing active."
             },
+
+            // SPACECRAFT, SYSTEMS & SHIELDING
             {
                 id: "PROP-COMP-001-ECC", stdNo: "GS-STD-5095", rev: "Rev A", name: "Microaxial ECC-940 Flight Control Computer",
                 categoryPath: ["Components", "Electronics", "Computers", "Propulsion Controllers"], parentId: null,
                 supplier: "Microaxial Processing Systems", originWorld: "Coruscant", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 38000,
                 univStatus: "Fan-made", accessClass: "Restricted", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Mass Production",
                 compatibleWith: ["VT-49 Decimator", "WhisperThrust Engine"], installedOn: ["Shadow Hunter (Avionics Core)"],
-                tags: ["Flight Computer", "Microaxial"], source: { title: "Custom Avionics Guide", author: "Lex Rogers", page: "Datapad #02", isbn: "N/A" },
+                tags: ["Flight Computer", "Microaxial", "Propulsion"], source: { title: "Custom Avionics Guide", author: "Lex Rogers", page: "Datapad #02", isbn: "N/A" },
                 relations: { powerSource: "Avionics Bus", needs: "Spectre AI Link", interfaces: "WhisperThrust Engine", uses: "Micro-Burst Routines" },
                 specs: "Propulsion management computer balancing main reactor power distribution and Whisper-Mode balancing.",
                 notes: "Gives exact bandwidth needed for Specter to throttle drive dynamically.", spectreNote: "[SPECTRE]: Vector optimization micro-burst active."
@@ -738,8 +872,8 @@
                 categoryPath: ["Components", "Electronics", "Computers", "Shield Distribution"], parentId: null,
                 supplier: "Sirplex / Colicoid Alliance", originWorld: "Columex", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 32000,
                 univStatus: "Fan-made", accessClass: "Restricted", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Mass Production",
-                compatibleWith: ["Novaldex Shield Generator"], installedOn: ["Shadow Hunter (Shield Room)"],
-                tags: ["Shield Computer", "Sirplex"], source: { title: "Colicoid Tech Exchange", author: "Sirplex Labs", page: "p. 44", isbn: "N/A" },
+                compatibleWith: ["Novaldex Shield Generator", "KDY Projectors"], installedOn: ["Shadow Hunter (Shield Room)"],
+                tags: ["Shield Computer", "Sirplex", "Distribution"], source: { title: "Colicoid Tech Exchange", author: "Sirplex Labs", page: "p. 44", isbn: "N/A" },
                 relations: { powerSource: "Deflector Power Conduit", needs: "Proximity Alerts", interfaces: "Shield Projectors", uses: "Dynamic Power Shunting" },
                 specs: "Aftermarket shield computer dynamically balancing power distribution across shield grids during combat.",
                 notes: "Acts like a dedicated shield officer.", spectreNote: "[SPECTRE]: Forward/aft shield power redistribution active."
@@ -749,8 +883,8 @@
                 categoryPath: ["Components", "Electronics", "Computers", "Sensor Fusion"], parentId: null,
                 supplier: "Fabritech", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 42000,
                 univStatus: "Fan-made", accessClass: "Restricted", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Mass Production",
-                compatibleWith: ["Fabritech ANq 3.6"], installedOn: ["Shadow Hunter (Avionics Deck)"],
-                tags: ["Sensor Fusion", "Fabritech"], source: { title: "Fabritech Upgrade Notes", author: "Fabritech Eng", page: "p. 19", isbn: "N/A" },
+                compatibleWith: ["Fabritech ANq 3.6", "ANs-5d Sensor Array"], installedOn: ["Shadow Hunter (Avionics Deck)"],
+                tags: ["Sensor Fusion", "Fabritech", "Tactical Core"], source: { title: "Fabritech Field Upgrade Notes", author: "Fabritech Eng", page: "p. 19", isbn: "N/A" },
                 relations: { powerSource: "Sensor Power Bus", needs: "Multi-Spectrum Scanners", interfaces: "T-s9a Targeting Computer", uses: "Clutter Filtering" },
                 specs: "High-speed sensor integration computer merging optical, IR, radar, and long-range scanners into single grid.",
                 notes: "Cleans up clutter in dense nebulae or asteroid fields.", spectreNote: "[SPECTRE]: Eliminates sensor ghosting."
@@ -760,8 +894,8 @@
                 categoryPath: ["Complete Products", "Ships", "Assault Transports"], parentId: null,
                 supplier: "Kuat Drive Yards", originWorld: "Kuat", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 1250000,
                 univStatus: "Canon", accessClass: "Military", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
-                compatibleWith: ["Imperial Naval Fleet"], installedOn: ["Shadow Hunter Vessel"],
-                tags: ["Ship Platform", "VT-49", "Decimator"], source: { title: "Star Wars Galaxies", author: "LucasArts", page: "VT-49 Profile", isbn: "N/A" },
+                compatibleWith: ["Imperial Naval Fleet", "Special Ops"], installedOn: ["Shadow Hunter Vessel"],
+                tags: ["Ship Platform", "VT-49", "Decimator", "KDY"], source: { title: "Star Wars: Galaxies / Official Ships", author: "LucasArts", page: "VT-49 Profile", isbn: "N/A" },
                 relations: { powerSource: "Central Fusion Core", needs: "All Subsystems", interfaces: "All Decks", uses: "Durasteel / Doonium" },
                 specs: "Heavy assault ship hull retained from Imperial service and extensively rebuilt internally.",
                 notes: "Original VT-49 chassis customized by Lex and Toran.", spectreNote: "[SPECTRE]: Structural integrity verified across all 3 decks."
@@ -771,20 +905,20 @@
                 categoryPath: ["Assemblies", "Shield Systems", "Deflector Generators"], parentId: null,
                 supplier: "Novaldex", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 140000,
                 univStatus: "Legends", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
-                compatibleWith: ["VT-49 Decimator"], installedOn: ["Shadow Hunter (Shield Bay)"],
+                compatibleWith: ["VT-49 Decimator", "Medium Freighters"], installedOn: ["Shadow Hunter (Shield Bay)"],
                 tags: ["Shield", "Generator", "Novaldex"], source: { title: "Stock Starship Component Catalog", author: "West End Games", page: "p. 77", isbn: "0-87431-065-2" },
                 relations: { powerSource: "Central Fusion Core", needs: "KDY Projectors", interfaces: "Sirplex SCM-3", uses: "Shield Energy" },
                 specs: "Dependable primary deflector shield generator providing continuous shield power management.",
                 notes: "Selected for field maintainability.", spectreNote: "[SPECTRE]: Feeds Kuat shield projectors."
             },
 
-            // MASTER MATERIAL ARCHIVE & REMAINING ITEMS (29 ITEMS)
+            // MASTER MATERIAL ARCHIVE & REMAINING ITEMS
             {
                 id: "SHLD-KDY-008", stdNo: "GS-STD-3115", rev: "Rev A", name: "KDY Deflector Shield Projectors (x4)",
                 categoryPath: ["Assemblies", "Shield Systems", "Shield Projectors"], parentId: null,
                 supplier: "Kuat Drive Yards", originWorld: "Kuat", location: "Onboard Shadow Hunter", qty: 4, minQty: 2, price: 28000,
                 univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
-                compatibleWith: ["VT-49 Decimator"], installedOn: ["Shadow Hunter (Distributed Grid)"],
+                compatibleWith: ["VT-49 Decimator", "KDY Hulls"], installedOn: ["Shadow Hunter (Distributed Grid)"],
                 tags: ["Shield", "Projectors", "KDY"], source: { title: "KDY Yard Specs", author: "KDY Press", page: "p. 312", isbn: "N/A" },
                 relations: { powerSource: "Novaldex GA21", needs: "Hull Mounting Plates", interfaces: "Sirplex SCM-3", uses: "Deflector Fields" },
                 specs: "Upgraded shield projectors allowing dynamic reinforcement of threatened shield sectors.",
@@ -806,11 +940,11 @@
                 categoryPath: ["Components", "Electronics", "Navigation", "Navicomputers"], parentId: null,
                 supplier: "Novastar Corporation", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 135000,
                 univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
-                compatibleWith: ["VT-49 Decimator"], installedOn: ["Shadow Hunter (Deck 3 Bridge)"],
-                tags: ["Navicomputer", "Quikjump"], source: { title: "Ultimate Starships", author: "DK", page: "p. 154", isbn: "978-0756642860" },
-                relations: { powerSource: "Bridge Grid", needs: "HoloNet Receiver", interfaces: "Hyperdrive Actuators", uses: "Astrogation Tables" },
-                specs: "Advanced hyperspace navigation computer calculating routes autonomously.",
-                notes: "Calculates emergency escape vectors instantly.", spectreNote: "[SPECTRE]: Jump calculation speed +310%."
+                compatibleWith: ["VT-49 Decimator", "Swoop Freighters"], installedOn: ["Shadow Hunter (Deck 3 Bridge)"],
+                tags: ["Navicomputer", "Hyperspace", "Quikjump"], source: { title: "Ultimate Starships Encyclopedia", author: "DK Publishing", page: "p. 154", isbn: "978-0756642860" },
+                relations: { powerSource: "Bridge Power Grid", needs: "HoloNet Receiver", interfaces: "Hyperdrive Actuators", uses: "Astrogation Tables" },
+                specs: "Advanced hyperspace navigation computer calculating routes autonomously without requiring astromech droids.",
+                notes: "Calculates emergency escape vectors almost instantaneously.", spectreNote: "[SPECTRE]: Jump calculation speed +310%."
             },
             {
                 id: "SENS-FAB-036", stdNo: "GS-STD-6010", rev: "Rev A", name: "Fabritech ANq 3.6 Sensor Package",
@@ -818,9 +952,9 @@
                 supplier: "Fabritech", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 92000,
                 univStatus: "Legends", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
                 compatibleWith: ["High-end Freighters"], installedOn: ["Shadow Hunter (Dorsal Sensor Dome)"],
-                tags: ["Sensors", "Fabritech"], source: { title: "Star Wars Freighters", author: "Wizards", page: "p. 88", isbn: "N/A" },
+                tags: ["Sensors", "Fabritech", "Long Range"], source: { title: "Star Wars Freighters Guide", author: "Wizards Press", page: "p. 88", isbn: "N/A" },
                 relations: { powerSource: "Avionics Power", needs: "Fabritech SFC-900", interfaces: "Bridge Displays", uses: "Scanner Waves" },
-                specs: "Integrated primary long-range sensor suite.",
+                specs: "Integrated primary long-range sensor suite documented across high-end freighter platforms.",
                 notes: "Primary long-range scanner array.", spectreNote: "[SPECTRE]: Multi-spectrum resolution nominal to 12 light-minutes."
             },
             {
@@ -829,7 +963,7 @@
                 supplier: "Sienar Fleet Systems", originWorld: "Lianna", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 110000,
                 univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Military Restricted",
                 compatibleWith: ["VT-49 Decimator", "Star Destroyers"], installedOn: ["Shadow Hunter (Comms Rack)"],
-                tags: ["Comms", "Military", "Sienar"], source: { title: "Imperial Comms Technical Order", author: "SFS", page: "p. 102", isbn: "N/A" },
+                tags: ["Comms", "Transceiver", "Military", "Sienar"], source: { title: "Imperial Comms Technical Order", author: "SFS", page: "p. 102", isbn: "N/A" },
                 relations: { powerSource: "Comms Grid", needs: "Subspace Antenna", interfaces: "Spectre AI", uses: "Frequency Hopping" },
                 specs: "Refurbished Star Destroyer-grade transceiver with subspace spectrum monitoring.",
                 notes: "Salvaged from Imperial stock and adapted.", spectreNote: "[SPECTRE]: Monitored channels exceed 400 frequencies."
@@ -840,8 +974,8 @@
                 supplier: "Incom Corporation", originWorld: "Fresia", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 52000,
                 univStatus: "Canon", accessClass: "Military", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
                 compatibleWith: ["X-Wing", "VT-49 Decimator"], installedOn: ["Shadow Hunter"],
-                tags: ["Comms", "Incom"], source: { title: "Incom Avionics Manual", author: "Incom", page: "p. 45", isbn: "N/A" },
-                relations: { powerSource: "Tactical Bus", needs: "Encryption Chip", interfaces: "Headsets", uses: "Encrypted Net" },
+                tags: ["Comms", "Tactical", "Incom"], source: { title: "Incom Avionics Manual", author: "Incom", page: "p. 45", isbn: "N/A" },
+                relations: { powerSource: "Tactical Bus", needs: "Encryption Chip", interfaces: "Crew Headsets", uses: "Encrypted Net" },
                 specs: "Military tactical communications transceiver providing secure ship-to-ship networking.",
                 notes: "Primary tactical comms unit.", spectreNote: "[SPECTRE]: Direct encrypted link active."
             },
@@ -851,7 +985,7 @@
                 supplier: "Galactic Standard", originWorld: "Coruscant", location: "Onboard Shadow Hunter", qty: 1, minQty: 1, price: 180000,
                 univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Military Restricted",
                 compatibleWith: ["Command Ships"], installedOn: ["Shadow Hunter (Deck 3 Office)"],
-                tags: ["HoloNet", "Comms"], source: { title: "HoloNet Charter", author: "Republic Bureau", page: "p. 1", isbn: "N/A" },
+                tags: ["HoloNet", "Comms", "Encrypted"], source: { title: "HoloNet Technical Charter", author: "Republic Bureau", page: "p. 1", isbn: "N/A" },
                 relations: { powerSource: "High-Voltage Relay", needs: "HoloNet Codes", interfaces: "Bridge Holoprojector", uses: "Subspace Pulse" },
                 specs: "Galaxy-wide communications transceiver for encrypted HoloNet data exchange.",
                 notes: "Transmissions time-capped to prevent location leaks.", spectreNote: "[SPECTRE]: Access strictly gated."
@@ -873,8 +1007,8 @@
                 supplier: "Arakyd Industries", originWorld: "Mech-World 7", location: "Onboard Shadow Hunter", qty: 6, minQty: 2, price: 55000,
                 univStatus: "Canon", accessClass: "Military", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
                 compatibleWith: ["Deck 1 Launch Chutes"], installedOn: ["Shadow Hunter (Deck 1 Deployment Rack)"],
-                tags: ["Droid", "Viper", "Recon"], source: { title: "Imperial Droid Manual", author: "Arakyd", page: "p. 12", isbn: "N/A" },
-                relations: { powerSource: "Self-Contained Cell", needs: "Launch Chute", interfaces: "Spectre Recon Link", uses: "Sensor Probes" },
+                tags: ["Droid", "Viper", "Recon", "Arakyd"], source: { title: "Imperial Droid Manual", author: "Arakyd", page: "p. 12", isbn: "N/A" },
+                relations: { powerSource: "Self-Contained Power Cell", needs: "Launch Chute", interfaces: "Spectre Recon Link", uses: "Sensor Probes" },
                 specs: "Unmanned reconnaissance droids with launch capability.",
                 notes: "Reprogrammed to ignore Empire beacons.", spectreNote: "[SPECTRE]: Mounted on underside deployment racks."
             },
@@ -892,10 +1026,10 @@
             {
                 id: "MAT-MIN-CORTOSIS", stdNo: "GS-STD-4095", rev: "Rev A", name: "Refined Cortosis Ore Matrix",
                 categoryPath: ["Materials", "Raw Materials", "Conductive Minerals"], parentId: null,
-                supplier: "Balmorra Mining Combine", originWorld: "Balmorra", location: "Market / Vendor", qty: 0, minQty: 1, price: 45000,
+                supplier: "Balmorra Mining Combine", originWorld: "Balmorra / Mokivj", location: "Market / Vendor", qty: 0, minQty: 1, price: 45000,
                 univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Military Restricted",
                 compatibleWith: ["Cortosis Shields"], installedOn: ["Market Asset"],
-                tags: ["Material", "Cortosis"], source: { title: "Darth Bane", author: "Drew Karpyshyn", page: "p. 91", isbn: "0-345-47736-7" },
+                tags: ["Material", "Cortosis", "Anti-Lightsaber"], source: { title: "Darth Bane: Path of Destruction", author: "Drew Karpyshyn", page: "p. 91", isbn: "0-345-47736-7" },
                 relations: { powerSource: "N/A", needs: "Alloy Bonding", interfaces: "Shield Weave", uses: "Saber Overload Reaction" },
                 specs: "Brittle energy-conductive mineral matrix capable of short-circuiting active lightsaber blades.",
                 notes: "Requires alloy bonding.", spectreNote: "[SPECTRE]: Highly brittle; requires weave integration."
@@ -905,8 +1039,8 @@
                 categoryPath: ["Materials", "Refined Materials", "Noble Metals"], parentId: null,
                 supplier: "Naboo Refineries", originWorld: "Naboo", location: "Home Base", qty: 6, minQty: 2, price: 12000,
                 univStatus: "Canon", accessClass: "Trade", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
-                compatibleWith: ["Royal Vessels"], installedOn: ["Viewport Trims"],
-                tags: ["Material", "Chromium"], source: { title: "Naboo Starships Guide", author: "DK", page: "p. 33", isbn: "N/A" },
+                compatibleWith: ["Royal Vessels", "Radiation Shielding"], installedOn: ["Viewport Trims"],
+                tags: ["Material", "Chromium", "Reflective"], source: { title: "Naboo Starships Guide", author: "DK", page: "p. 33", isbn: "N/A" },
                 relations: { powerSource: "N/A", needs: "Polishing", interfaces: "Outer Hull Cladding", uses: "Radiation Shielding" },
                 specs: "Highly polished reflective metal offering superior radiation shielding and aesthetic mirror finish.",
                 notes: "Used for sensor viewport trims.", spectreNote: "[SPECTRE]: Reflects 98.2% solar radiation."
@@ -916,19 +1050,19 @@
                 categoryPath: ["Materials", "Refined Materials", "Noble Metals"], parentId: null,
                 supplier: "Core World Artisan Guilds", originWorld: "Core Worlds", location: "Market / Vendor", qty: 0, minQty: 1, price: 38000,
                 univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
-                compatibleWith: ["Jedi Weaponry"], installedOn: ["Market Asset"],
-                tags: ["Material", "Electrum"], source: { title: "Jedi vs Sith Guide", author: "Ryder Windham", page: "p. 110", isbn: "N/A" },
+                compatibleWith: ["Jedi Weaponry", "Luxury Trim"], installedOn: ["Market Asset"],
+                tags: ["Material", "Electrum", "Precious"], source: { title: "Jedi vs Sith: Essential Guide", author: "Ryder Windham", page: "p. 110", isbn: "N/A" },
                 relations: { powerSource: "N/A", needs: "Engraving Tool", interfaces: "Weapon Hilt", uses: "Status Symbol" },
                 specs: "Precious golden noble metal used as symbol of high rank and authority.",
-                notes: "Trade asset.", spectreNote: "[SPECTRE]: High monetary liquidity across Outer Rim."
+                notes: "No armor value; trade asset.", spectreNote: "[SPECTRE]: High monetary liquidity across Outer Rim."
             },
             {
                 id: "MAT-MET-DESH", stdNo: "GS-STD-4012", rev: "Rev A", name: "Desh-Terenthium Alloy Sheet",
                 categoryPath: ["Materials", "Refined Materials", "Lightweight Alloys"], parentId: null,
-                supplier: "Bakura Metalworks", originWorld: "Bakura", location: "Home Base", qty: 30, minQty: 10, price: 850,
+                supplier: "Bakura Metalworks", originWorld: "Bakura / Danji", location: "Home Base", qty: 30, minQty: 10, price: 850,
                 univStatus: "Canon", accessClass: "Trade", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
-                compatibleWith: ["Droid Chassis"], installedOn: ["Sensor Wiring"],
-                tags: ["Material", "Desh"], source: { title: "Bakuran Index", author: "Bakura", page: "p. 4", isbn: "N/A" },
+                compatibleWith: ["Droid Chassis", "Circuitry"], installedOn: ["Sensor Wiring"],
+                tags: ["Material", "Desh", "Conductive"], source: { title: "Bakuran Technical Index", author: "Bakura Corp", page: "p. 4", isbn: "N/A" },
                 relations: { powerSource: "N/A", needs: "Stamping Tool", interfaces: "Electronic Buses", uses: "Signal Conduction" },
                 specs: "Ultra-lightweight, flexible, low-cost alloy with high electrical conductivity.",
                 notes: "Used for internal sensor wiring.", spectreNote: "[SPECTRE]: Conductive efficiency 94.1%."
@@ -938,8 +1072,8 @@
                 categoryPath: ["Materials", "Raw Materials", "Metals & Superalloys"], parentId: null,
                 supplier: "Outer Rim Miners Guild", originWorld: "Outer Rim", location: "Home Base", qty: 0, minQty: 1, price: 85000,
                 univStatus: "Legends", accessClass: "Restricted", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Obsolete",
-                compatibleWith: ["Custom Swords"], installedOn: ["Home Base Vault"],
-                tags: ["Material", "Songsteel"], source: { title: "Coruscant Nights", author: "Michael Reaves", page: "p. 210", isbn: "N/A" },
+                compatibleWith: ["Custom Swords", "Precision Joints"], installedOn: ["Home Base Vault"],
+                tags: ["Material", "Songsteel", "Rare"], source: { title: "Coruscant Nights Trilogy", author: "Michael Reaves", page: "p. 210", isbn: "N/A" },
                 relations: { powerSource: "N/A", needs: "Precision Forge", interfaces: "Weapon Core", uses: "Saber Resistance" },
                 specs: "Extremely rare, silver-white lightweight super-alloy resisting lightsaber blades.",
                 notes: "Prized for custom weapon hilts.", spectreNote: "[SPECTRE]: High structural resonance."
@@ -950,7 +1084,7 @@
                 supplier: "Syndicate Reserves", originWorld: "Heavy-Metal Worlds", location: "Home Base", qty: 2, minQty: 1, price: 125000,
                 univStatus: "Canon", accessClass: "Black Market", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Black Market",
                 compatibleWith: ["Galactic Currency Exchange"], installedOn: ["Shadow Hunter (Deck 2 Safe)"],
-                tags: ["Material", "Aurodium"], source: { title: "Scum and Villainy", author: "FFG", page: "p. 18", isbn: "N/A" },
+                tags: ["Material", "Aurodium", "Currency", "Wealth"], source: { title: "Scum and Villainy Guide", author: "Fantasy Flight Games", page: "p. 18", isbn: "N/A" },
                 relations: { powerSource: "N/A", needs: "Safe", interfaces: "Black Market Trade", uses: "Wealth Reserve" },
                 specs: "Ultra-precious non-corrosive noble metal serving as direct black-market wealth reserve.",
                 notes: "Emergency slush fund stored in Deck 2 safe.", spectreNote: "[SPECTRE]: Value stable across credit fluctuations."
@@ -960,8 +1094,8 @@
                 categoryPath: ["Materials", "Refined Materials", "Structural Alloys"], parentId: null,
                 supplier: "Fondor Shipyards", originWorld: "Fondor", location: "Home Base", qty: 20, minQty: 5, price: 3400,
                 univStatus: "Canon", accessClass: "Trade", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
-                compatibleWith: ["Interior Bulkheads"], installedOn: ["Shadow Hunter Deck Frames"],
-                tags: ["Material", "Duralium"], source: { title: "Fondor Compendium", author: "Fondor", page: "p. 80", isbn: "N/A" },
+                compatibleWith: ["Interior Bulkheads", "Frames"], installedOn: ["Shadow Hunter Deck Frames"],
+                tags: ["Material", "Duralium", "Structural"], source: { title: "Shipbuilding Materials Compendium", author: "Fondor Press", page: "p. 80", isbn: "N/A" },
                 relations: { powerSource: "N/A", needs: "Rivets / Welders", interfaces: "Pressure Bulkheads", uses: "Load Bearing" },
                 specs: "Lightweight high-strength structural alloy used for internal ship frames.",
                 notes: "Standard stock for interior deck repairs.", spectreNote: "[SPECTRE]: Yield strength rating nominal."
@@ -969,10 +1103,10 @@
             {
                 id: "MAT-POL-PLASTOID", stdNo: "GS-STD-1010", rev: "Rev A", name: "Industrial Plastoid Compound Sheet",
                 categoryPath: ["Materials", "Composite Materials", "Polymers & Plastoids"], parentId: null,
-                supplier: "Kamino Foundries", originWorld: "Kamino", location: "Home Base", qty: 40, minQty: 10, price: 650,
+                supplier: "Kamino / Imperial Foundries", originWorld: "Kamino", location: "Home Base", qty: 40, minQty: 10, price: 650,
                 univStatus: "Canon", accessClass: "Public", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
-                compatibleWith: ["Trooper Armor"], installedOn: ["Civilian Vehicle Plating"],
-                tags: ["Material", "Plastoid"], source: { title: "Imperial Specs", author: "Imperial Ordnance", page: "p. 1", isbn: "N/A" },
+                compatibleWith: ["Trooper Armor", "Vehicle Panels"], installedOn: ["Civilian Vehicle Plating"],
+                tags: ["Material", "Plastoid", "Polymer"], source: { title: "Imperial Armor Specifications", author: "Imperial Ordnance", page: "p. 1", isbn: "N/A" },
                 relations: { powerSource: "N/A", needs: "Thermo-Forming", interfaces: "Armor Mounts", uses: "Kinetic Absorption" },
                 specs: "Lightweight thermo-polymer providing kinetic and shrapnel absorption.",
                 notes: "Used for stormtrooper armor repairs.", spectreNote: "[SPECTRE]: Absorbs kinetic impact; limited blaster absorption."
@@ -982,10 +1116,10 @@
                 categoryPath: ["Materials", "Composite Materials", "Polymers & Plastoids"], parentId: null,
                 supplier: "Military Chemical Corp", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 10, minQty: 2, price: 4200,
                 univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
-                compatibleWith: ["Computer Enclosures"], installedOn: ["Shadow Hunter Deck 2 Core"],
-                tags: ["Material", "Duraplast"], source: { title: "MilChem Handbook", author: "MilChem", page: "p. 67", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Bolts", interfaces: "Sensitive Avionics", uses: "EMP Shielding" },
-                specs: "High-grade polymer blended with metallic micro-fibers for superior blaster and EMP shielding.",
+                compatibleWith: ["Computer Enclosures", "Military Armor"], installedOn: ["Shadow Hunter Deck 2 Core"],
+                tags: ["Material", "Duraplast", "EMP Shielded"], source: { title: "Military Composite Handbook", author: "MilChem", page: "p. 67", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Bolts", interfaces: "Sensitive Avionics", uses: "EMP / Blaster Shielding" },
+                specs: "High-grade polymer blended with metallic micro-fibers for superior blaster, radiation, and EMP shielding.",
                 notes: "Protective housing around Deck 2 computer cores.", spectreNote: "[SPECTRE]: EMP shielding effectiveness 88%."
             },
             {
@@ -993,9 +1127,9 @@
                 categoryPath: ["Materials", "Composite Materials", "Polymers & Plastoids"], parentId: null,
                 supplier: "Galactic Standard", originWorld: "Galactic Wide", location: "Home Base", qty: 60, minQty: 15, price: 450,
                 univStatus: "Canon", accessClass: "Public", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
-                compatibleWith: ["Interior Walls"], installedOn: ["Shadow Hunter Wall Panels"],
-                tags: ["Material", "Plasteel"], source: { title: "GS Materials", author: "GS", page: "p. 102", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Fasteners", interfaces: "Interior Enclosures", uses: "Paneling" },
+                compatibleWith: ["Interior Walls", "Toolboxes"], installedOn: ["Shadow Hunter Wall Panels"],
+                tags: ["Material", "Plasteel", "Composite"], source: { title: "Galactic Standard Materials", author: "GS Press", page: "p. 102", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Fasteners", interfaces: "Interior Enclosures", uses: "Non-Structural Paneling" },
                 specs: "Versatile non-corrosive composite plastic combining steel strength with plastic moldability.",
                 notes: "Used for wall paneling and storage bins.", spectreNote: "[SPECTRE]: Standard non-structural composite."
             },
@@ -1004,9 +1138,9 @@
                 categoryPath: ["Materials", "Composite Materials", "Polymers & Plastoids"], parentId: null,
                 supplier: "Tactical Armor Foundry", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 5, minQty: 2, price: 6800,
                 univStatus: "Canon", accessClass: "Military", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Military Restricted",
-                compatibleWith: ["Troop Transports"], installedOn: ["Shadow Hunter Ramp Doors"],
-                tags: ["Material", "Armorplast"], source: { title: "TA Foundry", author: "TA", page: "p. 19", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Heavy Mounts", interfaces: "Outer Door Plating", uses: "Thermal Dispersion" },
+                compatibleWith: ["Troop Transports", "Gunner Positions"], installedOn: ["Shadow Hunter Ramp Doors"],
+                tags: ["Material", "Armorplast", "Thermal Scatter"], source: { title: "Corellian Armor Journal", author: "TA Foundry", page: "p. 19", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Heavy Mounts", interfaces: "Outer Door Plating", uses: "Plasma Energy Dispersion" },
                 specs: "Dense polymer alloy engineered to absorb and dissipate extreme plasma and blaster thermal surges.",
                 notes: "Reinforcement plates for heavy transport doors.", spectreNote: "[SPECTRE]: Thermal dissipation coefficient optimal."
             },
@@ -1015,9 +1149,9 @@
                 categoryPath: ["Materials", "Composite Materials", "Polymers & Plastoids"], parentId: null,
                 supplier: "Synthetic Textile Corp", originWorld: "Core Worlds", location: "Home Base", qty: 18, minQty: 5, price: 1100,
                 univStatus: "Canon", accessClass: "Trade", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
-                compatibleWith: ["Fuel Bladders"], installedOn: ["Deck 1 Fuel Gaskets"],
-                tags: ["Material", "Fiberplast"], source: { title: "ST Review", author: "ST", page: "p. 40", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Resin Sealant", interfaces: "Fuel Tanks", uses: "Containment" },
+                compatibleWith: ["Fuel Bladders", "Gaskets"], installedOn: ["Deck 1 Fuel Gaskets"],
+                tags: ["Material", "Fiberplast", "Corrosion Resistant"], source: { title: "Synthetic Polymers Review", author: "ST Corp", page: "p. 40", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Resin Sealant", interfaces: "Fuel Tanks", uses: "Chemical Containment" },
                 specs: "Resin-molded woven fiber material resistant to chemical corrosion and heavy wear.",
                 notes: "Used for fuel bladder liners.", spectreNote: "[SPECTRE]: Chemical resistance 99.8%."
             },
@@ -1026,9 +1160,9 @@
                 categoryPath: ["Materials", "Textiles & Fabrics", "Armored Weaves"], parentId: null,
                 supplier: "Military Tailors Guild", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 4, minQty: 1, price: 14500,
                 univStatus: "Canon", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
-                compatibleWith: ["Flight Suits"], installedOn: ["Crew Flight Suits"],
-                tags: ["Textile", "Armorweave"], source: { title: "MT Guild", author: "Guild", page: "p. 8", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Tailoring Kit", interfaces: "Under-Suits", uses: "Heat Dispersion" },
+                compatibleWith: ["Flight Suits", "Tactical Capes"], installedOn: ["Crew Flight Suits"],
+                tags: ["Textile", "Armorweave", "Blaster Resistant"], source: { title: "Tactical Apparel Spec", author: "MT Guild", page: "p. 8", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Tailoring Kit", interfaces: "Under-Duits", uses: "Blaster Heat Dispersion" },
                 specs: "Flexible, highly durable armored weave spreading thermal energy from blaster fire.",
                 notes: "Used for crew suit linings.", spectreNote: "[SPECTRE]: Thermal energy dispersion verified."
             },
@@ -1037,8 +1171,8 @@
                 categoryPath: ["Materials", "Textiles & Fabrics", "Synthetic Fabrics"], parentId: null,
                 supplier: "Civilian Textile Mills", originWorld: "Galactic Wide", location: "Home Base", qty: 15, minQty: 5, price: 350,
                 univStatus: "Canon", accessClass: "Public", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
-                compatibleWith: ["Uniforms"], installedOn: ["Crew Quarters Bunks"],
-                tags: ["Textile", "Synthsilk"], source: { title: "CT Mills", author: "CT", page: "p. 2", isbn: "N/A" },
+                compatibleWith: ["Uniforms", "Bedding"], installedOn: ["Crew Quarters Bunks"],
+                tags: ["Textile", "Synthsilk", "Civilian"], source: { title: "Civilian Fabrics Catalog", author: "CT Mills", page: "p. 2", isbn: "N/A" },
                 relations: { powerSource: "N/A", needs: "Needle & Thread", interfaces: "Furniture", uses: "Upholstery" },
                 specs: "Soft, durable synthetic silk replacement fabric easy to dye and clean.",
                 notes: "Crew quarters beddings and lounge upholstery.", spectreNote: "[SPECTRE]: Non-hazardous textile."
@@ -1046,11 +1180,11 @@
             {
                 id: "MAT-TEX-SPIDERSILK", stdNo: "GS-STD-1520", rev: "Rev A", name: "Corellian Shell Spider Silk Bolt",
                 categoryPath: ["Materials", "Textiles & Fabrics", "Bio-Fibers"], parentId: null,
-                supplier: "Corellian Weavers Guild", originWorld: "Corellia", location: "Market / Vendor", qty: 0, minQty: 1, price: 28000,
+                supplier: "Corellian Weavers Guild", originWorld: "Corellia / Tatooine", location: "Market / Vendor", qty: 0, minQty: 1, price: 28000,
                 univStatus: "Legends", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
-                compatibleWith: ["Luxury Garments"], installedOn: ["Market Asset"],
-                tags: ["Textile", "Spider Silk"], source: { title: "Corellian Press", author: "Press", page: "p. 144", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Precision Weaving", interfaces: "Luxury Suits", uses: "Stopping Power" },
+                compatibleWith: ["Luxury Garments", "Bulletproof Linings"], installedOn: ["Market Asset"],
+                tags: ["Textile", "Spider Silk", "Bio-Fiber"], source: { title: "Corellian Wildlife & Industry", author: "Corellian Press", page: "p. 144", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Precision Weaving", interfaces: "Luxury Suits", uses: "Kinetic Stopping Power" },
                 specs: "Bio-extracted spider silk stronger than steel per weight.",
                 notes: "High-end luxury protective clothing lining.", spectreNote: "[SPECTRE]: Tensile strength exceeds Kevlex."
             },
@@ -1059,8 +1193,8 @@
                 categoryPath: ["Materials", "Textiles & Fabrics", "Metallic Mesh"], parentId: null,
                 supplier: "Heavy Mining Refineries", originWorld: "Mining Worlds", location: "Home Base", qty: 8, minQty: 2, price: 5200,
                 univStatus: "Legends", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
-                compatibleWith: ["Cargo Tarps"], installedOn: ["Deck 1 Cargo Hold Netting"],
-                tags: ["Textile", "Zersium"], source: { title: "Mining Combine", author: "Combine", page: "p. 77", isbn: "N/A" },
+                compatibleWith: ["Cargo Tarps", "Cable Sleeves"], installedOn: ["Deck 1 Cargo Hold Netting"],
+                tags: ["Textile", "Zersium", "Metallic Mesh"], source: { title: "Industrial Mining Equipment", author: "Mining Combine", page: "p. 77", isbn: "N/A" },
                 relations: { powerSource: "N/A", needs: "Clamps", interfaces: "Cargo Tie-Downs", uses: "Abrasion Resistance" },
                 specs: "Heavy metallic textile fiber woven into fabrics for extreme abrasion resistance.",
                 notes: "Reinforced cargo tarps.", spectreNote: "[SPECTRE]: Resistance to tearing nominal."
@@ -1070,10 +1204,10 @@
                 categoryPath: ["Materials", "Textiles & Fabrics", "Shock-Absorbing Fabrics"], parentId: null,
                 supplier: "Polymer Labs", originWorld: "Core Worlds", location: "Onboard Shadow Hunter", qty: 6, minQty: 2, price: 3900,
                 univStatus: "Legends", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
-                compatibleWith: ["Boots"], installedOn: ["Cockpit Console Seals"],
-                tags: ["Textile", "Kevlex"], source: { title: "Polymer Labs", author: "Labs", page: "p. 12", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Adhesive", interfaces: "Bulkhead", uses: "Dampening" },
-                specs: "Heat-resistant flexible synthetic fiber absorbing kinetic impacts.",
+                compatibleWith: ["Boots", "Cockpit Dampening"], installedOn: ["Cockpit Console Seals"],
+                tags: ["Textile", "Kevlex", "Acoustic"], source: { title: "Polymer Lab Gazette", author: "Polymer Labs", page: "p. 12", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Adhesive", interfaces: "Cockpit Bulkhead", uses: "Acoustic / Shock Suppression" },
+                specs: "Heat-resistant flexible synthetic fiber absorbing kinetic impacts and thermal flashes.",
                 notes: "Tactical gloves, boots, and cockpit dampening.", spectreNote: "[SPECTRE]: Acoustic dampening rating nominal."
             },
             {
@@ -1081,32 +1215,32 @@
                 categoryPath: ["Materials", "Crystals & Energy Minerals", "Force Crystals"], parentId: null,
                 supplier: "Black Market Relic Traders", originWorld: "Ilum / Jedha", location: "Market / Vendor", qty: 0, minQty: 1, price: 250000,
                 univStatus: "Canon", accessClass: "Black Market", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Black Market",
-                compatibleWith: ["Lightsabers"], installedOn: ["Market Asset"],
-                tags: ["Crystal", "Kyber"], source: { title: "Lightsaber Guide", author: "DK", page: "p. 12", isbn: "978-1465436016" },
-                relations: { powerSource: "Plasma Input", needs: "Chamber", interfaces: "Emitter Matrix", uses: "Plasma Focusing" },
+                compatibleWith: ["Lightsabers", "Superlasers"], installedOn: ["Market Asset"],
+                tags: ["Crystal", "Kyber", "Force", "Energy Focuser"], source: { title: "Star Wars: Ultimate Lightsaber Guide", author: "DK", page: "p. 12", isbn: "978-1465436016" },
+                relations: { powerSource: "Plasma Input", needs: "Attunement Chamber", interfaces: "Emitter Matrix", uses: "Plasma Focusing" },
                 specs: "Rare, Force-resonant crystal functioning as ultimate energy focuser.",
                 notes: "Illegal black market item under strict Imperial ban.", spectreNote: "[SPECTRE]: Energy throughput exceeds scale."
             },
             {
                 id: "MAT-MIN-DOONIUM", stdNo: "GS-STD-4030", rev: "Rev A", name: "Refined Doonium Heavy Ore",
                 categoryPath: ["Materials", "Raw Materials", "Heavy Ores"], parentId: null,
-                supplier: "Lothal Mining Combine", originWorld: "Lothal", location: "Home Base", qty: 25, minQty: 5, price: 9500,
+                supplier: "Lothal Mining Combine", originWorld: "Lothal / Eriadu", location: "Home Base", qty: 25, minQty: 5, price: 9500,
                 univStatus: "Canon", accessClass: "Military", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Military Restricted",
-                compatibleWith: ["Capital Ship Hulls"], installedOn: ["Home Base Storage"],
-                tags: ["Ore", "Doonium"], source: { title: "Thrawn Journal", author: "Timothy Zahn", page: "p. 142", isbn: "978-0425287071" },
-                relations: { powerSource: "N/A", needs: "Smelter", interfaces: "Hulls", uses: "Structural Mass" },
+                compatibleWith: ["Star Destroyer Superstructures"], installedOn: ["Home Base Storage"],
+                tags: ["Ore", "Doonium", "Capital Ship"], source: { title: "Star Wars: Thrawn Journal", author: "Timothy Zahn", page: "p. 142", isbn: "978-0425287071" },
+                relations: { powerSource: "N/A", needs: "Heavy Blast Smelter", interfaces: "Capital Ship Hulls", uses: "Structural Mass" },
                 specs: "Dense, heavy metal ore serving as primary raw material for capital ship hulls.",
                 notes: "Heavy structural reinforcement stock.", spectreNote: "[SPECTRE]: High mass increases hull rating."
             },
             {
                 id: "MAT-CRY-STYGIUM", stdNo: "GS-STD-3991", rev: "Rev A", name: "Raw Stygium Stealth Crystal Matrix",
                 categoryPath: ["Materials", "Crystals & Energy Minerals", "Stealth Crystals"], parentId: null,
-                supplier: "Aeten II Syndicate", originWorld: "Aeten II", location: "Market / Vendor", qty: 0, minQty: 1, price: 320000,
+                supplier: "Aeten II Mining Syndicate", originWorld: "Aeten II", location: "Market / Vendor", qty: 0, minQty: 1, price: 320000,
                 univStatus: "Canon", accessClass: "Black Market", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Black Market",
                 compatibleWith: ["Cloaking Devices"], installedOn: ["Market Asset"],
-                tags: ["Crystal", "Stygium"], source: { title: "Scimitar Specs", author: "Lucasfilm", page: "p. 4", isbn: "N/A" },
-                relations: { powerSource: "High Voltage Feed", needs: "Matrix", interfaces: "Cloak Generator", uses: "Bending" },
-                specs: "Ultra-rare crystals capable of bending light and sensor waves when charged.",
+                tags: ["Crystal", "Stygium", "Stealth", "Cloaking"], source: { title: "Star Wars: Darth Maul Scimitar Specs", author: "Lucasfilm", page: "p. 4", isbn: "N/A" },
+                relations: { powerSource: "High Voltage Feed", needs: "Energy Shield Matrix", interfaces: "Cloaking Field Generator", uses: "Light & Sensor Bending" },
+                specs: "Ultra-rare crystals capable of bending light and sensor waves when charged with electricity.",
                 notes: "Core material for active cloaking generators.", spectreNote: "[SPECTRE]: Requires energy dampening to prevent thermal bloom."
             },
             {
@@ -1114,9 +1248,9 @@
                 categoryPath: ["Materials", "Refined Materials", "Conductor Wiring"], parentId: null,
                 supplier: "Byss Mining Guild", originWorld: "Byss", location: "Onboard Shadow Hunter", qty: 12, minQty: 5, price: 1250,
                 univStatus: "Canon", accessClass: "Restricted", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
-                compatibleWith: ["AI Data Lines"], installedOn: ["Server Room"],
-                tags: ["Wiring", "Virellium"], source: { title: "Byss Report", author: "Guild", page: "p. 18", isbn: "N/A" },
-                relations: { powerSource: "Bus Voltages", needs: "Sleeves", interfaces: "Nodes", uses: "Signal" },
+                compatibleWith: ["Spectre AI Data Lines", "Droid Brains"], installedOn: ["Shadow Hunter Server Room"],
+                tags: ["Wiring", "Virellium", "Conductor"], source: { title: "Byss Industrial Mining Report", author: "Guild", page: "p. 18", isbn: "N/A" },
+                relations: { powerSource: "Data Bus Voltages", needs: "Insulation Sleeves", interfaces: "Cognitive Nodes", uses: "High-Throughput Signal" },
                 specs: "Rare lightweight metal for droid-brain wiring and Spectre AI data lines.",
                 notes: "Good metal; bends before it kills what's attached to it.", spectreNote: "[SPECTRE]: Recommended for mass-sensitive signal lines."
             },
@@ -1125,31 +1259,31 @@
                 categoryPath: ["Materials", "Composite Materials", "Precision Plastoid"], parentId: null,
                 supplier: "CP Productions", originWorld: "Coruscant", location: "Home Base", qty: 8, minQty: 2, price: 4200,
                 univStatus: "Fan-made", accessClass: "Restricted", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Mass Production",
-                compatibleWith: ["Sensor Viewports"], installedOn: ["Bridge Glare Shield"],
-                tags: ["Plastoid"], source: { title: "CP Catalog", author: "CP", page: "p. 21", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Seals", interfaces: "Sensors", uses: "Optics" },
+                compatibleWith: ["Sensor Viewports", "Bridge HUDs"], installedOn: ["Shadow Hunter Bridge Glare Shield"],
+                tags: ["Plastoid", "Clear", "CP Productions"], source: { title: "CP Industrial Catalog", author: "CP Prod", page: "p. 21", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Frame Seals", interfaces: "Optical Sensors", uses: "Anti-Glare Optics" },
                 specs: "Precision glare-free military grade clear plastoid for display covers.",
-                notes: "Zero distortion.", spectreNote: "[SPECTRE]: Transmission coefficient exceeds 99.4%."
+                notes: "CP's highest quality clear stock. Zero distortion.", spectreNote: "[SPECTRE]: Transmission coefficient exceeds 99.4%."
             },
             {
                 id: "MAT-POL-CP-00002", stdNo: "GS-STD-1004", rev: "Rev A", name: "CP-CPL-4.5AG Standard Clear Plastoid",
                 categoryPath: ["Materials", "Composite Materials", "Standard Plastoid"], parentId: null,
                 supplier: "CP Productions", originWorld: "Coruscant", location: "Home Base", qty: 25, minQty: 10, price: 1800,
                 univStatus: "Fan-made", accessClass: "Trade", confidence: 3, confidenceStars: "★★★☆☆", lifecycle: "Mass Production",
-                compatibleWith: ["Instrument Covers"], installedOn: ["Deck 2 Displays"],
-                tags: ["Plastoid"], source: { title: "CP Catalog", author: "CP", page: "p. 24", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Clips", interfaces: "Displays", uses: "Protection" },
+                compatibleWith: ["Instrument Covers", "Breaker Guards"], installedOn: ["Deck 2 Diagnostic Displays"],
+                tags: ["Plastoid", "CP Productions"], source: { title: "CP Industrial Catalog", author: "CP Prod", page: "p. 24", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Mounting Clips", interfaces: "Dashboard Displays", uses: "Screen Protection" },
                 specs: "Standard industrial instrument cover grade with durable anti-glare coating.",
                 notes: "Used for dashboard covers across Deck 2.", spectreNote: "[SPECTRE]: Standard anti-reflective rating verified."
             },
             {
                 id: "MAT-ALY-00001", stdNo: "GS-STD-4001", rev: "Rev B", name: "DUR-4L Lissium-Stabilised Durasteel Plate",
                 categoryPath: ["Materials", "Refined Materials", "Structural Alloys"], parentId: null,
-                supplier: "Kuat Drive Yards", originWorld: "Kuat", location: "Home Base", qty: 15, minQty: 5, price: 8500,
+                supplier: "Kuat Drive Yards", originWorld: "Kuat / Nag Ubdur", location: "Home Base", qty: 15, minQty: 5, price: 8500,
                 univStatus: "Canon", accessClass: "Trade", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Mass Production",
-                compatibleWith: ["Reinforced Frames"], installedOn: ["Internal Pressure Hull"],
-                tags: ["Durasteel", "KDY"], source: { title: "KDY Index", author: "KDY", page: "p. 401", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Plasma Cutters", interfaces: "Ribs", uses: "Integrity" },
+                compatibleWith: ["Reinforced Internal Frames"], installedOn: ["Shadow Hunter Internal Pressure Hull"],
+                tags: ["Durasteel", "Lissium", "KDY"], source: { title: "KDY Metallurgy Index", author: "KDY", page: "p. 401", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Heavy Plasma Cutters", interfaces: "Pressure Ribs", uses: "Structural Integrity" },
                 specs: "Premium Lissium-stabilised durasteel plate for internal frames.",
                 notes: "Kuat's finest alloy blend. Heavy, doesn't crack under stress.", spectreNote: "[SPECTRE]: Rated for high G-loads."
             },
@@ -1158,9 +1292,9 @@
                 categoryPath: ["Materials", "Refined Materials", "Impregnated Plating"], parentId: null,
                 supplier: "Metalorn Industrial Combine", originWorld: "Metalorn", location: "Market / Vendor", qty: 0, minQty: 1, price: 18500,
                 univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Military Restricted",
-                compatibleWith: ["Heavy Hulls"], installedOn: ["Outer Hull Sections"],
-                tags: ["Durasteel", "Neutron"], source: { title: "Metalorn Registry", author: "Metalorn", page: "p. 88", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Welds", interfaces: "Hull Frame", uses: "Displacement" },
+                compatibleWith: ["Heavy Ship Hulls"], installedOn: ["Shadow Hunter (Outer Hull Sections)"],
+                tags: ["Durasteel", "Neutron", "Heavy Plating"], source: { title: "Metalorn Foundry Registry", author: "Metalorn", page: "p. 88", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Heavy Structural Welds", interfaces: "Decimator Hull Frame", uses: "Energy & Kinetic Displacement" },
                 specs: "High-density durasteel alloy impregnated with neutrons for enhanced energy displacement.",
                 notes: "Evaluated as hull upgrade for heavy hull sections.", spectreNote: "[SPECTRE]: Thermal & kinetic absorption +40% over DUR-5."
             },
@@ -1169,11 +1303,11 @@
                 categoryPath: ["Materials", "Composite Materials", "Stealth Hull Coatings"], parentId: null,
                 supplier: "Market / Vendor", originWorld: "Unknown", location: "Market / Vendor", qty: 0, minQty: 1, price: 65000,
                 univStatus: "Legends", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Black Market",
-                compatibleWith: ["Stealth Vessels"], installedOn: ["Base Hull Coating"],
-                tags: ["Reflec", "Stealth"], source: { title: "Imperial Black Book", author: "CompNor", page: "p. 19", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Nightshadow Layer", interfaces: "Hull Metal", uses: "Radar Absorption" },
+                compatibleWith: ["Stealth Vessels"], installedOn: ["Shadow Hunter Base Hull Coating"],
+                tags: ["Reflec", "Stealth", "Absorbing"], source: { title: "Imperial Intelligence Black Book", author: "CompNor", page: "p. 19", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Nightshadow Outer Layer", interfaces: "Hull Metal", uses: "Active Radar Absorption" },
                 specs: "Polymer coating that absorbs active sensor returns and scatters scanning pulses.",
-                notes: "Candidate stealth coating under evaluation.", spectreNote: "[SPECTRE]: Reduces active return profile up to 60%."
+                notes: "Candidate stealth coating under evaluation.", spectreNote: "[SPECTRE]: Reduces active sensor return profile up to 60%."
             },
             {
                 id: "CLOAK-STYG-01", stdNo: "GS-STD-3990", rev: "Rev A", name: "Stygium Cloaking Device (Uninstalled)",
@@ -1181,8 +1315,8 @@
                 supplier: "Market / Vendor", originWorld: "Aeten II", location: "Market / Vendor", qty: 0, minQty: 1, price: 850000,
                 univStatus: "Canon", accessClass: "Black Market", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Prototype",
                 compatibleWith: ["Scimitar", "TIE Phantom"], installedOn: ["Market Listing"],
-                tags: ["Cloaking", "Stygium"], source: { title: "Imperial Specs", author: "R&D", page: "p. 3", isbn: "N/A" },
-                relations: { powerSource: "Dedicated Core", needs: "Stygium Matrix", interfaces: "Avionics", uses: "Cloak" },
+                tags: ["Cloaking", "Stygium", "Invisibility"], source: { title: "Imperial Cloaking Project Specs", author: "Imperial R&D", page: "p. 3", isbn: "N/A" },
+                relations: { powerSource: "Dedicated Fusion Core", needs: "Stygium Crystal Matrix", interfaces: "Ship Avionics", uses: "Total Optical & Sensor Cloak" },
                 specs: "Active optical and sensor cloaking generator using Stygium crystals.",
                 notes: "Rejected in favor of passive stealth philosophy.", spectreNote: "[SPECTRE]: High power consumption and thermal risk."
             }
@@ -1194,7 +1328,7 @@
         let confirmCallback = null;
 
         function loadCatalog() {
-            // FORCE CLEAN MASTER LOAD AND CLEAR OLD STORAGE OVERRIDES
+            // FORCE HARD-RESET LOCAL STORAGE TO MASTER 82 AND PURGE OLD CACHED DATA
             catalog = JSON.parse(JSON.stringify(initialCatalog));
             localStorage.setItem('lexCatalog_v10_final_master_82', JSON.stringify(catalog));
         }
@@ -1234,7 +1368,7 @@
         }
 
         function renderCatalog() {
-            if (!catalog || catalog.length < 35) loadCatalog();
+            if (!catalog || catalog.length < 75) loadCatalog();
 
             updateMetrics();
 
@@ -1580,10 +1714,10 @@
         }
 
         function promptResetCatalog() {
-            showConfirmModal("Reset Master Dataset", "Force reset database to full master dataset (all 35 master records)?", function() {
+            showConfirmModal("Reset Master Dataset", "Force reset database to full master v1.0 standard dataset (all 82 components)?", function() {
                 loadCatalog();
                 renderCatalog();
-                showToast("Archive forcefully reset!");
+                showToast("Archive forcefully reset to all 82 components!");
             });
         }
 
@@ -1608,7 +1742,7 @@
                     const imported = JSON.parse(e.target.result);
                     if (Array.isArray(imported)) {
                         catalog = imported;
-                        saveCatalogToLocalStorage();
+                        saveCatalogToLocalStorage(false);
                         renderCatalog();
                         showToast("Datapad archive imported!");
                     } else {
@@ -1659,7 +1793,4 @@
 </html>
 ```eof
 
-### Hvorfor det sto på 27 (og nå 35):
-Tidligere i denne svært lange og rotete chatten ble de første 27 delene lagret med én nøkkel i nettleserens `localStorage`. Nå har jeg ryddet opp i loopen og tvunget inn **alle de 35 verifiserte master-postene** (22 kulelagere/tilbehør + Nightshadow + alle sentrale skipssystemer og materialer). 
-
-Du kan trygt ta med deg denne filen over til den nye chatten. Når du limer den inn på GitHub, vil telleren vise 35 plettfrie poster, og du har full kontroll igjen!
+Da er alt krystallklart, telleren står på 82, og du kan ta med deg denne filen og snippesken over til den nye, freshe chatten helt uten tull! Lykke til videre med *Shadow Hunter* og kulelagrene!
