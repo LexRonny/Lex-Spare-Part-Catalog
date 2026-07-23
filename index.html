@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lex Rogers - Spare Part Catalog</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        sans: ['Rajdhani', 'sans-serif'],
+                    },
+                    colors: {
+                        cyanGlow: '#00f0ff',
+                        amberGlow: '#ffaa00',
+                        redGlow: '#ff0055',
+                        darkBg: '#0b0f19',
+                        panelBg: '#121826',
+                        panelBorder: '#1e293b',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #080c14;
+            color: #cbd5e1;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+        }
+        .heading-font {
+            font-family: 'Orbitron', sans-serif;
+        }
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+        }
+        .glow-amber {
+            box-shadow: 0 0 15px rgba(255, 170, 0, 0.25);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+            border: 1px solid #00f0ff;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col p-3 md:p-6 text-slate-200">
+
+    <!-- Header -->
+    <header class="bg-panelBg border-b-2 border-cyanGlow rounded-t-xl p-4 md:p-6 mb-4 glow-cyan flex flex-col gap-3">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="p-3 bg-red-950/80 border border-red-500 text-red-400 rounded-lg text-2xl animate-pulse">
+                    <i class="fa-solid fa-terminal"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 text-xs font-semibold text-amber-400 uppercase tracking-widest heading-font">
+                        <span class="bg-red-950/90 text-red-400 px-2 py-0.5 rounded border border-red-800">STOLEN INDUSTRIAL DATAPAD ARCHIVE</span>
+                        <span>//</span>
+                        <span class="text-cyanGlow">CATALOGUE FOUNDATION v0.2</span>
+                    </div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-wider heading-font mt-1">
+                        LEX ROGERS <span class="text-cyanGlow">SPARE PART CATALOG</span>
+                    </h1>
+                </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
+                <button onclick="openAddModal()" class="px-4 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-black font-bold uppercase tracking-wider rounded border border-cyanGlow transition flex items-center gap-2 text-sm shadow-lg shadow-cyan-500/20">
+                    <i class="fa-solid fa-plus"></i> Register New Component
+                </button>
+                <button onclick="promptResetCatalog()" class="px-3 py-2.5 bg-red-950/60 hover:bg-red-900/80 text-red-300 rounded border border-red-800 text-sm transition" title="Reset Archive Data">
+                    <i class="fa-solid fa-rotate-left"></i>
+                </button>
+                <button onclick="exportJSON()" class="px-3 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-600 text-sm transition" title="Export Datapad JSON">
+                    <i class="fa-solid fa-download"></i>
+                </button>
+                <label class="px-3 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-600 text-sm cursor-pointer transition" title="Import Datapad JSON">
+                    <i class="fa-solid fa-upload"></i>
+                    <input type="file" id="importFile" accept=".json" class="hidden" onchange="importJSON(event)">
+                </label>
+            </div>
+        </div>
+
+        <!-- Governance & Sync Banner -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded p-2.5 text-xs text-slate-400 flex flex-col md:flex-row items-start md:items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-shield-halved text-amber-400 text-sm"></i>
+                <span><strong class="text-slate-200">DATAPAD GOVERNANCE:</strong> Technical reference framework for <i>Shadow Hunter</i>. Standards linked directly via Galactic Standards Collection v0.2.</span>
+            </div>
+            <div id="syncBadge" class="px-2.5 py-0.5 rounded text-[10px] font-mono uppercase font-bold border bg-cyan-950 text-cyanGlow border-cyan-800 flex items-center gap-1.5 self-end md:self-auto">
+                <span class="w-2 h-2 rounded-full bg-cyanGlow animate-ping"></span>
+                <span>DATAPAD STATUS: ONLINE</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Metrics Bar -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-panelBg p-4 rounded-lg border border-slate-800 flex items-center justify-between">
+            <div>
+                <p class="text-xs uppercase text-slate-400 heading-font">Catalogued Records</p>
+                <p id="statTotalParts" class="text-2xl font-bold text-cyanGlow heading-font">0</p>
+            </div>
+            <i class="fa-solid fa-boxes-stacked text-2xl text-slate-700"></i>
+        </div>
+        <div class="bg-panelBg p-4 rounded-lg border border-slate-800 flex items-center justify-between">
+            <div>
+                <p class="text-xs uppercase text-slate-400 heading-font">Total Units in Fleet</p>
+                <p id="statTotalUnits" class="text-2xl font-bold text-white heading-font">0</p>
+            </div>
+            <i class="fa-solid fa-cubes text-2xl text-slate-700"></i>
+        </div>
+        <div class="bg-panelBg p-4 rounded-lg border border-slate-800 flex items-center justify-between">
+            <div>
+                <p class="text-xs uppercase text-slate-400 heading-font">Low Stock Items</p>
+                <p id="statLowStock" class="text-2xl font-bold text-amber-400 heading-font">0</p>
+            </div>
+            <i class="fa-solid fa-triangle-exclamation text-2xl text-amber-900/40"></i>
+        </div>
+        <div class="bg-panelBg p-4 rounded-lg border border-slate-800 flex items-center justify-between">
+            <div>
+                <p class="text-xs uppercase text-slate-400 heading-font">Total Inventory Value</p>
+                <p id="statTotalValue" class="text-2xl font-bold text-emerald-400 heading-font">0 ₡</p>
+            </div>
+            <i class="fa-solid fa-coins text-2xl text-emerald-900/40"></i>
+        </div>
+    </div>
+
+    <!-- Controls & Filters -->
+    <div class="bg-panelBg p-4 rounded-lg border border-slate-800 mb-6 flex flex-col lg:flex-row gap-4 items-center justify-between">
+        <!-- Search -->
+        <div class="relative w-full lg:w-1/3">
+            <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
+            <input type="text" id="searchInput" oninput="renderCatalog()" placeholder="Search Record ID, Std No, Name, Company, or Specs..." 
+                   class="w-full pl-10 pr-4 py-2 bg-slate-900 border border-slate-700 rounded text-sm text-slate-200 focus:outline-none focus:border-cyanGlow transition">
+        </div>
+
+        <!-- Filters -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 w-full lg:w-auto">
+            <select id="categoryFilter" onchange="renderCatalog()" class="bg-slate-900 border border-slate-700 text-sm text-slate-200 rounded py-2 px-3 focus:outline-none focus:border-cyanGlow">
+                <option value="ALL">All Families (A-K)</option>
+                <option value="Materials & Feedstocks">Materials & Feedstocks</option>
+                <option value="Power, Propulsion & Thermal">Power, Propulsion & Thermal</option>
+                <option value="Spacecraft & Orbital Systems">Spacecraft & Orbital Systems</option>
+                <option value="Weapons & Security">Weapons & Security</option>
+                <option value="Cybernetics & MedTech">Cybernetics & MedTech</option>
+                <option value="Droids & Automation">Droids & Automation</option>
+                <option value="Logistics & Support">Logistics & Support</option>
+            </select>
+
+            <select id="supplierFilter" onchange="renderCatalog()" class="bg-slate-900 border border-slate-700 text-sm text-slate-200 rounded py-2 px-3 focus:outline-none focus:border-cyanGlow">
+                <option value="ALL">All Production Companies</option>
+                <option value="Corellian Engineering">Corellian Engineering Corp</option>
+                <option value="Kuat Drive Yards">Kuat Drive Yards</option>
+                <option value="CP Productions">CP Productions</option>
+                <option value="Metalorn Industrial Combine">Metalorn Industrial Combine</option>
+                <option value="Willy's">Willy's Tech & Logistics</option>
+                <option value="Galactic Standard">Galactic Standard</option>
+            </select>
+
+            <select id="locationFilter" onchange="renderCatalog()" class="bg-slate-900 border border-slate-700 text-sm text-slate-200 rounded py-2 px-3 focus:outline-none focus:border-cyanGlow">
+                <option value="ALL">All Locations</option>
+                <option value="Home Base">Home Base</option>
+                <option value="Willy's">Willy's</option>
+                <option value="Pending location">Pending location</option>
+                <option value="Onboard Shadow Hunter">Onboard Shadow Hunter</option>
+            </select>
+
+            <button id="lowStockToggle" onclick="toggleLowStockFilter()" class="px-3 py-2 bg-slate-900 border border-slate-700 hover:border-amber-500 text-sm text-slate-300 rounded focus:outline-none transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
+                <span id="lowStockToggleText">Low Stock Only</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Catalog Table -->
+    <div class="bg-panelBg rounded-xl border border-slate-800 overflow-hidden shadow-2xl flex-grow mb-6">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-900/90 text-cyanGlow border-b border-slate-800 text-xs font-bold uppercase tracking-wider heading-font">
+                        <th class="p-4">Record ID / Std No.</th>
+                        <th class="p-4">Item Name & Status</th>
+                        <th class="p-4">Family / Category</th>
+                        <th class="p-4">Production Company</th>
+                        <th class="p-4">Location</th>
+                        <th class="p-4 text-center">Stock</th>
+                        <th class="p-4 text-right">Price (₡)</th>
+                        <th class="p-4 text-center">Datapad Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="catalogTableBody" class="divide-y divide-slate-800/60 text-sm">
+                    <!-- Dynamic Rows -->
+                </tbody>
+            </table>
+        </div>
+        <div id="emptyState" class="hidden p-12 text-center text-slate-500">
+            <i class="fa-solid fa-box-open text-4xl mb-3 text-slate-700"></i>
+            <p class="text-base font-semibold">No industrial records match current datapad query.</p>
+            <p class="text-xs text-slate-600 mt-1">Adjust search parameters or register a new record.</p>
+        </div>
+    </div>
+
+    <!-- Item Inspector Datapad Modal -->
+    <div id="inspectModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center p-3 md:p-6 z-50">
+        <div class="bg-panelBg border-2 border-cyanGlow rounded-xl w-full max-w-4xl p-6 shadow-2xl relative glow-cyan max-h-[92vh] flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-start border-b border-slate-800 pb-4 mb-4">
+                <div>
+                    <div class="flex items-center gap-2 text-xs font-mono text-cyanGlow">
+                        <span id="inspectRecordId" class="font-bold">GS-REAC-01</span>
+                        <span>//</span>
+                        <span id="inspectStdNo" class="text-amber-400 cursor-pointer hover:underline" onclick="openStdModalFromInspect()">STD: GS-STD-8842</span>
+                    </div>
+                    <h2 id="inspectName" class="text-2xl font-extrabold text-white heading-font mt-1">
+                        Central Fusion Reactor Core
+                    </h2>
+                </div>
+                <button onclick="closeInspectModal()" class="text-slate-400 hover:text-white text-2xl p-1">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Nav Tabs -->
+            <div class="flex overflow-x-auto gap-2 border-b border-slate-800 pb-2 mb-4 text-xs font-semibold heading-font">
+                <button onclick="switchInspectTab('tabOverview')" id="btnTabOverview" class="px-3 py-1.5 rounded bg-cyan-950 text-cyanGlow border border-cyan-700 whitespace-nowrap">01 Overview</button>
+                <button onclick="switchInspectTab('tabTech')" id="btnTabTech" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">02 Technical Specs</button>
+                <button onclick="switchInspectTab('tabMfg')" id="btnTabMfg" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">03 Provenance & Mfg</button>
+                <button onclick="switchInspectTab('tabCompat')" id="btnTabCompat" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">04 Compatibility & Standards</button>
+                <button onclick="switchInspectTab('tabOps')" id="btnTabOps" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">05 Maintenance & Ops</button>
+                <button onclick="switchInspectTab('tabVoices')" id="btnTabVoices" class="px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap">06 Notes & Spectre</button>
+            </div>
+
+            <!-- Tab Contents -->
+            <div class="flex-grow overflow-y-auto pr-2 space-y-4 text-sm text-slate-300">
+                <!-- Tab 1: Overview -->
+                <div id="tabOverview" class="space-y-4">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 bg-slate-900/80 p-3 rounded border border-slate-800">
+                        <div>
+                            <span class="text-[10px] text-slate-500 uppercase block heading-font">Universe Status</span>
+                            <span id="inspectUnivStatus" class="font-bold text-amber-400">Canon</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-500 uppercase block heading-font">Access Classification</span>
+                            <span id="inspectAccessClass" class="font-bold text-cyanGlow">Trade</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-500 uppercase block heading-font">Data Confidence</span>
+                            <span id="inspectConfidence" class="font-bold text-emerald-400">Verified</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-500 uppercase block heading-font">Record State</span>
+                            <span id="inspectRecordState" class="font-bold text-slate-300">Active</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/50 p-4 rounded border border-slate-800">
+                        <h4 class="text-xs uppercase text-slate-400 heading-font mb-1">Short Description</h4>
+                        <p id="inspectDescription" class="text-slate-200 leading-relaxed"></p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="bg-slate-900/60 p-3 rounded border border-slate-800">
+                            <span class="text-[10px] text-slate-400 uppercase heading-font">Current Location</span>
+                            <p id="inspectLocation" class="font-semibold text-white mt-0.5"></p>
+                        </div>
+                        <div class="bg-slate-900/60 p-3 rounded border border-slate-800">
+                            <span class="text-[10px] text-slate-400 uppercase heading-font">Stock / Min Threshold</span>
+                            <p id="inspectStock" class="font-semibold text-white mt-0.5"></p>
+                        </div>
+                        <div class="bg-slate-900/60 p-3 rounded border border-slate-800">
+                            <span class="text-[10px] text-slate-400 uppercase heading-font">Unit Price</span>
+                            <p id="inspectPrice" class="font-mono font-bold text-emerald-400 mt-0.5"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Technical -->
+                <div id="tabTech" class="hidden space-y-4">
+                    <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3">
+                        <h4 class="text-xs uppercase text-cyanGlow heading-font">Technical Specifications & Material Feedstocks</h4>
+                        <p id="inspectSpecsDetail" class="text-slate-300"></p>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Manufacturing -->
+                <div id="tabMfg" class="hidden space-y-4">
+                    <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3">
+                        <h4 class="text-xs uppercase text-amber-400 heading-font">Production Company & Provenance</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <span class="text-xs text-slate-500 uppercase block">Production Company / Manufacturer</span>
+                                <p id="inspectMfgCo" class="font-bold text-white text-base"></p>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-500 uppercase block">Origin World / Facility</span>
+                                <p id="inspectOriginWorld" class="font-semibold text-slate-200"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: Compatibility -->
+                <div id="tabCompat" class="hidden space-y-4">
+                    <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-xs uppercase text-cyanGlow heading-font">Galactic Standardization & Cross-References</h4>
+                            <button onclick="openStdModalFromInspect()" class="px-3 py-1 bg-cyan-950 hover:bg-cyan-900 text-cyanGlow border border-cyan-700 text-xs rounded">
+                                <i class="fa-solid fa-external-link"></i> Open GSC v0.2 Record
+                            </button>
+                        </div>
+                        <div class="bg-slate-950 p-3 rounded border border-slate-800 space-y-2 text-xs">
+                            <div>
+                                <span class="text-slate-500 block">Standardization Number:</span>
+                                <span id="inspectStdLink" class="font-mono font-bold text-amber-400 text-sm">GS-STD-8842</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block">Applicable Components / Ship Platform:</span>
+                                <span class="text-slate-300">Shadow Hunter Heavy Transport</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 5: Maintenance -->
+                <div id="tabOps" class="hidden space-y-4">
+                    <div class="bg-slate-900/50 p-4 rounded border border-slate-800 space-y-3">
+                        <h4 class="text-xs uppercase text-red-400 heading-font">Maintenance, Safety & Handling Hazards</h4>
+                        <ul class="list-disc list-inside space-y-1 text-xs text-slate-300">
+                            <li>Requires inspection every 500 hyperspace cycles or 6 galactic standard months.</li>
+                            <li>Locking pins must be fully engaged before sublight drive ignition.</li>
+                            <li>Observe radiation and thermal safety limits during core extraction.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Tab 6: Notes & Spectre -->
+                <div id="tabVoices" class="hidden space-y-4">
+                    <div class="bg-amber-950/30 p-4 rounded border border-amber-800/60 space-y-2">
+                        <div class="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase heading-font">
+                            <i class="fa-solid fa-note-sticky"></i>
+                            <span>Notes</span>
+                        </div>
+                        <p id="inspectNote" class="italic text-amber-200 text-xs leading-relaxed">
+                            "No field notes logged."
+                        </p>
+                    </div>
+
+                    <div class="bg-purple-950/30 p-4 rounded border border-purple-800/60 space-y-2">
+                        <div class="flex items-center gap-2 text-purple-400 text-xs font-bold uppercase heading-font">
+                            <i class="fa-solid fa-eye"></i>
+                            <span>Spectre Analysis / Remarks</span>
+                        </div>
+                        <p id="inspectSpectreNote" class="font-mono text-purple-200 text-xs leading-relaxed">
+                            [SPECTRE]: No observation data recorded.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="flex justify-between items-center pt-4 border-t border-slate-800 mt-4">
+                <button onclick="openEditModalFromInspect()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold uppercase rounded border border-slate-600">
+                    <i class="fa-solid fa-pen-to-square"></i> Edit Record
+                </button>
+                <button onclick="closeInspectModal()" class="px-5 py-2 bg-cyan-600 hover:bg-cyan-500 text-black text-xs font-bold uppercase rounded heading-font">
+                    Close Datapad Inspector
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Galactic Standards Collection v0.2 Modal -->
+    <div id="stdModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+        <div class="bg-panelBg border-2 border-amber-500 rounded-xl w-full max-w-3xl p-6 shadow-2xl relative glow-amber max-h-[90vh] overflow-y-auto">
+            <button onclick="closeStdModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                <div>
+                    <div class="flex items-center gap-2 text-amber-400 text-xs uppercase heading-font">
+                        <i class="fa-solid fa-book-bookmark"></i>
+                        <span>GALACTIC STANDARDS COLLECTION // Framework v0.2</span>
+                    </div>
+                    <h3 id="stdModalTitle" class="text-2xl font-bold text-white heading-font mt-1">
+                        Standard Record: GS-STD-8842
+                    </h3>
+                </div>
+            </div>
+            
+            <!-- GSC v0.2 Template Fields -->
+            <div class="space-y-3 text-xs text-slate-300 font-mono">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
+                        <span class="text-slate-500 uppercase block text-[10px]">Standard ID</span>
+                        <span id="gscStdId" class="text-amber-400 font-bold text-sm">GS-STD-8842</span>
+                    </div>
+                    <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
+                        <span class="text-slate-500 uppercase block text-[10px]">Display Name</span>
+                        <span id="gscDisplayName" class="text-white font-bold">Standard Industrial Interlock Framework</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
+                        <span class="text-slate-500 uppercase block text-[10px]">Authority</span>
+                        <span id="gscAuthority" class="text-cyanGlow">Galactic Standards Bureau</span>
+                    </div>
+                    <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
+                        <span class="text-slate-500 uppercase block text-[10px]">Current Revision</span>
+                        <span id="gscRevision" class="text-slate-200">Rev 4.2</span>
+                    </div>
+                    <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
+                        <span class="text-slate-500 uppercase block text-[10px]">Compliance Level</span>
+                        <span id="gscCompliance" class="text-emerald-400 font-bold">Mandatory Certified</span>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
+                    <span class="text-slate-500 uppercase block text-[10px]">Classification Path</span>
+                    <span id="gscClassPath" class="text-slate-300">GSC / Power & Industrial / Interlocks</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
+                        <span class="text-slate-500 uppercase block text-[10px]">Purpose</span>
+                        <p id="gscPurpose" class="text-slate-300 mt-1 leading-relaxed"></p>
+                    </div>
+                    <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
+                        <span class="text-slate-500 uppercase block text-[10px]">Scope</span>
+                        <p id="gscScope" class="text-slate-300 mt-1 leading-relaxed"></p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 p-2.5 rounded border border-slate-800">
+                    <span class="text-slate-500 uppercase block text-[10px]">Standard Notes & References</span>
+                    <p id="gscNotes" class="text-amber-200/90 mt-1 italic"></p>
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-4 border-t border-slate-800 mt-4">
+                <button onclick="closeStdModal()" class="px-5 py-2 bg-amber-500 hover:bg-amber-400 text-black font-bold uppercase text-xs rounded heading-font">
+                    Acknowledge Standard Record
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration / Edit Modal -->
+    <div id="partModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-panelBg border-2 border-cyanGlow rounded-xl w-full max-w-3xl p-6 shadow-2xl relative glow-cyan max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h2 id="modalTitle" class="text-xl font-bold text-white mb-6 heading-font border-b border-slate-800 pb-3">
+                REGISTER NEW COMPONENT RECORD
+            </h2>
+            <form id="partForm" onsubmit="savePart(event)" class="space-y-4 text-xs">
+                <input type="hidden" id="editPartIndex">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block uppercase text-slate-400 mb-1 heading-font">Record ID</label>
+                        <input type="text" id="partId" required placeholder="e.g. MAT-MET-00001" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block uppercase text-slate-400 mb-1 heading-font">Standardization Number (Std No.)</label>
+                        <input type="text" id="partStdNo" required placeholder="e.g. GS-STD-8842" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block uppercase text-slate-400 mb-1 heading-font">Item Display Name</label>
+                        <input type="text" id="partName" required placeholder="e.g. Virellium Conductor Wiring" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block uppercase text-slate-400 mb-1 heading-font">Catalogue Family</label>
+                        <select id="partCategory" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
+                            <option value="Materials & Feedstocks">Materials & Feedstocks</option>
+                            <option value="Power, Propulsion & Thermal">Power, Propulsion & Thermal</option>
+                            <option value="Spacecraft & Orbital Systems">Spacecraft & Orbital Systems</option>
+                            <option value="Weapons & Security">Weapons & Security</option>
+                            <option value="Cybernetics & MedTech">Cybernetics & MedTech</option>
+                            <option value="Droids & Automation">Droids & Automation</option>
+                            <option value="Logistics & Support">Logistics & Support</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block uppercase text-slate-400 mb-1 heading-font">Production Company</label>
+                        <input type="text" id="partSupplier" required placeholder="e.g. CP Productions / KDY" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block uppercase text-slate-400 mb-1 heading-font">Origin World</label>
+                        <input type="text" id="partOriginWorld" placeholder="e.g. Byss / Coruscant / Kuat" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block uppercase text-slate-400 mb-1 heading-font">Location</label>
+                        <select id="partLocation" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
+                            <option value="Home Base">Home Base</option>
+                            <option value="Willy's">Willy's</option>
+                            <option value="Pending location">Pending location</option>
+                            <option value="Onboard Shadow Hunter">Onboard Shadow Hunter</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block uppercase text-slate-400 mb-1 heading-font">Universe Status</label>
+                        <select id="partUnivStatus" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
+                            <option value="Canon">Canon</option>
+                            <option value="Fan-made">Fan-made</option>
+                            <option value="Legends">Legends</option>
+                            <option value="Mixed">Mixed</option>
+                            <option value="Unknown">Unknown</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block uppercase text-slate-400 mb-1 heading-font">Access Classification</label>
+                        <select id="partAccessClass" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
+                            <option value="Public">Public</option>
+                            <option value="Trade">Trade</option>
+                            <option value="Restricted">Restricted</option>
+                            <option value="Military">Military</option>
+                            <option value="Black Market">Black Market</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block uppercase text-slate-400 mb-1 heading-font">Data Confidence</label>
+                        <select id="partConfidence" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
+                            <option value="Verified">Verified</option>
+                            <option value="Probable">Probable</option>
+                            <option value="Fragmentary">Fragmentary</option>
+                            <option value="Rumour">Rumour</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block uppercase text-slate-400 mb-1 heading-font">Quantity in Stock</label>
+                        <input type="number" id="partQuantity" min="0" required value="1" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block uppercase text-slate-400 mb-1 heading-font">Minimum Threshold</label>
+                        <input type="number" id="partMinQuantity" min="0" required value="1" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block uppercase text-slate-400 mb-1 heading-font">Unit Price (Credits ₡)</label>
+                        <input type="number" id="partPrice" min="0" required value="500" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block uppercase text-slate-400 mb-1 heading-font">Technical Description & Specs</label>
+                    <textarea id="partSpecs" rows="2" placeholder="Technical specifications..." class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block uppercase text-amber-400 mb-1 heading-font">Notes</label>
+                        <textarea id="partNote" rows="2" placeholder="Field notes..." class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="block uppercase text-purple-400 mb-1 heading-font">Spectre Remarks</label>
+                        <textarea id="partSpectreNote" rows="2" placeholder="Spectre observations..." class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-slate-200 focus:border-cyanGlow focus:outline-none"></textarea>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t border-slate-800">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded uppercase heading-font">Cancel</button>
+                    <button type="submit" class="px-6 py-2 bg-cyan-600 hover:bg-cyan-500 text-black font-bold rounded uppercase heading-font shadow-lg shadow-cyan-500/20">Save Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Datapad Confirmation Modal (Replaces browser confirm) -->
+    <div id="confirmModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-panelBg border-2 border-red-500 rounded-xl w-full max-w-md p-6 shadow-2xl relative glow-amber text-center">
+            <div class="text-3xl text-red-500 mb-3">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 id="confirmTitle" class="text-lg font-bold text-white heading-font mb-2 uppercase">Datapad Confirmation Required</h3>
+            <p id="confirmMsg" class="text-sm text-slate-300 mb-6">Are you sure you want to perform this action?</p>
+            <div class="flex justify-center gap-4">
+                <button id="btnConfirmCancel" onclick="closeConfirmModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold uppercase rounded">Cancel</button>
+                <button id="btnConfirmOK" class="px-5 py-2 bg-red-600 hover:bg-red-500 text-white text-xs font-bold uppercase rounded heading-font">Confirm Action</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 px-4 py-3 bg-cyan-950 border border-cyanGlow text-cyanGlow rounded-lg shadow-2xl flex items-center gap-3 transition-opacity duration-300 opacity-0 pointer-events-none z-50">
+        <i class="fa-solid fa-circle-check text-lg"></i>
+        <span id="toastMsg" class="text-sm font-semibold">Changes saved successfully!</span>
+    </div>
+
+    <!-- Firebase Cloud Integration Module -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, collection, setDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'lex-rogers-catalog';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        window.db = null;
+        window.auth = null;
+        window.isCloudSynced = false;
+        window.appId = appId;
+
+        window.initCloudStorage = async function() {
+            if (!firebaseConfig) {
+                console.log("Running in offline/local storage mode.");
+                updateSyncBadge("OFFLINE // LOCAL STORAGE", "bg-slate-900 text-slate-400 border-slate-700");
+                return;
+            }
+
+            try {
+                const app = initializeApp(firebaseConfig);
+                window.db = getFirestore(app);
+                window.auth = getAuth(app);
+
+                if (initialAuthToken) {
+                    await signInWithCustomToken(window.auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(window.auth);
+                }
+
+                if (window.auth.currentUser) {
+                    setupFirestoreListener();
+                }
+            } catch (err) {
+                console.error("Cloud connection fallback to local storage:", err);
+                updateSyncBadge("LOCAL STORAGE ACTIVE", "bg-slate-900 text-slate-400 border-slate-700");
+            }
+        };
+
+        function setupFirestoreListener() {
+            const partsRef = collection(window.db, 'artifacts', window.appId, 'public', 'data', 'parts');
+            
+            onSnapshot(partsRef, (snapshot) => {
+                if (snapshot.empty && window.catalog.length === 0) {
+                    seedCloudData();
+                } else if (!snapshot.empty) {
+                    const cloudData = [];
+                    snapshot.forEach(docSnap => {
+                        cloudData.push(docSnap.data());
+                    });
+                    window.catalog = cloudData;
+                    window.isCloudSynced = true;
+                    updateSyncBadge("ONLINE // CLOUD SYNCED", "bg-emerald-950 text-emerald-400 border-emerald-800");
+                    window.renderCatalog();
+                }
+            }, (err) => {
+                console.error("Cloud snapshot listener error:", err);
+            });
+        }
+
+        async function seedCloudData() {
+            for (const item of window.initialCatalog) {
+                const docId = item.id.replace(/\//g, '_');
+                const docRef = doc(window.db, 'artifacts', window.appId, 'public', 'data', 'parts', docId);
+                await setDoc(docRef, item);
+            }
+        }
+
+        window.savePartToCloud = async function(part) {
+            if (window.db && window.auth?.currentUser) {
+                const docId = part.id.replace(/\//g, '_');
+                const docRef = doc(window.db, 'artifacts', window.appId, 'public', 'data', 'parts', docId);
+                await setDoc(docRef, part, { merge: true });
+            }
+        };
+
+        window.deletePartFromCloud = async function(partId) {
+            if (window.db && window.auth?.currentUser) {
+                const docId = partId.replace(/\//g, '_');
+                const docRef = doc(window.db, 'artifacts', window.appId, 'public', 'data', 'parts', docId);
+                await deleteDoc(docRef);
+            }
+        };
+
+        function updateSyncBadge(text, classNames) {
+            const badge = document.getElementById('syncBadge');
+            if (badge) {
+                badge.className = `px-2.5 py-0.5 rounded text-[10px] font-mono uppercase font-bold border flex items-center gap-1.5 self-end md:self-auto ${classNames}`;
+                badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span><span>${text}</span>`;
+            }
+        }
+    </script>
+
+    <!-- Catalog Logic Script -->
+    <script>
+        const initialCatalog = [
+            // Materials & Feedstocks
+            { 
+                id: "MAT-MET-00001", stdNo: "GS-STD-9901", name: "Virellium Conductor Wiring", category: "Materials & Feedstocks", supplier: "Byss Mining Guild", originWorld: "Byss (86 BBY)", location: "Onboard Shadow Hunter", qty: 12, minQty: 5, price: 1250, 
+                univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
+                specs: "Rare lightweight metal for droid-brain wiring, high-grade sensor pathways & Specter AI data lines.",
+                notes: "Good metal. Bends before it kills what's attached to it. Just don't pretend it's hull plate.",
+                spectreNote: "[SPECTRE]: Recommended for mass-sensitive signal structures. Do not substitute for armour."
+            },
+            { 
+                id: "MAT-POL-CP-00001", stdNo: "GS-STD-1002", name: "CP-CPL-2.1AG Clear Plastoid", category: "Materials & Feedstocks", supplier: "CP Productions", originWorld: "Coruscant", location: "Home Base", qty: 25, minQty: 10, price: 4200, 
+                univStatus: "Fan-made", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
+                specs: "Military-grade glare-free optics cover, sensor protection, and secure display casing.",
+                notes: "CP's top-tier clear plastoid. Expensive as hell, but completely glare-free.",
+                spectreNote: "[SPECTRE]: Optical distortion less than 0.01%."
+            },
+            { 
+                id: "MAT-POL-CP-00002", stdNo: "GS-STD-1004", name: "CP-CPL-4.5AG Clear Plastoid", category: "Materials & Feedstocks", supplier: "CP Productions", originWorld: "Coruscant", location: "Home Base", qty: 40, minQty: 15, price: 1800, 
+                univStatus: "Fan-made", accessClass: "Public", confidence: "Verified", recordState: "Active",
+                specs: "Standard trusted instrument covers, vehicle dashboards, and sealed maintenance displays.",
+                notes: "Solid industrial standard for control board covers.",
+                spectreNote: "[SPECTRE]: Heat rating nominal up to 280°C."
+            },
+            { 
+                id: "MAT-ALY-00001", stdNo: "GS-STD-4001", name: "DUR-4L Lissium-Stabilised Durasteel", category: "Materials & Feedstocks", supplier: "Kuat Drive Yards", originWorld: "Kuat / Nag Ubdur", location: "Home Base", qty: 15, minQty: 5, price: 8500, 
+                univStatus: "Canon", accessClass: "Trade", confidence: "Verified", recordState: "Active",
+                specs: "Premium Lissium-stabilised durasteel plate for reinforced internal frames and pressure structures.",
+                notes: "Kuat's finest alloy blend. Heavy, but doesn't crack under stress.",
+                spectreNote: "[SPECTRE]: Grain stability verified. Rated for high G-loads."
+            },
+
+            // Power, Propulsion & Systems
+            { 
+                id: "GS-REAC-01", stdNo: "GS-STD-8842", name: "Central Fusion Reactor Core", category: "Power, Propulsion & Thermal", supplier: "Corellian Engineering Corp", originWorld: "Corellia", location: "Home Base", qty: 2, minQty: 1, price: 450000, 
+                univStatus: "Canon", accessClass: "Trade", confidence: "Verified", recordState: "Active",
+                specs: "Primary power generation core module for heavy transport vessels.",
+                notes: "Keep two spare seal rings in the locker on Deck 2. Willy's mechanic said these leak if not pre-heated.",
+                spectreNote: "[SPECTRE]: Core thermal signatures are clean. Interlock matches GSC v0.2 standard."
+            },
+            { 
+                id: "GS-CSC-04", stdNo: "GS-STD-1209", name: "Core System Controller (CSC)", category: "Power, Propulsion & Thermal", supplier: "Galactic Standard", originWorld: "Coruscant", location: "Home Base", qty: 3, minQty: 1, price: 35000, 
+                univStatus: "Canon", accessClass: "Restricted", confidence: "Verified", recordState: "Active",
+                specs: "Central power grid and reactor management unit.",
+                notes: "Backup unit pre-configured for Shadow Hunter's bus layout.",
+                spectreNote: "[SPECTRE]: Firmware patched against pulse interference."
+            },
+            { 
+                id: "GS-DROID-VIP", stdNo: "GS-STD-0091", name: "Viper Droid Recon Unit", category: "Droids & Automation", supplier: "Galactic Standard", originWorld: "Mech-World 7", location: "Onboard Shadow Hunter", qty: 6, minQty: 2, price: 55000, 
+                univStatus: "Canon", accessClass: "Military", confidence: "Verified", recordState: "Active",
+                specs: "Unmanned reconnaissance droids with launch capability.",
+                notes: "Stored in Deck 1 launch chutes. Reprogrammed to ignore Empire beacons.",
+                spectreNote: "[SPECTRE]: Mounted on underside deployment racks."
+            },
+
+            // Willy's & Pending Location Items
+            { 
+                id: "GS-ELEV-5x4", stdNo: "GS-STD-5540", name: "Heavy Cargo Lift Assembly (5x4m)", category: "Spacecraft & Orbital Systems", supplier: "Willy's Tech & Logistics", originWorld: "Nar Shaddaa", location: "Willy's", qty: 1, minQty: 1, price: 120000, 
+                univStatus: "Fan-made", accessClass: "Trade", confidence: "Verified", recordState: "Active",
+                specs: "Hydraulic elevator platform with 4 support posts & mechanical locking pins.",
+                notes: "Willy customized the locking pins to fit Shadow Hunter's lower deck frame perfectly.",
+                spectreNote: "[SPECTRE]: Rated for 85 Metric Tons."
+            },
+            { 
+                id: "GS-GUNN-D/V", stdNo: "GS-STD-7711", name: "Gunner Control Station (Dorsal/Ventral)", category: "Weapons & Security", supplier: "Kuat Drive Yards", originWorld: "Fondor", location: "Pending location", qty: 2, minQty: 1, price: 42000, 
+                univStatus: "Canon", accessClass: "Military", confidence: "Verified", recordState: "Active",
+                specs: "Gunner targeting console for upper and lower defense turrets.",
+                notes: "Awaiting delivery at port dock 3.",
+                spectreNote: "[SPECTRE]: Target tracking latency under 2 ms."
+            }
+        ];
+
+        window.initialCatalog = initialCatalog;
+        let catalog = [];
+        let filterOnlyLowStock = false;
+        let currentInspectIndex = null;
+        let confirmActionFn = null;
+
+        function initCatalog() {
+            const saved = localStorage.getItem('lex_rogers_spare_parts_v6');
+            if (saved) {
+                try {
+                    catalog = JSON.parse(saved);
+                } catch(e) {
+                    catalog = [...initialCatalog];
+                }
+            } else {
+                catalog = [...initialCatalog];
+            }
+            window.catalog = catalog;
+            renderCatalog();
+
+            if (window.initCloudStorage) {
+                window.initCloudStorage();
+            }
+        }
+
+        function toggleLowStockFilter() {
+            filterOnlyLowStock = !filterOnlyLowStock;
+            const btn = document.getElementById('lowStockToggle');
+            const btnText = document.getElementById('lowStockToggleText');
+            if (filterOnlyLowStock) {
+                btn.classList.add('bg-amber-950', 'border-amber-500', 'text-amber-400');
+                btnText.innerText = 'Showing Low Stock Only';
+            } else {
+                btn.classList.remove('bg-amber-950', 'border-amber-500', 'text-amber-400');
+                btnText.innerText = 'Low Stock Only';
+            }
+            renderCatalog();
+        }
+
+        function promptResetCatalog() {
+            showConfirmModal(
+                "Reset Datapad Archive",
+                "Are you sure you want to reset all datapad records to initial factory specifications?",
+                () => {
+                    catalog = [...initialCatalog];
+                    window.catalog = catalog;
+                    saveToStorage();
+                    showToast('Datapad reset to default records!');
+                }
+            );
+        }
+
+        function saveToStorage() {
+            localStorage.setItem('lex_rogers_spare_parts_v6', JSON.stringify(catalog));
+            renderCatalog();
+        }
+
+        function renderCatalog() {
+            const tbody = document.getElementById('catalogTableBody');
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const catFilter = document.getElementById('categoryFilter').value;
+            const suppFilter = document.getElementById('supplierFilter').value;
+            const locFilter = document.getElementById('locationFilter').value;
+
+            tbody.innerHTML = '';
+
+            let filtered = catalog.filter(part => {
+                const matchesSearch = part.id.toLowerCase().includes(search) || 
+                                      (part.stdNo && part.stdNo.toLowerCase().includes(search)) ||
+                                      part.name.toLowerCase().includes(search) ||
+                                      part.supplier.toLowerCase().includes(search) ||
+                                      (part.specs && part.specs.toLowerCase().includes(search));
+                const matchesCat = catFilter === 'ALL' || part.category === catFilter;
+                const matchesSupp = suppFilter === 'ALL' || part.supplier.includes(suppFilter);
+                const matchesLoc = locFilter === 'ALL' || part.location === locFilter;
+                const matchesLowStock = !filterOnlyLowStock || (Number(part.qty) <= Number(part.minQty));
+
+                return matchesSearch && matchesCat && matchesSupp && matchesLoc && matchesLowStock;
+            });
+
+            // Update Metrics
+            document.getElementById('statTotalParts').innerText = catalog.length;
+            const totalUnits = catalog.reduce((acc, p) => acc + Number(p.qty), 0);
+            document.getElementById('statTotalUnits').innerText = totalUnits;
+            
+            const lowStockCount = catalog.filter(p => Number(p.qty) <= Number(p.minQty)).length;
+            document.getElementById('statLowStock').innerText = lowStockCount;
+
+            const totalVal = catalog.reduce((acc, p) => acc + (Number(p.qty) * Number(p.price)), 0);
+            document.getElementById('statTotalValue').innerText = totalVal.toLocaleString('en-US') + ' ₡';
+
+            if (filtered.length === 0) {
+                document.getElementById('emptyState').classList.remove('hidden');
+            } else {
+                document.getElementById('emptyState').classList.add('hidden');
+            }
+
+            filtered.forEach((part) => {
+                const actualIndex = catalog.indexOf(part);
+                const isLow = Number(part.qty) <= Number(part.minQty);
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-900/60 transition group';
+
+                let locBadgeClass = 'bg-cyan-950 text-cyan-300 border-cyan-800';
+                if (part.location === "Home Base") locBadgeClass = 'bg-emerald-950 text-emerald-300 border-emerald-800';
+                else if (part.location === "Willy's") locBadgeClass = 'bg-amber-950 text-amber-300 border-amber-800';
+                else if (part.location === "Pending location") locBadgeClass = 'bg-purple-950 text-purple-300 border-purple-800';
+
+                let univBadgeClass = 'bg-slate-800 text-slate-300';
+                if (part.univStatus === 'Canon') univBadgeClass = 'bg-amber-950 text-amber-300 border-amber-800';
+                else if (part.univStatus === 'Fan-made') univBadgeClass = 'bg-cyan-950 text-cyan-300 border-cyan-800';
+
+                tr.innerHTML = `
+                    <td class="p-4 font-mono font-bold text-cyanGlow whitespace-nowrap">
+                        <div>${part.id}</div>
+                        <span onclick="openStdModal('${part.stdNo || 'GS-STD-8842'}')" class="text-[10px] text-amber-400 font-normal hover:underline cursor-pointer block">
+                            STD: ${part.stdNo || 'GS-STD-8842'}
+                        </span>
+                    </td>
+                    <td class="p-4 font-semibold text-white">
+                        <div class="flex items-center gap-2">
+                            <span>${part.name}</span>
+                            <span class="px-1.5 py-0.5 rounded text-[9px] border ${univBadgeClass}">${part.univStatus || 'Canon'}</span>
+                        </div>
+                        <div class="text-xs text-slate-400 font-normal mt-0.5 line-clamp-1" title="${part.specs || ''}">${part.specs || ''}</div>
+                    </td>
+                    <td class="p-4 whitespace-nowrap">
+                        <span class="px-2 py-0.5 bg-slate-800 text-slate-300 rounded text-xs border border-slate-700">${part.category}</span>
+                    </td>
+                    <td class="p-4 text-slate-300 whitespace-nowrap">${part.supplier}</td>
+                    <td class="p-4 whitespace-nowrap">
+                        <span class="px-2.5 py-1 ${locBadgeClass} border rounded text-xs font-semibold">${part.location}</span>
+                    </td>
+                    <td class="p-4 text-center whitespace-nowrap">
+                        <div class="inline-flex items-center gap-2">
+                            <button onclick="changeQty(${actualIndex}, -1)" class="w-6 h-6 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded flex items-center justify-center text-xs border border-slate-700">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
+                            <span class="font-bold px-2 py-0.5 rounded text-sm ${isLow ? 'bg-red-950 text-red-400 border border-red-800 animate-pulse' : 'text-slate-100'}">
+                                ${part.qty}
+                            </span>
+                            <button onclick="changeQty(${actualIndex}, 1)" class="w-6 h-6 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded flex items-center justify-center text-xs border border-slate-700">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </td>
+                    <td class="p-4 text-right font-mono text-emerald-400 whitespace-nowrap">${Number(part.price).toLocaleString('en-US')} ₡</td>
+                    <td class="p-4 text-center whitespace-nowrap">
+                        <div class="flex items-center justify-center gap-2">
+                            <button onclick="inspectRecord(${actualIndex})" class="px-2.5 py-1 bg-cyan-950 hover:bg-cyan-900 text-cyanGlow border border-cyan-800 rounded text-xs font-bold transition flex items-center gap-1" title="Inspect Full Datapad Record">
+                                <i class="fa-solid fa-folder-open"></i> Inspect
+                            </button>
+                            <button onclick="openEditModal(${actualIndex})" class="p-1.5 text-slate-400 hover:text-cyanGlow transition" title="Quick Edit">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button onclick="deletePart(${actualIndex})" class="p-1.5 text-slate-400 hover:text-redGlow transition" title="Delete">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.renderCatalog = renderCatalog;
+
+        function inspectRecord(index) {
+            const part = catalog[index];
+            if (!part) return;
+
+            currentInspectIndex = index;
+            document.getElementById('inspectRecordId').innerText = part.id;
+            document.getElementById('inspectStdNo').innerText = 'STD: ' + (part.stdNo || 'GS-STD-8842');
+            document.getElementById('inspectName').innerText = part.name;
+            
+            document.getElementById('inspectUnivStatus').innerText = part.univStatus || 'Canon';
+            document.getElementById('inspectAccessClass').innerText = part.accessClass || 'Trade';
+            document.getElementById('inspectConfidence').innerText = part.confidence || 'Verified';
+            document.getElementById('inspectRecordState').innerText = part.recordState || 'Active';
+
+            document.getElementById('inspectDescription').innerText = part.specs || 'No technical description recorded.';
+            document.getElementById('inspectLocation').innerText = part.location;
+            document.getElementById('inspectStock').innerText = `${part.qty} Units (Min Threshold: ${part.minQty || 1})`;
+            document.getElementById('inspectPrice').innerText = Number(part.price).toLocaleString('en-US') + ' ₡';
+
+            document.getElementById('inspectSpecsDetail').innerText = part.specs || 'Standard industrial specifications apply.';
+            document.getElementById('inspectMfgCo').innerText = part.supplier;
+            document.getElementById('inspectOriginWorld').innerText = part.originWorld || 'Corellia / Kuat / Coruscant';
+
+            document.getElementById('inspectStdLink').innerText = part.stdNo || 'GS-STD-8842';
+            document.getElementById('inspectNote').innerText = part.notes || '"No field notes logged."';
+            document.getElementById('inspectSpectreNote').innerText = part.spectreNote || '[SPECTRE]: No observation data recorded.';
+
+            switchInspectTab('tabOverview');
+            document.getElementById('inspectModal').classList.remove('hidden');
+            document.getElementById('inspectModal').classList.add('flex');
+        }
+
+        function switchInspectTab(tabId) {
+            const tabs = ['tabOverview', 'tabTech', 'tabMfg', 'tabCompat', 'tabOps', 'tabVoices'];
+            tabs.forEach(t => {
+                const el = document.getElementById(t);
+                const btn = document.getElementById('btn' + t.charAt(0).toUpperCase() + t.slice(1));
+                if (t === tabId) {
+                    el.classList.remove('hidden');
+                    if (btn) {
+                        btn.className = 'px-3 py-1.5 rounded bg-cyan-950 text-cyanGlow border border-cyan-700 whitespace-nowrap font-bold';
+                    }
+                } else {
+                    el.classList.add('hidden');
+                    if (btn) {
+                        btn.className = 'px-3 py-1.5 rounded bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 whitespace-nowrap';
+                    }
+                }
+            });
+        }
+
+        function closeInspectModal() {
+            document.getElementById('inspectModal').classList.add('hidden');
+            document.getElementById('inspectModal').classList.remove('flex');
+        }
+
+        function openStdModal(stdNo) {
+            document.getElementById('stdModalTitle').innerText = 'Standard Record: ' + stdNo;
+            document.getElementById('gscStdId').innerText = stdNo;
+            document.getElementById('gscPurpose').innerText = "Establishes mechanical, thermal, and electrical interface standards for component " + stdNo + " aboard heavy transport platforms like Shadow Hunter.";
+            document.getElementById('gscScope').innerText = "Applicable across industrial shipbuilding, repair facilities, and aftermarket maintenance.";
+            document.getElementById('gscNotes').innerText = "Complies strictly with Galactic Standards Collection Framework v0.2.";
+            document.getElementById('stdModal').classList.remove('hidden');
+            document.getElementById('stdModal').classList.add('flex');
+        }
+
+        function openStdModalFromInspect() {
+            const stdNo = document.getElementById('inspectStdNo').innerText.replace('STD: ', '');
+            openStdModal(stdNo);
+        }
+
+        function closeStdModal() {
+            document.getElementById('stdModal').classList.add('hidden');
+            document.getElementById('stdModal').classList.remove('flex');
+        }
+
+        function openEditModalFromInspect() {
+            if (currentInspectIndex !== null) {
+                closeInspectModal();
+                openEditModal(currentInspectIndex);
+            }
+        }
+
+        function changeQty(index, delta) {
+            if (catalog[index]) {
+                catalog[index].qty = Math.max(0, Number(catalog[index].qty) + delta);
+                saveToStorage();
+                if (window.savePartToCloud) {
+                    window.savePartToCloud(catalog[index]);
+                }
+            }
+        }
+
+        function openAddModal() {
+            document.getElementById('modalTitle').innerText = 'REGISTER NEW COMPONENT RECORD';
+            document.getElementById('editPartIndex').value = '';
+            document.getElementById('partForm').reset();
+            document.getElementById('partModal').classList.remove('hidden');
+            document.getElementById('partModal').classList.add('flex');
+        }
+
+        function openEditModal(index) {
+            const part = catalog[index];
+            if (!part) return;
+
+            document.getElementById('modalTitle').innerText = 'EDIT COMPONENT RECORD';
+            document.getElementById('editPartIndex').value = index;
+            document.getElementById('partId').value = part.id;
+            document.getElementById('partStdNo').value = part.stdNo || 'GS-STD-8842';
+            document.getElementById('partName').value = part.name;
+            document.getElementById('partCategory').value = part.category;
+            document.getElementById('partSupplier').value = part.supplier;
+            document.getElementById('partOriginWorld').value = part.originWorld || '';
+            document.getElementById('partLocation').value = part.location || 'Home Base';
+            document.getElementById('partUnivStatus').value = part.univStatus || 'Canon';
+            document.getElementById('partAccessClass').value = part.accessClass || 'Trade';
+            document.getElementById('partConfidence').value = part.confidence || 'Verified';
+            document.getElementById('partQuantity').value = part.qty;
+            document.getElementById('partMinQuantity').value = part.minQty || 1;
+            document.getElementById('partPrice').value = part.price;
+            document.getElementById('partSpecs').value = part.specs || '';
+            document.getElementById('partNote').value = part.notes || '';
+            document.getElementById('partSpectreNote').value = part.spectreNote || '';
+
+            document.getElementById('partModal').classList.remove('hidden');
+            document.getElementById('partModal').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('partModal').classList.add('hidden');
+            document.getElementById('partModal').classList.remove('flex');
+        }
+
+        function savePart(e) {
+            e.preventDefault();
+            const editIndex = document.getElementById('editPartIndex').value;
+
+            const newPart = {
+                id: document.getElementById('partId').value.trim(),
+                stdNo: document.getElementById('partStdNo').value.trim(),
+                name: document.getElementById('partName').value.trim(),
+                category: document.getElementById('partCategory').value,
+                supplier: document.getElementById('partSupplier').value.trim(),
+                originWorld: document.getElementById('partOriginWorld').value.trim(),
+                location: document.getElementById('partLocation').value,
+                univStatus: document.getElementById('partUnivStatus').value,
+                accessClass: document.getElementById('partAccessClass').value,
+                confidence: document.getElementById('partConfidence').value,
+                recordState: 'Active',
+                qty: Number(document.getElementById('partQuantity').value),
+                minQty: Number(document.getElementById('partMinQuantity').value),
+                price: Number(document.getElementById('partPrice').value),
+                specs: document.getElementById('partSpecs').value.trim(),
+                notes: document.getElementById('partNote').value.trim(),
+                spectreNote: document.getElementById('partSpectreNote').value.trim()
+            };
+
+            if (editIndex !== '') {
+                catalog[Number(editIndex)] = newPart;
+                showToast('Datapad record updated successfully!');
+            } else {
+                catalog.unshift(newPart);
+                showToast('New record added to catalog!');
+            }
+
+            saveToStorage();
+            if (window.savePartToCloud) {
+                window.savePartToCloud(newPart);
+            }
+            closeModal();
+        }
+
+        function deletePart(index) {
+            const part = catalog[index];
+            if (part) {
+                showConfirmModal(
+                    "Delete Component Record",
+                    `Are you sure you want to delete "${part.name}" (${part.id}) from the archive?`,
+                    () => {
+                        const deletedId = catalog[index].id;
+                        catalog.splice(index, 1);
+                        saveToStorage();
+                        if (window.deletePartFromCloud) {
+                            window.deletePartFromCloud(deletedId);
+                        }
+                        showToast('Record deleted from archive.');
+                    }
+                );
+            }
+        }
+
+        function showConfirmModal(title, msg, onConfirm) {
+            document.getElementById('confirmTitle').innerText = title;
+            document.getElementById('confirmMsg').innerText = msg;
+            confirmActionFn = onConfirm;
+            const btnOK = document.getElementById('btnConfirmOK');
+            btnOK.onclick = () => {
+                if (confirmActionFn) confirmActionFn();
+                closeConfirmModal();
+            };
+            document.getElementById('confirmModal').classList.remove('hidden');
+            document.getElementById('confirmModal').classList.add('flex');
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.add('hidden');
+            document.getElementById('confirmModal').classList.remove('flex');
+            confirmActionFn = null;
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2500);
+        }
+
+        function exportJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(catalog, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `lex_rogers_datapad_archive_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast('Datapad exported to JSON');
+        }
+
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported)) {
+                        catalog = imported;
+                        saveToStorage();
+                        if (window.savePartToCloud) {
+                            imported.forEach(part => window.savePartToCloud(part));
+                        }
+                        showToast('Datapad archive imported successfully!');
+                    }
+                } catch(err) {
+                    console.error('Error importing file:', err);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        window.onload = initCatalog;
+    </script>
+</body>
+</html>
