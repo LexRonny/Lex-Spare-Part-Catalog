@@ -142,7 +142,7 @@
     <div class="bg-panelBg p-4 rounded-lg border border-slate-800 mb-6 flex flex-col lg:flex-row gap-4 items-center justify-between">
         <div class="relative w-full lg:w-1/3">
             <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
-            <input type="text" id="searchInput" oninput="renderCatalog()" placeholder="Search Record ID, Std No, Bearing, Platform, or Tags..." 
+            <input type="text" id="searchInput" oninput="renderCatalog()" placeholder="Search Record ID, Std No, Bearing, Material, or Tags..." 
                    class="w-full pl-10 pr-4 py-2 bg-slate-900 border border-slate-700 rounded text-xs text-slate-200 focus:outline-none focus:border-cyanGlow transition">
         </div>
 
@@ -436,7 +436,7 @@
             window.firebaseRef = ref;
             window.firebaseSet = set;
 
-            const catalogRef = ref(db, 'parts_v10_roller_bearings');
+            const catalogRef = ref(db, 'parts_v10_vol1_batch04');
             onValue(catalogRef, (snapshot) => {
                 const data = snapshot.val();
                 if (data && Array.isArray(data) && data.length >= 20) {
@@ -460,7 +460,7 @@
         window.syncCatalogToCloud = function() {
             if (window.firebaseDb && window.catalog) {
                 try {
-                    window.firebaseSet(window.firebaseRef(window.firebaseDb, 'parts_v10_roller_bearings'), window.catalog);
+                    window.firebaseSet(window.firebaseRef(window.firebaseDb, 'parts_v10_vol1_batch04'), window.catalog);
                 } catch(e) {
                     console.error("Cloud write failed:", e);
                 }
@@ -471,62 +471,150 @@
     <!-- Main Engine Script -->
     <script>
         const initialCatalog = [
+            // BATCH 03 & 04 NEW DATA CARDS
+            {
+                id: "LRS-BRG-130001", stdNo: "GS-STD-BRG-31", rev: "Rev A", name: "Solid Bronze Bushing Plain Bearing",
+                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Plain Bearings", "Bushings", "Standard"], parentId: null,
+                supplier: "Corellian Industrial Hardware", originWorld: "Corellia", location: "Home Base", qty: 25, minQty: 5, price: 120,
+                univStatus: "Fan-made", accessClass: "Public", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["Cargo ramp hinges", "Landing gear deployment arms", "Crane linkage pivots"], installedOn: ["Cargo Ramp Hinges"],
+                tags: ["Bearing", "Plain Bearing", "Bushing", "Bronze", "Sintered"],
+                source: { title: "Corellian Hardware Registry Vol 8", author: "Corellian Industrial", page: "p. 14", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Re-soak in heated oil bath if dried", interfaces: "Standard cylindrical press-fit housing / smooth ground pivot pin", uses: "SAE-841 Sintered bronze matrix impregnated with heavy oil" },
+                specs: "Simple high-density oil-impregnated sintered bronze bushing engineered for low-speed, high-load mechanical pivots without rolling elements. Operating Temp Range: -10°C to +150°C.",
+                notes: "Zero moving parts inside means nothing to seize up when grit gets in. Perfect for outer-rim rustbuckets.",
+                spectreNote: "[SPECTRE]: Friction coefficient nominal under static loads. Wear rate scales predictably with surface roughness."
+            },
+            {
+                id: "LRS-BRG-130002", stdNo: "GS-STD-BRG-32", rev: "Rev A", name: "Spherical Plain Journal Bearing",
+                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Plain Bearings", "Spherical", "Heavy Duty"], parentId: null,
+                supplier: "Rothana Heavy Industries", originWorld: "Rothana", location: "Onboard Shadow Hunter", qty: 8, minQty: 2, price: 1850,
+                univStatus: "Fan-made", accessClass: "Restricted", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["AT-AT foot pad ankle ball joints", "Heavy artillery stabilizer struts", "Freighter loading boom pivots"], installedOn: ["Freighter Loading Boom Pivots"],
+                tags: ["Bearing", "Plain Bearing", "Spherical", "Rothana", "Multidirection"],
+                source: { title: "RHI Heavy Linkage Manual 04", author: "Rothana Heavy Industries", page: "p. 99", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "High-pressure moly-grease injection (250h)", interfaces: "Heavy clevis pin joint / press-fit outer ring", uses: "Durasteel inner sphere & Molybdenum liner" },
+                specs: "Heavy-duty self-aligning spherical plain bearing designed for extreme angular misalignment (up to $\\pm 7.0^\\circ$) and heavy oscillating shock loads. Operating Temp Range: -40°C to +250°C.",
+                notes: "When a 50-ton walker steps on uneven rock, these spherical plain bearings absorb all the rotational twist before it snaps the leg strut.",
+                spectreNote: "[SPECTRE]: Kinetic shock dissipation verified. High wear resistance under heavy rotational oscillation."
+            },
+            {
+                id: "LRS-BRG-140001", stdNo: "GS-STD-BRG-41", rev: "Rev B", name: "Active Magnetic Levitation Bearing",
+                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Magnetic Bearings", "Active", "High Speed"], parentId: null,
+                supplier: "Kuat Drive Yards Propulsion Div", originWorld: "Kuat", location: "Onboard Shadow Hunter", qty: 2, minQty: 1, price: 45000,
+                univStatus: "Fan-made", accessClass: "Restricted", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["Sublight turbopumps", "Capital ship hyperdrive flywheels", "High-output plasma turbines"], installedOn: ["Sublight Turbopumps"],
+                tags: ["Bearing", "Magnetic", "Levitation", "AMB", "KDY", "Zero Friction"],
+                source: { title: "KDY Propulsion Technical Order 90-A", author: "Kuat Drive Yards", page: "TO-90-A", isbn: "N/A" },
+                relations: { powerSource: "High-Frequency Active Sensor Loop (10 kHz DSP)", needs: "Continuous electronic sensor calibration", interfaces: "Electromagnetic Stator Coil Housing / Ferromagnetic Rotor Sleeve", uses: "Neodymium-boron permanent magnets & Ceramic touchdown bearings" },
+                specs: "Non-contact active 5-axis electromagnetic bearing system designed for extreme-RPM (> 150,000 RPM) sublight turbine shafts and hyperdrive flywheels. Friction coefficient: 0.0000.",
+                notes: "Smooth as silk and never wears out during normal use—until your primary power grid dies. Then the rotor drops onto the backup touchdown bearings at 100k RPM, and it gets loud REAL fast.",
+                spectreNote: "[SPECTRE]: Positioning loop stability nominal at 10 kHz. Touchdown bearing wear remains within 0.02% safety limit."
+            },
+            {
+                id: "LRS-BRG-140002", stdNo: "GS-STD-BRG-42", rev: "Rev A", name: "Passive Superconducting Magnetic Bearing",
+                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Magnetic Bearings", "Passive", "Cryo"], parentId: null,
+                supplier: "Incom-FreiTek", originWorld: "Chandrila", location: "Home Base", qty: 4, minQty: 1, price: 38000,
+                univStatus: "Fan-made", accessClass: "Restricted", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["Stealth recon drone sensors", "Unpressurized deep-space optical gimbals", "Quantum-gyroscope navigation units"], installedOn: ["Deep-Space Optical Gimbals"],
+                tags: ["Bearing", "Magnetic", "Superconducting", "Quantum Pinning", "Incom", "Meissner Effect"],
+                source: { title: "Incom Cryo-Avionics Journal", author: "Incom-FreiTek", page: "p. 112", isbn: "N/A" },
+                relations: { powerSource: "Zero Active Power (Requires Cryo Coolant Loop)", needs: "Maintain liquid coolant flow ($< -180^\\circ\\text{C}$)", interfaces: "Cryo-Jacketed Sleeve / High-Flux Permanent Magnet Rotor", uses: "YBCO ceramic superconductor stator elements" },
+                specs: "Self-stabilizing passive magnetic bearing utilizing flux-pinned high-temperature superconductors (YBCO). Operates without control electronics under cryogenic threshold ($< -180^\\circ\\text{C}$).",
+                notes: "No sensors, no computers needed to keep it floating—quantum physics does all the work. Just don't let your coolant leak.",
+                spectreNote: "[SPECTRE]: Magnetic flux pinning field stable. Zero micro-vibration signatures detected across output frequency spectrum."
+            },
+            {
+                id: "LRS-BRG-150001", stdNo: "GS-STD-BRG-51", rev: "Rev A", name: "Hydrodynamic Journal Fluid Bearing",
+                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Fluid Bearings", "Hydrodynamic", "Journal"], parentId: null,
+                supplier: "Corellian Engineering Corporation", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 6, minQty: 2, price: 2100,
+                univStatus: "Fan-made", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["Sublight drive main turbocharger shafts", "Atmospheric freighter engine turbines"], installedOn: ["Turbocharger Shafts"],
+                tags: ["Bearing", "Fluid Bearing", "Hydrodynamic", "CEC", "Babbitt"],
+                source: { title: "CEC Engine Operations Manual V-2", author: "Corellian Engineering Corp", page: "p. 55", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Pre-lube oil pressure flow before startup", interfaces: "Precision-ground shaft journal / internal oil supply port housing", uses: "Babbitt-lined bronze sleeve & synthetic mineral oil matrix" },
+                specs: "Self-pressurizing fluid film bearing where shaft rotation draws liquid lubricant into a wedge-shaped gap (min speed 1,200 RPM). Operating Temp Range: -20°C to +180°C.",
+                notes: "Zero metal-to-metal contact once it gets up to speed. But spin down without oil pressure and you'll wipe out the Babbitt lining instantly.",
+                spectreNote: "[SPECTRE]: Hydrodynamic pressure wedge stabilizes at 1,180 RPM. Viscosity monitoring required to prevent cavitation."
+            },
+            {
+                id: "LRS-BRG-150002", stdNo: "GS-STD-BRG-52", rev: "Rev A", name: "Hydrostatic Pressurized Thrust Bearing",
+                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Fluid Bearings", "Hydrostatic", "High Load"], parentId: null,
+                supplier: "Kuat Drive Yards Sub-assembly Div", originWorld: "Kuat", location: "Market / Vendor", qty: 0, minQty: 1, price: 92000,
+                univStatus: "Fan-made", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Military Restricted",
+                compatibleWith: ["Heavy freighter propeller shafts", "Capital ship rudder pivots", "Deep-crust planetary drilling rigs"], installedOn: ["Capital Ship Rudder Pivots"],
+                tags: ["Bearing", "Fluid Bearing", "Hydrostatic", "350 Bar", "KDY", "Extreme Load"],
+                source: { title: "KDY Heavy Hydraulic Specs", author: "Kuat Drive Yards", page: "p. 310", isbn: "N/A" },
+                relations: { powerSource: "350 Bar Continuous Hydraulic Lift Pump", needs: "Inspect pump filter manifolds (500h)", interfaces: "Multi-pocket hydraulic thrust ring / high-pressure feed lines", uses: "High-tensile Durasteel stator plates & bronze-capped pockets" },
+                specs: "Externally pressurized fluid bearing using positive hydraulic pump pressure (350 Bar) to suspend heavy thrust plates (> 1,200 Metric Tons) even at zero rotational speed. Operating Temp Range: -30°C to +220°C.",
+                notes: "You can spin a 500-ton drive shaft with your bare hand when the hydrostatic pumps are running. All about that oil film pressure.",
+                spectreNote: "[SPECTRE]: Fluid gap clearance maintained at $45\\text{ }\\mu\\text{m}$. Zero static friction registered at startup."
+            },
+            {
+                id: "LRS-BRG-160001", stdNo: "GS-STD-BRG-61", rev: "Rev A", name: "Pillow Block Heavy Bearing Housing",
+                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Accessories", "Housings", "Mounted"], parentId: null,
+                supplier: "Ubrikkian Industrial Products", originWorld: "Nal Hutta", location: "Home Base", qty: 10, minQty: 2, price: 450,
+                univStatus: "Fan-made", accessClass: "Public", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["Conveyor drive shafts", "Skiff engine mounts", "Farm equipment impellers"], installedOn: ["Skiff Engine Mounts"],
+                tags: ["Housing", "Pillow Block", "Ubrikkian", "Cast Durasteel", "Pedestal"],
+                source: { title: "Ubrikkian Hardware Guide", author: "Ubrikkian Ind", page: "p. 22", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Purge grease through relief valve (300h)", interfaces: "Flat machine bed mounting pads / Zerk grease gun nipple", uses: "Heavy cast iron-durasteel composite body" },
+                specs: "Cast Durasteel mounted pedestal housing equipped with integrated grease fittings, triple-lip elastomer seals, and spherical seat contours for self-aligning bearing inserts (40mm-100mm bore).",
+                notes: "Heavy as a brick, but you can bolt it to any rough frame plate and it keeps your bearing aligned and clean.",
+                spectreNote: "[SPECTRE]: Structural resonance damping within safety limits under low-frequency frame vibration."
+            },
+            {
+                id: "LRS-BRG-160002", stdNo: "GS-STD-BRG-62", rev: "Rev A", name: "Precision Locknut & Locking Washer",
+                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Accessories", "Retention", "Locknuts"], parentId: null,
+                supplier: "Corellian Industrial Hardware", originWorld: "Corellia", location: "Home Base", qty: 50, minQty: 10, price: 85,
+                univStatus: "Fan-made", accessClass: "Public", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["Tapered sleeve bearing seats", "Main rotor shafts", "Gearbox input shafts"], installedOn: ["Gearbox Input Shafts"],
+                tags: ["Locknut", "Washer", "Retention", "Corellian", "Mechanical Tab"],
+                source: { title: "Corellian Fastener Manual", author: "Corellian Hardware", page: "p. 8", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Single-use washer; replace whenever backed off", interfaces: "Threaded shaft end with keyway slot / spanner wrench slots", uses: "High-tensile alloy steel nut & soft annealed steel washer" },
+                specs: "High-torque threaded shaft retention nut paired with a multi-tab bendable locking washer. Clamping Torque: Up to $850\text{ Nm}$. Thread pitch: $\text{M20} \times 1.0$ to $\text{M120} \times 2.0$.",
+                notes: "Don't reuse the tab washer after bending it back! Metal fatigue will snap the tab off and let the whole bearing back out.",
+                spectreNote: "[SPECTRE]: Thread engagement integrity verified. Mechanical tab prevents rotational backing under high reverse torque."
+            },
+            {
+                id: "LRS-BRG-170001", stdNo: "GS-STD-MAT-71", rev: "Rev A", name: "Forged Quadanium-Steel Alloy Stock",
+                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Materials", "High-Strength Alloys"], parentId: null,
+                supplier: "Rendili StarDrive Metallurgy Div", originWorld: "Rendili", location: "Home Base", qty: 15, minQty: 3, price: 12500,
+                univStatus: "Fan-made", accessClass: "Restricted", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["Heavy turret slewing rings", "Walker knee joint raceways", "Capital ship drive bearings"], installedOn: ["Heavy Turret Slewing Rings"],
+                tags: ["Material", "Quadanium", "Durasteel", "Alloy", "Rendili", "Raceways"],
+                source: { title: "Rendili Metallurgy Vault Archives", author: "Rendili StarDrive", page: "Vault Q-8", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Diamond-tipped or carbide grinding tools", interfaces: "Suitable for precision machining and induction hardening", uses: "68% Durasteel base, 22% Quadanium ore, 10% Chromium-Nickel binders" },
+                specs: "Ultra-dense forged alloy stock (Grade Q-8) blending Quadanium steel matrix elements. Surface Hardness: $64-67\text{ HRC}$. Tensile Strength: $2,400\text{ MPa}$. High resistance to vacuum & acid gas.",
+                notes: "Hardest raw stock you can buy for bearing races. Kills standard lathe bits in five seconds, so bring diamond tooling.",
+                spectreNote: "[SPECTRE]: Sub-surface shear fatigue resistance exceeds standard industrial steel metrics by 310%."
+            },
+            {
+                id: "LRS-BRG-170002", stdNo: "GS-STD-MAT-72", rev: "Rev A", name: "Silicon Nitride (Si3N4) Ceramic Element Stock",
+                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Materials", "Advanced Ceramics"], parentId: null,
+                supplier: "Sublight Products Corp Material Labs", originWorld: "Corellia", location: "Onboard Shadow Hunter", qty: 10, minQty: 2, price: 18000,
+                univStatus: "Fan-made", accessClass: "Restricted", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
+                compatibleWith: ["High-speed starfighter actuators", "Generator bearings (prevents arcing)", "Vacuum seals"], installedOn: ["Starfighter Actuators"],
+                tags: ["Material", "Ceramic", "Si3N4", "Silicon Nitride", "Dielectric", "Sublight Products"],
+                source: { title: "Sublight Ceramics Spec CR-88", author: "Sublight Products Corp", page: "CR-88", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Store in padded containers (susceptible to chipping on impact)", interfaces: "Precision spherical ball micro-polishing or cylindrical roller forming", uses: "High-purity sintered Silicon Nitride ($\\text{Si}_3\\text{N}_4$) matrix" },
+                specs: "Ultra-lightweight ($3.2\\text{ g/cm}^3$, 40% of steel), non-conductive, non-magnetic ceramic rolling element stock. Thermal Expansion: $2.9 \\times 10^{-6}/\\text{K}$. Zero electrical conductivity.",
+                notes: "Ceramic balls don't weld themselves to raceways under extreme friction and they block stray current from ruining your bearings.",
+                spectreNote: "[SPECTRE]: Dielectric breakdown voltage $> 15\\text{ kV}$. Centrifugal loading reduced by 60% compared to equivalent steel elements."
+            },
+
             // ROLLER BEARINGS BATCH (LRS-BRG-120001 to LRS-BRG-120004)
             {
                 id: "LRS-BRG-120001", stdNo: "GS-STD-BRG-21", rev: "Rev A", name: "Cylindrical Roller Bearing Standard",
                 categoryPath: ["Hardware", "Materials & Components", "Bearings", "Roller Bearings", "Cylindrical", "Standard"], parentId: null,
                 supplier: "Corellian Engineering Corporation", originWorld: "Corellia", location: "Home Base", qty: 12, minQty: 4, price: 420,
                 univStatus: "Fan-made", accessClass: "Public", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
-                compatibleWith: ["Heavy freighter propulsion shafts", "Cargo winch gearboxes", "Industrial ore crushers"],
-                installedOn: ["Freighter Transmission Shafts", "Cargo Winch Gearboxes"],
-                tags: ["Bearing", "Roller", "Cylindrical", "Corellian", "Heavy Duty"],
-                source: { title: "CEC Industrial Logistics Catalog Vol 12", author: "Corellian Engineering Corporation", page: "Vol 12", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Grease repacking / Oil bath (800h)", interfaces: "Heavy cylindrical shaft seat", uses: "Durasteel Rings & Cylindrical Rollers" },
-                specs: "Heavy radial-load cylindrical roller bearing featuring high surface contact elements designed for high-stress drive axles and heavy machinery transmission shafts. Operating Temp Range: -30°C to +160°C.",
-                notes: "Simple, rugged, and heavy. If you try to apply side loads to this, you’ll shear the cage rim in a heartbeat, but for pure down-force, it’s bulletproof.",
-                spectreNote: "[SPECTRE]: High structural rigidity under linear radial stress. Axial displacement tolerance is zero."
-            },
-            {
-                id: "LRS-BRG-120002", stdNo: "GS-STD-BRG-22", rev: "Rev A", name: "Tapered Roller Thrust Bearing",
-                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Roller Bearings", "Tapered", "High Load"], parentId: null,
-                supplier: "Ubrikkian Industries", originWorld: "Nal Hutta", location: "Home Base", qty: 8, minQty: 2, price: 890,
-                univStatus: "Fan-made", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
-                compatibleWith: ["Skiff steering vanes", "Heavy repulsor vehicle drive sprockets", "Crane slewing bases"],
-                installedOn: ["Repulsor Vehicle Drive Sprockets"],
-                tags: ["Bearing", "Roller", "Tapered", "Ubrikkian", "Thrust"],
-                source: { title: "Ubrikkian Fleet Maintenance Directive T-88", author: "Ubrikkian Industries", page: "Dir T-88", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Precise Pre-load Adjustment", interfaces: "Tapered shaft journal / cup & cone", uses: "Quadanium Steel Raceways & Carbon Steel Rollers" },
-                specs: "Angled conical roller assembly engineered to simultaneously handle extreme combined radial forces and high unidirectional axial thrust loads. Contact Angle: 28° Steep Cone. Operating Temp Range: -40°C to +200°C.",
-                notes: "Setting the pre-load on these requires a soft mallet and a feeling for it. Tighten it too much and it will weld itself shut on your first run.",
-                spectreNote: "[SPECTRE]: Axial thrust absorption optimized for dynamic torque shifts. Thermal variance monitored during run-in phase."
-            },
-            {
-                id: "LRS-BRG-120003", stdNo: "GS-STD-BRG-23", rev: "Rev B", name: "Spherical Roller Self-Aligning Bearing",
-                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Roller Bearings", "Spherical", "Industrial"], parentId: null,
-                supplier: "Rothana Heavy Industries", originWorld: "Rothana", location: "Onboard Shadow Hunter", qty: 6, minQty: 2, price: 2400,
-                univStatus: "Fan-made", accessClass: "Restricted", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
-                compatibleWith: ["AT-TE leg pivot joints", "Walker hip actuators", "Heavy mining rig shaker screens"],
-                installedOn: ["AT-TE Leg Pivot Joints"],
-                tags: ["Bearing", "Roller", "Spherical", "Rothana", "Self-Aligning", "AT-TE"],
-                source: { title: "RHI All-Terrain Walker Field Repair Kit Spec 09", author: "Rothana Heavy Industries", page: "Spec 09", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Central Pressure-Grease Fitting (1000h)", interfaces: "Adapter sleeve / spherical housing bore", uses: "Forged High-Impact Durasteel & Barrel Rollers" },
-                specs: "Heavy-duty double-row spherical roller bearing designed for severe mechanical misalignment (up to 3.0°), heavy shock loads, and high structural deflection environments. Operating Temp Range: -50°C to +280°C.",
-                notes: "When an AT-TE steps into an artillery crater, the hull flexes like crazy. These self-aligning rollers keep the leg joints from snapping clean off.",
-                spectreNote: "[SPECTRE]: Angular deflection compensation active. Dynamic stress distribution remains uniform under severe impact vectors."
-            },
-            {
-                id: "LRS-BRG-120004", stdNo: "GS-STD-BRG-24", rev: "Rev B", name: "Needle Roller Bearing Assembly",
-                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Roller Bearings", "Needle", "Compact"], parentId: null,
-                supplier: "Sienar Fleet Systems", originWorld: "Lianna", location: "Onboard Shadow Hunter", qty: 16, minQty: 4, price: 650,
-                univStatus: "Fan-made", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
-                compatibleWith: ["TIE Fighter wing-folding hinges", "Compact flight stick gimbals", "Blaster turret elevation pins"],
-                installedOn: ["TIE Fighter Wing Hinges", "Blaster Elevation Pins"],
-                tags: ["Bearing", "Roller", "Needle", "Sienar", "Ultra Compact", "TIE Fighter"],
-                source: { title: "SFS Avionics Maintenance Manual TIE-ln-v3", author: "Sienar Fleet Systems", page: "TIE-ln-v3", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Hardened Shaft Surface (>60 HRC)", interfaces: "Direct shaft raceway / housing bore", uses: "Chrome-Steel Needles" },
-                specs: "Ultra-compact roller bearing utilizing thin, long cylindrical rollers to maximize load capacity in minimal radial space environments (under 8mm section height). Operating Temp Range: -20°C to +140°C. Shaft hardness requirement: $>60\\text{ HRC}$.",
-                notes: "Super tiny, but don't drop the cage during field stripdown—you'll spend three hours sweeping the deck plate for loose needles.",
-                spectreNote: "[SPECTRE]: Minimal space envelope footprint verified. Operational efficacy dependent on precise shaft hardness metrics."
+                compatibleWith: ["Heavy freighter propulsion shafts", "Cargo winch gearboxes", "Industrial ore crushers"], installedOn: ["Freighter Transmission Shafts"],
+                tags: ["Bearing", "Roller", "Cylindrical", "Corellian"],
+                source: { title: "CEC Industrial Logistics Catalog Vol 12", author: "Corellian Eng", page: "Vol 12", isbn: "N/A" },
+                relations: { powerSource: "N/A", needs: "Grease repacking (800h)", interfaces: "Heavy cylindrical shaft seat", uses: "Durasteel Rings & Rollers" },
+                specs: "Heavy radial-load cylindrical roller bearing for high-stress drive axles. Operating Temp Range: -30°C to +160°C.",
+                notes: "Simple, rugged, and heavy.", spectreNote: "[SPECTRE]: High structural rigidity under linear radial stress."
             },
 
             // BALL BEARINGS BATCH (LRS-BRG-110001 to LRS-BRG-110008)
@@ -535,104 +623,12 @@
                 categoryPath: ["Hardware", "Materials & Components", "Bearings", "Ball Bearings", "Deep Groove", "Standard"], parentId: null,
                 supplier: "Corellian Industrial Hardware", originWorld: "Corellia", location: "Home Base", qty: 20, minQty: 5, price: 150,
                 univStatus: "Fan-made", accessClass: "Public", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
-                compatibleWith: ["Universal Power Shafts", "Moisture Vaporators", "Cargo Cranes"], installedOn: ["Moisture Vaporator Assembly", "Cargo Crane Winches"],
-                tags: ["Bearing", "Hardware", "Ball Bearing", "Corellian", "Standard"],
+                compatibleWith: ["Universal Power Shafts", "Moisture Vaporators"], installedOn: ["Moisture Vaporator Assembly"],
+                tags: ["Bearing", "Hardware", "Ball Bearing", "Corellian"],
                 source: { title: "Corellian Fleet Spec Sheet 88-A", author: "Corellian Hardware", page: "Sheet 88-A", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Manual Grease Lubrication (500h)", interfaces: "Cylindrical Shaft / Housing Bore", uses: "Durasteel Races & Steel Balls" },
-                specs: "Primary standard deep-groove ball bearing designed for general-purpose rotational loads in low-to-medium stress machinery. Operating Temp Range: -20°C to +120°C.",
-                notes: "Bread-and-butter bearing. You find these in everything from moisture vaporators to cargo crane winch assemblies.",
-                spectreNote: "[SPECTRE]: Nominal operational parameters. High supply availability across outer-rim trade routes."
-            },
-            {
-                id: "LRS-BRG-110002", stdNo: "GS-STD-BRG-02", rev: "Rev A", name: "Shielded Deep Groove Ball Bearing",
-                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Ball Bearings", "Deep Groove", "Shielded"], parentId: null,
-                supplier: "Kuat Drive Yards Sub-assembly Div", originWorld: "Kuat", location: "Home Base", qty: 15, minQty: 5, price: 320,
-                univStatus: "Fan-made", accessClass: "Trade", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
-                compatibleWith: ["Ground Vehicle Powertrains", "Factory Conveyors", "Industrial Mounts"], installedOn: ["Ground Vehicle Powertrains"],
-                tags: ["Bearing", "Shielded", "KDY", "Dust Proof", "ZZ-Rating"],
-                source: { title: "KDY Component Registry Vol 4", author: "KDY Sub-assembly", page: "Vol 4", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Shield Protection", interfaces: "Standard Cylindrical Shaft", uses: "Synthetic Lithium Grease" },
-                specs: "Standard deep-groove ball bearing equipped with dual metallic dust shields (ZZ rating) to prevent coarse particulate contamination. Operating Temp Range: -30°C to +150°C.",
-                notes: "Keep these away from swamp hoppers. The shields stop grit, but bad liquid will still seep in.",
-                spectreNote: "[SPECTRE]: Recommended for dusty or particulate-heavy terrestrial deployment environments."
-            },
-            {
-                id: "LRS-BRG-110003", stdNo: "GS-STD-BRG-03", rev: "Rev B", name: "Shielded Military Deep Groove Ball Bearing",
-                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Ball Bearings", "Deep Groove", "Shielded", "Military"], parentId: null,
-                supplier: "Sienar Fleet Systems", originWorld: "Lianna", location: "Onboard Shadow Hunter", qty: 8, minQty: 2, price: 1450,
-                univStatus: "Fan-made", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Military Restricted",
-                compatibleWith: ["Imperial Light Armor", "Combat Walkers (AT-ST)", "Heavy Blaster Mounts"], installedOn: ["AT-ST Knee Joints", "Turret Pivot Mounts"],
-                tags: ["Bearing", "Mil-Spec", "Sienar", "Quadanium", "Heavy Duty"],
-                source: { title: "Imperial Logistics Manual MIL-BRG-90", author: "Sienar Fleet Systems", page: "MIL-BRG-90", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Post-Combat Inspection", interfaces: "Heavy-Tolerance Shaft Fit (Mil-STD 409)", uses: "Quadanium-Steel & Ceramic Balls" },
-                specs: "Heavy-duty, hardened military-spec ball bearing (+45% Dynamic Radial Capacity) built for combat support equipment. Operating Temp Range: -50°C to +220°C.",
-                notes: "Tough as nails. Scrapped three of these out of an AT-ST knee joint and they were still smooth as glass.",
-                spectreNote: "[SPECTRE]: High structural integrity under kinetic impulse loads."
-            },
-            {
-                id: "LRS-BRG-110004", stdNo: "GS-STD-BRG-04", rev: "Rev B", name: "Sealed Vacuum-Rated Deep Groove Ball Bearing",
-                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Ball Bearings", "Deep Groove", "Sealed", "Vacuum"], parentId: null,
-                supplier: "Incom-FreiTek", originWorld: "Chandrila", location: "Onboard Shadow Hunter", qty: 6, minQty: 2, price: 3800,
-                univStatus: "Fan-made", accessClass: "Restricted", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
-                compatibleWith: ["T-65 X-Wing S-foil Actuators", "Atmospheric Flap Hinges", "Airlock Hatch Mechanisms"], installedOn: ["S-foil Actuators", "Airlock Hatches"],
-                tags: ["Bearing", "Vacuum", "Incom", "Ceramic", "PTFE Dry-Film"],
-                source: { title: "Incom Maintenance Bulletin XW-44-B", author: "Incom-FreiTek", page: "XW-44-B", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "PTFE Dry-Film Lubricant", interfaces: "Starfighter Actuator Mount (SAM-12)", uses: "Silicon Nitride Ceramic Balls (Si3N4)" },
-                specs: "Precision deep-groove bearing designed for unpressurized starfighter bays and external hull actuators. Uses silicon nitride (Si3N4) ceramic balls. Operating Temp Range: -150°C to +200°C.",
-                notes: "Don't try to grease these with regular hydro-grease! In a vacuum, grease boils off and gums up the whole actuator.",
-                spectreNote: "[SPECTRE]: Zero outgassing risk detected."
-            },
-            {
-                id: "LRS-BRG-110005", stdNo: "GS-STD-BRG-05", rev: "Rev A", name: "Cryogenic Deep Groove Ball Bearing",
-                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Ball Bearings", "Deep Groove", "Cryogenic"], parentId: null,
-                supplier: "Sublight Products Corporation", originWorld: "Corellia", location: "Home Base", qty: 10, minQty: 2, price: 1800,
-                univStatus: "Fan-made", accessClass: "Restricted", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
-                compatibleWith: ["Sublight Engine Coolant Pumps", "Hyperdrive Thermal Dump Lines", "Tibanna Liquid Transfer Valves"], installedOn: ["Coolant Pump Lines"],
-                tags: ["Bearing", "Cryogenic", "Sublight Products", "PTFE", "Silicon Nitride"],
-                source: { title: "Sublight Tech Spec Sheet CR-09", author: "Sublight Products Corp", page: "CR-09", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Dry System (No Fluid Grease)", interfaces: "Cryo-Flange Shaft Fit (Metric Series 12)", uses: "Cryo-Hardened Austenitic Alloy & Si3N4 Balls" },
-                specs: "Specialized deep-groove ball bearing designed for ultra-low temperature applications (-240°C to +60°C).",
-                notes: "Whatever you do, don't hit these with a fusion torch to free a stuck shaft.",
-                spectreNote: "[SPECTRE]: Optimal performance achieved under stabilized cryogenic flow."
-            },
-            {
-                id: "LRS-BRG-110006", stdNo: "GS-STD-BRG-06", rev: "Rev A", name: "Radiation Hardened Deep Groove Ball Bearing",
-                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Ball Bearings", "Deep Groove", "Radiation Hardened"], parentId: null,
-                supplier: "Rendili StarDrive", originWorld: "Rendili", location: "Home Base", qty: 6, minQty: 2, price: 4500,
-                univStatus: "Fan-made", accessClass: "Restricted", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
-                compatibleWith: ["Hypermatter Reactor Containment Dampers", "Ion Engine Vector Nozzles"], installedOn: ["Reactor Containment Housing"],
-                tags: ["Bearing", "Radiation Hardened", "Rendili", "Lead-Doped", "Tungsten Carbide"],
-                source: { title: "Rendili Engineering Vault Archives", author: "Rendili StarDrive", page: "Vault Ref 106", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Remote Acoustic Sensing", interfaces: "Reactor Core Shaft Interface", uses: "Lead-Doped Chromium Durasteel & Tungsten-Carbide" },
-                specs: "Heavy radiation-shielded deep groove bearing engineered for high-gamma environments (Class-5 Hardened up to $10^7\\text{ Rads}$).",
-                notes: "Heavy as lead because it basically is lead-doped.",
-                spectreNote: "[SPECTRE]: Isotopically stable."
-            },
-            {
-                id: "LRS-BRG-110007", stdNo: "GS-STD-BRG-07", rev: "Rev B", name: "Starfighter Main Flight Control Ball Bearing",
-                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Ball Bearings", "Deep Groove", "Starfighter"], parentId: null,
-                supplier: "Koensayr Manufacturing", originWorld: "Shawken", location: "Onboard Shadow Hunter", qty: 12, minQty: 4, price: 2100,
-                univStatus: "Fan-made", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Mass Production",
-                compatibleWith: ["Y-Wing Gimbal Mounts", "Z-95 Headhunter Control Linkages", "A-Wing Thruster Vanes"], installedOn: ["Flight Control Linkages"],
-                tags: ["Bearing", "Starfighter", "Koensayr", "Flight Control"],
-                source: { title: "Koensayr Y-W Maintenance Directive 12-C", author: "Koensayr Manufacturing", page: "Dir 12-C", isbn: "N/A" },
-                relations: { powerSource: "N/A", needs: "Re-grease every 200h", interfaces: "Starfighter Control Flange (Type Y-88)", uses: "Titanium-Aluminide" },
-                specs: "High-precision, high-speed deep groove ball bearing (up to 45,000 RPM equivalent) for flight controls.",
-                notes: "If your Y-Wing feels sloppy on the roll axis, it’s usually these bearings wearing out.",
-                spectreNote: "[SPECTRE]: High tolerance retention under 12-G profiles."
-            },
-            {
-                id: "LRS-BRG-110008", stdNo: "GS-STD-BRG-08", rev: "Rev A", name: "Capital Ship Heavy Turret Bearing",
-                categoryPath: ["Hardware", "Materials & Components", "Bearings", "Ball Bearings", "Deep Groove", "Capital Ship"], parentId: null,
-                supplier: "Kuat Drive Yards", originWorld: "Kuat", location: "Market / Vendor", qty: 0, minQty: 1, price: 85000,
-                univStatus: "Fan-made", accessClass: "Military", confidence: 4, confidenceStars: "★★★★☆", lifecycle: "Military Restricted",
-                compatibleWith: ["Imperial Star Destroyer Turbolaser Barbettes", "Mon Calamari Cruiser Heavy Ion Mounts"], installedOn: ["Capital Ship Turret Ring Well"],
-                tags: ["Bearing", "Capital Ship", "Turret Ring", "KDY"],
-                source: { title: "KDY Heavy Ordnance Manual ISD-77", author: "Kuat Drive Yards", page: "ISD-77", isbn: "N/A" },
-                relations: { powerSource: "Hydraulic Auto-Lube Bus", needs: "Orbital Drydock", interfaces: "Ring-Gear Mount Flange", uses: "Quadanium-Alloy Raceways" },
-                specs: "Massive multi-meter ring bearing supporting rotational weight (>850 Metric Tons dynamic impulse).",
-                notes: "You don't just 'replace' one of these in deep space.",
-                spectreNote: "[SPECTRE]: Recoil dissipation within 0.04% of baseline."
+                relations: { powerSource: "N/A", needs: "Manual Grease (500h)", interfaces: "Cylindrical Shaft", uses: "Durasteel Races" },
+                specs: "Primary standard deep-groove ball bearing for general-purpose rotational loads.",
+                notes: "Bread-and-butter bearing.", spectreNote: "[SPECTRE]: Nominal operational parameters."
             },
 
             // ARK-SIG-001 NIGHTSHADOW
@@ -641,13 +637,12 @@
                 categoryPath: ["Spacecraft Systems", "Survivability", "Signature Management", "Hull Coatings"], parentId: null,
                 supplier: "Arakyd Industries", originWorld: "Mech-World 7", location: "Market / Vendor", qty: 0, minQty: 1, price: 20000,
                 univStatus: "Legends", accessClass: "Restricted", confidence: 5, confidenceStars: "★★★★★", lifecycle: "Military Restricted",
-                compatibleWith: ["Starfighters", "Freighters", "Shuttles", "Transports", "Capital Ships"], installedOn: ["Shadow Hunter (Partial Coating)"],
-                tags: ["Arakyd", "Stealth", "Hull Coating", "Signature Reduction"],
+                compatibleWith: ["Starfighters", "Freighters", "Shuttles", "Transports"], installedOn: ["Shadow Hunter (Partial Coating)"],
+                tags: ["Arakyd", "Stealth", "Hull Coating"],
                 source: { title: "Pirates & Privateers / Fly Casual", author: "WOTC / FFG", page: "RPG Sourcebook", isbn: "WTC11829" },
                 relations: { powerSource: "None (Passive)", needs: "Industrial Facility", interfaces: "Exterior Hull Plating", uses: "Multispectral Sensor Attenuation" },
                 specs: "Advanced passive multilayer anti-sensor hull treatment developed by Arakyd Industries.",
-                notes: "Passive stealth is usually worth more than active stealth.",
-                spectreNote: "[SPECTRE]: Threat Reduction Value: High. Recommended for Shadow Hunter."
+                notes: "Passive stealth is usually worth more than active stealth.", spectreNote: "[SPECTRE]: Threat Reduction Value: High."
             },
 
             // CORE SHADOW HUNTER SYSTEMS
@@ -693,10 +688,10 @@
 
         function loadCatalog() {
             try {
-                const saved = localStorage.getItem('lexCatalog_v10_roller_bearings');
+                const saved = localStorage.getItem('lexCatalog_v10_vol1_batch04');
                 if (saved) {
                     const parsed = JSON.parse(saved);
-                    if (Array.isArray(parsed) && parsed.length >= 10) {
+                    if (Array.isArray(parsed) && parsed.length >= 20) {
                         catalog = parsed;
                         return;
                     }
@@ -709,7 +704,7 @@
         }
 
         function saveCatalogToLocalStorage(sync = true) {
-            localStorage.setItem('lexCatalog_v10_roller_bearings', JSON.stringify(catalog));
+            localStorage.setItem('lexCatalog_v10_vol1_batch04', JSON.stringify(catalog));
             if (sync && window.syncCatalogToCloud) {
                 window.syncCatalogToCloud();
             }
@@ -746,7 +741,7 @@
         }
 
         function renderCatalog() {
-            if (!catalog || catalog.length < 10) loadCatalog();
+            if (!catalog || catalog.length < 20) loadCatalog();
 
             updateMetrics();
 
@@ -1092,7 +1087,7 @@
         }
 
         function promptResetCatalog() {
-            showConfirmModal("Restore Master Dataset", "Reset database to full standard dataset including all roller and ball bearings?", function() {
+            showConfirmModal("Restore Master Dataset", "Reset database to full standard dataset including Batch 03 & 04 Bearings?", function() {
                 catalog = JSON.parse(JSON.stringify(initialCatalog));
                 saveCatalogToLocalStorage(true);
                 renderCatalog();
@@ -1170,43 +1165,3 @@
     </script>
 </body>
 </html>
-```eof
-
-kataloger_og_komponenter.md
-```markdown
-# Kataloger og Komponenter (Master Index)
-
-Dette dokumentet inneholder den komplette samlingen av verifiserte råvarer, metaller, polymerer, tekstiler, krystaller, kulelagere i LRS-serien og spesialutstyr registrert i **Lex Rogers Industrial Catalog v1.0** for *Shadow Hunter*.
-
----
-
-## 1. Kulelagere og Mekaniske Komponenter (LRS Bearing Series)
-
-### Sporkulelagere (Ball Bearings - Deep Groove Series)
-| Record ID | Standard ID | Name | Category Path | Manufacturer | Description & Usage | Spectre Analysis |
-| ----- | ----- | ----- | ----- | ----- | ----- | ----- |
-| **LRS-BRG-110001** | GS-STD-BRG-01 | **Standard Deep Groove Ball Bearing** | Hardware -> Materials & Components -> Bearings -> Ball Bearings -> Deep Groove -> Standard | Corellian Industrial Hardware | Standard deep-groove ball bearing designed for general-purpose rotational loads in moisture vaporators and cargo cranes. | Nominal operational parameters. High supply availability across outer-rim trade routes. |
-| **LRS-BRG-110002** | GS-STD-BRG-02 | **Shielded Deep Groove Ball Bearing** | Hardware -> Materials & Components -> Bearings -> Ball Bearings -> Deep Groove -> Shielded | Kuat Drive Yards Sub-assembly Div | Dual metallic dust shielded bearing (ZZ rating) for dusty terrestrial environments and powertrains. | Recommended for dusty or particulate-heavy terrestrial deployment environments. |
-| **LRS-BRG-110003** | GS-STD-BRG-03 | **Shielded Military Deep Groove Ball Bearing** | Hardware -> Materials & Components -> Bearings -> Ball Bearings -> Deep Groove -> Shielded -> Military | Sienar Fleet Systems | Hardened mil-spec ball bearing (+45% dynamic radial capacity) built for AT-ST knee joints and turret pivots. | High structural integrity under kinetic impulse loads. Low susceptibility to deformation. |
-| **LRS-BRG-110004** | GS-STD-BRG-04 | **Sealed Vacuum-Rated Deep Groove Ball Bearing** | Hardware -> Materials & Components -> Bearings -> Ball Bearings -> Deep Groove -> Sealed -> Vacuum | Incom-FreiTek | Precision vacuum bearing with silicon nitride ($\text{Si}_3\text{N}_4$) ceramic balls for X-Wing S-foil actuators and airlocks. | Zero outgassing risk detected. Optimal friction coefficient under spatial vacuum. |
-| **LRS-BRG-110005** | GS-STD-BRG-05 | **Cryogenic Deep Groove Ball Bearing** | Hardware -> Materials & Components -> Bearings -> Ball Bearings -> Deep Groove -> Cryogenic | Sublight Products Corporation | Specialized deep-groove bearing for ultra-low temperature loops (-240°C to +60°C) and coolant pumps. | Thermal conductivity specs verified. Optimal performance achieved under cryogenic flow. |
-| **LRS-BRG-110006** | GS-STD-BRG-06 | **Radiation Hardened Deep Groove Ball Bearing** | Hardware -> Materials & Components -> Bearings -> Ball Bearings -> Deep Groove -> Radiation Hardened | Rendili StarDrive | Lead-doped chromium durasteel bearing for high-gamma reactor housings (Class-5 hardened up to $10^7\text{ Rads}$). | Isotopic radiation absorption within safe tolerances. |
-| **LRS-BRG-110007** | GS-STD-BRG-07 | **Starfighter Main Flight Control Ball Bearing** | Hardware -> Materials & Components -> Bearings -> Ball Bearings -> Deep Groove -> Starfighter | Koensayr Manufacturing | High-speed precision bearing (up to 45,000 RPM) for flight control linkages and Y-Wing gimbal mounts. | Micro-wear telemetry shows high tolerance retention under 12-G profiles. |
-| **LRS-BRG-110008** | GS-STD-BRG-08 | **Capital Ship Heavy Turret Bearing** | Hardware -> Materials & Components -> Bearings -> Ball Bearings -> Deep Groove -> Capital Ship | Kuat Drive Yards | Massive slewing ring bearing (1500mm-3000mm) engineered for turbolaser barbettes (>850 Metric Tons impulse). | Heavy structural inertia detected. Recoil dissipation within 0.04% of baseline. |
-
-### Rullelagere (Roller Bearings Series)
-| Record ID | Standard ID | Name | Category Path | Manufacturer | Description & Usage | Spectre Analysis |
-| ----- | ----- | ----- | ----- | ----- | ----- | ----- |
-| **LRS-BRG-120001** | GS-STD-BRG-21 | **Cylindrical Roller Bearing Standard** | Hardware -> Materials & Components -> Bearings -> Roller Bearings -> Cylindrical -> Standard | Corellian Engineering Corporation | Heavy radial-load cylindrical roller bearing featuring ground steel rollers for freighter drive axles and winch gearboxes. | High structural rigidity under linear radial stress. Axial displacement tolerance is zero. |
-| **LRS-BRG-120002** | GS-STD-BRG-22 | **Tapered Roller Thrust Bearing** | Hardware -> Materials & Components -> Bearings -> Roller Bearings -> Tapered -> High Load | Ubrikkian Industries | Angled 28° conical roller assembly engineered for combined high radial and unidirectional axial thrust loads in repulsor sprockets. | Axial thrust absorption optimized for dynamic torque shifts. Thermal variance monitored during run-in. |
-| **LRS-BRG-120003** | GS-STD-BRG-23 | **Spherical Roller Self-Aligning Bearing** | Hardware -> Materials & Components -> Bearings -> Roller Bearings -> Spherical -> Industrial | Rothana Heavy Industries | Double-row barrel roller bearing designed for severe mechanical misalignment (up to 3.0°) and shock loads in AT-TE leg pivot joints. | Angular deflection compensation active. Dynamic stress distribution remains uniform under impact. |
-| **LRS-BRG-120004** | GS-STD-BRG-24 | **Needle Roller Bearing Assembly** | Hardware -> Materials & Components -> Bearings -> Roller Bearings -> Needle -> Compact | Sienar Fleet Systems | Ultra-compact low-profile roller bearing (under 8mm cross-section) for TIE Fighter wing hinges ($>60\text{ HRC}$ shaft requirement). | Minimal space envelope footprint verified. Operational efficacy dependent on precise shaft hardness. |
-
----
-
-## 2. Signaturstyring og Stealth-systemer
-
-| Record ID | Standard ID | Name | Category Path | Manufacturer | Description & Usage | Spectre Analysis |
-| ----- | ----- | ----- | ----- | ----- | ----- | ----- |
-| **ARK-SIG-001** | GS-STD-1090 | **Nightshadow Anti-Sensor Treatment** | Spacecraft Systems -> Survivability -> Signature Management -> Hull Coatings | Arakyd Industries | Multilayer passive anti-sensor coating absorbing and attenuating active/passive radar and scanner returns. | Threat Reduction Value: High. Power Consumption: None. Maintenance Complexity: Low. |
-```eof
