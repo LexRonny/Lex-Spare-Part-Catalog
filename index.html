@@ -5,15 +5,17 @@
     <title>LEX ROGERS // Universal Spare Part Catalog v1.0</title>
     <style>
         :root {
-            --bg-dark: #070304;
-            --panel-bg: #110507;
-            --border-red: #4d0e14;
-            --accent-red: #a3111d;
-            --glow-red: rgba(163, 17, 29, 0.5);
+            --bg-dark: #181a1e;
+            --panel-bg: #21252b;
+            --border-gray: #3a3f4b;
+            --accent-red: #9e2a2b;
             --holo-blue: #00f0ff;
-            --holo-glow: rgba(0, 240, 255, 0.3);
-            --text-main: #d9c5c7;
-            --text-muted: #826a6d;
+            --holo-glow: rgba(0, 240, 255, 0.2);
+            --text-main: #d0d5dc;
+            --text-muted: #8b949e;
+            --classified-gold: #e3b341;
+            --status-blue: #00f0ff;
+            --status-red: #ff3333;
         }
 
         body {
@@ -25,149 +27,288 @@
         }
 
         header {
-            border: 2px solid var(--accent-red);
-            box-shadow: 0 0 20px var(--glow-red);
-            padding: 25px;
+            border: 1px solid var(--border-gray);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            padding: 15px;
             background: var(--panel-bg);
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             position: relative;
         }
 
         h1 {
-            color: var(--accent-red);
-            text-shadow: 0 0 10px var(--glow-red);
-            letter-spacing: 4px;
+            color: #f0f6fc;
+            letter-spacing: 3px;
             margin: 0;
-            font-size: 2.5rem;
+            font-size: 1.8rem;
         }
 
         .subtitle {
             color: var(--holo-blue);
-            text-shadow: 0 0 8px var(--holo-glow);
-            font-size: 0.95rem;
-            margin-top: 8px;
+            font-size: 0.75rem;
+            margin-top: 5px;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
 
         .stats-bar {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
         .stat-card {
             background: var(--panel-bg);
-            border: 1px solid var(--border-red);
-            padding: 15px;
+            border: 1px solid var(--border-gray);
+            padding: 10px;
             text-align: center;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.9);
         }
 
         .stat-num {
-            font-size: 1.8rem;
+            font-size: 1.3rem;
             color: var(--holo-blue);
-            text-shadow: 0 0 8px var(--holo-glow);
             font-weight: bold;
         }
 
-        .search-box {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-red);
-            padding: 15px;
-            margin-bottom: 25px;
+        .security-panel-box {
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .status-light {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--status-blue);
+            box-shadow: 0 0 8px var(--status-blue);
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .status-light.restricted-active {
+            background-color: var(--status-red);
+            box-shadow: 0 0 8px var(--status-red);
+        }
+
+        .sec-btn {
+            background: #161b22;
+            border: 1px solid var(--classified-gold);
+            color: var(--classified-gold);
+            padding: 5px 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-family: inherit;
+            font-size: 0.75rem;
+        }
+        .sec-btn:hover {
+            background: var(--classified-gold);
+            color: #000;
+        }
+
+        .control-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-gray);
+            padding: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
             gap: 10px;
+        }
+
+        .row-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .tabs-group, .filter-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        button.tab-btn {
+            background: #161b22;
+            border: 1px solid var(--border-gray);
+            color: var(--text-main);
+            padding: 6px 10px;
+            font-family: inherit;
+            cursor: pointer;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        button.tab-btn.active, button.tab-btn:hover {
+            border-color: var(--holo-blue);
+            color: var(--holo-blue);
+        }
+
+        #mainCategoryButtons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 6px;
+            width: 100%;
+        }
+        #mainCategoryButtons button.tab-btn {
+            width: 100%;
+            text-align: center;
+            padding: 8px 6px;
+            font-size: 0.7rem;
+            box-sizing: border-box;
+        }
+
+        select, input[type="text"], textarea {
+            background: #161b22;
+            border: 1px solid var(--border-gray);
+            color: var(--text-main);
+            padding: 8px;
+            font-family: inherit;
+            font-size: 0.85rem;
         }
 
         input[type="text"] {
             flex: 1;
-            background: #050102;
-            border: 1px solid var(--border-red);
-            color: var(--text-main);
-            padding: 10px;
-            font-family: inherit;
+            min-width: 180px;
         }
 
-        input[type="text"]:focus {
-            outline: none;
-            border-color: var(--holo-blue);
-            box-shadow: 0 0 8px var(--holo-glow);
-        }
-
-        .catalog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 20px;
-        }
-
-        .part-card {
+        .category-folder {
             background: var(--panel-bg);
-            border: 1px solid var(--border-red);
-            padding: 20px;
-            position: relative;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-
-        .part-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 4px; height: 100%;
-            background: var(--accent-red);
-        }
-
-        .part-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            border: 1px solid var(--border-gray);
             margin-bottom: 10px;
-            border-bottom: 1px dashed var(--border-red);
-            padding-bottom: 8px;
+            padding: 10px;
         }
 
-        .part-id {
+        .folder-header {
             color: var(--holo-blue);
             font-weight: bold;
-            font-size: 0.9rem;
-            text-shadow: 0 0 5px var(--holo-glow);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+        }
+
+        .folder-content {
+            margin-top: 8px;
+            padding-left: 12px;
+            border-left: 2px solid var(--border-gray);
+            display: none;
+        }
+
+        .folder-content.open {
+            display: block;
+        }
+
+        .item-row {
+            background: #161b22;
+            border: 1px solid #30363d;
+            padding: 10px 12px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .item-row.classified {
+            border-color: var(--classified-gold);
+            background: #1f1a0e;
+        }
+
+        .item-info {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .item-info:hover strong {
+            color: var(--holo-blue);
+            text-decoration: underline;
+        }
+
+        .item-info span {
+            color: var(--holo-blue);
         }
 
         .universe-badge {
             font-size: 0.7rem;
-            padding: 2px 6px;
+            padding: 3px 7px;
+            border: 1px solid var(--holo-blue);
+            color: var(--holo-blue);
+            cursor: pointer;
+        }
+
+        .universe-badge.classified {
+            border-color: var(--classified-gold);
+            color: var(--classified-gold);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-card {
+            background: var(--panel-bg);
+            border: 2px solid var(--holo-blue);
+            box-shadow: 0 0 25px var(--holo-glow);
+            width: 90%;
+            max-width: 750px;
+            padding: 30px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            font-size: 1.05rem;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: transparent;
             border: 1px solid var(--accent-red);
             color: var(--accent-red);
-            background: rgba(163, 17, 29, 0.1);
+            padding: 6px 12px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
         }
-
-        .universe-badge.fanmade {
-            border-color: var(--holo-blue);
-            color: var(--holo-blue);
-            background: var(--holo-glow);
-        }
-
-        .part-name {
-            font-size: 1.2rem;
+        .modal-close:hover {
+            background: var(--accent-red);
             color: #fff;
+        }
+
+        .modal-header {
+            border-bottom: 1px dashed var(--border-gray);
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            color: #f0f6fc;
+            font-size: 1.5rem;
             margin: 5px 0;
         }
 
-        .details-list {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            list-style: none;
-            padding: 0;
-            margin: 10px 0 0 0;
-        }
-
-        .details-list li {
-            margin-bottom: 4px;
-        }
-
-        .details-list span {
-            color: var(--text-main);
+        .spec-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            font-size: 0.95rem;
+            margin-top: 15px;
+            background: #161b22;
+            padding: 12px;
+            border: 1px solid var(--border-gray);
         }
     </style>
 </head>
@@ -175,7 +316,7 @@
 
     <header>
         <h1>LEX ROGERS INDUSTRIAL CATALOGUE</h1>
-        <div class="subtitle">// Ulovlig Galaktisk Komponent- og Råvarearkiv (Canon, Legends & Custom Fan-Made) //</div>
+        <div class="subtitle">// Galaktisk Masterarkiv & Shadow Hunter-register // AI Core: Spectre</div>
     </header>
 
     <div class="stats-bar">
@@ -184,71 +325,693 @@
             <div class="stat-num" id="stat-count">0</div>
         </div>
         <div class="stat-card">
-            <div class="stat-label">Arkivstatus</div>
-            <div class="stat-num" style="font-size: 1.2rem; color: var(--accent-red); margin-top: 5px;">BLACK MARKET / SYNC</div>
+            <div class="stat-label">Sikkerhetsnivå</div>
+            <div class="stat-num">
+                <div class="security-panel-box">
+                    <div>
+                        <span class="status-light" id="statusIndicator"></span>
+                        <span id="securityStatusText" style="color: var(--holo-blue); font-size: 0.8rem;">STANDARD (BLUE)</span>
+                    </div>
+                    <button class="sec-btn" onclick="toggleRestrictedFiles()">🔒 Toggle Restricted</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Søk etter Record ID, Navn, Produsent eller Kategori..." onkeyup="filterCatalog()">
+    <div class="control-panel">
+        <div class="row-group">
+            <div class="tabs-group" id="universeTabs">
+                <button class="tab-btn active" onclick="setUniverseFilter('All', this)">All Universes</button>
+                <button class="tab-btn" onclick="setUniverseFilter('Canon', this)">Canon</button>
+                <button class="tab-btn" onclick="setUniverseFilter('Legends', this)">Legends</button>
+                <button class="tab-btn" onclick="setUniverseFilter('Fan-Made', this)">Fan-Made</button>
+            </div>
+            <div class="filter-group">
+                <select id="manufacturerSelect">
+                    <option value="All">All Manufacturers / Affiliations</option>
+                </select>
+                <input type="text" id="searchInput" placeholder="Search archive..." onkeyup="filterCatalog()">
+                <button class="tab-btn" onclick="openAddModal()" style="border-color: var(--holo-blue); color: var(--holo-blue);">+ Legg til</button>
+                <button class="tab-btn" onclick="exportBackup()" style="border-color: var(--classified-gold); color: var(--classified-gold);">💾 Eksporter Backup</button>
+            </div>
+        </div>
+
+        <div id="mainCategoryButtons" style="border-top: 1px solid var(--border-gray); padding-top: 8px;">
+        </div>
+
+        <div class="row-group" id="subCategoryTabs" style="border-top: 1px dashed var(--border-gray); padding-top: 6px; display: none;">
+        </div>
     </div>
 
-    <div class="catalog-grid" id="catalogGrid">
-        <!-- Komponenter lastes dynamisk herfra -->
+    <div id="treeContainer"></div>
+
+    <!-- VISNINGS- OG REDIGERINGS-MODAL -->
+    <div class="modal-overlay" id="itemModal" onclick="closeModal(event)">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">[ X ]</button>
+            
+            <div id="viewModeContainer">
+                <div class="modal-header">
+                    <div id="modal-id" style="color:var(--holo-blue); font-weight:bold; font-size: 1.1rem;"></div>
+                    <div class="modal-title" id="modal-name"></div>
+                    <div id="modal-universe" style="font-size:0.85rem; color:var(--text-muted);"></div>
+                </div>
+                
+                <div id="modalDynamicContent"></div>
+
+                <div style="margin-top: 20px; display: flex; justify-content: space-between;">
+                    <button class="tab-btn" onclick="deleteCurrentItem()" style="border-color: var(--accent-red); color: var(--accent-red);">Slett post</button>
+                    <button class="tab-btn" onclick="switchToEditMode()" style="border-color: var(--holo-blue); color: var(--holo-blue);">Rediger post</button>
+                </div>
+            </div>
+
+            <!-- REDIGERINGSMODUS -->
+            <div id="editModeContainer" style="display: none;">
+                <h3 style="margin-top: 0; color: var(--holo-blue);">Rediger post</h3>
+                
+                <label style="font-size: 0.8rem; display: block; margin-top: 10px;">ID:</label>
+                <input type="text" id="edit-id" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
+
+                <label style="font-size: 0.8rem; display: block; margin-top: 10px;">Navn:</label>
+                <input type="text" id="edit-name" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
+
+                <label style="font-size: 0.8rem; display: block; margin-top: 10px;">Univers Status:</label>
+                <input type="text" id="edit-universe" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
+
+                <label style="font-size: 0.8rem; display: block; margin-top: 10px;">Hovedkategori:</label>
+                <select id="edit-main-cat" onchange="updateSubCategoryDropdown('edit-main-cat', 'edit-sub-cat')" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;"></select>
+
+                <label style="font-size: 0.8rem; display: block; margin-top: 10px;">Underkategori:</label>
+                <select id="edit-sub-cat" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;"></select>
+
+                <label style="font-size: 0.8rem; display: block; margin-top: 10px;">Produsent / Tilhørighet:</label>
+                <input type="text" id="edit-manufacturer" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
+
+                <label style="font-size: 0.8rem; display: block; margin-top: 10px;">Beskrivelse / Biografi:</label>
+                <textarea id="edit-desc" style="width: 100%; padding: 8px; margin-top: 4px; height: 60px; box-sizing: border-box;"></textarea>
+
+                <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                    <button class="tab-btn" onclick="cancelEditMode()">Avbryt</button>
+                    <button class="tab-btn" onclick="saveEditedItem()" style="border-color: var(--holo-blue); color: var(--holo-blue);">Lagre endringer</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- LEGG TIL NY POST MODAL -->
+    <div id="addModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background: var(--panel-bg); border: 2px solid var(--holo-blue); padding: 30px; width: 550px; max-width: 90%; max-height: 90vh; overflow-y: auto;">
+            <h3 style="margin-top: 0; color: var(--holo-blue); font-size: 1.3rem;">Legg til ny post i arkivet</h3>
+            
+            <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border-gray); padding-bottom: 10px;">
+                <button class="tab-btn active" id="tabComponentBtn" onclick="switchAddTab('component')">Legg til Komponent</button>
+                <button class="tab-btn" id="tabPersonnelBtn" onclick="switchAddTab('personnel')">Legg til Personell / Profil</button>
+            </div>
+
+            <!-- FANE 1: KOMPONENT -->
+            <div id="addComponentForm">
+                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">ID:</label>
+                <input type="text" id="add-comp-id" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;" placeholder="F.eks. WPN-002">
+
+                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Navn på komponent:</label>
+                <input type="text" id="add-comp-name" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
+
+                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Univers Status:</label>
+                <input type="text" id="add-comp-universe" value="Canon" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
+
+                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Hovedkategori:</label>
+                <select id="add-comp-main-cat" onchange="updateSubCategoryDropdown('add-comp-main-cat', 'add-comp-sub-cat')" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;"></select>
+
+                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Underkategori:</label>
+                <select id="add-comp-sub-cat" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;"></select>
+
+                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Produsent:</label>
+                <input type="text" id="add-comp-manufacturer" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
+
+                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Kort beskrivelse:</label>
+                <textarea id="add-comp-desc" style="width: 100%; padding: 8px; margin-top: 4px; height: 60px; box-sizing: border-box;"></textarea>
+            </div>
+
+            <!-- FANE 2: PERSONELL / PROFIL -->
+            <div id="addPersonnelForm" style="display: none;">
+                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">ID:</label>
+                <input type="text" id="add-pers-id" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;" placeholder="F.eks. PERS-001">
+
+                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Navn / Tittel på person:</label>
+                <input type="text" id="add-pers-name" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;" placeholder="F.eks. Mora (Informant)">
+
+                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Univers Status:</label>
+                <input type="text" id="add-pers-universe" value="Canon" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
+
+                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Hvor skal personen høre til?</label>
+                <select id="add-pers-main-cat" onchange="updateSubCategoryDropdown('add-pers-main-cat', 'add-pers-sub-cat')" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
+                    <option value="Known Associates">Known Associates</option>
+                    <option value="The Shadows">The Shadows (Restricted)</option>
+                </select>
+
+                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Undergruppe / Kategori:</label>
+                <select id="add-pers-sub-cat" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;"></select>
+
+                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Tilhørighet / Faction:</label>
+                <input type="text" id="add-pers-faction" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;" placeholder="F.eks. Underverdenen / Sivil">
+
+                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Modifikasjoner / Roller / Spesialitet:</label>
+                <input type="text" id="add-pers-mods" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;" placeholder="F.eks. Kybernetisk øye, skarpskytter...">
+
+                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Biografi / Bakgrunn:</label>
+                <textarea id="add-pers-desc" style="width: 100%; padding: 8px; margin-top: 4px; height: 60px; box-sizing: border-box;" placeholder="Beskriv personens bakgrunn, relasjon til teamet og status..."></textarea>
+            </div>
+
+            <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                <button class="tab-btn" onclick="closeAddModal()">Avbryt</button>
+                <button class="tab-btn" onclick="saveNewItem()" style="border-color: var(--holo-blue); color: var(--holo-blue);">Lagre i arkivet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRODUSENT POP-UP MODAL -->
+    <div class="modal-overlay" id="manufacturerModal" onclick="closeManufacturerModal(event)">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeManufacturerModal()">[ X ]</button>
+            <div class="modal-header">
+                <div class="modal-title" id="mfr-name" style="color: var(--classified-gold);">Produsent Profil</div>
+                <div id="mfr-origin" style="font-size:0.85rem; color:var(--holo-blue);"></div>
+            </div>
+            <p id="mfr-desc" style="line-height: 1.5;"></p>
+            <div class="spec-grid" id="mfr-details"></div>
+        </div>
     </div>
 
     <script>
-        let allParts = [];
+        const CATEGORY_STRUCTURE = {
+            "Weapons": ["Handheld Blasters & Pistols", "Rifles & Carbines", "Heavy & Support Weapons", "Melee & Vibro-Weapons", "Explosives & Launchers", "Turrets"],
+            "Armor & Protection": ["Helmets & Visors", "Body Armor & Chest Rigs", "Shields & Deflectors", "Specialty Gear"],
+            "Clothing & Textiles": ["Outerwear & Uniforms", "Undergarments & Thermal Suits", "Footwear & Boots", "Raw Fabrics & Fibers"],
+            "Raw Materials & Agriculture": ["Metals & Alloys", "Chemicals & Solvents", "Agricultural Products & Fibers", "Synthetics & Polymers"],
+            "Food & Drink": ["Rations & Survival Food", "Beverages & Tonics", "Mess & Cooking Gear"],
+            "Starships & Flight Systems": ["Starfighters & Interceptors", "Gunships & Support Craft", "Engines & Propulsion", "Hyperdrives & Power Cores", "Avionics & Navigation"],
+            "Speeders & Ground Vehicles": ["Speeder Bikes & Swoops", "Landspeeders & Civilian Transports", "Industrial & Heavy Transport", "Vehicle Components"],
+            "Medical & Chemical Equipment": ["Healing Fluids & Pharmaceuticals", "Trauma & Surgical Gear", "Diagnostics & Scanners", "Droids"],
+            "Survival, Tools & Field Gear": ["Maintenance & Armorer Tools", "Salvage & Cutting Equipment", "Deep Space Survival", "Storage & Hardcases"],
+            "Software, Droids & Other Systems": ["Slicing & Covert Tools", "Data & Credentials", "Droids & Automata", "Miscellaneous Systems"],
+            "Known Associates": ["Informants", "Smugglers & Contacts", "Fringe Guilds", "Local Contacts"],
+            "The Shadows": ["Personnel", "Fleet & Bases", "Classified Logs"]
+        };
 
-        // Henter data fra den eksterne JSON-filen slik at du slipper å endre koden her for hver nye del!
-        fetch('components.json')
-            .then(res => res.json())
-            .then(data => {
-                allParts = data.components;
-                renderCatalog(allParts);
-                document.getElementById('stat-count').innerText = allParts.length;
-            })
-            .catch(err => {
-                document.getElementById('catalogGrid').innerHTML = `<p style="color:var(--accent-red);">Kritisk feil: Fant ikke 'components.json'. Sjekk at filen eksisterer i mappen.</p>`;
+        const MANUFACTURER_PROFILES = {
+            "Corellian Engineering Corporation": {
+                origin: "Corellia",
+                what: "Skip, repulsor-motorer, kraftstyring og maskineri.",
+                subdiv: "Civilian Fleet, Military Division, Heavy Industrial",
+                affiliation: "Galaktisk uavhengig / Sivil flåte",
+                desc: "En av galaksens største og mest pålitelige produsenter, mest kjent for solide skip som YT-serien og X-wing komponenter."
+            },
+            "BlasTech Industries": {
+                origin: "Rinn / Anaxes",
+                what: "Blastere, våpensystemer og feltutstyr.",
+                subdiv: "Imperial Armory, Civilian Defense, Heavy Repeating Division",
+                affiliation: "Historisk tilknyttet Galaktiske Republikk / Imperiet",
+                desc: "Markedsledende på blasterteknologi, fra standard E-11 til tunge E-Web repeterende våpen."
+            }
+        };
+
+        // Standard komponenter hvis localStorage er tomt
+        const defaultComponents = [
+            // Sett inn dine komponenter her hvis lagringen er tom for første gang, 
+            // eller la den hente fra localStorage.
+        ];
+
+        let catalogData = {
+            "components": []
+        };
+
+        let currentUniverseFilter = 'All';
+        let currentMainCategory = 'All';
+        let currentSubCategory = 'All';
+        let unlockedClassified = false;
+        let activeModalPart = null;
+
+        function initCatalog() {
+            let savedData = localStorage.getItem('lex_catalog_components');
+            if (savedData) {
+                try {
+                    catalogData.components = JSON.parse(savedData);
+                } catch(e) {
+                    console.error("Feil ved lasting av lagrede data:", e);
+                    catalogData.components = defaultComponents;
+                }
+            } else {
+                catalogData.components = defaultComponents;
+            }
+
+            // Duplikatkontroll og merking
+            let idMap = new Map();
+            let nameMap = new Map();
+
+            catalogData.components.forEach(item => {
+                let cleanId = item.id ? item.id.trim().toLowerCase() : '';
+                let cleanName = item.name ? item.name.trim().toLowerCase() : '';
+
+                if (cleanId && idMap.has(cleanId)) {
+                    item.isDuplicate = true;
+                } else if (cleanId) {
+                    idMap.set(cleanId, item);
+                }
+
+                if (cleanName && nameMap.has(cleanName)) {
+                    item.isDuplicate = true;
+                } else if (cleanName) {
+                    nameMap.set(cleanName, item);
+                }
             });
 
-        function renderCatalog(parts) {
-            const grid = document.getElementById('catalogGrid');
-            grid.innerHTML = '';
+            populateManufacturers();
+            populateMainCategoryButtons();
+            filterCatalog();
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('lex_catalog_components', JSON.stringify(catalogData.components));
+            initCatalog();
+        }
+
+        function exportBackup() {
+            let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(catalogData, null, 4));
+            let downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "catalogData_backup.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            alert("Sikkerhetskopi lastet ned! Denne kan du ta vare på i notatblokken din.");
+        }
+
+        function toggleRestrictedFiles() {
+            if (!unlockedClassified) {
+                let pwd = prompt("Enter security clearance code for Restricted Archive (The Shadows):");
+                if (pwd === "654321") {
+                    unlockedClassified = true;
+                    document.getElementById('statusIndicator').classList.add('restricted-active');
+                    document.getElementById('securityStatusText').innerText = "RESTRICTED / ACTIVE (RED)";
+                    document.getElementById('securityStatusText').style.color = "var(--status-red)";
+                    alert("Access granted. The Shadows personnel, fleet and bases are now online.");
+                    populateMainCategoryButtons();
+                    filterCatalog();
+                } else if (pwd !== null) {
+                    alert("Access denied. Invalid code.");
+                }
+            } else {
+                unlockedClassified = false;
+                document.getElementById('statusIndicator').classList.remove('restricted-active');
+                document.getElementById('securityStatusText').innerText = "STANDARD (BLUE)";
+                document.getElementById('securityStatusText').style.color = "var(--holo-blue)";
+                currentMainCategory = 'All';
+                currentSubCategory = 'All';
+                document.getElementById('subCategoryTabs').style.display = 'none';
+                populateMainCategoryButtons();
+                filterCatalog();
+                alert("Restricted archive locked.");
+            }
+        }
+
+        function populateManufacturers() {
+            const select = document.getElementById('manufacturerSelect');
+            select.innerHTML = '<option value="All">All Manufacturers / Affiliations</option>';
+            let manufacturers = [...new Set(catalogData.components.map(p => p.manufacturing?.manufacturer).filter(Boolean))];
+            manufacturers.forEach(m => {
+                let opt = document.createElement('option');
+                opt.value = m;
+                opt.innerText = m;
+                select.appendChild(opt);
+            });
+            select.onchange = function() {
+                if(this.value !== 'All' && MANUFACTURER_PROFILES[this.value]) {
+                    showManufacturerPopup(this.value);
+                }
+                filterCatalog();
+            }
+        }
+
+        function showManufacturerPopup(mfrName) {
+            let profile = MANUFACTURER_PROFILES[mfrName] || {
+                origin: "Ukjent system",
+                what: "Generell industri / ukjent produksjon",
+                subdiv: "Standard avdelinger",
+                affiliation: "Uavhengig",
+                desc: "Ingen utvidet profil registrert i arkivet for denne produsenten ennå."
+            };
+
+            document.getElementById('mfr-name').innerText = mfrName;
+            document.getElementById('mfr-origin').innerText = `Hovedkvarter / Opprinnelse: ${profile.origin}`;
+            document.getElementById('mfr-desc').innerText = profile.desc;
             
-            parts.forEach(part => {
-                let badgeClass = part.universeStatus === 'Fan-Made' ? 'universe-badge fanmade' : 'universe-badge';
-                
-                let html = `
-                    <div class="part-card">
-                        <div class="part-header">
-                            <span class="part-id">${part.id}</span>
-                            <span class="${badgeClass}">${part.universeStatus}</span>
-                        </div>
-                        <div class="part-name">${part.name}</div>
-                        <div style="font-size:0.8rem; color:var(--holo-blue); margin-bottom: 8px;">${part.categoryPath}</div>
-                        <p style="font-size:0.85rem; margin: 5px 0;">${part.overview.shortDescription}</p>
-                        <ul class="details-list">
-                            <li>Produsent: <span>${part.manufacturing.manufacturer}</span></li>
-                            <li>Kilde/Konfidens: <span>${part.sources.originalSource} (${part.sources.confidence})</span></li>
-                            <li>Lex Note: <span>${part.lexNotes.lexNote}</span></li>
-                        </ul>
-                    </div>
-                `;
-                grid.innerHTML += html;
+            let details = document.getElementById('mfr-details');
+            details.innerHTML = `
+                <div><strong>Produksjon:</strong> ${profile.what}</div>
+                <div><strong>Underavdelinger:</strong> ${profile.subdiv}</div>
+                <div><strong>Tilhørighet:</strong> ${profile.affiliation}</div>
+            `;
+
+            document.getElementById('manufacturerModal').style.display = 'flex';
+        }
+
+        function closeManufacturerModal(e) {
+            if (!e || e.target.id === 'manufacturerModal') {
+                document.getElementById('manufacturerModal').style.display = 'none';
+            }
+        }
+
+        function populateMainCategoryButtons() {
+            const container = document.getElementById('mainCategoryButtons');
+            let html = `<button class="tab-btn active" onclick="selectMainCategory('All', this)" style="grid-column: 1 / -1;">All Categories</button>`;
+
+            let categoriesList = Object.keys(CATEGORY_STRUCTURE);
+
+            categoriesList.forEach(cat => {
+                let isRestrictedCat = (cat === 'The Shadows');
+                if (isRestrictedCat) {
+                    if (unlockedClassified) {
+                        html += `<button class="tab-btn" onclick="selectMainCategory('${cat}', this)" style="color:var(--classified-gold); border-color:var(--classified-gold);">${cat}</button>`;
+                    }
+                } else {
+                    html += `<button class="tab-btn" onclick="selectMainCategory('${cat}', this)">${cat}</button>`;
+                }
             });
+            container.innerHTML = html;
+        }
+
+        function selectMainCategory(catName, btn) {
+            document.querySelectorAll('#mainCategoryButtons .tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentMainCategory = catName;
+            currentSubCategory = 'All';
+
+            if (catName === 'All') {
+                document.getElementById('subCategoryTabs').style.display = 'none';
+            } else {
+                populateSubCategoryTabs(catName);
+            }
+            filterCatalog();
+        }
+
+        function populateSubCategoryTabs(mainCat) {
+            const subContainer = document.getElementById('subCategoryTabs');
+            subContainer.style.display = 'flex';
+
+            let subCats = CATEGORY_STRUCTURE[mainCat] || [];
+
+            let html = `<button class="tab-btn active" onclick="selectSubCategory('All', this)">All under ${mainCat}</button>`;
+            subCats.forEach(sub => {
+                html += `<button class="tab-btn" onclick="selectSubCategory('${sub}', this)">${sub}</button>`;
+            });
+            subContainer.innerHTML = html;
+        }
+
+        function selectSubCategory(subName, btn) {
+            document.querySelectorAll('#subCategoryTabs .tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentSubCategory = subName;
+            filterCatalog();
+        }
+
+        function setUniverseFilter(status, btn) {
+            document.querySelectorAll('#universeTabs .tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentUniverseFilter = status;
+            filterCatalog();
         }
 
         function filterCatalog() {
             const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = allParts.filter(p => 
-                p.id.toLowerCase().includes(query) ||
-                p.name.toLowerCase().includes(query) ||
-                p.manufacturing.manufacturer.toLowerCase().includes(query) ||
-                p.categoryPath.toLowerCase().includes(query)
-            );
-            renderCatalog(filtered);
+            const selectedManufacturer = document.getElementById('manufacturerSelect').value;
+
+            const filtered = catalogData.components.filter(p => {
+                let isRestricted = (p.universeStatus === 'Classified') || (p.categoryPath || '').startsWith('The Shadows');
+                if (isRestricted && !unlockedClassified) return false;
+
+                let matchesUniverse = currentUniverseFilter === 'All' || p.universeStatus === currentUniverseFilter;
+                
+                let matchesMain = currentMainCategory === 'All' || (p.categoryPath || '').toLowerCase().includes(currentMainCategory.toLowerCase());
+                let matchesSub = currentSubCategory === 'All' || (p.categoryPath || '').toLowerCase().includes(currentSubCategory.toLowerCase());
+                let matchesManufacturer = selectedManufacturer === 'All' || (p.manufacturing?.manufacturer === selectedManufacturer);
+
+                let matchesQuery = query === '' || (
+                    p.id.toLowerCase().includes(query) ||
+                    p.name.toLowerCase().includes(query) ||
+                    (p.manufacturing?.manufacturer || '').toLowerCase().includes(query) ||
+                    p.categoryPath.toLowerCase().includes(query) ||
+                    (p.lexNotes?.lexNote || '').toLowerCase().includes(query)
+                );
+
+                return matchesUniverse && matchesMain && matchesSub && matchesManufacturer && matchesQuery;
+            });
+
+            renderTree(filtered);
         }
+
+        function renderTree(parts) {
+            const container = document.getElementById('treeContainer');
+            container.innerHTML = '';
+
+            document.getElementById('stat-count').innerText = parts.length;
+
+            if (parts.length === 0) {
+                container.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:20px;">Ingen poster funnet under denne kategorien.</p>`;
+                return;
+            }
+
+            let categories = {};
+            parts.forEach(part => {
+                let cat = part.categoryPath || "Unsorted";
+                if (!categories[cat]) categories[cat] = [];
+                categories[cat].push(part);
+            });
+
+            for (let cat in categories) {
+                let folderId = 'folder-' + Math.random().toString(36).substr(2, 9);
+                let folderHTML = `
+                    <div class="category-folder">
+                        <div class="folder-header" onclick="toggleFolder('${folderId}')">
+                            <span>◈ ${cat}</span>
+                            <span>[${categories[cat].length} items] ▼</span>
+                        </div>
+                        <div class="folder-content open" id="${folderId}">
+                `;
+
+                categories[cat].forEach(part => {
+                    let isClassified = part.universeStatus === 'Classified';
+                    let rowClass = isClassified ? 'item-row classified' : 'item-row';
+                    let badgeClass = isClassified ? 'universe-badge classified' : 'universe-badge';
+                    let dupTag = part.isDuplicate ? `<span style="color: var(--status-red); font-size: 0.75rem; border: 1px solid var(--status-red); padding: 1px 4px; margin-left: 6px;">⚠️ DUPLIKAT</span>` : '';
+                    
+                    let partJson = encodeURIComponent(JSON.stringify(part));
+
+                    folderHTML += `
+                        <div class="${rowClass}">
+                            <div class="item-info" onclick="openModal('${partJson}')">
+                                <span>[${part.id}]</span> <strong>${part.name}</strong> ${dupTag}
+                                <div style="font-size:0.8rem; color:var(--text-muted); margin-top: 3px;">Affiliation/Mfr: ${part.manufacturing?.manufacturer || 'Unknown'} | Note: ${part.lexNotes?.lexNote || ''}</div>
+                            </div>
+                            <span class="${badgeClass}" onclick="openModal('${partJson}')">${part.universeStatus}</span>
+                        </div>
+                    `;
+                });
+
+                folderHTML += `</div></div>`;
+                container.innerHTML += folderHTML;
+            }
+        }
+
+        function toggleFolder(id) {
+            document.getElementById(id).classList.toggle('open');
+        }
+
+        function openModal(partJson) {
+            activeModalPart = JSON.parse(decodeURIComponent(partJson));
+            
+            document.getElementById('modal-id').innerText = `Record ID: ${activeModalPart.id}`;
+            document.getElementById('modal-name').innerText = activeModalPart.name;
+            document.getElementById('modal-universe').innerText = `Universe Status: ${activeModalPart.universeStatus}`;
+            
+            let contentContainer = document.getElementById('modalDynamicContent');
+            contentContainer.innerHTML = `
+                <div style="font-size: 1rem; margin-bottom: 12px;">
+                    <strong>Category Path:</strong> <span style="color:var(--holo-blue);">${activeModalPart.categoryPath}</span><br>
+                    <strong>Manufacturer:</strong> <span>${activeModalPart.manufacturing?.manufacturer || 'Unknown'} (${activeModalPart.manufacturing?.origin || 'Unknown System'})</span>
+                </div>
+                <p style="font-size: 1rem; line-height: 1.4;">${activeModalPart.overview?.shortDescription || 'No description available.'}</p>
+                
+                <div class="spec-grid" id="modal-specs"></div>
+
+                <div style="margin-top: 15px; font-size: 0.95rem; border-top: 1px dashed var(--border-gray); padding-top: 12px; line-height: 1.4;">
+                    <p><strong>Lex Note:</strong> <span style="color:var(--text-main);">${activeModalPart.lexNotes?.lexNote || 'No notes.'}</span></p>
+                    <p><strong>Spectre Analysis:</strong> <span style="color:var(--holo-blue);">${activeModalPart.lexNotes?.spectreAnalysis || 'No analysis.'}</span></p>
+                </div>
+            `;
+
+            let specsContainer = document.getElementById('modal-specs');
+            specsContainer.innerHTML = '';
+            if (activeModalPart.specifications) {
+                for (let key in activeModalPart.specifications) {
+                    specsContainer.innerHTML += `<div><strong>${key}:</strong> ${activeModalPart.specifications[key]}</div>`;
+                }
+            } else {
+                specsContainer.innerHTML = '<div>No specific technical parameters logged.</div>';
+            }
+
+            document.getElementById('viewModeContainer').style.display = 'block';
+            document.getElementById('editModeContainer').style.display = 'none';
+            document.getElementById('itemModal').style.display = 'flex';
+        }
+
+        function deleteCurrentItem() {
+            if (!activeModalPart) return;
+            if (confirm(`Er du sikker på at du vil slette "${activeModalPart.name}" permanent fra databasen?`)) {
+                catalogData.components = catalogData.components.filter(p => p.id !== activeModalPart.id);
+                saveToLocalStorage();
+                closeModal();
+                alert("Posten har blitt slettet.");
+            }
+        }
+
+        function switchToEditMode() {
+            if (!activeModalPart) return;
+            document.getElementById('edit-id').value = activeModalPart.id;
+            document.getElementById('edit-name').value = activeModalPart.name;
+            document.getElementById('edit-universe').value = activeModalPart.universeStatus;
+            document.getElementById('edit-manufacturer').value = activeModalPart.manufacturing?.manufacturer || '';
+            document.getElementById('edit-desc').value = activeModalPart.overview?.shortDescription || '';
+            
+            populateCategoryDropdown('edit-main-cat');
+            
+            let parts = (activeModalPart.categoryPath || '').split('/');
+            let main = parts[0] ? parts[0].trim() : '';
+            let sub = parts[1] ? parts[1].trim() : '';
+            
+            document.getElementById('edit-main-cat').value = main;
+            updateSubCategoryDropdown('edit-main-cat', 'edit-sub-cat');
+            document.getElementById('edit-sub-cat').value = sub;
+
+            document.getElementById('viewModeContainer').style.display = 'none';
+            document.getElementById('editModeContainer').style.display = 'block';
+        }
+
+        function cancelEditMode() {
+            document.getElementById('viewModeContainer').style.display = 'block';
+            document.getElementById('editModeContainer').style.display = 'none';
+        }
+
+        function saveEditedItem() {
+            const id = document.getElementById('edit-id').value.trim();
+            const name = document.getElementById('edit-name').value.trim();
+            const universe = document.getElementById('edit-universe').value.trim();
+            const mainCat = document.getElementById('edit-main-cat').value;
+            const subCat = document.getElementById('edit-sub-cat').value;
+            const manufacturer = document.getElementById('edit-manufacturer').value.trim();
+            const desc = document.getElementById('edit-desc').value.trim();
+            
+            if (!id || !name) {
+                alert("ID og Navn kan ikke være tomme!");
+                return;
+            }
+
+            let index = catalogData.components.findIndex(p => p.id === activeModalPart.id);
+            if (index !== -1) {
+                catalogData.components[index] = {
+                    ...catalogData.components[index],
+                    id: id,
+                    name: name,
+                    universeStatus: universe,
+                    categoryPath: `${mainCat} / ${subCat}`,
+                    overview: { shortDescription: desc },
+                    manufacturing: { manufacturer: manufacturer }
+                };
+                saveToLocalStorage();
+                closeModal();
+                alert("Endringene ble lagret i arkivet!");
+            }
+        }
+
+        function closeModal(event) {
+            if (!event || event.target.id === 'itemModal') {
+                document.getElementById('itemModal').style.display = 'none';
+            }
+        }
+
+        function openAddModal() {
+            populateCategoryDropdown('add-comp-main-cat');
+            updateSubCategoryDropdown('add-comp-main-cat', 'add-comp-sub-cat');
+            document.getElementById('addModal').style.display = 'flex';
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').style.display = 'none';
+        }
+
+        function populateCategoryDropdown(elementId) {
+            const select = document.getElementById(elementId);
+            select.innerHTML = '';
+            Object.keys(CATEGORY_STRUCTURE).forEach(cat => {
+                if (cat === 'The Shadows' && !unlockedClassified) return;
+                let opt = document.createElement('option');
+                opt.value = cat;
+                opt.innerText = cat;
+                select.appendChild(opt);
+            });
+        }
+
+        function updateSubCategoryDropdown(mainSelectId, subSelectId) {
+            const mainCat = document.getElementById(mainSelectId).value;
+            const subSelect = document.getElementById(subSelectId);
+            subSelect.innerHTML = '';
+            
+            let subs = CATEGORY_STRUCTURE[mainCat] || [];
+            subs.forEach(sub => {
+                let opt = document.createElement('option');
+                opt.value = sub;
+                opt.innerText = sub;
+                subSelect.appendChild(opt);
+            });
+        }
+
+        function saveNewItem() {
+            const id = document.getElementById('add-comp-id').value.trim();
+            const name = document.getElementById('add-comp-name').value.trim();
+            const universe = document.getElementById('add-comp-universe').value.trim() || 'Canon';
+            const mainCat = document.getElementById('add-comp-main-cat').value;
+            const subCat = document.getElementById('add-comp-sub-cat').value;
+            const manufacturer = document.getElementById('add-comp-manufacturer').value.trim() || 'Ukjent';
+            const desc = document.getElementById('add-comp-desc').value.trim() || '';
+
+            if (!id || !name) {
+                alert("Du må fylle ut både ID og Navn!");
+                return;
+            }
+
+            let exists = catalogData.components.find(p => p.id.toLowerCase() === id.toLowerCase());
+            if (exists) {
+                alert(`Advarsel: ID "${id}" finnes allerede i arkivet!`);
+                return;
+            }
+
+            let newItem = {
+                id: id,
+                name: name,
+                universeStatus: universe,
+                categoryPath: `${mainCat} / ${subCat}`,
+                overview: { shortDescription: desc },
+                manufacturing: { manufacturer: manufacturer },
+                lexNotes: { lexNote: "Lagt til via nettsiden.", spectreAnalysis: "Registrert i systemet." }
+            };
+
+            catalogData.components.push(newItem);
+            saveToLocalStorage();
+            closeAddModal();
+            alert("Ny post ble lagt til i arkivet!");
+        }
+
+        initCatalog();
     </script>
 </body>
 </html>
