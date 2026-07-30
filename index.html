@@ -17153,7 +17153,29 @@
             closeAddModal();
             alert(`Ny post lagt til med automatisk ID: ${id}`);
         } 
-		initCatalog();
+		async function loadCatalogFromGitHub() {
+            const jsonUrl = 'https://raw.githubusercontent.com/LexRonny/Lex-Spare-Part-Catalog/feature-json-update/catalogData_backup%20(1).json';
+
+            try {
+                let response = await fetch(jsonUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP-feil! Status: ${response.status}`);
+                }
+                
+                let data = await response.json();
+                
+                if (data && data.components) {
+                    catalogData = data;
+                    initCatalog();
+                    console.log("Katalog lastet vellykket fra GitHub!");
+                }
+            } catch (error) {
+                console.error("Kunne ikke hente katalog fra GitHub, bruker lokal lagring:", error);
+                initCatalog();
+            }
+        }
+
+        loadCatalogFromGitHub();
 	</script>
 </body>
 </html>
