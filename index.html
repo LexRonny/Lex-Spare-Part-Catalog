@@ -17153,7 +17153,32 @@
             closeAddModal();
             alert(`Ny post lagt til med automatisk ID: ${id}`);
         } 
-		initCatalog();
+		// Funksjon for å hente JSON-data fra GitHub-branchen din
+        async function loadCatalogFromGitHub() {
+            // Bytt ut URL-en med din faktiske rå- eller fil-adresse fra GitHub
+            const jsonUrl = 'https://raw.githubusercontent.com/LexRonny/Lex-Spare-Part-Catalog/feature-json-update/catalogData.json';
+
+            try {
+                let response = await fetch(jsonUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP-feil! Status: ${response.status}`);
+                }
+                
+                let data = await response.json();
+                
+                // Legg dataene inn i katastrofe/komponent-strukturen din
+                if (data && data.components) {
+                    catalogData = data;
+                    initCatalog(); // Starter opp katalogen med de hentede dataene
+                    console.log("Katalog lastet vellykket fra GitHub!");
+                }
+            } catch (error) {
+                console.error("Kunne ikke hente katalog fra GitHub, bruker lokal lagring:", error);
+                // Fallback til localStorage hvis nettet eller henting feiler
+                initCatalog();
+            }
+        }
+		loadCatalogFromGitHub();
 	</script>
 </body>
 </html>
