@@ -16972,8 +16972,7 @@
             document.getElementById('editModeContainer').style.display = 'none';
         }
 
-        function saveEditedItem() {
-            const id = document.getElementById('edit-id').value.trim();
+      function saveEditedItem() {
             const name = document.getElementById('edit-name').value.trim();
             const universe = document.getElementById('edit-universe').value;
             const mainCat = document.getElementById('edit-main-cat').value;
@@ -16983,8 +16982,12 @@
             
             let index = catalogData.components.findIndex(p => p.id === activeModalPart.id);
             if (index !== -1) {
+                // Generer ny ID basert på den nye hovedkategorien og universet
+                let newId = generateAutoID(mainCat, universe);
+
                 catalogData.components[index] = {
                     ...catalogData.components[index],
+                    id: newId, // Oppdaterer til ny ID
                     name: name,
                     universeStatus: universe,
                     categoryPath: `${mainCat} / ${subCat}`,
@@ -16993,7 +16996,7 @@
                 };
                 saveToLocalStorage();
                 closeModal();
-                alert("Endringene ble lagret i arkivet!");
+                alert(`Endringene ble lagret! Ny ID generert: ${newId}`);
             }
         }
 
