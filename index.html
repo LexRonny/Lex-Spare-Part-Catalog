@@ -17059,18 +17059,33 @@
         }
 
         // AUTOMATISK ID-GENERATOR MED 5-SIFRER OG UNIVERS-BOKSTAV
-        function generateAutoID(prefixCat, universeStr) {
+       // NY OG RENERE ID-GENERATOR
+        function generateAutoID(mainCat, universeStr) {
             let uChar = 'C';
             if (universeStr === 'Legends') uChar = 'L';
             if (universeStr === 'Fan-Made' || universeStr === 'Fanmade') uChar = 'FM';
 
-            let searchPrefix = `${prefixCat}-`;
+            // Velg en pen 3- eller 4-bokstavskode basert på hovedkategori
+            let catCode = "SYS";
+            let mainLower = mainCat.toLowerCase();
+            if (mainLower.includes("weapon")) catCode = "WPN";
+            else if (mainLower.includes("armor")) catCode = "ARM";
+            else if (mainLower.includes("clothing")) catCode = "CLO";
+            else if (mainLower.includes("material") || mainLower.includes("agriculture")) catCode = "MAT";
+            else if (mainLower.includes("food")) catCode = "FOD";
+            else if (mainLower.includes("starship")) catCode = "SHIP";
+            else if (mainLower.includes("speeder")) catCode = "SPD";
+            else if (mainLower.includes("medical")) catCode = "MED";
+            else if (mainLower.includes("survival") || mainLower.includes("tools")) catCode = "GEAR";
+            else if (mainLower.includes("software") || mainLower.includes("droids")) catCode = "SYS";
+            else if (mainLower.includes("associate") || mainLower.includes("shadow")) catCode = "PERS";
+
+            let searchPrefix = `${catCode}-`;
             let maxNum = 0;
 
             catalogData.components.forEach(item => {
                 if (item.id && item.id.startsWith(searchPrefix)) {
                     let parts = item.id.split('-');
-                    // Sjekker om midterste del er et tall
                     for (let p of parts) {
                         let num = parseInt(p, 10);
                         if (!isNaN(num) && num > maxNum && num < 99999) {
@@ -17079,13 +17094,7 @@
                     }
                 }
             });
-
-            let nextNum = maxNum + 1;
-            let paddedNum = String(nextNum).padStart(5, '0');
-            return `${prefixCat}-${paddedNum}-${uChar}`;
-        }
-
-        function saveNewItem() {
+			 function saveNewItem() {
             const isPersonnelActive = document.getElementById('addPersonnelForm').style.display === 'block';
             let id = '', name = '', universe = '', fullCategory = '', mfrOrFaction = '', desc = '', mods = '';
 
@@ -17118,7 +17127,7 @@
                 else if (mainCat.includes("Speeders")) catCode = "SPD";
                 else if (mainCat.includes("Medical")) catCode = "MED";
 
-                id = generateAutoID(`${pref}-${catCode}`, universe);
+                id = generateAutoID(mainCat, universe);
 
             } else {
                 name = document.getElementById('add-pers-name').value.trim();
@@ -17132,11 +17141,15 @@
 
                 id = generateAutoID("PERS-AFF", universe);
             }
-
+			});
             if (!name) {
                 alert("Du må fylle ut navnet på posten!");
                 return;
             }
+            let nextNum = maxNum + 1;
+            let paddedNum = String(nextNum).padStart(5, '0');
+            return `${catCode}-${paddedNum}-${uChar}`;
+        }
 
             let newItem = {
                 id: id,
