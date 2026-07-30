@@ -17060,12 +17060,13 @@
 
         // AUTOMATISK ID-GENERATOR MED 5-SIFRER OG UNIVERS-BOKSTAV
        // NY OG RENERE ID-GENERATOR
+        // NY OG RENERE ID-GENERATOR
         function generateAutoID(mainCat, universeStr) {
             let uChar = 'C';
             if (universeStr === 'Legends') uChar = 'L';
             if (universeStr === 'Fan-Made' || universeStr === 'Fanmade') uChar = 'FM';
 
-            // Velg en pen 3- eller 4-bokstavskode basert på hovedkategori
+            // Velg en pen kode basert på hovedkategori
             let catCode = "SYS";
             let mainLower = mainCat.toLowerCase();
             if (mainLower.includes("weapon")) catCode = "WPN";
@@ -17094,7 +17095,13 @@
                     }
                 }
             });
-			 function saveNewItem() {
+
+            let nextNum = maxNum + 1;
+            let paddedNum = String(nextNum).padStart(5, '0');
+            return `${catCode}-${paddedNum}-${uChar}`;
+        }
+
+        function saveNewItem() {
             const isPersonnelActive = document.getElementById('addPersonnelForm').style.display === 'block';
             let id = '', name = '', universe = '', fullCategory = '', mfrOrFaction = '', desc = '', mods = '';
 
@@ -17106,26 +17113,6 @@
                 mfrOrFaction = document.getElementById('add-comp-manufacturer').value.trim() || 'Ukjent';
                 desc = document.getElementById('add-comp-desc').value.trim() || '';
                 fullCategory = `${mainCat} / ${subCat}`;
-
-                // Lag prefiks basert på produsent og kategori
-                let pref = "GEN";
-                let mfrUpper = mfrOrFaction.toUpperCase();
-                if (mfrUpper.includes("CORELLIAN") || mfrUpper.includes("CEC")) pref = "CEC";
-                else if (mfrUpper.includes("BLASTECH") || mfrUpper.includes("BLS")) pref = "BLS";
-                else if (mfrUpper.includes("SOROSUUB") || mfrUpper.includes("SOR")) pref = "SOR";
-                else if (mfrUpper.includes("KUAT")) pref = "KUAT";
-                else if (mfrUpper.includes("MERR-SONN") || mfrUpper.includes("MSN")) pref = "MSN";
-                else if (mfrUpper.includes("MANDALORIAN") || mfrUpper.includes("MAND")) pref = "MAND";
-                else if (mfrUpper.includes("SHADOW HUNTER") || mfrUpper.includes("SHD")) pref = "SHD";
-                else if (mfrUpper.includes("CZERKA")) pref = "CZK";
-                else if (mfrUpper.includes("INCOM")) pref = "INC";
-
-                let catCode = "CMP";
-                if (mainCat.includes("Weapons")) catCode = "WPN";
-                else if (mainCat.includes("Armor")) catCode = "ARM";
-                else if (mainCat.includes("Starships")) catCode = "SHT";
-                else if (mainCat.includes("Speeders")) catCode = "SPD";
-                else if (mainCat.includes("Medical")) catCode = "MED";
 
                 id = generateAutoID(mainCat, universe);
 
@@ -17139,17 +17126,13 @@
                 desc = document.getElementById('add-pers-desc').value.trim() || '';
                 fullCategory = `${mainCat} / ${subCat}`;
 
-                id = generateAutoID("PERS-AFF", universe);
+                id = generateAutoID("The Shadows", universe);
             }
-			});
+
             if (!name) {
                 alert("Du må fylle ut navnet på posten!");
                 return;
             }
-            let nextNum = maxNum + 1;
-            let paddedNum = String(nextNum).padStart(5, '0');
-            return `${catCode}-${paddedNum}-${uChar}`;
-        }
 
             let newItem = {
                 id: id,
