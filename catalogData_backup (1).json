@@ -1,7 +1,6 @@
 {
     "components": [
         {
-    "id": "PERS-00001-C",
     "name": "Lady Khel Voss",
     "universeStatus": "Canon",
     "categoryPath": "Known Associates / Smugglers & Contacts",
@@ -21,7 +20,6 @@
     }
 },
 {
-    "id": "PERS-00002-C",
     "name": "Kaptein Varis Thorne",
     "universeStatus": "Canon",
     "categoryPath": "Known Associates / Smugglers & Contacts",
@@ -41,7 +39,6 @@
     }
 },
 {
-    "id": "PERS-00003-C",
     "name": "\"The Archivist\" / Orak the Grey",
     "universeStatus": "Canon",
     "categoryPath": "Known Associates / Informants",
