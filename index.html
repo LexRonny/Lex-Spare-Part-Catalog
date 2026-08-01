@@ -419,7 +419,15 @@
                     <button class="tab-btn" onclick="saveEditedItem()" style="border-color: var(--holo-blue); color: var(--holo-blue);">Lagre endringer</button>
                 </div>
             </div>
+			<!-- Bilde og Notat-felt for Redigering -->
+<label style="font-size: 0.85rem; display: block; margin-top: 10px;">Bilde-URL:</label>
+<input type="text" id="edit-comp-image" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;" placeholder="https://eksempel.no/bilde.jpg">
 
+<label style="font-size: 0.85rem; display: block; margin-top: 10px;">Lex-notat:</label>
+<textarea id="edit-comp-lexnote" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; height: 70px;"></textarea>
+
+<label style="font-size: 0.85rem; display: block; margin-top: 10px;">Spectre-analyse:</label>
+<textarea id="edit-comp-spectre" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; height: 70px;"></textarea>
         </div>
     </div>
 
@@ -505,6 +513,15 @@
                 <button class="tab-btn" onclick="closeAddModal()">Avbryt</button>
                 <button class="tab-btn" onclick="saveNewItem()" style="border-color: var(--holo-blue); color: var(--holo-blue);">Lagre i arkivet</button>
             </div>
+			<!-- Bilde og Notat-felt -->
+    <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Bilde-URL (valgfri):</label>
+    <input type="text" id="add-comp-image" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;" placeholder="https://eksempel.no/bilde.jpg">
+
+    <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Lex-notat:</label>
+    <textarea id="add-comp-lexnote" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; height: 70px;" placeholder="Skriv Lex sine notater her..."></textarea>
+
+    <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Spectre-analyse:</label>
+    <textarea id="add-comp-spectre" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; height: 70px;" placeholder="Skriv Spectre-analysen her..."></textarea>
         </div>
     </div>
 
@@ -17061,9 +17078,6 @@
             });
         }
 
-        // AUTOMATISK ID-GENERATOR MED 5-SIFRER OG UNIVERS-BOKSTAV
-       // NY OG RENERE ID-GENERATOR
-        // NY OG RENERE ID-GENERATOR
         function generateAutoID(mainCat, universeStr) {
             let uChar = 'C';
             if (universeStr === 'Legends') uChar = 'L';
@@ -17106,7 +17120,7 @@
 
         function saveNewItem() {
             const isPersonnelActive = document.getElementById('addPersonnelForm').style.display === 'block';
-            let id = '', name = '', universe = '', fullCategory = '', mfrOrFaction = '', desc = '', mods = '';
+            let id = '', name = '', universe = '', fullCategory = '', mfrOrFaction = '', desc = '', mods = '', imageUrl = '', lexNote = '', spectreAnalysis = '';
 
             if (!isPersonnelActive) {
                 name = document.getElementById('add-comp-name').value.trim();
@@ -17115,8 +17129,13 @@
                 const subCat = document.getElementById('add-comp-sub-cat').value;
                 mfrOrFaction = document.getElementById('add-comp-manufacturer').value.trim() || 'Ukjent';
                 desc = document.getElementById('add-comp-desc').value.trim() || '';
-                fullCategory = `${mainCat} / ${subCat}`;
+                
+                // Henter inn fra de nye feltene hvis de finnes i HTML
+                imageUrl = document.getElementById('add-comp-image') ? document.getElementById('add-comp-image').value.trim() : '';
+                lexNote = document.getElementById('add-comp-lexnote') ? document.getElementById('add-comp-lexnote').value.trim() : '';
+                spectreAnalysis = document.getElementById('add-comp-spectre') ? document.getElementById('add-comp-spectre').value.trim() : '';
 
+                fullCategory = `${mainCat} / ${subCat}`;
                 id = generateAutoID(mainCat, universe);
 
             } else {
@@ -17127,9 +17146,13 @@
                 mfrOrFaction = document.getElementById('add-pers-faction').value.trim() || 'Uavhengig';
                 mods = document.getElementById('add-pers-mods').value.trim() || 'Standard';
                 desc = document.getElementById('add-pers-desc').value.trim() || '';
-                fullCategory = `${mainCat} / ${subCat}`;
+                
+                imageUrl = document.getElementById('add-pers-image') ? document.getElementById('add-pers-image').value.trim() : '';
+                lexNote = document.getElementById('add-pers-lexnote') ? document.getElementById('add-pers-lexnote').value.trim() : '';
+                spectreAnalysis = document.getElementById('add-pers-spectre') ? document.getElementById('add-pers-spectre').value.trim() : '';
 
-                id = generateAutoID("mainCat", universe);
+                fullCategory = `${mainCat} / ${subCat}`;
+                id = generateAutoID(mainCat, universe);
             }
 
             if (!name) {
@@ -17142,11 +17165,21 @@
                 name: name,
                 universeStatus: universe,
                 categoryPath: fullCategory,
+                imageUrl: imageUrl,
                 overview: { shortDescription: desc },
                 manufacturing: { manufacturer: mfrOrFaction },
                 specifications: isPersonnelActive ? { "Modifikasjoner / Roller": mods, "Tilhørighet": mfrOrFaction } : {},
-                lexNotes: { lexNote: "Lagt til via nettsiden.", spectreAnalysis: "Registrert i systemet." }
+                lexNotes: { 
+                    lexNote: lexNote || "Lagt til via nettsiden.", 
+                    spectreAnalysis: spectreAnalysis || "Registrert i systemet." 
+                }
             };
+
+            catalogData.components.push(newItem);
+            saveToLocalStorage();
+            closeAddModal();
+            alert(`Ny post lagt til med automatisk ID: ${id}`);
+        }
 
             catalogData.components.push(newItem);
             saveToLocalStorage();
