@@ -1,6 +1,7 @@
 {
     "components": [
         {
+    "id": "PERS-00010-FM",
     "name": "Lady Khel Voss",
     "universeStatus": "Fan-Made",
     "categoryPath": "The Shadows / Known Associates",
@@ -20,6 +21,7 @@
     }
 },
 {
+    "id": "PERS-00011-FM",
     "name": "Kaptein Varis Thorne",
     "universeStatus": "Fan-Made",
     "categoryPath": "The Shadows / Known Associates",
@@ -39,6 +41,7 @@
     }
 },
 {
+    "id": "PERS-00012-FM",
     "name": "\"The Archivist\" / Orak the Grey",
     "universeStatus": "Fan-Made",
     "categoryPath": "The Shadows / Known Associates",
