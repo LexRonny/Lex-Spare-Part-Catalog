@@ -16952,7 +16952,9 @@
             document.getElementById('edit-universe').value = activeModalPart.universeStatus || 'Canon';
             document.getElementById('edit-manufacturer').value = activeModalPart.manufacturing?.manufacturer || '';
             document.getElementById('edit-desc').value = activeModalPart.overview?.shortDescription || '';
-            
+            document.getElementById('edit-comp-image').value = activeModalPart.imageUrl || '';
+   			document.getElementById('edit-comp-lexnote').value = activeModalPart.lexNotes?.lexNote || '';
+    		document.getElementById('edit-comp-spectre').value = activeModalPart.lexNotes?.spectreAnalysis || '';
             populateCategoryDropdown('edit-main-cat');
             
             let parts = (activeModalPart.categoryPath || '').split('/');
