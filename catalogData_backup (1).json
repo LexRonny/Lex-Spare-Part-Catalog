@@ -4,7 +4,7 @@
     "id": "PERS-00001-C",
     "name": "Lady Khel Voss",
     "universeStatus": "Canon",
-    "categoryPath": "The Shadows / Known Associates",
+    "categoryPath": "Known Associates / Smugglers & Contacts",
     "overview": {
         "shortDescription": "Styreleder for Voss-kredittnettverket og høytstående partner i et uavhengig finanssyndikat på Cantonica."
     },
@@ -24,7 +24,7 @@
     "id": "PERS-00002-C",
     "name": "Kaptein Varis Thorne",
     "universeStatus": "Canon",
-    "categoryPath": "The Shadows / Known Associates",
+    "categoryPath": "Known Associates / Smugglers & Contacts",
     "overview": {
         "shortDescription": "Flåtesjef for Smuglerforbundet med en enorm mobil handelsflåte som opererer utenfor offisielle ruter."
     },
@@ -44,7 +44,7 @@
     "id": "PERS-00003-C",
     "name": "\"The Archivist\" / Orak the Grey",
     "universeStatus": "Canon",
-    "categoryPath": "The Shadows / Known Associates",
+    "categoryPath": "Known Associates / Informants",
     "overview": {
         "shortDescription": "Uavhengig informasjonsmegler (Bith) som sitter på omfattende historiske og teknologiske databaser."
     },
