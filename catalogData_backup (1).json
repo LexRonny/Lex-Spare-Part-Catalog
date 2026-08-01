@@ -1,6 +1,66 @@
 {
     "components": [
         {
+    "id": "PERS-00001-C",
+    "name": "Lady Khel Voss",
+    "universeStatus": "Canon",
+    "categoryPath": "The Shadows / Known Associates",
+    "overview": {
+        "shortDescription": "Styreleder for Voss-kredittnettverket og høytstående partner i et uavhengig finanssyndikat på Cantonica."
+    },
+    "manufacturing": {
+        "manufacturer": "Voss-kredittnettverket / Finanssyndikat"
+    },
+    "specifications": {
+        "Modifikasjoner / Roller": "Syndikat- og finanskontakt / Diskret oppdragsgiver",
+        "Tilhørighet": "Uavhengig finanseliten i Outer Rim"
+    },
+    "lexNotes": {
+        "lexNote": "Bruker teamet som uoffisiell ryddesjakt for gjeldsinnsamling og hvitvasking. Ekstreme krav til taushet.",
+        "spectreAnalysis": "Høyrisiko / Høy utbetaling. Svikt medfører svartelisting i hele Outer Rim."
+    }
+},
+{
+    "id": "PERS-00002-C",
+    "name": "Kaptein Varis Thorne",
+    "universeStatus": "Canon",
+    "categoryPath": "The Shadows / Known Associates",
+    "overview": {
+        "shortDescription": "Flåtesjef for Smuglerforbundet med en enorm mobil handelsflåte som opererer utenfor offisielle ruter."
+    },
+    "manufacturing": {
+        "manufacturer": "Smuglerforbundet"
+    },
+    "specifications": {
+        "Modifikasjoner / Roller": "Svartemarked- og logistikkkontakt / Flåtesjef",
+        "Tilhørighet": "Smuglerforbundet"
+    },
+    "lexNotes": {
+        "lexNote": "Gir oppdrag knyttet til kapring av frakteskip og sikring av uregistrerte hyperdrive-ruter.",
+        "spectreAnalysis": "Praktisk anlagt og ærlig så lenge profitten og lojaliteten holdes intakt."
+    }
+},
+{
+    "id": "PERS-00003-C",
+    "name": "\"The Archivist\" / Orak the Grey",
+    "universeStatus": "Canon",
+    "categoryPath": "The Shadows / Known Associates",
+    "overview": {
+        "shortDescription": "Uavhengig informasjonsmegler (Bith) som sitter på omfattende historiske og teknologiske databaser."
+    },
+    "manufacturing": {
+        "manufacturer": "Uavhengig informasjonsnettverk"
+    },
+    "specifications": {
+        "Modifikasjoner / Roller": "Informasjons- og etterretningskontakt / Megler",
+        "Tilhørighet": "Uavhengig"
+    },
+    "lexNotes": {
+        "lexNote": "Oppdrag krever innbrudd i imperiebunkere eller henting av databrikker og glemte artefakter.",
+        "spectreAnalysis": "Motiveres utelukkende av data; betaler ofte i verdifull informasjon eller tech-komponenter."
+    }
+},
+        {
             "id": "CEC-PMC-240",
             "name": "Corellian Standard Power Management Unit",
             "universeStatus": "Canon",
