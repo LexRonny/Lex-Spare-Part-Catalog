@@ -16945,30 +16945,53 @@
             }
         }
 
-        function switchToEditMode() {
+  function switchToEditMode() {
             if (!activeModalPart) return;
-            document.getElementById('edit-id').value = activeModalPart.id;
-            document.getElementById('edit-name').value = activeModalPart.name;
-            document.getElementById('edit-universe').value = activeModalPart.universeStatus || 'Canon';
-            document.getElementById('edit-manufacturer').value = activeModalPart.manufacturing?.manufacturer || '';
-            document.getElementById('edit-desc').value = activeModalPart.overview?.shortDescription || '';
-            document.getElementById('edit-comp-image').value = activeModalPart.imageUrl || '';
-   			document.getElementById('edit-comp-lexnote').value = activeModalPart.lexNotes?.lexNote || '';
-    		document.getElementById('edit-comp-spectre').value = activeModalPart.lexNotes?.spectreAnalysis || '';
+            
+            const editId = document.getElementById('edit-id');
+            if (editId) editId.value = activeModalPart.id || '';
+            
+            const editName = document.getElementById('edit-name');
+            if (editName) editName.value = activeModalPart.name || '';
+            
+            const editUniverse = document.getElementById('edit-universe');
+            if (editUniverse) editUniverse.value = activeModalPart.universeStatus || 'Canon';
+            
+            const editMfr = document.getElementById('edit-manufacturer');
+            if (editMfr) editMfr.value = activeModalPart.manufacturing?.manufacturer || '';
+            
+            const editDesc = document.getElementById('edit-desc');
+            if (editDesc) editDesc.value = activeModalPart.overview?.shortDescription || '';
+            
+            const editImg = document.getElementById('edit-comp-image');
+            if (editImg) editImg.value = activeModalPart.imageUrl || '';
+            
+            const editLex = document.getElementById('edit-comp-lexnote');
+            if (editLex) editLex.value = activeModalPart.lexNotes?.lexNote || '';
+            
+            const editSpectre = document.getElementById('edit-comp-spectre');
+            if (editSpectre) editSpectre.value = activeModalPart.lexNotes?.spectreAnalysis || '';
+
             populateCategoryDropdown('edit-main-cat');
             
             let parts = (activeModalPart.categoryPath || '').split('/');
             let main = parts[0] ? parts[0].trim() : '';
             let sub = parts[1] ? parts[1].trim() : '';
             
-            document.getElementById('edit-main-cat').value = main;
+            const editMainCat = document.getElementById('edit-main-cat');
+            if (editMainCat) editMainCat.value = main;
+            
             updateSubCategoryDropdown('edit-main-cat', 'edit-sub-cat');
-            document.getElementById('edit-sub-cat').value = sub;
+            
+            const editSubCat = document.getElementById('edit-sub-cat');
+            if (editSubCat) editSubCat.value = sub;
 
-            document.getElementById('viewModeContainer').style.display = 'none';
-            document.getElementById('editModeContainer').style.display = 'block';
+            const viewContainer = document.getElementById('viewModeContainer');
+            if (viewContainer) viewContainer.style.display = 'none';
+            
+            const editContainer = document.getElementById('editModeContainer');
+            if (editContainer) editContainer.style.display = 'block';
         }
-
         function cancelEditMode() {
             document.getElementById('viewModeContainer').style.display = 'block';
             document.getElementById('editModeContainer').style.display = 'none';
