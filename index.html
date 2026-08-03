@@ -481,41 +481,188 @@
             </div>
 
             <!-- FANE 2: PERSONELL / PROFIL -->
-            <div id="addPersonnelForm" style="display: none;">
-                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Navn / Tittel på person:</label>
-                <input type="text" id="add-pers-name" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;" placeholder="F.eks. Mora (Informant)">
+           <div id="addPersonnelForm" style="display: none;">
+    <!-- RESTRICTED CHECKBOX MED AUTOMATISK FARGEENDRING -->
+    <div style="background: rgba(255,200,0,0.1); border: 1px solid var(--classified-gold); padding: 10px; margin-bottom: 15px; border-radius: 4px;">
+        <label style="color: var(--classified-gold); font-weight: bold; cursor: pointer;">
+            <input type="checkbox" id="add-pers-restricted" onchange="toggleRestrictedModalColor(this)"> 
+            ⚠️ Legg i Restricted Files (The Shadows)
+        </label>
+    </div>
 
-                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Univers Status:</label>
-                <select id="add-pers-universe" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
-                    <option value="Canon">Canon</option>
-                    <option value="Legends">Legends</option>
-                    <option value="Fan-Made">Fan-Made</option>
+    <!-- GRUNNLEGGENDE FELTER -->
+    <div style="margin-bottom: 10px;">
+        <label>Navn:</label>
+        <input type="text" id="add-pers-name" style="width: 100%; padding: 6px;">
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+        <div style="flex: 1;">
+            <label>Alder:</label>
+            <input type="number" id="add-pers-age" style="width: 100%; padding: 6px;" placeholder="F.eks. 21">
+        </div>
+        <div style="flex: 1;">
+            <label>Rase:</label>
+            <input type="text" id="add-pers-species" style="width: 100%; padding: 6px;" placeholder="F.eks. Menneske, Twi'lek">
+        </div>
+        <div style="flex: 1;">
+            <label>Kjønn:</label>
+            <input type="text" id="add-pers-gender" style="width: 100%; padding: 6px;" placeholder="Mann / Kvinne / Annet">
+        </div>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+        <label>Tilhørighet / Fraksjon:</label>
+        <input type="text" id="add-pers-faction" style="width: 100%; padding: 6px;" placeholder="F.eks. Syndikat, nettverk...">
+    </div>
+
+    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+        <div style="flex: 1;">
+            <label>Hovedkategori:</label>
+            <select id="add-pers-main-cat" style="width: 100%; padding: 6px;" onchange="updateSubCategoryDropdown('add-pers-main-cat', 'add-pers-sub-cat')"></select>
+        </div>
+        <div style="flex: 1;">
+            <label>Underkategori:</label>
+            <select id="add-pers-sub-cat" style="width: 100%; padding: 6px;"></select>
+        </div>
+    </div>
+
+    <!-- BILDE URL -->
+    <div style="margin-bottom: 10px;">
+        <label>Bilde-URL (GitHub Raw):</label>
+        <input type="text" id="add-pers-image" style="width: 100%; padding: 6px;" placeholder="https://raw.githubusercontent.com/...">
+    </div>
+
+    <!-- UTSEENDE OG KJENNETEGN (FANER / VALG) -->
+    <fieldset style="border: 1px solid var(--border-gray); padding: 10px; margin-bottom: 15px;">
+        <legend style="color: var(--holo-blue); font-weight: bold;">Utseende / Kjennetegn</legend>
+        
+        <div style="display: flex; gap: 10px; margin-bottom: 8px;">
+            <div style="flex: 1;">
+                <label style="font-size: 0.85rem;">Kroppsbygning / Størrelse:</label>
+                <select id="add-pers-build" style="width: 100%; padding: 5px;">
+                    <option value="">-- Velg bygg --</option>
+                    <option value="Slim / Slender">Slim / Slender – slank / pen og tynn</option>
+                    <option value="Thin / Skinny">Thin / Skinny – tynn</option>
+                    <option value="Athletic / Muscular">Athletic / Muscular – atletisk / muskuløs</option>
+                    <option value="Well-built">Well-built – velbygd / kraftig og sterk</option>
+                    <option value="Average build">Average build – nokså normal</option>
+                    <option value="Stout / Plump">Stout / Plump – nokså rund / fyldig</option>
+                    <option value="Overweight">Overweight – overvektig</option>
+                    <option value="Heavy / Stout">Heavy / Stout – tung / kraftig</option>
+                    <option value="Obese">Obese – svært overvektig</option>
                 </select>
-
-                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Hvor hører personen til?</label>
-                <select id="add-pers-main-cat" onchange="updateSubCategoryDropdown('add-pers-main-cat', 'add-pers-sub-cat')" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
-                    <option value="Known Associates">Known Associates</option>
-                    <option value="The Shadows">The Shadows (Restricted)</option>
-                </select>
-
-                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Undergruppe / Kategori:</label>
-                <select id="add-pers-sub-cat" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;"></select>
-
-                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Tilhørighet / Faction (f.eks. Underverdenen):</label>
-                <input type="text" id="add-pers-faction" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;" placeholder="F.eks. Underverdenen / Sivil">
-
-                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Modifikasjoner / Roller / Spesialitet:</label>
-                <input type="text" id="add-pers-mods" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;" placeholder="F.eks. Kybernetisk øye, skarpskytter...">
-
-                <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Biografi / Bakgrunn:</label>
-                <textarea id="add-pers-desc" style="width: 100%; padding: 8px; margin-top: 4px; height: 60px; box-sizing: border-box;" placeholder="Beskriv personens bakgrunn..."></textarea>
             </div>
-
-            <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
-                <button class="tab-btn" onclick="closeAddModal()">Avbryt</button>
-                <button class="tab-btn" onclick="saveNewItem()" style="border-color: var(--holo-blue); color: var(--holo-blue);">Lagre i arkivet</button>
+            <div style="flex: 1;">
+                <label style="font-size: 0.85rem;">Høyde:</label>
+                <select id="add-pers-height" style="width: 100%; padding: 5px;">
+                    <option value="">-- Velg høyde --</option>
+                    <option value="1.0m">1,0 m</option><option value="1.1m">1,1 m</option><option value="1.2m">1,2 m</option>
+                    <option value="1.3m">1,3 m</option><option value="1.4m">1,4 m</option><option value="1.5m">1,5 m</option>
+                    <option value="1.6m">1,6 m</option><option value="1.7m">1,7 m</option><option value="1.8m">1,8 m</option>
+                    <option value="1.9m">1,9 m</option><option value="2.0m">2,0 m</option><option value="2.1m">2,1 m</option>
+                    <option value="2.2m">2,2 m</option><option value="2.3m">2,3 m</option><option value="2.4m">2,4 m</option>
+                    <option value="2.5m">2,5 m</option><option value="2.6m">2,6 m</option><option value="2.7m">2,7 m</option>
+                    <option value="2.8m">2,8 m</option><option value="2.9m">2,9 m</option><option value="3.0m">3,0 m</option>
+                </select>
             </div>
         </div>
+
+        <div style="display: flex; gap: 10px; margin-bottom: 8px;">
+            <div style="flex: 1;">
+                <label style="font-size: 0.85rem;">Hårfarge:</label>
+                <select id="add-pers-haircolor" style="width: 100%; padding: 5px;">
+                    <option value="">-- Velg hårfarge --</option>
+                    <option value="Blonde / Blond">Blonde / Blond</option>
+                    <option value="Platinum blonde">Platinum blonde</option>
+                    <option value="Dirty blonde">Dirty blonde</option>
+                    <option value="Strawberry blonde">Strawberry blonde</option>
+                    <option value="Brown hair">Brown hair</option>
+                    <option value="Brunette">Brunette</option>
+                    <option value="Chestnut / Auburn">Chestnut / Auburn</option>
+                    <option value="Mousey brown">Mousey brown</option>
+                    <option value="Red hair / Redhead">Red hair / Redhead</option>
+                    <option value="Ginger">Ginger</option>
+                    <option value="Copper">Copper</option>
+                    <option value="Black hair">Black hair</option>
+                    <option value="Grey / Gray hair">Grey / Gray hair</option>
+                    <option value="Silver hair">Silver hair</option>
+                    <option value="White hair">White hair</option>
+                    <option value="Rosa">Rosa</option>
+                    <option value="Blå">Blå</option>
+                    <option value="Lilla">Lilla</option>
+                    <option value="Grønn">Grønn</option>
+                    <option value="Oransje">Oransje</option>
+                </select>
+            </div>
+            <div style="flex: 1;">
+                <label style="font-size: 0.85rem;">Hårlengde / Stil:</label>
+                <select id="add-pers-hairlength" style="width: 100%; padding: 5px;">
+                    <option value="">-- Velg stil --</option>
+                    <option value="Bald">Bald (Skallet)</option>
+                    <option value="Buzz cut">Buzz cut</option>
+                    <option value="Short hair">Short hair</option>
+                    <option value="Pixie cut">Pixie cut</option>
+                    <option value="Chin-length">Chin-length</option>
+                    <option value="Shoulder-length">Shoulder-length</option>
+                    <option value="Medium-length">Medium-length</option>
+                    <option value="Long hair">Long hair</option>
+                    <option value="Waist-length">Waist-length</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="margin-top: 5px;">
+            <label style="font-size: 0.85rem;">Beskrivelse (arr, tatoveringer, kjennetegn):</label>
+            <textarea id="add-pers-appearance-desc" rows="2" style="width: 100%; padding: 5px;" placeholder="Beskriv arr, tatoveringer eller spesielle kjennetegn..."></textarea>
+        </div>
+    </fieldset>
+
+    <!-- CYBERNETICS -->
+    <fieldset style="border: 1px solid var(--border-gray); padding: 10px; margin-bottom: 15px;">
+        <legend style="color: var(--holo-blue); font-weight: bold;">Cybernetics & Modifikasjoner</legend>
+        
+        <div style="display: flex; gap: 10px; margin-bottom: 8px;">
+            <div style="flex: 1;">
+                <label style="font-size: 0.85rem;">Overordnet begrep:</label>
+                <select id="add-pers-cyborg-type" style="width: 100%; padding: 5px;">
+                    <option value="">-- Ingen / Standard --</option>
+                    <option value="Cyborg">Cyborg</option>
+                    <option value="Synthflesh / Synthskin">Synthflesh / Synthskin</option>
+                    <option value="Exposed / Bare metal">Exposed / Bare metal</option>
+                </select>
+            </div>
+            <div style="flex: 1;">
+                <label style="font-size: 0.85rem;">Modifikasjonstype / Kroppsdel:</label>
+                <select id="add-pers-cyber-part" style="width: 100%; padding: 5px;">
+                    <option value="">-- Velg del --</option>
+                    <option value="Mechno-arm">Mechno-arm</option>
+                    <option value="Mechno-leg">Mechno-leg</option>
+                    <option value="Prosthetic limb / Cybernetic replacement">Prosthetic limb</option>
+                    <option value="Cybernetic eye / Bionic eye">Cybernetic eye / Bionic eye</option>
+                    <option value="Internal cybernetics / Subcutaneous implants">Internal cybernetics</option>
+                    <option value="Life-support armor / Full-body prosthesis">Life-support armor / Full-body</option>
+                </select>
+            </div>
+        </div>
+    </fieldset>
+
+    <!-- BIO OG NOTATER -->
+    <div style="margin-bottom: 10px;">
+        <label>Kort biografi / Bakgrunn:</label>
+        <textarea id="add-pers-desc" rows="3" style="width: 100%; padding: 6px;"></textarea>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+        <label>Lex Notes:</label>
+        <textarea id="add-pers-lex" rows="2" style="width: 100%; padding: 6px;"></textarea>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label>Spectre Analysis:</label>
+        <textarea id="add-pers-spectre" rows="2" style="width: 100%; padding: 6px;"></textarea>
+    </div>
+</div>
     </div>
 
     <!-- PRODUSENT POP-UP MODAL -->
@@ -17076,6 +17223,18 @@
                 document.getElementById('tabComponentBtn').classList.remove('active');
             }
         }
+		function toggleRestrictedModalColor(checkbox) {
+    const modalContent = document.getElementById('addModalContent'); // Tilpass ID-en til din modal-boks hvis den heter noe annet
+    if (!modalContent) return;
+
+    if (checkbox.checked) {
+        modalContent.style.background = '#1a1700'; // Mørk gul/oransje tone
+        modalContent.style.borderColor = 'var(--classified-gold)';
+    } else {
+        modalContent.style.background = ''; // Tilbake til standard
+        modalContent.style.borderColor = '';
+    }
+}
 
         function populateCategoryDropdown(elementId) {
             const select = document.getElementById(elementId);
