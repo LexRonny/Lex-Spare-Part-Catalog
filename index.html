@@ -16906,16 +16906,22 @@
         function toggleFolder(id) {
             document.getElementById(id).classList.toggle('open');
         }
-
-        function openModal(partJson) {
+		function openModal(partJson) {
             activeModalPart = JSON.parse(decodeURIComponent(partJson));
             
             document.getElementById('modal-id').innerText = `Record ID: ${activeModalPart.id}`;
             document.getElementById('modal-name').innerText = activeModalPart.name;
             document.getElementById('modal-universe').innerText = `Universe Status: ${activeModalPart.universeStatus}`;
             
+            // Sjekk om det finnes et bilde, og lag miniatyrbildet hvis det gjør det
+            let imageHtml = '';
+            if (activeModalPart.imageUrl) {
+                imageHtml = `<img src="${activeModalPart.imageUrl}" style="float: right; width: 80px; height: 100px; object-fit: cover; cursor: pointer; border: 1px solid #00ffff; margin-left: 15px; margin-bottom: 10px;" onclick="openFullImage('${activeModalPart.imageUrl}')" title="Klikk for å forstørre bilde">`;
+            }
+
             let contentContainer = document.getElementById('modalDynamicContent');
             contentContainer.innerHTML = `
+                ${imageHtml}
                 <div style="font-size: 1rem; margin-bottom: 12px;">
                     <strong>Category Path:</strong> <span style="color:var(--holo-blue);">${activeModalPart.categoryPath}</span><br>
                     <strong>Manufacturer / Affiliation:</strong> <span>${activeModalPart.manufacturing?.manufacturer || 'Unknown'}</span>
@@ -16944,6 +16950,7 @@
             document.getElementById('editModeContainer').style.display = 'none';
             document.getElementById('itemModal').style.display = 'flex';
         }
+       
 
         function deleteCurrentItem() {
             if (!activeModalPart) return;
@@ -16953,17 +16960,6 @@
                 closeModal();
                 alert("Posten har blitt slettet.");
             }
-			// Åpner det store bildet i pop-up når du klikker på miniatyrbildet
-function openFullImage(imgSrc) {
-    if (!imgSrc) return;
-    document.getElementById('fullImageElement').src = imgSrc;
-    document.getElementById('imagePopupModal').style.display = 'block';
-}
-
-// Lukker pop-upen igjen når du klikker på bildet eller bakgrunnen
-function closeFullImage() {
-    document.getElementById('imagePopupModal').style.display = 'none';
-}
         }
 
   function switchToEditMode() {
@@ -17220,7 +17216,17 @@ function closeFullImage() {
                 initCatalog();
             }
         }
+		// Åpner det store bildet i pop-up når du klikker på miniatyrbildet
+function openFullImage(imgSrc) {
+    if (!imgSrc) return;
+    document.getElementById('fullImageElement').src = imgSrc;
+    document.getElementById('imagePopupModal').style.display = 'block';
+}
 
+// Lukker pop-upen igjen når du klikker på bildet eller bakgrunnen
+function closeFullImage() {
+    document.getElementById('imagePopupModal').style.display = 'none';
+}
         loadCatalogFromGitHub();
 	</script>
 </body>
