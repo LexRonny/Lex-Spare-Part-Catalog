@@ -17369,8 +17369,10 @@
                 // Sjekk om Restricted-boksen er huket av
                 const isRestricted = document.getElementById('add-pers-restricted').checked;
                 if (isRestricted) {
-                    universe = 'Classified'; // Sørger for at den settes som klassifisert/restricted i systemet
-                    fullCategory = `The Shadows / ${subCat}`; // Rutes automatisk til The Shadows / Underkategori
+                    universe = 'Classified'; 
+                    // Tvinger hovedkategori til The Shadows, og bruker valgt underkategori (f.eks. Known Associates)
+                    let subCatVal = document.getElementById('add-pers-sub-cat').value || 'Known Associates';
+                    fullCategory = `The Shadows / ${subCatVal}`;
                 } else {
                     fullCategory = `${mainCat} / ${subCat}`;
                 }
