@@ -17305,11 +17305,12 @@
             return `${catCode}-${paddedNum}-${uChar}`;
         }
 
-        function saveNewItem() {
+		function saveNewItem() {
             const isPersonnelActive = document.getElementById('addPersonnelForm').style.display === 'block';
-            let id = '', name = '', universe = '', fullCategory = '', mfrOrFaction = '', desc = '', mods = '';
+            let id = '', name = '', universe = '', fullCategory = '', mfrOrFaction = '', desc = '', imageUrl = '';
 
             if (!isPersonnelActive) {
+                // --- KOMPONENT-LAGRING (Slik den var) ---
                 name = document.getElementById('add-comp-name').value.trim();
                 universe = document.getElementById('add-comp-universe').value;
                 const mainCat = document.getElementById('add-comp-main-cat').value;
@@ -17317,42 +17318,101 @@
                 mfrOrFaction = document.getElementById('add-comp-manufacturer').value.trim() || 'Ukjent';
                 desc = document.getElementById('add-comp-desc').value.trim() || '';
                 fullCategory = `${mainCat} / ${subCat}`;
-
                 id = generateAutoID(mainCat, universe);
 
+                if (!name) {
+                    alert("Du må fylle ut navnet på posten!");
+                    return;
+                }
+
+                let newItem = {
+                    id: id,
+                    name: name,
+                    universeStatus: universe,
+                    categoryPath: fullCategory,
+                    overview: { shortDescription: desc },
+                    manufacturing: { manufacturer: mfrOrFaction },
+                    specifications: {},
+                    lexNotes: { lexNote: "Lagt til via nettsiden.", spectreAnalysis: "Registrert i systemet." }
+                };
+
+                catalogData.components.push(newItem);
+
             } else {
+                // --- PERSONELL-LAGRING (Med alt det nye!) ---
                 name = document.getElementById('add-pers-name').value.trim();
                 universe = document.getElementById('add-pers-universe').value;
                 const mainCat = document.getElementById('add-pers-main-cat').value;
                 const subCat = document.getElementById('add-pers-sub-cat').value;
                 mfrOrFaction = document.getElementById('add-pers-faction').value.trim() || 'Uavhengig';
-                mods = document.getElementById('add-pers-mods').value.trim() || 'Standard';
                 desc = document.getElementById('add-pers-desc').value.trim() || '';
-                fullCategory = `${mainCat} / ${subCat}`;
+                imageUrl = document.getElementById('add-pers-image').value.trim() || '';
 
-                id = generateAutoID(mainCat, universe);
+                // Hent ut de nye feltene
+                const age = document.getElementById('add-pers-age').value.trim();
+                const species = document.getElementById('add-pers-species').value.trim();
+                const gender = document.getElementById('add-pers-gender').value.trim();
+                
+                const build = document.getElementById('add-pers-build').value;
+                const height = document.getElementById('add-pers-height').value;
+                const hairColor = document.getElementById('add-pers-haircolor').value;
+                const hairLength = document.getElementById('add-pers-hairlength').value;
+                const appearanceDesc = document.getElementById('add-pers-appearance-desc').value.trim();
+                
+                const cyborgType = document.getElementById('add-pers-cyborg-type').value;
+                const cyberPart = document.getElementById('add-pers-cyber-part').value;
+
+                // Sjekk om Restricted-boksen er huket av
+                const isRestricted = document.getElementById('add-pers-restricted').checked;
+                if (isRestricted) {
+                    universe = 'Classified'; // Sørger for at den settes som klassifisert/restricted i systemet
+                    fullCategory = `The Shadows / ${subCat}`; // Rutes automatisk til The Shadows / Underkategori
+                } else {
+                    fullCategory = `${mainCat} / ${subCat}`;
+                }
+
+                if (!name) {
+                    alert("Du må fylle ut navnet på personellet!");
+                    return;
+                }
+
+                id = generateAutoID(isRestricted ? 'The Shadows' : mainCat, universe);
+
+                let newItem = {
+                    id: id,
+                    name: name,
+                    universeStatus: universe,
+                    categoryPath: fullCategory,
+                    imageUrl: imageUrl,
+                    overview: { shortDescription: desc },
+                    manufacturing: { manufacturer: mfrOrFaction },
+                    specifications: {
+                        "Alder": age || "Ukjent",
+                        "Rase": species || "Ukjent",
+                        "Kjønn": gender || "Ukjent",
+                        "Kroppsbygning": build || "Standard",
+                        "Høyde": height || "Ukjent",
+                        "Hårfarge": hairColor || "Ikke spesifisert",
+                        "Hårlengde / Stil": hairLength || "Standard",
+                        "Kjennetegn / Arr": appearanceDesc || "Ingen spesielle",
+                        "Cyborg-type": cyborgType || "Ingen",
+                        "Cybernetisk del": cyberPart || "Ingen",
+                        "Tilhørighet": mfrOrFaction
+                    },
+                    lexNotes: { 
+                        lexNote: document.getElementById('add-pers-lex').value.trim() || "Lagt til via nettsiden.", 
+                        spectreAnalysis: document.getElementById('add-pers-spectre').value.trim() || "Registrert i systemet." 
+                    }
+                };
+
+                catalogData.components.push(newItem);
             }
 
-            if (!name) {
-                alert("Du må fylle ut navnet på posten!");
-                return;
-            }
-
-            let newItem = {
-                id: id,
-                name: name,
-                universeStatus: universe,
-                categoryPath: fullCategory,
-                overview: { shortDescription: desc },
-                manufacturing: { manufacturer: mfrOrFaction },
-                specifications: isPersonnelActive ? { "Modifikasjoner / Roller": mods, "Tilhørighet": mfrOrFaction } : {},
-                lexNotes: { lexNote: "Lagt til via nettsiden.", spectreAnalysis: "Registrert i systemet." }
-            };
-
-            catalogData.components.push(newItem);
             saveToLocalStorage();
             closeAddModal();
             alert(`Ny post lagt til med automatisk ID: ${id}`);
+        }
+        
         } 
 		async function loadCatalogFromGitHub() {
             const jsonUrl = 'https://raw.githubusercontent.com/LexRonny/Lex-Spare-Part-Catalog/feature-json-update/catalogData_backup%20(1).json';
