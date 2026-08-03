@@ -383,6 +383,16 @@
                     <button class="tab-btn" onclick="deleteCurrentItem()" style="border-color: var(--accent-red); color: var(--accent-red);">Slett post</button>
                     <button class="tab-btn" onclick="switchToEditMode()" style="border-color: var(--holo-blue); color: var(--holo-blue);">Rediger post</button>
                 </div>
+				<!-- Miniatyrbilde som vises på datakortet -->
+<div class="card-image-container" style="float: right; margin-left: 15px;">
+    <img id="view-card-image" src="" alt="Bildeforspekting" style="width: 80px; height: 100px; object-fit: cover; cursor: pointer; border: 1px solid #00ffff; display: none;" onclick="openFullImage(this.src)" title="Klikk for å forstørre bilde">
+</div>
+
+<!-- Pop-up overlay for fullskjermvisning av bildet -->
+<div id="imagePopupModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); text-align: center;" onclick="closeFullImage()">
+    <span style="position: absolute; top: 20px; right: 35px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
+    <img id="fullImageElement" style="max-width: 90vw; max-height: 85vh; margin-top: 5vh; border: 2px solid #00ffff; box-shadow: 0 0 20px rgba(0,255,255,0.5);">
+</div>
             </div>
 
             <!-- REDIGERINGSMODUS -->
@@ -16943,6 +16953,17 @@
                 closeModal();
                 alert("Posten har blitt slettet.");
             }
+			// Åpner det store bildet i pop-up når du klikker på miniatyrbildet
+function openFullImage(imgSrc) {
+    if (!imgSrc) return;
+    document.getElementById('fullImageElement').src = imgSrc;
+    document.getElementById('imagePopupModal').style.display = 'block';
+}
+
+// Lukker pop-upen igjen når du klikker på bildet eller bakgrunnen
+function closeFullImage() {
+    document.getElementById('imagePopupModal').style.display = 'none';
+}
         }
 
   function switchToEditMode() {
