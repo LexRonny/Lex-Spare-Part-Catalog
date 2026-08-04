@@ -17349,7 +17349,7 @@ function populateTabCategories(tabNumber) {
     } else if (tabNumber === 3) {
         allowedCategories = ['Food & Drink', 'Medical & Chemical Equipment', 'Raw Materials & Agriculture'];
     } else if (tabNumber === 4) {
-        allowedCategories = ['Known Associates', 'Software, Droids & Other Systems']; // Droider og folk samlet her
+        allowedCategories = ['Droids', 'Known associates', 'Factions', 'Locations']; 
     }
 
     allowedCategories.forEach(cat => {
@@ -17362,6 +17362,34 @@ function populateTabCategories(tabNumber) {
     // Oppdater underkategorier basert på førstevalget
     updateSubCategoryDropdown('add-main-cat', 'add-sub-cat');
 }
+		const categoryMap = {
+    // ... dine andre kategorier fra Fane 1, 2 og 3 her ...
+
+    "Droids": [
+        "Medical droid", 
+        "Protocol droid", 
+        "Assassin droid"
+    ],
+    "Known associates": [
+        "Informants", 
+        "Smugglers", 
+        "Contacts", 
+        "Personel"
+    ],
+    "Factions": [
+        "Guilds", 
+        "Syndicates", 
+        "Alliances", 
+        "Manufactures"
+    ],
+    "Locations": [
+        "Planets", 
+        "Moons", 
+        "Cities", 
+        "Strongholds", 
+        "DropOffs"
+    ]
+};
 
 		function saveNewItem() {
             const isPersonnelActive = document.getElementById('addPersonnelForm').style.display === 'block';
@@ -17421,7 +17449,7 @@ function populateTabCategories(tabNumber) {
                 const cyberPart = document.getElementById('add-pers-cyber-part').value;
 
                 // Sjekk om Restricted-boksen er huket av
-                const isRestricted = document.getElementById('add-pers-restricted').checked;
+                const isRestricted = document.getElementById('global-pers-restricted').checked;
                 if (isRestricted) {
                     universe = 'Classified'; 
                     // Tvinger hovedkategori til The Shadows, og bruker valgt underkategori (f.eks. Known Associates)
