@@ -660,20 +660,146 @@
     </div>
 
     <script>
-        const CATEGORY_STRUCTURE = {
-            "Weapons": ["Handheld Blasters & Pistols", "Rifles & Carbines", "Heavy & Support Weapons", "Melee & Vibro-Weapons", "Explosives & Launchers", "Turrets"],
-            "Armor & Protection": ["Helmets & Visors", "Body Armor & Chest Rigs", "Shields & Deflectors", "Specialty Gear"],
-            "Clothing & Textiles": ["Outerwear & Uniforms", "Undergarments & Thermal Suits", "Footwear & Boots", "Raw Fabrics & Fibers"],
-            "Raw Materials & Agriculture": ["Metals & Alloys", "Chemicals & Solvents", "Agricultural Products & Fibers", "Synthetics & Polymers"],
-            "Food & Drink": ["Rations & Survival Food", "Beverages & Tonics", "Mess & Cooking Gear"],
-            "Starships & Flight Systems": ["Starfighters & Interceptors", "Gunships & Support Craft", "Engines & Propulsion", "Hyperdrives & Power Cores", "Avionics & Navigation"],
-            "Speeders & Ground Vehicles": ["Speeder Bikes & Swoops", "Landspeeders & Civilian Transports", "Industrial & Heavy Transport", "Vehicle Components"],
-            "Medical & Chemical Equipment": ["Healing Fluids & Pharmaceuticals", "Trauma & Surgical Gear", "Diagnostics & Scanners", "Droids"],
-            "Survival, Tools & Field Gear": ["Maintenance & Armorer Tools", "Salvage & Cutting Equipment", "Deep Space Survival", "Storage & Hardcases"],
-            "Software, Droids & Other Systems": ["Slicing & Covert Tools", "Data & Credentials", "Droids & Automata", "Miscellaneous Systems"],
-            "Known Associates": ["Informants", "Smugglers & Contacts", "Fringe Guilds", "Local Contacts"],
-            "The Shadows": ["Personnel", "Fleet & Bases", "Classified Logs"]
-        };
+      const CATEGORY_STRUCTURE = {
+    // --- FANE 1: BATTLE GEAR AND EQUIPMENT ---
+    "Weapons": [
+        "Blasters & Pistols", 
+        "Rifles & Carabines", 
+        "Heavy & Support weapons", 
+        "Melee & Vibro weapons", 
+        "Explosives & Launchers", 
+        "Turrets"
+    ],
+    "Survival, Tools & Field Gear": [
+        "Tools", 
+        "Equipment", 
+        "Survival Gear", 
+        "Containers", 
+        "Shelter", 
+        "Navigation"
+    ],
+    "Armor & Protection": [
+        "Helmet & Visors", 
+        "Body armor & Chest rigs", 
+        "Shields & Deflectors", 
+        "Special"
+    ],
+    "Clothing & Textiles": [
+        "Uniforms", 
+        "Headwear", 
+        "Outerwear", 
+        "Undergarments", 
+        "Footwear", 
+        "Special", 
+        "Carpets & curtains", 
+        "Other textiles"
+    ],
+
+    // --- FANE 2: TRANSPORT & TECH ---
+    "Starships": [
+        "Starfighter", 
+        "Interceptor", 
+        "Gunship", 
+        "Supportship", 
+        "Capital ships", 
+        "Haulcraft", 
+        "Cargo ship", 
+        "Personnel transport"
+    ],
+    "Speeders & Vehicles": [
+        "Speeder Bikes", 
+        "Swoops", 
+        "Skiff", 
+        "Landspeeder", 
+        "Airspeeder", 
+        "Ground Vehicles", 
+        "Walker", 
+        "Crawler"
+    ],
+    "Medical & Chemical Equipment": [
+        "Bacta Tanks", 
+        "Medpacs & Trauma Gear", 
+        "Cybernetic Prosthetics", 
+        "Cloning Cylinders", 
+        "Chemical Converters", 
+        "Toxin Detectors & Scanners", 
+        "Chemical Sprayers & Neutralizers"
+    ],
+    "System & Software": [
+        "Avionics", 
+        "Navigation", 
+        "Misc. System", 
+        "Core Systems & Networks", 
+        "Slicing & Covert system"
+    ],
+    "Hardware": [
+        "Engine", 
+        "Propulsion", 
+        "Hyperdrive", 
+        "Power Core", 
+        "Shield", 
+        "Repulsorlift", 
+        "Thrusters", 
+        "Other components"
+    ],
+
+    // --- FANE 3: SUPPLY & INDUSTRY ---
+    "Food & drinks": [
+        "Beverages", 
+        "Food", 
+        "Snacks", 
+        "Alcohol"
+    ],
+    "Medical & Chemical Compounds": [
+        "Bacta & Healing Fluids", 
+        "Kolto & Natural Extracts", 
+        "Pharmaceuticals & Synthenol", 
+        "Spice & Narcotics", 
+        "Baradium & Explosive Compounds"
+    ],
+    "Raw Materials": [
+        "Metal", 
+        "Synthetics", 
+        "Polmer", 
+        "Alloys", 
+        "Raw Fabric", 
+        "Fiber"
+    ],
+    "Agriculture": [
+        "Grain", 
+        "Spice", 
+        "Vegetables", 
+        "Fruit"
+    ],
+
+    // --- FANE 4: PERSONNEL, DROIDS, FACTIONS & LOCATIONS ---
+    "Droids": [
+        "Medical Droid", 
+        "Protocol Droid", 
+        "Combat Droid", 
+        "Astrodroid", 
+        "Industrial Droid"
+    ],
+    "Known associates": [
+        "Informants", 
+        "Smugglers", 
+        "Contacts", 
+        "Personel"
+    ],
+    "Factions": [
+        "Guilds", 
+        "Syndicates", 
+        "Alliances", 
+        "Manufactures"
+    ],
+    "Locations": [
+        "Planets", 
+        "Moons", 
+        "Cities", 
+        "Strongholds", 
+        "DropOffs"
+    ]
+};
 
         const MANUFACTURER_PROFILES = {
             "Corellian Engineering Corporation": {
