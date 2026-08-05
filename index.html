@@ -17387,21 +17387,24 @@ function switchAddTabNew(tabIndex) {
     });
 }
 
-function updateSubCategoryDropdown(mainSelectId, subSelectId) {
-    const mainSelect = document.getElementById(mainSelectId);
-    const subSelect = document.getElementById(subSelectId);
+function updateSubCategoryDropdown(mainCatId, subCatId) {
+    const mainSelect = document.getElementById(mainCatId);
+    const subSelect = document.getElementById(subCatId);
     if (!mainSelect || !subSelect) return;
-    
+
+    const selectedMain = mainSelect.value;
     subSelect.innerHTML = '';
-    let mainCat = mainSelect.value;
-    let subs = CATEGORY_STRUCTURE[mainCat] || [];
-    
-    subs.forEach(sub => {
+
+    // Henter underkategorier fra CATEGORY_STRUCTURE vi nettopp satte opp
+    const subCategories = CATEGORY_STRUCTURE[selectedMain] || [];
+
+    subCategories.forEach(sub => {
         let opt = document.createElement('option');
         opt.value = sub;
         opt.innerText = sub;
         subSelect.appendChild(opt);
     });
+
 }
         }
 
@@ -17567,15 +17570,20 @@ function populateTabCategories(tabNumber, mainId, subId) {
         "Walker", 
         "Crawler"
     ],
-    "Droids": [
-        "Astrodroid", 
-        "Working droid"
+    "Medical & Chemical Equipment": [
+        "Bacta Tanks", 
+        "Medpacs & Trauma Gear", 
+        "Cybernetic Prosthetics", 
+        "Cloning Cylinders", 
+        "Chemical Converters", 
+        "Toxin Detectors & Scanners", 
+        "Chemical Sprayers & Neutralizers"
     ],
     "System & Software": [
         "Avionics", 
         "Navigation", 
         "Misc. System", 
-        "Data", 
+        "Core Systems & Networks", 
         "Slicing & Covert system"
     ],
     "Hardware": [
@@ -17588,23 +17596,20 @@ function populateTabCategories(tabNumber, mainId, subId) {
         "Thrusters", 
         "Other components"
     ],
-	// --- FANE 3: SUPPLY & INDUSTRY ---
+
+    // --- FANE 3: SUPPLY & INDUSTRY ---
     "Food & drinks": [
         "Beverages", 
         "Food", 
         "Snacks", 
         "Alcohol"
     ],
-    "Medical & Chemical": [
-        "Medicine", 
-        "Bacta", 
-        "Colto", 
-        "Spice", 
-        "Synthflesh", 
-        "Spray Bandage", 
-        "Glitterstim", 
-        "Ryll", 
-        "Bioweapons"
+    "Medical & Chemical Compounds": [
+        "Bacta & Healing Fluids", 
+        "Kolto & Natural Extracts", 
+        "Pharmaceuticals & Synthenol", 
+        "Spice & Narcotics (Ryll, Glitterstim)", 
+        "Baradium & Explosive Compounds"
     ],
     "Raw Materials": [
         "Metal", 
@@ -17621,11 +17626,13 @@ function populateTabCategories(tabNumber, mainId, subId) {
         "Fruit"
     ],
 
-	// --- FANE 4: PERSONEL & CONTACTS ---
+    // --- FANE 4: PERSONNEL, DROIDS, FACTIONS & LOCATIONS ---
     "Droids": [
-        "Medical droid", 
-        "Protocol droid", 
-        "Assassin droid"
+        "Medical Droid", 
+        "Protocol Droid", 
+        "Combat Droid", 
+        "Astrodroid", 
+        "Industrial Droid"
     ],
     "Known associates": [
         "Informants", 
