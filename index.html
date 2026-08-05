@@ -17321,7 +17321,7 @@ function updateSubCategoryDropdown(mainSelectId, subSelectId) {
             let paddedNum = String(nextNum).padStart(5, '0');
             return `${catCode}-${paddedNum}-${uChar}`;
         }
-	function switchAddTabNew(tabNumber) {
+function switchAddTabNew(tabNumber) {
     // Fjern active fra alle knapper
     for (let i = 1; i <= 4; i++) {
         const btn = document.getElementById(`tabBtn${i}`);
@@ -17337,59 +17337,53 @@ function updateSubCategoryDropdown(mainSelectId, subSelectId) {
     if (tabNumber === 4) {
         if (genForm) genForm.style.display = 'none';
         if (persForm) persForm.style.display = 'block';
-        if (typeof populateCategoryDropdown === 'function') {
-            populateCategoryDropdown('add-pers-main-cat');
-            updateSubCategoryDropdown('add-pers-main-cat', 'add-pers-sub-cat');
-        }
+        populateTabCategories(4, 'add-pers-main-cat', 'add-pers-sub-cat');
     } else {
         if (genForm) genForm.style.display = 'block';
         if (persForm) persForm.style.display = 'none';
-        if (typeof populateCategoryDropdown === 'function') {
-            populateCategoryDropdown('add-comp-main-cat');
-            updateSubCategoryDropdown('add-comp-main-cat', 'add-comp-sub-cat');
-        }
+        populateTabCategories(tabNumber, 'add-comp-main-cat', 'add-comp-sub-cat');
     }
 }
 
-        function toggleRestrictedModalColor(checkbox) {
-            const modalContent = document.getElementById('addModalContent');
-            if (!modalContent) return;
+function toggleRestrictedModalColor(checkbox) {
+    const modalContent = document.getElementById('addItemModal'); // Bruker riktig ID på modalen din
+    if (!modalContent) return;
 
-            if (checkbox.checked) {
-                modalContent.style.background = '#1a1700'; 
-                modalContent.style.borderColor = 'var(--classified-gold)';
-            } else {
-                modalContent.style.background = ''; 
-                modalContent.style.borderColor = '';
-            }
-        }
+    if (checkbox.checked) {
+        modalContent.style.background = '#1a1700'; 
+        modalContent.style.borderColor = 'var(--classified-gold)';
+    } else {
+        modalContent.style.background = ''; 
+        modalContent.style.borderColor = '';
+    }
+}
 
-        function populateTabCategories(tabNumber) {
-            const mainSelect = document.getElementById('add-main-cat');
-            if (!mainSelect) return;
-            
-            mainSelect.innerHTML = '';
-            
-            let allowedCategories = [];
-            if (tabNumber === 1) {
-                allowedCategories = ['Weapons', 'Armor & Protection', 'Clothing & Textiles', 'Survival, Tools & Field Gear'];
-            } else if (tabNumber === 2) {
-                allowedCategories = ['Starships & Flight Systems', 'Speeders & Ground Vehicles', 'Software, Droids & Other Systems'];
-            } else if (tabNumber === 3) {
-                allowedCategories = ['Food & Drink', 'Medical & Chemical Equipment', 'Raw Materials & Agriculture'];
-            } else if (tabNumber === 4) {
-                allowedCategories = ['Droids', 'Known associates', 'Factions', 'Locations']; 
-            }
+function populateTabCategories(tabNumber, mainId, subId) {
+    const mainSelect = document.getElementById(mainId);
+    if (!mainSelect) return;
+    
+    mainSelect.innerHTML = '';
+    
+    let allowedCategories = [];
+    if (tabNumber === 1) {
+        allowedCategories = ['Weapons', 'Survival, Tools & Field Gear', 'Armor & Protection', 'Clothing & Textiles'];
+    } else if (tabNumber === 2) {
+        allowedCategories = ['Starships', 'Speeders & Vehicles', 'Automation & Droids', 'System & Software', 'Hardware'];
+    } else if (tabNumber === 3) {
+        allowedCategories = ['Food & drinks', 'Medical & Chemical', 'Raw Materials', 'Agriculture'];
+    } else if (tabNumber === 4) {
+        allowedCategories = ['Droids', 'Known associates', 'Factions', 'Locations']; 
+    }
 
-            allowedCategories.forEach(cat => {
-                let opt = document.createElement('option');
-                opt.value = cat;
-                opt.innerText = cat;
-                mainSelect.appendChild(opt);
-            });
+    allowedCategories.forEach(cat => {
+        let opt = document.createElement('option');
+        opt.value = cat;
+        opt.innerText = cat;
+        mainSelect.appendChild(opt);
+    });
 
-            updateSubCategoryDropdown('add-main-cat', 'add-sub-cat');
-        }
+    updateSubCategoryDropdown(mainId, subId);
+}
 
 		const categoryMap = {
     // --- FANE 1: BATTLE GEAR AND EQUIPMENT ---
