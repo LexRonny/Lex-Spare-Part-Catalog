@@ -17363,26 +17363,27 @@ function switchAddTabNew(tabIndex) {
     }
 }
 
-        function populateCategoryDropdown(elementId) {
-            const select = document.getElementById(elementId);
-            select.innerHTML = '';
-            Object.keys(CATEGORY_STRUCTURE).forEach(cat => {
-                if (cat === 'The Shadows' && !unlockedClassified) return;
-                let opt = document.createElement('option');
-                opt.value = cat;
-                opt.innerText = cat;
-                select.appendChild(opt);
-            });
-        }
+      function populateCategoryDropdown(elementId) {
+    const select = document.getElementById(elementId);
+    if (!select) return;
+    select.innerHTML = '';
+    Object.keys(CATEGORY_STRUCTURE).forEach(cat => {
+        if (cat === 'The Shadows' && !unlockedClassified) return;
+        let opt = document.createElement('option');
+        opt.value = cat;
+        opt.innerText = cat;
+        select.appendChild(opt);
+    });
+}
 
-	function updateSubCategoryDropdown(mainSelectId, subSelectId) {
+function updateSubCategoryDropdown(mainSelectId, subSelectId) {
     const mainSelect = document.getElementById(mainSelectId);
     const subSelect = document.getElementById(subSelectId);
     if (!mainSelect || !subSelect) return;
     
     subSelect.innerHTML = '';
     let mainCat = mainSelect.value;
-    let subs = categoryMap[mainCat] || CATEGORY_STRUCTURE[mainCat] || [];
+    let subs = CATEGORY_STRUCTURE[mainCat] || [];
     
     subs.forEach(sub => {
         let opt = document.createElement('option');
@@ -17390,7 +17391,7 @@ function switchAddTabNew(tabIndex) {
         opt.innerText = sub;
         subSelect.appendChild(opt);
     });
-
+}
         }
 
         // AUTOMATISK ID-GENERATOR MED 5-SIFRER OG UNIVERS-BOKSTAV
