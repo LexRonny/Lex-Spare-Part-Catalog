@@ -17034,7 +17034,24 @@
             });
             container.innerHTML = html;
         }
+		function updatesSubCategoryDropdown(mainId, subId) {
+    const mainSelect = document.getElementById(mainId);
+    const subSelect = document.getElementById(subId);
+    if (!mainSelect || !subSelect) return;
 
+    const selectedMain = mainSelect.value;
+    subSelect.innerHTML = '';
+
+    const subCategories = CATEGORY_STRUCTURE[selectedMain] || [];
+
+    subCategories.forEach(sub => {
+        let opt = document.createElement('option');
+        opt.value = sub;
+        opt.innerText = sub;
+        subSelect.appendChild(opt);
+    });
+}
+		
         function selectMainCategory(catName, btn) {
             document.querySelectorAll('#mainCategoryButtons .tab-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -17387,25 +17404,7 @@ function switchAddTabNew(tabIndex) {
     });
 }
 
-function updatesSubCategoryDropdown(mainCatId, subCatId) {
-    const mainSelect = document.getElementById(mainCatId);
-    const subSelect = document.getElementById(subCatId);
-    if (!mainSelect || !subSelect) return;
 
-    const selectedMain = mainSelect.value;
-    subSelect.innerHTML = '';
-
-    // Henter underkategorier fra CATEGORY_STRUCTURE vi nettopp satte opp
-    const subCategories = CATEGORY_STRUCTURE[selectedMain] || [];
-
-    subCategories.forEach(sub => {
-        let opt = document.createElement('option');
-        opt.value = sub;
-        opt.innerText = sub;
-        subSelect.appendChild(opt);
-    });
-
-}
         }
 
         // AUTOMATISK ID-GENERATOR MED 5-SIFRER OG UNIVERS-BOKSTAV
