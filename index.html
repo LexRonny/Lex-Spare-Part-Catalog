@@ -432,6 +432,91 @@
 
         </div>
     </div>
+	<!-- NY "LEGG TIL"-MODAL OVERLAY -->
+<div class="modal-overlay" id="addItemModal" onclick="closeAddModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeAddModal()">[ X ]</button>
+        
+        <div class="modal-header">
+            <div class="modal-title" style="color: var(--holo-blue);">Legg til ny post i katalogen</div>
+        </div>
+
+        <!-- NYE 4 FANER FOR LEGG TIL -->
+        <div style="display: flex; gap: 5px; margin-bottom: 15px; flex-wrap: wrap;" id="addTabsContainer">
+            <button type="button" class="tab-btn active" id="tabBtn1" onclick="switchAddTabNew(1)">1. Utstyr & Kamp</button>
+            <button type="button" class="tab-btn" id="tabBtn2" onclick="switchAddTabNew(2)">2. Transport & Tech</button>
+            <button type="button" class="tab-btn" id="tabBtn3" onclick="switchAddTabNew(3)">3. Forsyning & Industri</button>
+            <button type="button" class="tab-btn" id="tabBtn4" onclick="switchAddTabNew(4)">4. Personell & Droider</button>
+        </div>
+
+        <!-- GLOBAL RESTRICTED-SJEKKBOKS -->
+        <div style="background: rgba(255,200,0,0.1); border: 1px solid var(--classified-gold); padding: 6px 10px; margin-bottom: 15px; border-radius: 4px; font-size: 0.9rem;">
+            <label style="color: var(--classified-gold); font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="global-pers-restricted"> 
+                ⚠️ Legg i Restricted Files (The Shadows)
+            </label>
+        </div>
+
+        <!-- SKJEMA FOR FANE 1, 2 og 3 (Utstyr, Transport, Forsyning) -->
+        <div id="addItemGenericForm">
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Navn:</label>
+            <input type="text" id="add-gen-name" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
+
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Univers Status:</label>
+            <select id="add-gen-universe" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
+                <option value="Canon">Canon</option>
+                <option value="Legends">Legends</option>
+                <option value="Fan-Made">Fan-Made</option>
+            </select>
+
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Hovedkategori:</label>
+            <select id="add-gen-main-cat" onchange="updateSubCategoryDropdown('add-gen-main-cat', 'add-gen-sub-cat')" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;"></select>
+
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Underkategori:</label>
+            <select id="add-gen-sub-cat" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;"></select>
+
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Produsent / Tilhørighet:</label>
+            <input type="text" id="add-gen-manufacturer" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;" placeholder="F.eks. Corellian Engineering Corporation">
+
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Bilde-URL (GitHub Raw):</label>
+            <input type="text" id="add-gen-image" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;" placeholder="https://raw.githubusercontent.com/...">
+
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Beskrivelse:</label>
+            <textarea id="add-gen-desc" style="width: 100%; padding: 8px; margin-top: 4px; height: 60px; box-sizing: border-box;"></textarea>
+        </div>
+
+        <!-- SKJEMA FOR FANE 4 (Personell & Droider - du kan beholde ditt detaljerte personellskjema her, bare sørg for at id-en på wrapperen er 'addItemPersonnelForm') -->
+        <div id="addItemPersonnelForm" style="display: none;">
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Navn (Personell / Droid):</label>
+            <input type="text" id="add-pers-name" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
+
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Univers Status:</label>
+            <select id="add-pers-universe" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
+                <option value="Canon">Canon</option>
+                <option value="Legends">Legends</option>
+                <option value="Fan-Made">Fan-Made</option>
+            </select>
+
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Hovedkategori:</label>
+            <select id="add-pers-main-cat" onchange="updateSubCategoryDropdown('add-pers-main-cat', 'add-pers-sub-cat')" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;"></select>
+
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Underkategori:</label>
+            <select id="add-pers-sub-cat" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;"></select>
+
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Bilde-URL:</label>
+            <input type="text" id="add-pers-image" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
+
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Biografi / Notater:</label>
+            <textarea id="add-pers-desc" style="width: 100%; padding: 8px; margin-top: 4px; height: 60px; box-sizing: border-box;"></textarea>
+        </div>
+
+        <!-- BUNN-KNAPPER -->
+        <div style="position: sticky; bottom: 0; background: var(--panel-bg); padding: 12px 0; border-top: 1px solid var(--border-gray); text-align: right; margin-top: 15px; display: flex; justify-content: flex-end; gap: 10px;">
+            <button onclick="closeAddModal()" class="tab-btn">Avbryt</button>
+            <button onclick="saveNewItem()" class="tab-btn" style="background: var(--holo-blue); color: #000; font-weight: bold;">Lagre post</button>
+        </div>
+    </div>
+</div>
 
 	<!-- NYE FANER FOR LEGG TIL -->
 <div style="display: flex; gap: 5px; margin-bottom: 15px; flex-wrap: wrap;" id="addTabsContainer">
@@ -17206,60 +17291,65 @@
             }
         }
 
-        // Åpner "Legg til"-modalen og nullstiller til fane 1
+       // Åpner "Legg til"-modalen med riktig ID og nullstiller til fane 1
 function openAddModal() {
-    // Fyll inn kategorier for standardkomponenter / personell hvis du bruker det
-    if (typeof populateCategoryDropdown === 'function') {
-        populateCategoryDropdown('add-comp-main-cat');
-        updateSubCategoryDropdown('add-comp-main-cat', 'add-comp-sub-cat');
-    }
-
-    // Aktiver fane 1 som standard ved åpning
-    switchAddTabNew(1);
-
-    // Vis modalen (sjekk at ID-en på selve modal-overlayen din heter 'addModal' eller 'itemModal')
-    const modal = document.getElementById('addModal');
+    const modal = document.getElementById('addItemModal');
     if (modal) {
         modal.style.display = 'flex';
+        switchAddTabNew(1); // Starter på fane 1 som standard
     } else {
-        console.error("Fant ikke elementet med ID 'addModal' i HTML-en!");
+        console.error("Fant ikke elementet med ID 'addItemModal' i HTML-en!");
     }
 }
 
 // Lukker "Legg til"-modalen
-function closeAddModal() {
-    const modal = document.getElementById('addModal');
+function closeAddModal(event) {
+    // Hvis funksjonen kalles av en klikk-hendelse på overlayen, sjekk at man klikker utenfor kortet
+    if (event && event.target.id !== 'addItemModal') return;
+    
+    const modal = document.getElementById('addItemModal');
     if (modal) {
         modal.style.display = 'none';
     }
 }
 
-// Styrer vekslingen mellom de 4 nye fanene i "Legg til"-modalen
+// Styrer vekslingen mellom de 4 fanene i "Legg til"-modalen
 function switchAddTabNew(tabIndex) {
-    // 1. Fjern 'active'-klasse fra alle tab-knappene
+    // 1. Fjern 'active'-klasse fra alle 4 knapper
     for (let i = 1; i <= 4; i++) {
         const btn = document.getElementById(`tabBtn${i}`);
         if (btn) btn.classList.remove('active');
     }
 
-    // 2. Legg til 'active'-klasse på den knappen som ble trykket
+    // 2. Aktiver den knappen som ble trykket
     const activeBtn = document.getElementById(`tabBtn${tabIndex}`);
     if (activeBtn) activeBtn.classList.add('active');
 
-    // 3. Logikk for å vise/skjule ulike skjemaer basert på fanevalg
-    // (Her kan du tilpasse hvilke skjema-div-er som skal vises per fane)
-    const compForm = document.getElementById('addComponentForm');
-    const persForm = document.getElementById('addPersonnelForm');
+    // 3. Hent skjema-elementene
+    const genForm = document.getElementById('addItemGenericForm');
+    const persForm = document.getElementById('addItemPersonnelForm');
 
-    // Eksempel: Fane 1 og 2 og 3 bruker utstyrs-/komponentskjemaet, fane 4 bruker personell-/droideskjemaet
+    // 4. Vis riktig skjema basert på fanevalg (Fane 4 = Personell/Droider, 1-3 = Generelt utstyr/transport/forsyning)
     if (tabIndex === 4) {
-        if (compForm) compForm.style.display = 'none';
+        if (genForm) genForm.style.display = 'none';
         if (persForm) persForm.style.display = 'block';
+        
+        // Fyll inn kategorier for personell/droider
+        if (typeof populateCategoryDropdown === 'function') {
+            populateCategoryDropdown('add-pers-main-cat');
+            updateSubCategoryDropdown('add-pers-main-cat', 'add-pers-sub-cat');
+        }
     } else {
-        if (compForm) compForm.style.display = 'block';
+        if (genForm) genForm.style.display = 'block';
         if (persForm) persForm.style.display = 'none';
+        
+        // Fyll inn kategorier for generelt utstyr
+        if (typeof populateCategoryDropdown === 'function') {
+            populateCategoryDropdown('add-gen-main-cat');
+            updateSubCategoryDropdown('add-gen-main-cat', 'add-gen-sub-cat');
+        }
     }
-}
+
 		function toggleRestrictedModalColor(checkbox) {
     const modalContent = document.getElementById('addModalContent'); // Tilpass ID-en til din modal-boks hvis den heter noe annet
     if (!modalContent) return;
