@@ -433,7 +433,7 @@
         </div>
     </div>
 
-   <!-- NYE FANER FOR LEGG TIL -->
+	<!-- NYE FANER FOR LEGG TIL -->
 <div style="display: flex; gap: 5px; margin-bottom: 15px; flex-wrap: wrap;" id="addTabsContainer">
     <button type="button" class="tab-btn active" id="tabBtn1" onclick="switchAddTabNew(1)">1. Utstyr & Kamp</button>
     <button type="button" class="tab-btn" id="tabBtn2" onclick="switchAddTabNew(2)">2. Transport & Tech</button>
@@ -17206,34 +17206,60 @@
             }
         }
 
-        function openAddModal() {
-            populateCategoryDropdown('add-comp-main-cat');
-            updateSubCategoryDropdown('add-comp-main-cat', 'add-comp-sub-cat');
-            
-            populateCategoryDropdown('add-pers-main-cat');
-            updateSubCategoryDropdown('add-pers-main-cat', 'add-pers-sub-cat');
+        // Åpner "Legg til"-modalen og nullstiller til fane 1
+function openAddModal() {
+    // Fyll inn kategorier for standardkomponenter / personell hvis du bruker det
+    if (typeof populateCategoryDropdown === 'function') {
+        populateCategoryDropdown('add-comp-main-cat');
+        updateSubCategoryDropdown('add-comp-main-cat', 'add-comp-sub-cat');
+    }
 
-            switchAddTabNew(1);
-            document.getElementById('addModal').style.display = 'flex';
-        }
+    // Aktiver fane 1 som standard ved åpning
+    switchAddTabNew(1);
 
-        function closeAddModal() {
-            document.getElementById('addModal').style.display = 'none';
-        }
+    // Vis modalen (sjekk at ID-en på selve modal-overlayen din heter 'addModal' eller 'itemModal')
+    const modal = document.getElementById('addModal');
+    if (modal) {
+        modal.style.display = 'flex';
+    } else {
+        console.error("Fant ikke elementet med ID 'addModal' i HTML-en!");
+    }
+}
 
-        function switchAddTab(tabType) {
-            if (tabType === 'component') {
-                document.getElementById('addComponentForm').style.display = 'block';
-                document.getElementById('addPersonnelForm').style.display = 'none';
-                document.getElementById('tabComponentBtn').classList.add('active');
-                document.getElementById('tabPersonnelBtn').classList.remove('active');
-            } else {
-                document.getElementById('addComponentForm').style.display = 'none';
-                document.getElementById('addPersonnelForm').style.display = 'block';
-                document.getElementById('tabPersonnelBtn').classList.add('active');
-                document.getElementById('tabComponentBtn').classList.remove('active');
-            }
-        }
+// Lukker "Legg til"-modalen
+function closeAddModal() {
+    const modal = document.getElementById('addModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// Styrer vekslingen mellom de 4 nye fanene i "Legg til"-modalen
+function switchAddTabNew(tabIndex) {
+    // 1. Fjern 'active'-klasse fra alle tab-knappene
+    for (let i = 1; i <= 4; i++) {
+        const btn = document.getElementById(`tabBtn${i}`);
+        if (btn) btn.classList.remove('active');
+    }
+
+    // 2. Legg til 'active'-klasse på den knappen som ble trykket
+    const activeBtn = document.getElementById(`tabBtn${tabIndex}`);
+    if (activeBtn) activeBtn.classList.add('active');
+
+    // 3. Logikk for å vise/skjule ulike skjemaer basert på fanevalg
+    // (Her kan du tilpasse hvilke skjema-div-er som skal vises per fane)
+    const compForm = document.getElementById('addComponentForm');
+    const persForm = document.getElementById('addPersonnelForm');
+
+    // Eksempel: Fane 1 og 2 og 3 bruker utstyrs-/komponentskjemaet, fane 4 bruker personell-/droideskjemaet
+    if (tabIndex === 4) {
+        if (compForm) compForm.style.display = 'none';
+        if (persForm) persForm.style.display = 'block';
+    } else {
+        if (compForm) compForm.style.display = 'block';
+        if (persForm) persForm.style.display = 'none';
+    }
+}
 		function toggleRestrictedModalColor(checkbox) {
     const modalContent = document.getElementById('addModalContent'); // Tilpass ID-en til din modal-boks hvis den heter noe annet
     if (!modalContent) return;
