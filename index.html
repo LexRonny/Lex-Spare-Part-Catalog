@@ -17348,6 +17348,7 @@ function switchAddTabNew(tabIndex) {
             populateCategoryDropdown('add-gen-main-cat');
             updateSubCategoryDropdown('add-gen-main-cat', 'add-gen-sub-cat');
         }
+	}
 		
 		function toggleRestrictedModalColor(checkbox) {
     const modalContent = document.getElementById('addModalContent'); // Tilpass ID-en til din modal-boks hvis den heter noe annet
@@ -17430,52 +17431,61 @@ function switchAddTabNew(tabIndex) {
             let paddedNum = String(nextNum).padStart(5, '0');
             return `${catCode}-${paddedNum}-${uChar}`;
         }
-		function switchAddTabNew(tabNumber) {
-    // Fjern active fra alle knapper
-    for (let i = 1; i <= 4; i++) {
-        const btn = document.getElementById(`tabBtn${i}`);
-        if (btn) btn.classList.remove('active');
-    }
-    // Sett active på valgt knapp
-    document.getElementById(`tabBtn${tabNumber}`).classList.add('active');
+	function switchAddTabNew(tabNumber) {
+            // Fjern active fra alle knapper
+            for (let i = 1; i <= 4; i++) {
+                const btn = document.getElementById(`tabBtn${i}`);
+                if (btn) btn.classList.remove('active');
+            }
+            // Sett active på valgt knapp
+            const targetBtn = document.getElementById(`tabBtn${tabNumber}`);
+            if (targetBtn) targetBtn.classList.add('active');
 
-    // Her kan du styre hvilke felt som skal vises. 
-    // Fane 1, 2 og 3 bruker standard komponent-felt, mens Fane 4 kan vise personell/droid-spesifikke felt (som utseende, alder, cybernetics osv.)
-    const isPersonnelTab = (tabNumber === 4);
-    
-    // Setter en intern peker på om vi oppretter personell/profil eller vanlig utstyr/ting
-    window.currentAddModeType = isPersonnelTab ? 'personnel' : 'equipment';
+            const isPersonnelTab = (tabNumber === 4);
+            window.currentAddModeType = isPersonnelTab ? 'personnel' : 'equipment';
 
-    // Oppdater nedtrekksmenyer for den aktiverte fanen
-    populateTabCategories(tabNumber);
-}
+            populateTabCategories(tabNumber);
+        }
 
-function populateTabCategories(tabNumber) {
-    const mainSelect = document.getElementById('add-main-cat'); // Sørg for at hovedkategori-ID-en din heter dette
-    if (!mainSelect) return;
-    
-    mainSelect.innerHTML = '';
-    
-    let allowedCategories = [];
-    if (tabNumber === 1) {
-        allowedCategories = ['Weapons', 'Armor & Protection', 'Clothing & Textiles', 'Survival, Tools & Field Gear'];
-    } else if (tabNumber === 2) {
-        allowedCategories = ['Starships & Flight Systems', 'Speeders & Ground Vehicles', 'Software, Droids & Other Systems'];
-    } else if (tabNumber === 3) {
-        allowedCategories = ['Food & Drink', 'Medical & Chemical Equipment', 'Raw Materials & Agriculture'];
-    } else if (tabNumber === 4) {
-        allowedCategories = ['Droids', 'Known associates', 'Factions', 'Locations']; 
-    }
+        function toggleRestrictedModalColor(checkbox) {
+            const modalContent = document.getElementById('addModalContent');
+            if (!modalContent) return;
 
-    allowedCategories.forEach(cat => {
-        let opt = document.createElement('option');
-        opt.value = cat;
-        opt.innerText = cat;
-        mainSelect.appendChild(opt);
-    });
+            if (checkbox.checked) {
+                modalContent.style.background = '#1a1700'; 
+                modalContent.style.borderColor = 'var(--classified-gold)';
+            } else {
+                modalContent.style.background = ''; 
+                modalContent.style.borderColor = '';
+            }
+        }
 
-    // Oppdater underkategorier basert på førstevalget
-    updateSubCategoryDropdown('add-main-cat', 'add-sub-cat');
+        function populateTabCategories(tabNumber) {
+            const mainSelect = document.getElementById('add-main-cat');
+            if (!mainSelect) return;
+            
+            mainSelect.innerHTML = '';
+            
+            let allowedCategories = [];
+            if (tabNumber === 1) {
+                allowedCategories = ['Weapons', 'Armor & Protection', 'Clothing & Textiles', 'Survival, Tools & Field Gear'];
+            } else if (tabNumber === 2) {
+                allowedCategories = ['Starships & Flight Systems', 'Speeders & Ground Vehicles', 'Software, Droids & Other Systems'];
+            } else if (tabNumber === 3) {
+                allowedCategories = ['Food & Drink', 'Medical & Chemical Equipment', 'Raw Materials & Agriculture'];
+            } else if (tabNumber === 4) {
+                allowedCategories = ['Droids', 'Known associates', 'Factions', 'Locations']; 
+            }
+
+            allowedCategories.forEach(cat => {
+                let opt = document.createElement('option');
+                opt.value = cat;
+                opt.innerText = cat;
+                mainSelect.appendChild(opt);
+            });
+
+            updateSubCategoryDropdown('add-main-cat', 'add-sub-cat');
+        }
 }
 		const categoryMap = {
     // --- FANE 1: BATTLE GEAR AND EQUIPMENT ---
@@ -17756,6 +17766,8 @@ function openFullImage(imgSrc) {
 function closeFullImage() {
     document.getElementById('imagePopupModal').style.display = 'none';
 }
+		
+        loadCatalogFromGitHub();
 	</script>
 	<div id="imagePopupModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); text-align: center;" onclick="closeFullImage()">
     <span style="position: absolute; top: 20px; right: 35px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer;">&times;</span>
