@@ -17387,7 +17387,7 @@ function switchAddTabNew(tabIndex) {
     });
 }
 
-function updateSubCategoryDropdown(mainCatId, subCatId) {
+function updatesSubCategoryDropdown(mainCatId, subCatId) {
     const mainSelect = document.getElementById(mainCatId);
     const subSelect = document.getElementById(subCatId);
     if (!mainSelect || !subSelect) return;
@@ -17511,7 +17511,7 @@ function populateTabCategories(tabNumber, mainId, subId) {
         mainSelect.appendChild(opt);
     });
 
-    updateSubCategoryDropdown(mainId, subId);
+    updatesSubCategoryDropdown(mainId, subId);
 }
 
 
