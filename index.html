@@ -17375,18 +17375,22 @@ function switchAddTabNew(tabIndex) {
             });
         }
 
-        function updateSubCategoryDropdown(mainSelectId, subSelectId) {
-            const mainCat = document.getElementById(mainSelectId).value;
-            const subSelect = document.getElementById(subSelectId);
-            subSelect.innerHTML = '';
-            
-            let subs = CATEGORY_STRUCTURE[mainCat] || [];
-            subs.forEach(sub => {
-                let opt = document.createElement('option');
-                opt.value = sub;
-                opt.innerText = sub;
-                subSelect.appendChild(opt);
-            });
+	function updateSubCategoryDropdown(mainSelectId, subSelectId) {
+    const mainSelect = document.getElementById(mainSelectId);
+    const subSelect = document.getElementById(subSelectId);
+    if (!mainSelect || !subSelect) return;
+    
+    subSelect.innerHTML = '';
+    let mainCat = mainSelect.value;
+    let subs = categoryMap[mainCat] || CATEGORY_STRUCTURE[mainCat] || [];
+    
+    subs.forEach(sub => {
+        let opt = document.createElement('option');
+        opt.value = sub;
+        opt.innerText = sub;
+        subSelect.appendChild(opt);
+    });
+
         }
 
         // AUTOMATISK ID-GENERATOR MED 5-SIFRER OG UNIVERS-BOKSTAV
