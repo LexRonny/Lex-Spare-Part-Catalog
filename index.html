@@ -16994,22 +16994,57 @@
             });
             container.innerHTML = html;
         }
-		function updatesSubCategoryDropdown(mainId, subId) {
-    const mainSelect = document.getElementById(mainId);
-    const subSelect = document.getElementById(subId);
+		// Universal funksjon for å oppdatere underkategorier basert på hovedkategori
+function updateSubCategoryDropdown(mainSelectId, subSelectId) {
+    const mainSelect = document.getElementById(mainSelectId);
+    const subSelect = document.getElementById(subSelectId);
+    
     if (!mainSelect || !subSelect) return;
-
+    
     const selectedMain = mainSelect.value;
     subSelect.innerHTML = '';
-
-    const subCategories = CATEGORY_STRUCTURE[selectedMain] || [];
-
-    subCategories.forEach(sub => {
+    
+    // Hent underkategorier fra categoryMap (eller CATEGORY_STRUCTURE)
+    const sourceMap = typeof CATEGORY_STRUCTURE !== 'undefined' ? CATEGORY_STRUCTURE : categoryMap;
+    const subcats = sourceMap[selectedMain] || [];
+    
+    subcats.forEach(sub => {
         let opt = document.createElement('option');
         opt.value = sub;
         opt.innerText = sub;
         subSelect.appendChild(opt);
     });
+}
+
+// Alias slik at eventuelle gamle skrivemåter ikke krasjer koden
+function updatesSubCategoryDropdown(mainId, subId) {
+    updateSubCategoryDropdown(mainId, subId);
+}
+
+function updatesSubcategories() {
+    // Trygg avbryter for gamle elementer som ikke finnes lenger
+    const catSelect = document.getElementById('supCategory');
+    if (!catSelect) return;
+}
+
+// Funksjon for å fylle inn kategorier i Redigerings-modalen
+function populateCategoryDropdown(mainId, subId) {
+    const mainSelect = document.getElementById(mainId);
+    if (!mainSelect) return;
+    
+    mainSelect.innerHTML = '';
+    const sourceMap = typeof CATEGORY_STRUCTURE !== 'undefined' ? CATEGORY_STRUCTURE : categoryMap;
+    
+    Object.keys(sourceMap).forEach(cat => {
+        let opt = document.createElement('option');
+        opt.value = cat;
+        opt.innerText = cat;
+        mainSelect.appendChild(opt);
+    });
+    
+    updateSubCategoryDropdown(mainId, subId);
+}
+	
 }
 		
         function selectMainCategory(catName, btn) {
@@ -17285,7 +17320,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const editSpectre = document.getElementById('edit-comp-spectre');
             if (editSpectre) editSpectre.value = activeModalPart.lexNotes?.spectreAnalysis || '';
 
-            populateCategoryDropdown('edit-main-cat');
+            populateCategoryDropdown('edit-main-cat','edit-sub-cat');
             
             let parts = (activeModalPart.categoryPath || '').split('/');
             let main = parts[0] ? parts[0].trim() : '';
