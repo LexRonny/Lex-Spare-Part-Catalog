@@ -610,7 +610,7 @@
     </div>
 
     <script>
-     const categoryMap = {
+     const CATEGORY_STRUCTURE = {
     // --- TAB 1: BATTLE GEAR AND EQUIPMENT ---
     "Weapons": [
         "Blasters & Pistols", 
@@ -17048,7 +17048,7 @@ const subcategoryMap = {
 };
 
 // Oppdater underkategori-nedtrekket basert på valgt hovedkategori
-function updateSubcategories() {
+function updatesSubcategories() {
     const categorySelect = document.getElementById("supCategory");
     const subcategorySelect = document.getElementById("supSubcategory");
     const selectedCategory = categorySelect.value;
