@@ -16841,7 +16841,9 @@
 			]
         };
 		
-       
+       if (typeof CATEGORY_STRUCTURE === 'undefined') {
+    var CATEGORY_STRUCTURE = categoryMap;
+}
 		
 		let currentUniverseFilter = 'All';
         let currentMainCategory = 'All';
