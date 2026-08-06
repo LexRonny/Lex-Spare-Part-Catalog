@@ -17080,11 +17080,17 @@ const subcategoryMap = {
     "Agriculture": ["Crops", "Livestock Byproducts", "Seeds"]
 };
 
-// Oppdater underkategori-nedtrekket basert på valgt hovedkategori
 function updatesSubcategories() {
     const categorySelect = document.getElementById("supCategory");
+    // Hvis elementet ikke finnes på siden lenger, avbryt strakst uten feil!
+    if (!categorySelect) return; 
+
     const subcategorySelect = document.getElementById("supSubcategory");
+    if (!subcategorySelect) return;
+
     const selectedCategory = categorySelect.value;
+    // ... resten av koden din ...
+}
 
     // Tøm eksisterende valg
     subcategorySelect.innerHTML = "";
