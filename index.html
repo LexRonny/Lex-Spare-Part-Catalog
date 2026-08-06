@@ -441,13 +441,13 @@
             <div class="modal-title" style="color: var(--holo-blue);">Legg til ny post i katalogen</div>
         </div>
 
-        <!-- DE 4 FANENE FOR LEGG TIL -->
-        <div style="display: flex; gap: 5px; margin-bottom: 15px; flex-wrap: wrap;" id="addTabsContainer">
-            <button type="button" class="tab-btn active" id="tabBtn1" onclick="switchAddTabNew(1)">1. Utstyr & Kamp</button>
-            <button type="button" class="tab-btn" id="tabBtn2" onclick="switchAddTabNew(2)">2. Transport & Tech</button>
-            <button type="button" class="tab-btn" id="tabBtn3" onclick="switchAddTabNew(3)">3. Forsyning & Industri</button>
-            <button type="button" class="tab-btn" id="tabBtn4" onclick="switchAddTabNew(4)">4. Personell & Droider</button>
-        </div>
+        <div class="add-tabs" style="display: flex; gap: 5px; margin-bottom: 15px;">
+    <button type="button" id="tabBtn1" class="tab-btn active" onclick="switchAddTabNew(1)">1. GEAR & EQUIPMENT</button>
+    <button type="button" id="tabBtn2" class="tab-btn" onclick="switchAddTabNew(2)">2. TRANSPORT & TECH</button>
+    <button type="button" id="tabBtn3" class="tab-btn" onclick="switchAddTabNew(3)">3. SUPPLY & INDUSTRY</button>
+    <button type="button" id="tabBtn4" class="tab-btn" onclick="switchAddTabNew(4)">4. PERSONNEL</button>
+    <button type="button" id="tabBtn5" class="tab-btn" onclick="switchAddTabNew(5)">5. LOCATIONS & FACTIONS</button>
+</div>
 
         <!-- GLOBAL RESTRICTED-SJEKKBOKS -->
         <div style="background: rgba(255,200,0,0.1); border: 1px solid var(--classified-gold); padding: 6px 10px; margin-bottom: 15px; border-radius: 4px; font-size: 0.9rem;">
@@ -753,8 +753,8 @@
     </div>
 
     <script>
-      const CATEGORY_STRUCTURE = {
-    // --- FANE 1: BATTLE GEAR AND EQUIPMENT ---
+     const categoryMap = {
+    // --- TAB 1: BATTLE GEAR AND EQUIPMENT ---
     "Weapons": [
         "Blasters & Pistols", 
         "Rifles & Carabines", 
@@ -788,7 +788,7 @@
         "Other textiles"
     ],
 
-    // --- FANE 2: TRANSPORT & TECH ---
+    // --- TAB 2: TRANSPORT & TECH ---
     "Starships": [
         "Starfighter", 
         "Interceptor", 
@@ -810,19 +810,21 @@
         "Crawler"
     ],
     "Medical & Chemical Equipment": [
-        "Bacta Tanks", 
-        "Medpacs & Trauma Gear", 
-        "Cybernetic Prosthetics", 
-        "Cloning Cylinders", 
-        "Chemical Converters", 
-        "Toxin Detectors & Scanners", 
-        "Chemical Sprayers & Neutralizers"
+        "Bacta-tanks",
+        "Medpacs / MediKit",
+        "Medical droids",
+        "Cybernetic prosthetics",
+        "Cloning tanks",
+        "Chemical converters",
+        "Toxin detectors and scanners",
+        "Chemical sprayers and emergency gear"
     ],
     "System & Software": [
-        "Avionics", 
-        "Navigation", 
-        "Misc. System", 
-        "Core Systems & Networks", 
+        "Core Systems & Firmware", 
+        "Control Networks", 
+        "Automation & AI Routines", 
+        "Mainframes & Terminals", 
+        "Subroutines & Protocols", 
         "Slicing & Covert system"
     ],
     "Hardware": [
@@ -836,7 +838,7 @@
         "Other components"
     ],
 
-    // --- FANE 3: SUPPLY & INDUSTRY ---
+    // --- TAB 3: SUPPLY & INDUSTRY ---
     "Food & drinks": [
         "Beverages", 
         "Food", 
@@ -844,16 +846,20 @@
         "Alcohol"
     ],
     "Medical & Chemical Compounds": [
-        "Bacta & Healing Fluids", 
-        "Kolto & Natural Extracts", 
-        "Pharmaceuticals & Synthenol", 
-        "Spice & Narcotics", 
-        "Baradium & Explosive Compounds"
+        "Medicine", 
+        "Bacta", 
+        "Colto", 
+        "Spice", 
+        "Synthflesh", 
+        "Spray Bandage", 
+        "Glitterstim", 
+        "Ryll", 
+        "Bioweapons"
     ],
     "Raw Materials": [
         "Metal", 
         "Synthetics", 
-        "Polmer", 
+        "Polymers", 
         "Alloys", 
         "Raw Fabric", 
         "Fiber"
@@ -865,25 +871,27 @@
         "Fruit"
     ],
 
-    // --- FANE 4: PERSONNEL, DROIDS, FACTIONS & LOCATIONS ---
+    // --- TAB 4: PERSONNEL & CONTACTS ---
     "Droids": [
-        "Medical Droid", 
-        "Protocol Droid", 
-        "Combat Droid", 
+        "Medical droid", 
+        "Protocol droid", 
+        "Assassin droid",
         "Astrodroid", 
-        "Industrial Droid"
+        "Working droid"
     ],
     "Known associates": [
         "Informants", 
         "Smugglers", 
         "Contacts", 
-        "Personel"
+        "Personnel"
     ],
+
+    // --- TAB 5: LOCATIONS & FACTIONS ---
     "Factions": [
         "Guilds", 
         "Syndicates", 
         "Alliances", 
-        "Manufactures"
+        "Manufacturers"
     ],
     "Locations": [
         "Planets", 
@@ -17607,9 +17615,9 @@ function switchAddTabNew(tabIndex) {
             let paddedNum = String(nextNum).padStart(5, '0');
             return `${catCode}-${paddedNum}-${uChar}`;
         }
-function switchAddTabNew(tabNumber) {
+		function switchAddTabNew(tabNumber) {
     // Fjern active fra alle knapper
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 5; i++) {
         const btn = document.getElementById(`tabBtn${i}`);
         if (btn) btn.classList.remove('active');
     }
@@ -17620,6 +17628,7 @@ function switchAddTabNew(tabNumber) {
     const genForm = document.getElementById('addItemGenericForm');
     const persForm = document.getElementById('addItemPersonnelForm');
 
+    // Fane 4 = Personell/Droider, Fane 1-3 og 5 = Generelt utstyr/skip/steder
     if (tabNumber === 4) {
         if (genForm) genForm.style.display = 'none';
         if (persForm) persForm.style.display = 'block';
@@ -17630,6 +17639,36 @@ function switchAddTabNew(tabNumber) {
         populateTabCategories(tabNumber, 'add-comp-main-cat', 'add-comp-sub-cat');
     }
 }
+
+function populateTabCategories(tabNumber, mainId, subId) {
+    const mainSelect = document.getElementById(mainId);
+    if (!mainSelect) return;
+    
+    mainSelect.innerHTML = '';
+    
+    let allowedCategories = [];
+    if (tabNumber === 1) {
+        allowedCategories = ['Weapons', 'Survival, Tools & Field Gear', 'Armor & Protection', 'Clothing & Textiles']; //[cite: 1]
+    } else if (tabNumber === 2) {
+        allowedCategories = ['Starships', 'Speeders & Vehicles', 'Medical & Chemical Equipment', 'System & Software', 'Hardware']; //[cite: 1, 2]
+    } else if (tabNumber === 3) {
+        allowedCategories = ['Food & drinks', 'Medical & Chemical Compounds', 'Raw Materials', 'Agriculture']; //[cite: 1, 2]
+    } else if (tabNumber === 4) {
+        allowedCategories = ['Droids', 'Known associates']; //[cite: 1, 2]
+    } else if (tabNumber === 5) {
+        allowedCategories = ['Factions', 'Locations']; //[cite: 1, 2]
+    }
+
+    allowedCategories.forEach(cat => {
+        let opt = document.createElement('option');
+        opt.value = cat;
+        opt.innerText = cat;
+        mainSelect.appendChild(opt);
+    });
+
+    updateSubCategoryDropdown(mainId, subId);
+}
+
 
 function toggleRestrictedModalColor(checkbox) {
     const modalContent = document.getElementById('addItemModal'); // Bruker riktig ID på modalen din
@@ -17644,32 +17683,7 @@ function toggleRestrictedModalColor(checkbox) {
     }
 }
 
-function populateTabCategories(tabNumber, mainId, subId) {
-    const mainSelect = document.getElementById(mainId);
-    if (!mainSelect) return;
-    
-    mainSelect.innerHTML = '';
-    
-    let allowedCategories = [];
-    if (tabNumber === 1) {
-        allowedCategories = ['Weapons', 'Survival, Tools & Field Gear', 'Armor & Protection', 'Clothing & Textiles'];
-    } else if (tabNumber === 2) {
-        allowedCategories = ['Starships', 'Speeders & Vehicles', 'Automation & Droids', 'System & Software', 'Hardware'];
-    } else if (tabNumber === 3) {
-        allowedCategories = ['Food & drinks', 'Medical & Chemical', 'Raw Materials', 'Agriculture'];
-    } else if (tabNumber === 4) {
-        allowedCategories = ['Droids', 'Known associates', 'Factions', 'Locations']; 
-    }
 
-    allowedCategories.forEach(cat => {
-        let opt = document.createElement('option');
-        opt.value = cat;
-        opt.innerText = cat;
-        mainSelect.appendChild(opt);
-    });
-
-    updatesSubCategoryDropdown(mainId, subId);
-}
 
 
 		function saveNewItem() {
