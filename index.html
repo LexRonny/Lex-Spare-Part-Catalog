@@ -457,6 +457,99 @@
             </label>
         </div>
 
+		<div id="addSupplyModal" class="modal">
+    <div class="modal-content">
+        <h2>Legg til ny Supply & Industry-post</h2>
+        <form id="supplyForm">
+            
+            <!-- Universelle felt -->
+            <label>Navn (Name):</label>
+            <input type="text" id="supName" required>
+
+            <label>Kategori (Category):</label>
+            <select id="supCategory" onchange="updatesSubcategories()">
+                <option value="Food & drinks">Food & drinks</option>
+                <option value="Medical & Chemical Compounds">Medical & Chemical Compounds</option>
+                <option value="Raw Materials">Raw Materials</option>
+                <option value="Agriculture">Agriculture</option>
+            </select>
+
+            <label>Underkategori (Subcategory):</label>
+            <select id="supSubcategory">
+                <!-- Dynamisk fylt ut via JS -->
+            </select>
+
+            <label>Opprinnelse (Origin Planet / Region):</label>
+            <input type="text" id="supOrigin" placeholder="F.eks. Tatooine, Kessel...">
+
+            <label>Beskrivelse (Description):</label>
+            <textarea id="supDescription"></textarea>
+
+            <label>Sjeldenhet (Rarity):</label>
+            <select id="supRarity">
+                <option value="Abundant">Abundant</option>
+                <option value="Common">Common</option>
+                <option value="Uncommon">Uncommon</option>
+                <option value="Rare">Rare</option>
+                <option value="Illegal/Restricted">Illegal/Restricted</option>
+            </select>
+
+            <label>Lovstatus (Legal Status):</label>
+            <select id="supLegalStatus">
+                <option value="Legal">Legal</option>
+                <option value="Restricted">Restricted</option>
+                <option value="Illegal (Empire)">Illegal (Empire)</option>
+                <option value="Illegal (New Republic)">Illegal (New Republic)</option>
+                <option value="Contraband">Contraband</option>
+            </select>
+
+            <hr>
+            <h3>Spesifikke felter (Valgfrie)</h3>
+
+            <label>Kost / Biologisk tag (Dietary / Biological Tag):</label>
+            <select id="supDietary">
+                <option value="">(Ingen / Tom)</option>
+                <option value="Sentient-Safe">Sentient-Safe</option>
+                <option value="Carnivore / Herbivore / Omnivore">Carnivore / Herbivore / Omnivore</option>
+                <option value="Toxic to Humans">Toxic to Humans</option>
+            </select>
+
+            <label>Aggregatstilstand (State of Matter):</label>
+            <select id="supStateOfMatter">
+                <option value="">(Ingen / Tom)</option>
+                <option value="Gas">Gas</option>
+                <option value="Liquid">Liquid</option>
+                <option value="Solid">Solid</option>
+                <option value="Powder/Granular">Powder/Granular</option>
+            </select>
+
+            <label>Industriell bruk (Industrial Use):</label>
+            <select id="supIndustrialUse">
+                <option value="">(Ingen / Tom)</option>
+                <option value="Consumption">Consumption</option>
+                <option value="Medical Treatment">Medical Treatment</option>
+                <option value="Shipbuilding / Armor">Shipbuilding / Armor</option>
+                <option value="Textile Production">Textile Production</option>
+                <option value="Weaponry">Weaponry</option>
+            </select>
+
+            <label>Fareklasse (Hazard Level):</label>
+            <select id="supHazardLevel">
+                <option value="">(Ingen / Tom)</option>
+                <option value="Safe">Safe</option>
+                <option value="Volatile">Volatile</option>
+                <option value="Addictive">Addictive</option>
+                <option value="Biohazard">Biohazard</option>
+            </select>
+
+            <div class="modal-actions">
+                <button type="button" onclick="closeModal()">Avbryt</button>
+                <button type="submit">Lagre post</button>
+            </div>
+        </form>
+    </div>
+</div>
+		
         <!-- ========================================== -->
         <!-- SKJEMA FOR FANE 1, 2 og 3 (GENERELT UTSTYR) -->
         <!-- ========================================== -->
@@ -17079,6 +17172,71 @@
             subContainer.innerHTML = html;
         }
 
+		// Kart over underkategorier knyttet til hovedkategori
+const subcategoryMap = {
+    "Food & drinks": ["Beverages", "Fruit", "Portion Bread", "Alcohol"],
+    "Medical & Chemical Compounds": ["Bacta", "Glitterstim", "Medical Gases", "Bioweapons"],
+    "Raw Materials": ["Alloys", "Metals", "Minerals", "Raw Fabric"],
+    "Agriculture": ["Crops", "Livestock Byproducts", "Seeds"]
+};
+
+// Oppdater underkategori-nedtrekket basert på valgt hovedkategori
+function updateSubcategories() {
+    const categorySelect = document.getElementById("supCategory");
+    const subcategorySelect = document.getElementById("supSubcategory");
+    const selectedCategory = categorySelect.value;
+
+    // Tøm eksisterende valg
+    subcategorySelect.innerHTML = "";
+
+    // Hent relevante underkategorier eller sett en tom liste
+    const options = subcategoryMap[selectedCategory] || [];
+    
+    options.forEach(sub => {
+        const option = document.createElement("option");
+        option.value = sub;
+        option.textContent = sub;
+        subcategorySelect.appendChild(option);
+    });
+}
+
+// Kjør en gang ved oppstart for å fylle inn default-underkategorier
+document.addEventListener("DOMContentLoaded", () => {
+    updateSubcategories();
+
+    // Håndter innsending av skjemaet
+    document.getElementById("supplyForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        // Generer automatisk ID (f.eks. SUP-00001-C eller en tidsbasert/unik ID)
+        const generatedId = "SUP-" + Math.floor(10000 + Math.random() * 90000) + "-C";
+
+        // Bygg JSON-objektet nøyaktig slik du definerte det
+        const newSupplyItem = {
+            "id": generatedId,
+            "name": document.getElementById("supName").value,
+            "category": document.getElementById("supCategory").value,
+            "subcategory": document.getElementById("supSubcategory").value,
+            "origin_planet": document.getElementById("supOrigin").value,
+            "description": document.getElementById("supDescription").value,
+            "rarity": document.getElementById("supRarity").value,
+            "legal_status": document.getElementById("supLegalStatus").value,
+            "dietary_tag": document.getElementById("supDietary").value,
+            "state_of_matter": document.getElementById("supStateOfMatter").value,
+            "industrial_use": document.getElementById("supIndustrialUse").value,
+            "hazard_level": document.getElementById("supHazardLevel").value
+        };
+
+        // Output til konsoll (her kan du legge den til i arrayet ditt og lagre til fil/localStorage)
+        console.log("Ny post opprettet:", JSON.stringify(newSupplyItem, null, 4));
+
+        alert("Posten ble lagret med ID: " + generatedId);
+        document.getElementById("supplyForm").reset();
+        updateSubcategory(); // Tilbakestill underkategorier
+        // closeModal(); // Lukk modalen her hvis du har en funksjon for det
+    });
+});
+		
         function selectSubCategory(subName, btn) {
             document.querySelectorAll('#subCategoryTabs .tab-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
