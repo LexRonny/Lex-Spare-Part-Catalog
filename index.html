@@ -17605,7 +17605,69 @@ function toggleRestrictedModalColor(checkbox) {
     }
 }
 
+		// --- PLASSER DISSE HJELPEFUNKSJONENE HER (f.eks. like før saveNewItem) ---
 
+function generateSystemID(prefixCat, prefixSub, universeVal, mode = 'add') {
+    let catCode = getCategoryPrefix(prefixCat);
+    let subCode = getSubCategoryPrefix(prefixSub);
+    
+    let uniCode = 'CAN';
+    if (universeVal === 'Legends') uniCode = 'LEG';
+    if (universeVal === 'Fan-Made') uniCode = 'FM';
+    if (universeVal === 'Classified') uniCode = 'FM'; // Eller tilpassvis hvis klassifisert har egen sjanger
+    
+    let nextNum = getNextSequentialNumber(catCode, subCode, uniCode);
+    let paddedNum = String(nextNum).padStart(5, '0'); // 5-sifret tall, f.eks. 00001
+    
+    return `${catCode}-${subCode}-${paddedNum}-${uniCode}`;
+}
+
+function getCategoryPrefix(categoryName) {
+    const map = {
+        "Weapons": "WPN",
+        "Survival, Tools & Field Gear": "SUR",
+        "Armor & Protection": "ARM",
+        "Clothing & Textiles": "CLO",
+        "Starships": "SHP",
+        "Speeders & Vehicles": "VEH",
+        "Medical & Chemical Equipment": "MED",
+        "System & Software": "SYS",
+        "Hardware": "HDW",
+        "Food & drinks": "FOD",
+        "Medical & Chemical Compounds": "CMP",
+        "Raw Materials": "MAT",
+        "Agriculture": "AGR",
+        "Droids": "DRO",
+        "Known associates": "KAS",
+        "Factions": "FAC",
+        "Locations": "LOC"
+    };
+    return map[categoryName] || "GEN";
+}
+
+function getSubCategoryPrefix(subCategoryName) {
+    if (!subCategoryName) return "SUB";
+    return subCategoryName.replace(/[^a-zA-Z]/g, "").substring(0, 3).toUpperCase();
+}
+
+function getNextSequentialNumber(catCode, subCode, uniCode) {
+    if (typeof catalogData === 'undefined' || !Array.isArray(catalogData.components)) return 1;
+    
+    let maxNum = 0;
+    const regex = new RegExp(`^${catCode}-${subCode}-(\\d{5})-${uniCode}$`);
+    
+    catalogData.components.forEach(item => {
+        if (item.id) {
+            let match = item.id.match(regex);
+            if (match) {
+                let num = parseInt(match[1], 10);
+                if (num > maxNum) maxNum = num;
+            }
+        }
+    });
+    
+    return maxNum + 1;
+}
 
 
 		function saveNewItem() {
@@ -17621,7 +17683,7 @@ function toggleRestrictedModalColor(checkbox) {
                 mfrOrFaction = document.getElementById('add-comp-manufacturer').value.trim() || 'Ukjent';
                 desc = document.getElementById('add-comp-desc').value.trim() || '';
                 fullCategory = `${mainCat} / ${subCat}`;
-                id = generateAutoID(mainCat, universe);
+                id = generateSystemID(mainCat, subCat, universe);
 
                 if (!name) {
                     alert("Du må fylle ut navnet på posten!");
