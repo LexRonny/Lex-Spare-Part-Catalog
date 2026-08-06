@@ -610,7 +610,7 @@
     </div>
 
     <script>
-     const CATEGORY_STRUCTURE = {
+     let CATEGORY_STRUCTURE = {
     // --- TAB 1: BATTLE GEAR AND EQUIPMENT ---
     "Weapons": [
         "Blasters & Pistols", 
@@ -16842,7 +16842,7 @@
         };
 		
        if (typeof CATEGORY_STRUCTURE === 'undefined') {
-    var CATEGORY_STRUCTURE = categoryMap;
+    var CATEGORY_STRUCTURE = categoryMap;}
 }
 		
 		let currentUniverseFilter = 'All';
