@@ -432,313 +432,170 @@
 
         </div>
     </div>
-	<!-- NY "LEGG TIL"-MODAL OVERLAY -->
+	<!-- NEW "ADD ITEM" MODAL OVERLAY -->
 <div class="modal-overlay" id="addItemModal" onclick="closeAddModal(event)">
     <div class="modal-card" onclick="event.stopPropagation()" style="max-width: 650px; max-height: 90vh; overflow-y: auto;">
         <button class="modal-close" onclick="closeAddModal()">[ X ]</button>
         
         <div class="modal-header">
-            <div class="modal-title" style="color: var(--holo-blue);">Legg til ny post i katalogen</div>
+            <div class="modal-title" style="color: var(--holo-blue);">Add New Catalog Entry</div>
         </div>
 
-        <div class="add-tabs" style="display: flex; gap: 5px; margin-bottom: 15px;">
-    <button type="button" id="tabBtn1" class="tab-btn active" onclick="switchAddTabNew(1)">1. GEAR & EQUIPMENT</button>
-    <button type="button" id="tabBtn2" class="tab-btn" onclick="switchAddTabNew(2)">2. TRANSPORT & TECH</button>
-    <button type="button" id="tabBtn3" class="tab-btn" onclick="switchAddTabNew(3)">3. SUPPLY & INDUSTRY</button>
-    <button type="button" id="tabBtn4" class="tab-btn" onclick="switchAddTabNew(4)">4. PERSONNEL</button>
-    <button type="button" id="tabBtn5" class="tab-btn" onclick="switchAddTabNew(5)">5. LOCATIONS & FACTIONS</button>
-</div>
+        <!-- 5 TABS NAVIGATION -->
+        <div class="add-tabs" style="display: flex; gap: 5px; margin-bottom: 15px; flex-wrap: wrap;">
+            <button type="button" id="tabBtn1" class="tab-btn active" onclick="switchAddTabNew(1)">1. GEAR & EQUIPMENT</button>
+            <button type="button" id="tabBtn2" class="tab-btn" onclick="switchAddTabNew(2)">2. TRANSPORT & TECH</button>
+            <button type="button" id="tabBtn3" class="tab-btn" onclick="switchAddTabNew(3)">3. SUPPLY & INDUSTRY</button>
+            <button type="button" id="tabBtn4" class="tab-btn" onclick="switchAddTabNew(4)">4. PERSONNEL</button>
+            <button type="button" id="tabBtn5" class="tab-btn" onclick="switchAddTabNew(5)">5. LOCATIONS & FACTIONS</button>
+        </div>
 
-        <!-- GLOBAL RESTRICTED-SJEKKBOKS -->
+        <!-- GLOBAL RESTRICTED CHECKBOX -->
         <div style="background: rgba(255,200,0,0.1); border: 1px solid var(--classified-gold); padding: 6px 10px; margin-bottom: 15px; border-radius: 4px; font-size: 0.9rem;">
             <label style="color: var(--classified-gold); font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px;">
                 <input type="checkbox" id="global-pers-restricted" onchange="toggleRestrictedModalColor(this)"> 
-                ⚠️ Legg i Restricted Files (The Shadows)
+                ⚠️ Add to Restricted Files (The Shadows)
             </label>
         </div>
 
-
-		
-        <!-- ========================================== -->
-        <!-- SKJEMA FOR FANE 1, 2 og 3 (GENERELT UTSTYR) -->
-        <!-- ========================================== -->
-        <div id="addItemGenericForm">
-            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Navn på komponent / kjøretøy:</label>
-            <input type="text" id="add-comp-name" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
-
-            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Univers Status:</label>
-            <select id="add-comp-universe" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
-                <option value="Canon">Canon</option>
-                <option value="Legends">Legends</option>
-                <option value="Fan-Made">Fan-Made</option>
-            </select>
-
-            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Hovedkategori:</label>
-            <select id="add-comp-main-cat" onchange="updatesSubCategoryDropdown('add-comp-main-cat', 'add-comp-sub-cat')" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;"></select>
-
-            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Underkategori:</label>
-            <select id="add-comp-sub-cat" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;"></select>
-
-            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Produsent:</label>
-            <input type="text" id="add-comp-manufacturer" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;" placeholder="F.eks. Corellian Engineering Corporation">
-
-            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Bilde-URL (GitHub Raw):</label>
-            <input type="text" id="add-comp-image" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
-
-            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Kort beskrivelse:</label>
-            <textarea id="add-comp-desc" style="width: 100%; padding: 8px; margin-top: 4px; height: 60px; box-sizing: border-box;"></textarea>
-        </div>
-		<div id="addSupplyModal" class="modal">
-    <div class="modal-content">
-        <h2>Legg til ny Supply & Industry-post</h2>
-        <form id="supplyForm">
+        <!-- FORM START -->
+        <form id="addItemForm" onsubmit="saveNewItem(event)">
             
-            <!-- Universelle felt -->
-            <label>Navn (Name):</label>
-            <input type="text" id="supName" required>
-
-            <label>Kategori (Category):</label>
-            <select id="supCategory" onchange="updatesSubcategories()">
-                <option value="Food & drinks">Food & drinks</option>
-                <option value="Medical & Chemical Compounds">Medical & Chemical Compounds</option>
-                <option value="Raw Materials">Raw Materials</option>
-                <option value="Agriculture">Agriculture</option>
-            </select>
-
-            <label>Underkategori (Subcategory):</label>
-            <select id="supSubcategory">
-                <!-- Dynamisk fylt ut via JS -->
-            </select>
-
-            <label>Opprinnelse (Origin Planet / Region):</label>
-            <input type="text" id="supOrigin" placeholder="F.eks. Tatooine, Kessel...">
-
-            <label>Beskrivelse (Description):</label>
-            <textarea id="supDescription"></textarea>
-
-            <label>Sjeldenhet (Rarity):</label>
-            <select id="supRarity">
-                <option value="Abundant">Abundant</option>
-                <option value="Common">Common</option>
-                <option value="Uncommon">Uncommon</option>
-                <option value="Rare">Rare</option>
-                <option value="Illegal/Restricted">Illegal/Restricted</option>
-            </select>
-
-            <label>Lovstatus (Legal Status):</label>
-            <select id="supLegalStatus">
-                <option value="Legal">Legal</option>
-                <option value="Restricted">Restricted</option>
-                <option value="Illegal (Empire)">Illegal (Empire)</option>
-                <option value="Illegal (New Republic)">Illegal (New Republic)</option>
-                <option value="Contraband">Contraband</option>
-            </select>
-
-            <hr>
-            <h3>Spesifikke felter (Valgfrie)</h3>
-
-            <label>Kost / Biologisk tag (Dietary / Biological Tag):</label>
-            <select id="supDietary">
-                <option value="">(Ingen / Tom)</option>
-                <option value="Sentient-Safe">Sentient-Safe</option>
-                <option value="Carnivore / Herbivore / Omnivore">Carnivore / Herbivore / Omnivore</option>
-                <option value="Toxic to Humans">Toxic to Humans</option>
-            </select>
-
-            <label>Aggregatstilstand (State of Matter):</label>
-            <select id="supStateOfMatter">
-                <option value="">(Ingen / Tom)</option>
-                <option value="Gas">Gas</option>
-                <option value="Liquid">Liquid</option>
-                <option value="Solid">Solid</option>
-                <option value="Powder/Granular">Powder/Granular</option>
-            </select>
-
-            <label>Industriell bruk (Industrial Use):</label>
-            <select id="supIndustrialUse">
-                <option value="">(Ingen / Tom)</option>
-                <option value="Consumption">Consumption</option>
-                <option value="Medical Treatment">Medical Treatment</option>
-                <option value="Shipbuilding / Armor">Shipbuilding / Armor</option>
-                <option value="Textile Production">Textile Production</option>
-                <option value="Weaponry">Weaponry</option>
-            </select>
-
-            <label>Fareklasse (Hazard Level):</label>
-            <select id="supHazardLevel">
-                <option value="">(Ingen / Tom)</option>
-                <option value="Safe">Safe</option>
-                <option value="Volatile">Volatile</option>
-                <option value="Addictive">Addictive</option>
-                <option value="Biohazard">Biohazard</option>
-            </select>
-
-            <div class="modal-actions">
-                <button type="button" onclick="closeModal()">Avbryt</button>
-                <button type="submit">Lagre post</button>
+            <!-- AUTO-GENERATED ID & NAME -->
+            <div style="margin-bottom: 10px; display: flex; gap: 10px; align-items: center;">
+                <div style="flex: 1;">
+                    <label style="font-size: 0.85rem; color: #aaa;">System ID (Auto):</label>
+                    <input type="text" id="add-item-id" readonly style="width: 100%; padding: 6px; background: #1a1a1a; border: 1px solid #444; color: #00f0ff; font-family: monospace;">
+                </div>
+                <div style="flex: 2;">
+                    <label style="font-size: 0.85rem; color: #aaa;">Name *:</label>
+                    <input type="text" id="add-comp-name" required style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                </div>
             </div>
+
+            <!-- UNIVERSE & STATUS -->
+            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <div style="flex: 1;">
+                    <label style="font-size: 0.85rem; color: #aaa;">Universe Status:</label>
+                    <select id="add-comp-universe" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                        <option value="Canon">Canon</option>
+                        <option value="Legends">Legends</option>
+                        <option value="Fan-Made">Fan-Made</option>
+                    </select>
+                </div>
+                <div style="flex: 1;">
+                    <label style="font-size: 0.85rem; color: #aaa;">Operational Status:</label>
+                    <input type="text" id="add-comp-status" placeholder="In Production / Active" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- GENERIC FORM FOR TABS 1, 2, 3, 5           -->
+            <!-- ========================================== -->
+            <div id="addItemGenericForm">
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.85rem; color: #aaa;">Main Category *:</label>
+                        <select id="add-comp-main-cat" onchange="updatesSubCategoryDropdown('add-comp-main-cat', 'add-comp-sub-cat')" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;"></select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.85rem; color: #aaa;">Subcategory *:</label>
+                        <select id="add-comp-sub-cat" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;"></select>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 0.85rem; color: #aaa;">Manufacturer / Origin:</label>
+                    <input type="text" id="add-comp-manufacturer" placeholder="Corellian Engineering Corporation" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 0.85rem; color: #aaa;">Image URL (GitHub Raw):</label>
+                    <input type="text" id="add-comp-image" placeholder="https://raw.githubusercontent.com/..." style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 0.85rem; color: #aaa;">Description:</label>
+                    <textarea id="add-comp-desc" rows="2" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff; box-sizing: border-box;"></textarea>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- PERSONNEL FORM FOR TAB 4                   -->
+            <!-- ========================================== -->
+            <div id="addItemPersonnelForm" style="display: none;">
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.85rem; color: #aaa;">Main Category *:</label>
+                        <select id="add-pers-main-cat" onchange="updatesSubCategoryDropdown('add-pers-main-cat', 'add-pers-sub-cat')" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;"></select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.85rem; color: #aaa;">Subcategory *:</label>
+                        <select id="add-pers-sub-cat" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;"></select>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.85rem; color: #aaa;">Age:</label>
+                        <input type="number" id="add-pers-age" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.85rem; color: #aaa;">Species:</label>
+                        <input type="text" id="add-pers-species" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.85rem; color: #aaa;">Gender:</label>
+                        <input type="text" id="add-pers-gender" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 0.85rem; color: #aaa;">Affiliation / Faction:</label>
+                    <input type="text" id="add-pers-faction" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 0.85rem; color: #aaa;">Image URL (GitHub Raw):</label>
+                    <input type="text" id="add-pers-image" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 0.85rem; color: #aaa;">Biography / Notes:</label>
+                    <textarea id="add-pers-desc" rows="2" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff; box-sizing: border-box;"></textarea>
+                </div>
+            </div>
+
+            <!-- INTERNAL NOTES (LEX & SPECTRE / THE SHADOWS) -->
+            <div style="border-top: 1px dashed #444; padding-top: 10px; margin-top: 10px; margin-bottom: 15px;">
+                <label style="font-size: 0.85rem; color: var(--classified-gold); font-weight: bold; display: block; margin-bottom: 5px;">Internal Notes & Security Logs:</label>
+                <div style="display: flex; gap: 15px; margin-bottom: 8px;">
+                    <label style="font-size: 0.85rem; cursor: pointer; color: #ccc;"><input type="checkbox" id="add-shadow-hunter"> Shadow Hunter Compatible</label>
+                    <label style="font-size: 0.85rem; cursor: pointer; color: #ccc;"><input type="checkbox" id="add-lex-approved"> Lex Rogers Approved</label>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.8rem; color: #aaa;">Lex Notes:</label>
+                        <textarea id="add-pers-lex" rows="2" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff; box-sizing: border-box;"></textarea>
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.8rem; color: #aaa;">Spectre Analysis:</label>
+                        <textarea id="add-pers-spectre" rows="2" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff; box-sizing: border-box;"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTIONS -->
+            <div style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid var(--border-gray); padding-top: 10px;">
+                <button type="button" onclick="closeAddModal()" style="padding: 8px 15px; background: #333; color: #fff; border: none; cursor: pointer; border-radius: 4px;">Cancel</button>
+                <button type="submit" style="padding: 8px 20px; background: var(--holo-blue); color: #000; font-weight: bold; border: none; cursor: pointer; border-radius: 4px;">Save Entry</button>
+            </div>
+
         </form>
     </div>
 </div>
 
-        <!-- ========================================== -->
-        <!-- SKJEMA FOR FANE 4 (PERSONELL & DROIDER)     -->
-        <!-- ========================================== -->
-        <div id="addItemPersonnelForm" style="display: none;">
-            
-            <!-- GRUNNLEGGENDE FELTER -->
-            <div style="margin-bottom: 10px;">
-                <label>Navn:</label>
-                <input type="text" id="add-pers-name" style="width: 100%; padding: 6px; box-sizing: border-box;">
-            </div>
-
-            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Univers Status:</label>
-            <select id="add-pers-universe" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
-                <option value="Canon">Canon</option>
-                <option value="Legends">Legends</option>
-                <option value="Fan-Made">Fan-Made</option>
-            </select>
-
-            <div style="display: flex; gap: 10px; margin-top: 10px; margin-bottom: 10px;">
-                <div style="flex: 1;">
-                    <label>Alder:</label>
-                    <input type="number" id="add-pers-age" style="width: 100%; padding: 6px; box-sizing: border-box;" placeholder="F.eks. 21">
-                </div>
-                <div style="flex: 1;">
-                    <label>Rase:</label>
-                    <input type="text" id="add-pers-species" style="width: 100%; padding: 6px; box-sizing: border-box;" placeholder="Menneske, Twi'lek...">
-                </div>
-                <div style="flex: 1;">
-                    <label>Kjønn:</label>
-                    <input type="text" id="add-pers-gender" style="width: 100%; padding: 6px; box-sizing: border-box;" placeholder="Mann / Kvinne">
-                </div>
-            </div>
-
-            <div style="margin-bottom: 10px;">
-                <label>Tilhørighet / Fraksjon:</label>
-                <input type="text" id="add-pers-faction" style="width: 100%; padding: 6px; box-sizing: border-box;" placeholder="Syndikat, nettverk...">
-            </div>
-
-            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                <div style="flex: 1;">
-                    <label>Hovedkategori:</label>
-                    <select id="add-pers-main-cat" style="width: 100%; padding: 6px; box-sizing: border-box;" onchange="updatesSubCategoryDropdown('add-pers-main-cat', 'add-pers-sub-cat')"></select>
-                </div>
-                <div style="flex: 1;">
-                    <label>Underkategori:</label>
-                    <select id="add-pers-sub-cat" style="width: 100%; padding: 6px; box-sizing: border-box;"></select>
-                </div>
-            </div>
-
-            <div style="margin-bottom: 10px;">
-                <label>Bilde-URL (GitHub Raw):</label>
-                <input type="text" id="add-pers-image" style="width: 100%; padding: 6px; box-sizing: border-box;" placeholder="https://raw.githubusercontent.com/...">
-            </div>
-
-            <!-- UTSEENDE OG KJENNETEGN -->
-            <fieldset style="border: 1px solid var(--border-gray); padding: 10px; margin-bottom: 15px;">
-                <legend style="color: var(--holo-blue); font-weight: bold;">Utseende / Kjennetegn</legend>
-                
-                <div style="display: flex; gap: 10px; margin-bottom: 8px;">
-                    <div style="flex: 1;">
-                        <label style="font-size: 0.85rem;">Kroppsbygning:</label>
-                        <select id="add-pers-build" style="width: 100%; padding: 5px;">
-                            <option value="">-- Velg bygg --</option>
-                            <option value="Slim / Slender">Slim / Slender</option>
-                            <option value="Thin / Skinny">Thin / Skinny</option>
-                            <option value="Athletic / Muscular">Athletic / Muscular</option>
-                            <option value="Well-built">Well-built</option>
-                            <option value="Average build">Average build</option>
-                            <option value="Stout / Plump">Stout / Plump</option>
-                        </select>
-                    </div>
-                    <div style="flex: 1;">
-                        <label style="font-size: 0.85rem;">Høyde:</label>
-                        <select id="add-pers-height" style="width: 100%; padding: 5px;">
-                            <option value="">-- Velg høyde --</option>
-                            <option value="1.6m">1,6 m</option><option value="1.7m">1,7 m</option><option value="1.8m">1,8 m</option>
-                            <option value="1.9m">1,9 m</option><option value="2.0m">2,0 m</option><option value="2.1m">2,1 m</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div style="display: flex; gap: 10px; margin-bottom: 8px;">
-                    <div style="flex: 1;">
-                        <label style="font-size: 0.85rem;">Hårfarge:</label>
-                        <select id="add-pers-haircolor" style="width: 100%; padding: 5px;">
-                            <option value="">-- Velg hårfarge --</option>
-                            <option value="Blonde">Blonde</option>
-                            <option value="Brown hair">Brown hair</option>
-                            <option value="Brunette">Brunette</option>
-                            <option value="Red hair">Red hair</option>
-                            <option value="Black hair">Black hair</option>
-                            <option value="Grey hair">Grey hair</option>
-                        </select>
-                    </div>
-                    <div style="flex: 1;">
-                        <label style="font-size: 0.85rem;">Hårlengde / Stil:</label>
-                        <select id="add-pers-hairlength" style="width: 100%; padding: 5px;">
-                            <option value="">-- Velg stil --</option>
-                            <option value="Bald">Bald</option>
-                            <option value="Short hair">Short hair</option>
-                            <option value="Shoulder-length">Shoulder-length</option>
-                            <option value="Long hair">Long hair</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div>
-                    <label style="font-size: 0.85rem;">Beskrivelse (arr, tatoveringer):</label>
-                    <textarea id="add-pers-appearance-desc" rows="2" style="width: 100%; padding: 5px; box-sizing: border-box;"></textarea>
-                </div>
-            </fieldset>
-
-            <!-- CYBERNETICS -->
-            <fieldset style="border: 1px solid var(--border-gray); padding: 10px; margin-bottom: 15px;">
-                <legend style="color: var(--holo-blue); font-weight: bold;">Cybernetics</legend>
-                <div style="display: flex; gap: 10px;">
-                    <div style="flex: 1;">
-                        <label style="font-size: 0.85rem;">Type:</label>
-                        <select id="add-pers-cyborg-type" style="width: 100%; padding: 5px;">
-                            <option value="">-- Ingen / Standard --</option>
-                            <option value="Cyborg">Cyborg</option>
-                            <option value="Synthflesh">Synthflesh</option>
-                        </select>
-                    </div>
-                    <div style="flex: 1;">
-                        <label style="font-size: 0.85rem;">Modifikasjon / Del:</label>
-                        <select id="add-pers-cyber-part" style="width: 100%; padding: 5px;">
-                            <option value="">-- Velg del --</option>
-                            <option value="Mechno-arm">Mechno-arm</option>
-                            <option value="Mechno-leg">Mechno-leg</option>
-                            <option value="Cybernetic eye">Cybernetic eye</option>
-                        </select>
-                    </div>
-                </div>
-            </fieldset>
-
-            <!-- BIO OG NOTATER -->
-            <div style="margin-bottom: 10px;">
-                <label>Kort biografi:</label>
-                <textarea id="add-pers-desc" rows="2" style="width: 100%; padding: 6px; box-sizing: border-box;"></textarea>
-            </div>
-            <div style="margin-bottom: 10px;">
-                <label>Lex Notes:</label>
-                <textarea id="add-pers-lex" rows="2" style="width: 100%; padding: 6px; box-sizing: border-box;"></textarea>
-            </div>
-            <div style="margin-bottom: 10px;">
-                <label>Spectre Analysis:</label>
-                <textarea id="add-pers-spectre" rows="2" style="width: 100%; padding: 6px; box-sizing: border-box;"></textarea>
-            </div>
-        </div>
-
-        <!-- BUNN-KNAPPER -->
-        <div style="position: sticky; bottom: 0; background: var(--panel-bg); padding: 12px 0; border-top: 1px solid var(--border-gray); text-align: right; margin-top: 15px; display: flex; justify-content: flex-end; gap: 10px;">
-            <button onclick="closeAddModal()" class="tab-btn">Avbryt</button>
-            <button onclick="saveNewItem()" class="tab-btn" style="background: var(--holo-blue); color: #000; font-weight: bold;">Lagre post</button>
-        </div>
-    </div>
-</div>
+ 
     <!-- PRODUSENT POP-UP MODAL -->
     <div class="modal-overlay" id="manufacturerModal" onclick="closeManufacturerModal(event)">
         <div class="modal-card" onclick="event.stopPropagation()">
