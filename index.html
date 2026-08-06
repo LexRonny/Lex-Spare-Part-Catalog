@@ -17743,7 +17743,8 @@ function getNextSequentialNumber(catCode, subCode, uniCode) {
                     return;
                 }
 
-                id = generateAutoID(isRestricted ? 'The Shadows' : mainCat, universe);
+               let subCatVal = document.getElementById('add-pers-sub-cat').value || 'Known Associates';
+id = generateSystemID(isRestricted ? 'The Shadows' : mainCat, subCatVal, universe);
 
                 let newItem = {
                     id: id,
