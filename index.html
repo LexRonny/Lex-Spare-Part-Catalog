@@ -17471,48 +17471,72 @@ function switchAddTabNew(tabIndex) {
 
         }
 
-        // AUTOMATISK ID-GENERATOR MED 5-SIFRER OG UNIVERS-BOKSTAV
-       // NY OG RENERE ID-GENERATOR
-        // NY OG RENERE ID-GENERATOR
-        function generateAutoID(mainCat, universeStr) {
-            let uChar = 'C';
-            if (universeStr === 'Legends') uChar = 'L';
-            if (universeStr === 'Fan-Made' || universeStr === 'Fanmade') uChar = 'FM';
+  // Funksjon som genererer ID automatisk basert på skjemaets valg
+function generateSystemID(prefixCat, prefixSub, universeVal, mode = 'add') {
+    let catCode = getCategoryPrefix(prefixCat);
+    let subCode = getSubCategoryPrefix(prefixSub);
+    
+    // Bestem univers-suffiks (Canon -> CAN, Legends -> LEG, Fan-Made -> FM)
+    let uniCode = 'CAN';
+    if (universeVal === 'Legends') uniCode = 'LEG';
+    if (universeVal === 'Fan-Made') uniCode = 'FM';
+    
+    let nextNum = getNextSequentialNumber(catCode, subCode, uniCode);
+    let paddedNum = String(nextNum).padStart(5, '0'); // 5-sifret tall, f.eks. 00001
+    
+    return `${catCode}-${subCode}-${paddedNum}-${uniCode}`;
+}
 
-            // Velg en pen kode basert på hovedkategori
-            let catCode = "SYS";
-            let mainLower = mainCat.toLowerCase();
-            if (mainLower.includes("weapon")) catCode = "WPN";
-            else if (mainLower.includes("armor")) catCode = "ARM";
-            else if (mainLower.includes("clothing")) catCode = "CLO";
-            else if (mainLower.includes("material") || mainLower.includes("agriculture")) catCode = "MAT";
-            else if (mainLower.includes("food")) catCode = "FOD";
-            else if (mainLower.includes("starship")) catCode = "SHIP";
-            else if (mainLower.includes("speeder")) catCode = "SPD";
-            else if (mainLower.includes("medical")) catCode = "MED";
-            else if (mainLower.includes("survival") || mainLower.includes("tools")) catCode = "GEAR";
-            else if (mainLower.includes("software") || mainLower.includes("droids")) catCode = "SYS";
-            else if (mainLower.includes("associate") || mainLower.includes("shadow")) catCode = "PERS";
+// Hjelpefunksjon for å hente kort-prefiks for hovedkategori (med KAS for Known Associates)
+function getCategoryPrefix(categoryName) {
+    const map = {
+        "Weapons": "WPN",
+        "Survival, Tools & Field Gear": "SUR",
+        "Armor & Protection": "ARM",
+        "Clothing & Textiles": "CLO",
+        "Starships": "SHP",
+        "Speeders & Vehicles": "VEH",
+        "Medical & Chemical Equipment": "MED",
+        "System & Software": "SYS",
+        "Hardware": "HDW",
+        "Food & drinks": "FOD",
+        "Medical & Chemical Compounds": "CMP",
+        "Raw Materials": "MAT",
+        "Agriculture": "AGR",
+        "Droids": "DRO",
+        "Known associates": "KAS",
+        "Factions": "FAC",
+        "Locations": "LOC"
+    };
+    return map[categoryName] || "GEN";
+}
 
-            let searchPrefix = `${catCode}-`;
-            let maxNum = 0;
+// Hjelpefunksjon for å lage en kort-prefiks av underkategorien
+function getSubCategoryPrefix(subCategoryName) {
+    if (!subCategoryName) return "SUB";
+    return subCategoryName.replace(/[^a-zA-Z]/g, "").substring(0, 3).toUpperCase();
+}
 
-            catalogData.components.forEach(item => {
-                if (item.id && item.id.startsWith(searchPrefix)) {
-                    let parts = item.id.split('-');
-                    for (let p of parts) {
-                        let num = parseInt(p, 10);
-                        if (!isNaN(num) && num > maxNum && num < 99999) {
-                            maxNum = num;
-                        }
-                    }
-                }
-            });
-
-            let nextNum = maxNum + 1;
-            let paddedNum = String(nextNum).padStart(5, '0');
-            return `${catCode}-${paddedNum}-${uChar}`;
+// Hjelpefunksjon for å sjekke eksisterende poster og finne neste ledige nummer (00001+)
+function getNextSequentialNumber(catCode, subCode, uniCode) {
+    if (typeof catalogData === 'undefined' || !Array.isArray(catalogData)) return 1;
+    
+    let maxNum = 0;
+    const regex = new RegExp(`^${catCode}-${subCode}-(\\d{5})-${uniCode}$`);
+    
+    catalogData.forEach(item => {
+        if (item.id) {
+            let match = item.id.match(regex);
+            if (match) {
+                let num = parseInt(match[1], 10);
+                if (num > maxNum) maxNum = num;
+            }
         }
+    });
+    
+    return maxNum + 1;
+}
+
 		function switchAddTabNew(tabNumber) {
     // Fjern active fra alle knapper
     for (let i = 1; i <= 5; i++) {
