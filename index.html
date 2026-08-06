@@ -457,6 +457,37 @@
             </label>
         </div>
 
+
+		
+        <!-- ========================================== -->
+        <!-- SKJEMA FOR FANE 1, 2 og 3 (GENERELT UTSTYR) -->
+        <!-- ========================================== -->
+        <div id="addItemGenericForm">
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Navn på komponent / kjøretøy:</label>
+            <input type="text" id="add-comp-name" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
+
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Univers Status:</label>
+            <select id="add-comp-universe" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
+                <option value="Canon">Canon</option>
+                <option value="Legends">Legends</option>
+                <option value="Fan-Made">Fan-Made</option>
+            </select>
+
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Hovedkategori:</label>
+            <select id="add-comp-main-cat" onchange="updatesSubCategoryDropdown('add-comp-main-cat', 'add-comp-sub-cat')" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;"></select>
+
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Underkategori:</label>
+            <select id="add-comp-sub-cat" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;"></select>
+
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Produsent:</label>
+            <input type="text" id="add-comp-manufacturer" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;" placeholder="F.eks. Corellian Engineering Corporation">
+
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Bilde-URL (GitHub Raw):</label>
+            <input type="text" id="add-comp-image" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
+
+            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Kort beskrivelse:</label>
+            <textarea id="add-comp-desc" style="width: 100%; padding: 8px; margin-top: 4px; height: 60px; box-sizing: border-box;"></textarea>
+        </div>
 		<div id="addSupplyModal" class="modal">
     <div class="modal-content">
         <h2>Legg til ny Supply & Industry-post</h2>
@@ -549,37 +580,6 @@
         </form>
     </div>
 </div>
-		
-        <!-- ========================================== -->
-        <!-- SKJEMA FOR FANE 1, 2 og 3 (GENERELT UTSTYR) -->
-        <!-- ========================================== -->
-        <div id="addItemGenericForm">
-            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Navn på komponent / kjøretøy:</label>
-            <input type="text" id="add-comp-name" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
-
-            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Univers Status:</label>
-            <select id="add-comp-universe" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
-                <option value="Canon">Canon</option>
-                <option value="Legends">Legends</option>
-                <option value="Fan-Made">Fan-Made</option>
-            </select>
-
-            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Hovedkategori:</label>
-            <select id="add-comp-main-cat" onchange="updatesSubCategoryDropdown('add-comp-main-cat', 'add-comp-sub-cat')" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;"></select>
-
-            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Underkategori:</label>
-            <select id="add-comp-sub-cat" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;"></select>
-
-            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Produsent:</label>
-            <input type="text" id="add-comp-manufacturer" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;" placeholder="F.eks. Corellian Engineering Corporation">
-
-            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Bilde-URL (GitHub Raw):</label>
-            <input type="text" id="add-comp-image" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
-
-            <label style="font-size: 0.85rem; display: block; margin-top: 10px;">Kort beskrivelse:</label>
-            <textarea id="add-comp-desc" style="width: 100%; padding: 8px; margin-top: 4px; height: 60px; box-sizing: border-box;"></textarea>
-        </div>
-
 
         <!-- ========================================== -->
         <!-- SKJEMA FOR FANE 4 (PERSONELL & DROIDER)     -->
