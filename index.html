@@ -17321,7 +17321,7 @@ function updatesSubcategories() {
             let index = catalogData.components.findIndex(p => p.id === activeModalPart.id);
             if (index !== -1) {
                 // Generer ny ID basert på den nye hovedkategorien og universet
-                let newId = generateAutoID(mainCat, universe);
+               let newId = generateSystemID(mainCat, subCat, universe);
 
                 catalogData.components[index] = {
                     ...catalogData.components[index],
