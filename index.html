@@ -402,7 +402,7 @@
                 <label style="font-size: 0.8rem; display: block; margin-top: 10px;">ID (Genereres automatisk eller låses):</label>
                 <input type="text" id="edit-id" readonly style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; background: #111; color: var(--text-muted);">
 
-                <label style="font-size: 0.8rem; display: block; margin-top: 10px;">Navn:</label>
+                <label style="font-size: 0.8rem; display: block; margin-top: 10px;">Name:</label>
                 <input type="text" id="edit-name" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
 
                 <label style="font-size: 0.8rem; display: block; margin-top: 10px;">Univers Status:</label>
@@ -424,6 +424,9 @@
                 <label style="font-size: 0.8rem; display: block; margin-top: 10px;">Description / Overwiev:</label>
                 <textarea id="edit-desc" style="width: 100%; padding: 8px; margin-top: 4px; height: 60px; box-sizing: border-box;"></textarea>
 
+				<label style="font-size: 0.8rem; display: block; margin-top: 10px;">Image URL:</label>
+                <input type="text" id="edit-comp-image" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; background: #0b0f19; border: 1px solid var(--border-gray); color: #fff;">
+				
 				<!-- Lex Note felt -->
                <div style="margin-top: 15px;">
                <label style="display: block; font-size: 0.9rem; color: var(--holo-blue); margin-bottom: 5px;">Lex Note:</label>
@@ -17214,50 +17217,50 @@ function updatesSubcategories() {
             document.getElementById(id).classList.toggle('open');
         }
 		function openModal(partJson) {
-            activeModalPart = JSON.parse(decodeURIComponent(partJson));
-            
-            document.getElementById('modal-id').innerText = `Record ID: ${activeModalPart.id}`;
-            document.getElementById('modal-name').innerText = activeModalPart.name;
-            document.getElementById('modal-universe').innerText = `Universe Status: ${activeModalPart.universeStatus}`;
-            
-            // Sjekk om det finnes et bilde, og lag miniatyrbildet hvis det gjør det
-            let imageHtml = '';
-            if (activeModalPart.imageUrl) {
-                imageHtml = `<img src="${activeModalPart.imageUrl}" style="float: right; width: 80px; height: 100px; object-fit: cover; cursor: pointer; border: 1px solid #00ffff; margin-left: 15px; margin-bottom: 10px;" onclick="openFullImage('${activeModalPart.imageUrl}')" title="Klikk for å forstørre bilde">`;
-            }
+    activeModalPart = JSON.parse(decodeURIComponent(partJson));
+    
+    document.getElementById('modal-id').innerText = `Record ID: ${activeModalPart.id}`;
+    document.getElementById('modal-name').innerText = activeModalPart.name;
+    document.getElementById('modal-universe').innerText = `Universe Status: ${activeModalPart.universeStatus}`;
+    
+    // Håndter bilde
+    let imageHtml = '';
+    if (activeModalPart.imageUrl) {
+        imageHtml = `<img src="${activeModalPart.imageUrl}" style="float: right; width: 90px; height: 110px; object-fit: cover; cursor: pointer; border: 1px solid var(--holo-blue); margin-left: 15px; margin-bottom: 10px;" onclick="openFullImage('${activeModalPart.imageUrl}')" title="Klikk for å forstørre bilde">`;
+    }
 
-            let contentContainer = document.getElementById('modalDynamicContent');
-            contentContainer.innerHTML = `
-                ${imageHtml}
-                <div style="font-size: 1rem; margin-bottom: 12px;">
-                    <strong>Category Path:</strong> <span style="color:var(--holo-blue);">${activeModalPart.categoryPath}</span><br>
-                    <strong>Manufacturer / Affiliation:</strong> <span>${activeModalPart.manufacturing?.manufacturer || 'Unknown'}</span>
-                </div>
-                <p style="font-size: 1rem; line-height: 1.4;">${activeModalPart.overview?.shortDescription || 'No description available.'}</p>
-                
-                <div class="spec-grid" id="modal-specs"></div>
+    let contentContainer = document.getElementById('modalDynamicContent');
+    contentContainer.innerHTML = `
+        ${imageHtml}
+        <div style="font-size: 1rem; margin-bottom: 12px;">
+            <strong>Category Path:</strong> <span style="color:var(--holo-blue);">${activeModalPart.categoryPath}</span><br>
+            <strong>Manufacturer / Affiliation:</strong> <span>${activeModalPart.manufacturing?.manufacturer || 'Unknown'}</span>
+        </div>
+        <p style="font-size: 1rem; line-height: 1.4;">${activeModalPart.overview?.shortDescription || 'No description available.'}</p>
+        
+        <div class="spec-grid" id="modal-specs" style="margin-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;"></div>
 
-                <div style="margin-top: 15px; font-size: 0.95rem; border-top: 1px dashed var(--border-gray); padding-top: 12px; line-height: 1.4;">
-                    <p><strong>Lex Note:</strong> <span style="color:var(--text-main);">${activeModalPart.lexNotes?.lexNote || 'No notes.'}</span></p>
-                    <p><strong>Spectre Analysis:</strong> <span style="color:var(--holo-blue);">${activeModalPart.lexNotes?.spectreAnalysis || 'No analysis.'}</span></p>
-                </div>
-            `;
+        <div style="margin-top: 15px; font-size: 0.95rem; border-top: 1px dashed var(--border-gray); padding-top: 12px; line-height: 1.4; clear: both;">
+            <p><strong>Lex Note:</strong> <span style="color:var(--text-main);">${activeModalPart.lexNotes?.lexNote || 'No notes.'}</span></p>
+            <p><strong>Spectre Analysis:</strong> <span style="color:var(--holo-blue);">${activeModalPart.lexNotes?.spectreAnalysis || 'No analysis.'}</span></p>
+        </div>
+    `;
 
-            let specsContainer = document.getElementById('modal-specs');
-            specsContainer.innerHTML = '';
-            if (activeModalPart.specifications) {
-                for (let key in activeModalPart.specifications) {
-                    specsContainer.innerHTML += `<div><strong>${key}:</strong> ${activeModalPart.specifications[key]}</div>`;
-                }
-            } else {
-                specsContainer.innerHTML = '<div>No specific technical parameters logged.</div>';
-            }
-
-            document.getElementById('viewModeContainer').style.display = 'block';
-            document.getElementById('editModeContainer').style.display = 'none';
-            document.getElementById('itemModal').style.display = 'flex';
+    // Fyll ut spesifikasjoner (fanger opp personell-detaljer som rase/alder eller våpen-specs)
+    let specsContainer = document.getElementById('modal-specs');
+    specsContainer.innerHTML = '';
+    if (activeModalPart.specifications && Object.keys(activeModalPart.specifications).length > 0) {
+        for (let key in activeModalPart.specifications) {
+            specsContainer.innerHTML += `<div style="background: rgba(0,255,255,0.05); padding: 6px; border: 1px solid rgba(0,255,255,0.2);"><strong>${key}:</strong> ${activeModalPart.specifications[key]}</div>`;
         }
-       
+    } else {
+        specsContainer.style.display = 'none';
+    }
+
+    document.getElementById('viewModeContainer').style.display = 'block';
+    document.getElementById('editModeContainer').style.display = 'none';
+    document.getElementById('itemModal').style.display = 'flex';
+}
 
         function deleteCurrentItem() {
             if (!activeModalPart) return;
@@ -17321,7 +17324,7 @@ function updatesSubcategories() {
             document.getElementById('editModeContainer').style.display = 'none';
         }
 
-    function saveEditedItem() {
+		function saveEditedItem() {
     const name = document.getElementById('edit-name').value.trim();
     const universe = document.getElementById('edit-universe').value;
     const mainCat = document.getElementById('edit-main-cat').value;
@@ -17330,10 +17333,19 @@ function updatesSubcategories() {
     const desc = document.getElementById('edit-desc').value.trim();
     const lexNote = document.getElementById('edit-comp-lexnote')?.value.trim() || '';
     const spectre = document.getElementById('edit-comp-spectre')?.value.trim() || '';
+    const imageUrl = document.getElementById('edit-comp-image')?.value.trim() || activeModalPart.imageUrl || '';
     
     let index = catalogData.components.findIndex(p => p.id === activeModalPart.id);
     if (index !== -1) {
-        let newId = generateSystemID(mainCat, subCat, universe);
+        // Behold eksisterende ID med mindre hovedkategori eller univers endres
+        let newId = activeModalPart.id;
+        let oldParts = activeModalPart.id.split('-');
+        let expectedCatCode = getCategoryPrefix(mainCat);
+        let expectedUniCode = (universe === 'Legends' ? 'LEG' : (universe === 'Fan-Made' ? 'FM' : 'CAN'));
+        
+        if (oldParts[0] !== expectedCatCode || oldParts[3] !== expectedUniCode) {
+            newId = generateSystemID(mainCat, subCat, universe);
+        }
 
         catalogData.components[index] = {
             ...catalogData.components[index],
@@ -17341,6 +17353,7 @@ function updatesSubcategories() {
             name: name,
             universeStatus: universe,
             categoryPath: `${mainCat} / ${subCat}`,
+            imageUrl: imageUrl,
             overview: { shortDescription: desc },
             manufacturing: { manufacturer: manufacturer },
             lexNotes: {
