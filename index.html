@@ -412,21 +412,32 @@
                     <option value="Fan-Made">Fan-Made</option>
                 </select>
 
-                <label style="font-size: 0.8rem; display: block; margin-top: 10px;">Hovedkategori:</label>
+                <label style="font-size: 0.8rem; display: block; margin-top: 10px;">Main category:</label>
                 <select id="edit-main-cat" onchange="updatesSubCategoryDropdown('edit-main-cat', 'edit-sub-cat')" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;"></select>
 
-                <label style="font-size: 0.8rem; display: block; margin-top: 10px;">Underkategori:</label>
+                <label style="font-size: 0.8rem; display: block; margin-top: 10px;">Sub category:</label>
                 <select id="edit-sub-cat" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;"></select>
 
-                <label style="font-size: 0.8rem; display: block; margin-top: 10px;">Produsent / Tilhørighet:</label>
+                <label style="font-size: 0.8rem; display: block; margin-top: 10px;">Manufacturer / Alignment:</label>
                 <input type="text" id="edit-manufacturer" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;">
 
-                <label style="font-size: 0.8rem; display: block; margin-top: 10px;">Beskrivelse / Biografi:</label>
+                <label style="font-size: 0.8rem; display: block; margin-top: 10px;">Description / Overwiev:</label>
                 <textarea id="edit-desc" style="width: 100%; padding: 8px; margin-top: 4px; height: 60px; box-sizing: border-box;"></textarea>
 
+				<!-- Lex Note felt -->
+               <div style="margin-top: 15px;">
+               <label style="display: block; font-size: 0.9rem; color: var(--holo-blue); margin-bottom: 5px;">Lex Note:</label>
+               <textarea id="edit-comp-lexnote" style="width: 100%; height: 60px; background: #0b0f19; border: 1px solid var(--border-gray); color: #fff; padding: 8px;"></textarea>
+               </div>
+
+               <!-- Spectre Analysis felt -->
+               <div style="margin-top: 15px;">
+               <label style="display: block; font-size: 0.9rem; color: var(--holo-blue); margin-bottom: 5px;">Spectre Analysis:</label>
+               <textarea id="edit-comp-spectre" style="width: 100%; height: 60px; background: #0b0f19; border: 1px solid var(--border-gray); color: #fff; padding: 8px;"></textarea>
+			   </div>
                 <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
-                    <button class="tab-btn" onclick="cancelEditMode()">Avbryt</button>
-                    <button class="tab-btn" onclick="saveEditedItem()" style="border-color: var(--holo-blue); color: var(--holo-blue);">Lagre endringer</button>
+                    <button class="tab-btn" onclick="cancelEditMode()">Cancel</button>
+                    <button class="tab-btn" onclick="saveEditedItem()" style="border-color: var(--holo-blue); color: var(--holo-blue);">Save edit</button>
                 </div>
             </div>
 
