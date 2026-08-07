@@ -17632,7 +17632,8 @@ function getNextSequentialNumber(catCode, subCode, uniCode) {
 
 
 		function saveNewItem() {
-            const isPersonnelActive = document.getElementById('addPersonnelForm').style.display === 'block';
+            const persForm = document.getElementById('addItemPersonnelForm') || document.getElementById('addPersonnelForm');
+const isPersonnelActive = persForm && persForm.style.display === 'block';
             let id = '', name = '', universe = '', fullCategory = '', mfrOrFaction = '', desc = '', imageUrl = '';
 
             if (!isPersonnelActive) {
