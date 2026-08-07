@@ -17281,7 +17281,7 @@ function updatesSubcategories() {
             
             const editLex = document.getElementById('edit-comp-lexnote');
             if (editLex) editLex.value = activeModalPart.lexNotes?.lexNote || '';
-            
+
             const editSpectre = document.getElementById('edit-comp-spectre');
             if (editSpectre) editSpectre.value = activeModalPart.lexNotes?.spectreAnalysis || '';
 
@@ -17310,33 +17310,38 @@ function updatesSubcategories() {
             document.getElementById('editModeContainer').style.display = 'none';
         }
 
-      function saveEditedItem() {
-            const name = document.getElementById('edit-name').value.trim();
-            const universe = document.getElementById('edit-universe').value;
-            const mainCat = document.getElementById('edit-main-cat').value;
-            const subCat = document.getElementById('edit-sub-cat').value;
-            const manufacturer = document.getElementById('edit-manufacturer').value.trim();
-            const desc = document.getElementById('edit-desc').value.trim();
-            
-            let index = catalogData.components.findIndex(p => p.id === activeModalPart.id);
-            if (index !== -1) {
-                // Generer ny ID basert på den nye hovedkategorien og universet
-               let newId = generateSystemID(mainCat, subCat, universe);
+    function saveEditedItem() {
+    const name = document.getElementById('edit-name').value.trim();
+    const universe = document.getElementById('edit-universe').value;
+    const mainCat = document.getElementById('edit-main-cat').value;
+    const subCat = document.getElementById('edit-sub-cat').value;
+    const manufacturer = document.getElementById('edit-manufacturer').value.trim();
+    const desc = document.getElementById('edit-desc').value.trim();
+    const lexNote = document.getElementById('edit-comp-lexnote')?.value.trim() || '';
+    const spectre = document.getElementById('edit-comp-spectre')?.value.trim() || '';
+    
+    let index = catalogData.components.findIndex(p => p.id === activeModalPart.id);
+    if (index !== -1) {
+        let newId = generateSystemID(mainCat, subCat, universe);
 
-                catalogData.components[index] = {
-                    ...catalogData.components[index],
-                    id: newId, // Oppdaterer til ny ID
-                    name: name,
-                    universeStatus: universe,
-                    categoryPath: `${mainCat} / ${subCat}`,
-                    overview: { shortDescription: desc },
-                    manufacturing: { manufacturer: manufacturer }
-                };
-                saveToLocalStorage();
-                closeModal();
-                alert(`Endringene ble lagret! Ny ID generert: ${newId}`);
+        catalogData.components[index] = {
+            ...catalogData.components[index],
+            id: newId,
+            name: name,
+            universeStatus: universe,
+            categoryPath: `${mainCat} / ${subCat}`,
+            overview: { shortDescription: desc },
+            manufacturing: { manufacturer: manufacturer },
+            lexNotes: {
+                lexNote: lexNote,
+                spectreAnalysis: spectre
             }
-        }
+        };
+        saveToLocalStorage();
+        closeModal();
+        alert(`Endringene ble lagret! ID: ${newId}`);
+    }
+}
 
         function closeModal(event) {
             if (!event || event.target.id === 'itemModal') {
@@ -17660,7 +17665,10 @@ const isPersonnelActive = persForm && persForm.style.display === 'block';
                     overview: { shortDescription: desc },
                     manufacturing: { manufacturer: mfrOrFaction },
                     specifications: {},
-                    lexNotes: { lexNote: "Lagt til via nettsiden.", spectreAnalysis: "Registrert i systemet." }
+                    lexNotes: { 
+    lexNote: document.getElementById('add-comp-lex')?.value.trim() || "Lagt til via nettsiden.", 
+    spectreAnalysis: document.getElementById('add-comp-spectre')?.value.trim() || "Registrert i systemet." 
+}
                 };
 
                 catalogData.components.push(newItem);
@@ -17730,9 +17738,9 @@ id = generateSystemID(isRestricted ? 'The Shadows' : mainCat, subCatVal, univers
                         "Tilhørighet": mfrOrFaction
                     },
                     lexNotes: { 
-                        lexNote: document.getElementById('add-pers-lex').value.trim() || "Lagt til via nettsiden.", 
-                        spectreAnalysis: document.getElementById('add-pers-spectre').value.trim() || "Registrert i systemet." 
-                    }
+    lexNote: document.getElementById('add-comp-lex')?.value.trim() || "Lagt til via nettsiden.", 
+    spectreAnalysis: document.getElementById('add-comp-spectre')?.value.trim() || "Registrert i systemet." 
+}
                 };
 
                 catalogData.components.push(newItem);
