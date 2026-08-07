@@ -17103,13 +17103,6 @@ function updatesSubcategories() {
     });
 }
 		
-// Kjør en gang ved oppstart for å fylle inn default-underkategorier
-document.addEventListener("DOMContentLoaded", () => {
-    updatesSubcategories();
-
-    // Håndter innsending av skjemaet
-    document.getElementById("supplyForm").addEventListener("submit", function(e) {
-        e.preventDefault();
 
         // Generer automatisk ID (f.eks. SUP-00001-C eller en tidsbasert/unik ID)
         const generatedId = "SUP-" + Math.floor(10000 + Math.random() * 90000) + "-C";
