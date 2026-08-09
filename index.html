@@ -626,6 +626,15 @@
 
     <script>
      let CATEGORY_STRUCTURE = {
+		 // Legg denne inn øverst i CATEGORY_STRUCTURE-objektet ditt:
+"Restricted Files": [
+    "Assets",
+    "Personnel",
+    "Weapons",
+    "Technology"
+	"Transporters"
+	"Bases"
+],
     // --- TAB 1: BATTLE GEAR AND EQUIPMENT ---
     "Weapons": [
         "Blasters & Pistols", 
@@ -811,6 +820,7 @@
         "Physical Conditioning Gear",
         "Leisure & Hobby Supplies"
     ]
+
 };
 
         const MANUFACTURER_PROFILES = {
@@ -17029,23 +17039,23 @@
             }
         }
 
-        function populateMainCategoryButtons() {
-            const container = document.getElementById('mainCategoryButtons');
-            let html = `<button class="tab-btn active" onclick="selectMainCategory('All', this)" style="grid-column: 1 / -1;">All Categories</button>`;
+    function populateMainCategoryButtons() {
+    const container = document.getElementById('mainCategoryButtons');
+    let html = `<button class="tab-btn active" onclick="selectMainCategory('All', this)" style="grid-column: 1 / -1;">All Categories</button>`;
 
-            let categoriesList = Object.keys(CATEGORY_STRUCTURE);
+    let categoriesList = Object.keys(CATEGORY_STRUCTURE);
 
-            categoriesList.forEach(cat => {
-                let isRestrictedCat = (cat === 'The Shadows');
-                if (isRestrictedCat) {
-                    if (unlockedClassified) {
-                        html += `<button class="tab-btn" onclick="selectMainCategory('${cat}', this)" style="color:var(--classified-gold); border-color:var(--classified-gold);">${cat}</button>`;
-                    }
-                } else {
-                    html += `<button class="tab-btn" onclick="selectMainCategory('${cat}', this)">${cat}</button>`;
-                }
-            });
-            container.innerHTML = html;
+    categoriesList.forEach(cat => {
+        let isRestrictedCat = (cat === 'Restricted Files');
+        if (isRestrictedCat) {
+            if (unlockedClassified) {
+                html += `<button class="tab-btn" onclick="selectMainCategory('${cat}', this)" style="color:var(--classified-gold); border-color:var(--classified-gold);">${cat}</button>`;
+            }
+        } else {
+            html += `<button class="tab-btn" onclick="selectMainCategory('${cat}', this)">${cat}</button>`;
+        }
+    });
+    container.innerHTML = html;
         }
 		// Universal funksjon for å oppdatere underkategorier basert på hovedkategori
 function updateSubCategoryDropdown(mainSelectId, subSelectId) {
