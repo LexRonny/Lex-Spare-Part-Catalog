@@ -462,6 +462,7 @@
             <button type="button" id="tabBtn3" class="tab-btn" onclick="switchAddTabNew(3)">3. SUPPLY & INDUSTRY</button>
             <button type="button" id="tabBtn4" class="tab-btn" onclick="switchAddTabNew(4)">4. PERSONNEL</button>
             <button type="button" id="tabBtn5" class="tab-btn" onclick="switchAddTabNew(5)">5. LOCATIONS & FACTIONS</button>
+			<button type="button" id="tabBtn6" class="tab-btn" onclick="switchAddTabNew(6)">5.  HOUSEHOLD & LIVING QUARTERS</button>
         </div>
 
         <!-- GLOBAL RESTRICTED CHECKBOX -->
@@ -504,7 +505,7 @@
             </div>
 
             <!-- ========================================== -->
-            <!-- GENERIC FORM FOR TABS 1, 2, 3, 5           -->
+            <!-- GENERIC FORM FOR TABS 1, 2, 3, 5, 6           -->
             <!-- ========================================== -->
             <div id="addItemGenericForm">
                 <div style="display: flex; gap: 10px; margin-bottom: 10px;">
@@ -708,6 +709,19 @@
         "Thrusters", 
         "Other components"
     ],
+	 "Electronics & Security": [
+        "Communication Systems",
+        "Terminals & Computing",
+        "Security & Surveillance"
+    ],
+	"Maintenance Supplies": [
+		"Workshop tools & Electrical equipment",
+		"Mechanical Components",
+		"Power cells & Energy conduits",
+		"Industrial liquids, Oil & Lubricants", 
+		"Decontaminants & Sterilizing spirits",
+		"Hazard mitigation & Protective gear (PPE)"
+],
 
     // --- TAB 3: SUPPLY & INDUSTRY ---
     "Food & drinks": [
@@ -770,6 +784,32 @@
         "Cities", 
         "Strongholds", 
         "DropOffs"
+    ],
+		// --- TAB 6: HOUSEHOLD & LIVING QUARTERS ---
+    "Household Kitchen": [
+        "Kitchen & Mess Hall Appliances",
+        "Food Preparation & Hydration",
+        "Ration Heaters & Warmers",
+        "Refrigeration Units"
+    ],
+    "Living Quarters & Fresher": [
+        "Bath & Hygeia Facilities",
+        "Sanitation Units",
+        "Bunking & Sleep Gear",
+        "Environmental Illumination",
+        "Habitat Furnishings"
+    ],
+    "Office & Administrative Equipment": [
+        "Data Slates & Datapads",
+        "Archive & Storage Units",
+        "Personal Access Terminals"
+    ],
+    "Recreation & Entertainment": [
+        "Holonet Simulators",
+        "Media & Hologram Players",
+        "Audio & Communication Units",
+        "Physical Conditioning Gear",
+        "Leisure & Hobby Supplies"
     ]
 };
 
@@ -17489,6 +17529,8 @@ function getCategoryPrefix(categoryName) {
         "Medical & Chemical Equipment": "MED",
         "System & Software": "SYS",
         "Hardware": "HDW",
+        "Electronics & Security": "ELS",
+        "Maintenance Supplies": "MSU",
         "Food & drinks": "FOD",
         "Medical & Chemical Compounds": "CMP",
         "Raw Materials": "MAT",
@@ -17496,7 +17538,11 @@ function getCategoryPrefix(categoryName) {
         "Droids": "DRO",
         "Known associates": "KAS",
         "Factions": "FAC",
-        "Locations": "LOC"
+        "Locations": "LOC",
+        "Household Kitchen": "HKI",
+        "Living Quarters & Fresher": "LQS",
+        "Office & Administrative Equipment": "OAE",
+        "Recreation & Entertainment": "REE"
     };
     return map[categoryName] || "GEN";
 }
@@ -17560,15 +17606,17 @@ function populateTabCategories(tabNumber, mainId, subId) {
     
     let allowedCategories = [];
     if (tabNumber === 1) {
-        allowedCategories = ['Weapons', 'Survival, Tools & Field Gear', 'Armor & Protection', 'Clothing & Textiles']; //[cite: 1]
+        allowedCategories = ['Weapons', 'Survival, Tools & Field Gear', 'Armor & Protection', 'Clothing & Textiles'];
     } else if (tabNumber === 2) {
-        allowedCategories = ['Starships', 'Speeders & Vehicles', 'Medical & Chemical Equipment', 'System & Software', 'Hardware']; //[cite: 1, 2]
+        allowedCategories = ['Starships', 'Speeders & Vehicles', 'Medical & Chemical Equipment', 'System & Software', 'Hardware', 'Electronics & Security', 'Maintenance Supplies'];
     } else if (tabNumber === 3) {
-        allowedCategories = ['Food & drinks', 'Medical & Chemical Compounds', 'Raw Materials', 'Agriculture']; //[cite: 1, 2]
+        allowedCategories = ['Food & drinks', 'Medical & Chemical Compounds', 'Raw Materials', 'Agriculture'];
     } else if (tabNumber === 4) {
-        allowedCategories = ['Droids', 'Known associates']; //[cite: 1, 2]
+        allowedCategories = ['Droids', 'Known associates'];
     } else if (tabNumber === 5) {
-        allowedCategories = ['Factions', 'Locations']; //[cite: 1, 2]
+        allowedCategories = ['Factions', 'Locations'];
+    } else if (tabNumber === 6) {
+        allowedCategories = ['Household Kitchen', 'Living Quarters & Fresher', 'Office & Administrative Equipment', 'Recreation & Entertainment'];
     }
 
     allowedCategories.forEach(cat => {
@@ -17580,7 +17628,6 @@ function populateTabCategories(tabNumber, mainId, subId) {
 
     updateSubCategoryDropdown(mainId, subId);
 }
-
 
 function toggleRestrictedModalColor(checkbox) {
     const modalContent = document.getElementById('addItemModal'); // Bruker riktig ID på modalen din
