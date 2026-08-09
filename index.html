@@ -17711,6 +17711,7 @@ function getNextSequentialNumber(catCode, subCode, uniCode) {
 function saveNewItem() {
     const persForm = document.getElementById('addItemPersonnelForm') || document.getElementById('addPersonnelForm');
     const isPersonnelActive = persForm && persForm.style.display === 'block';
+    
     let id = '', name = '', universe = '', fullCategory = '', mfrOrFaction = '', desc = '', imageUrl = '';
 
     const restrictedCheckbox = document.getElementById('global-pers-restricted') || document.getElementById('add-comp-restricted') || document.getElementById('add-pers-restricted');
@@ -17718,55 +17719,34 @@ function saveNewItem() {
 
     if (!isPersonnelActive) {
         // --- KOMPONENT-LAGRING ---
-        name = document.getElementById('add-comp-name')?.value.trim() || document.getElementById('add-pers-name')?.value.trim() || '';
+        name = document.getElementById('add-comp-name')?.value.trim() || '';
         universe = document.getElementById('add-comp-universe')?.value || 'Canon';
         const mainCat = document.getElementById('add-comp-main-cat')?.value || 'Hardware';
         const subCat = document.getElementById('add-comp-sub-cat')?.value || 'Components';
         mfrOrFaction = document.getElementById('add-comp-manufacturer')?.value.trim() || 'Ukjent';
         desc = document.getElementById('add-comp-desc')?.value.trim() || '';
+        imageUrl = document.getElementById('add-comp-image')?.value.trim() || '';
 
         if (!name) {
             alert("Du må fylle ut navnet på posten!");
             return;
         }
-        // ... (resten av koden for komponenter)
 
-    } else {
-        // --- PERSONNEL-LAGRING ---
-        // Sjekker begge ID-er her også, slik at den garantert finner navnet du skrev inn!
-        name = document.getElementById('add-pers-name')?.value.trim() || document.getElementById('add-comp-name')?.value.trim() || '';
-        universe = document.getElementById('add-pers-universe')?.value || 'Canon';
-        const mainCat = document.getElementById('add-pers-main-cat')?.value || 'Known associates';
-        const subCat = document.getElementById('add-pers-sub-cat')?.value || 'Personnel';
-        mfrOrFaction = document.getElementById('add-pers-faction')?.value.trim() || 'Uavhengig';
-        desc = document.getElementById('add-pers-desc')?.value.trim() || '';
-        imageUrl = document.getElementById('add-pers-image')?.value.trim() || '';
-
-        if (!name) {
-            alert("Du må fylle ut navnet på personellet!");
-            return;
-        }
-
-        if (isRestricted) {
-            universe = 'Classified';
-            fullCategory = `The Shadows / ${subCat || 'Assets'}`;
-        } else {
-            fullCategory = `${mainCat} / ${subCat}`;
-        }
-
-        id = generateSystemID(isRestricted ? 'The Shadows' : mainCat, subCat, universe);
+        fullCategory = `${mainCat} / ${subCat}`;
+        id = generateSystemID(mainCat, subCat, universe);
 
         let newItem = {
             id: id,
             name: name,
             universeStatus: universe,
             categoryPath: fullCategory,
+            imageUrl: imageUrl,
             overview: { shortDescription: desc },
             manufacturing: { manufacturer: mfrOrFaction },
             specifications: {},
             lexNotes: { 
-                lexNote: document.getElementById('add-comp-lex')?.value.trim() || "Lagt til via nettsiden.", 
-                spectreAnalysis: document.getElementById('add-comp-spectre')?.value.trim() || "Registrert i systemet." 
+                lexNote: document.getElementById('add-pers-lex')?.value.trim() || "Lagt til via nettsiden.", 
+                spectreAnalysis: document.getElementById('add-pers-spectre')?.value.trim() || "Registrert i systemet." 
             }
         };
 
@@ -17774,7 +17754,7 @@ function saveNewItem() {
 
     } else {
         // --- PERSONNEL-LAGRING ---
-        name = document.getElementById('add-pers-name')?.value.trim() || '';
+        name = document.getElementById('add-pers-name')?.value.trim() || document.getElementById('add-comp-name')?.value.trim() || '';
         universe = document.getElementById('add-pers-universe')?.value || 'Canon';
         const mainCat = document.getElementById('add-pers-main-cat')?.value || 'Known associates';
         const subCat = document.getElementById('add-pers-sub-cat')?.value || 'Personnel';
@@ -17790,26 +17770,15 @@ function saveNewItem() {
         const age = document.getElementById('add-pers-age')?.value.trim() || '';
         const species = document.getElementById('add-pers-species')?.value.trim() || '';
         const gender = document.getElementById('add-pers-gender')?.value.trim() || '';
-        const build = document.getElementById('add-pers-build')?.value || '';
-        const height = document.getElementById('add-pers-height')?.value || '';
-        const hairColor = document.getElementById('add-pers-haircolor')?.value || '';
-        const hairLength = document.getElementById('add-pers-hairlength')?.value || '';
-        const appearanceDesc = document.getElementById('add-pers-appearance-desc')?.value.trim() || '';
-        const cyborgType = document.getElementById('add-pers-cyborg-type')?.value || '';
-        const cyberPart = document.getElementById('add-pers-cyber-part')?.value || '';
 
-       if (isRestricted) {
+        if (isRestricted) {
             universe = 'Classified';
-            // Bruker de vanlige kategoriene du valgte i skjemaet, i stedet for "The Shadows"
-            fullCategory = `${mainCat} / ${subCat}`;
+            fullCategory = `The Shadows / ${subCat || 'Assets'}`;
         } else {
             fullCategory = `${mainCat} / ${subCat}`;
         }
 
-        id = generateSystemID(mainCat, subCat, universe);
-
-        let subCatVal = document.getElementById('add-pers-sub-cat').value || 'Known Associates';
-        id = generateSystemID(isRestricted ? 'The Shadows' : mainCat, subCatVal, universe);
+        id = generateSystemID(isRestricted ? 'The Shadows' : mainCat, subCat, universe);
 
         let newItem = {
             id: id,
@@ -17822,19 +17791,11 @@ function saveNewItem() {
             specifications: {
                 "Alder": age || "Ukjent",
                 "Rase": species || "Ukjent",
-                "Kjønn": gender || "Ukjent",
-                "Kroppsbygning": build || "Standard",
-                "Høyde": height || "Ukjent",
-                "Hårfarge": hairColor || "Ikke spesifisert",
-                "Hårlengde / Stil": hairLength || "Standard",
-                "Kjennetegn / Arr": appearanceDesc || "Ingen spesielle",
-                "Cyborg-type": cyborgType || "Ingen",
-                "Cybernetisk del": cyberPart || "Ingen",
-                "Tilhørighet": mfrOrFaction
+                "Kjønn": gender || "Ukjent"
             },
             lexNotes: { 
-                lexNote: document.getElementById('add-comp-lex')?.value.trim() || "Lagt til via nettsiden.", 
-                spectreAnalysis: document.getElementById('add-comp-spectre')?.value.trim() || "Registrert i systemet." 
+                lexNote: document.getElementById('add-pers-lex')?.value.trim() || "Lagt til via nettsiden.", 
+                spectreAnalysis: document.getElementById('add-pers-spectre')?.value.trim() || "Registrert i systemet." 
             }
         };
 
