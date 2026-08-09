@@ -17542,7 +17542,8 @@ function getCategoryPrefix(categoryName) {
         "Household Kitchen": "HKI",
         "Living Quarters & Fresher": "LQS",
         "Office & Administrative Equipment": "OAE",
-        "Recreation & Entertainment": "REE"
+        "Recreation & Entertainment": "REE",
+		"Restricted Files": "RES"
     };
     return map[categoryName] || "GEN";
 }
@@ -17707,7 +17708,6 @@ function getNextSequentialNumber(catCode, subCode, uniCode) {
     return maxNum + 1;
 }
 
-
 function saveNewItem() {
     const persForm = document.getElementById('addItemPersonnelForm') || document.getElementById('addPersonnelForm');
     const isPersonnelActive = persForm && persForm.style.display === 'block';
@@ -17718,9 +17718,8 @@ function saveNewItem() {
     const isRestricted = restrictedCheckbox ? restrictedCheckbox.checked : false;
 
     if (!isPersonnelActive) {
-        // --- KOMPONENT-LAGRING ---
+        // --- KOMPONENT- / UTSTYRSLAGRING ---
         name = document.getElementById('add-comp-name')?.value.trim() || '';
-        universe = document.getElementById('add-comp-universe')?.value || 'Canon';
         const mainCat = document.getElementById('add-comp-main-cat')?.value || 'Hardware';
         const subCat = document.getElementById('add-comp-sub-cat')?.value || 'Components';
         mfrOrFaction = document.getElementById('add-comp-manufacturer')?.value.trim() || 'Ukjent';
@@ -17732,8 +17731,15 @@ function saveNewItem() {
             return;
         }
 
-        fullCategory = `${mainCat} / ${subCat}`;
-        id = generateSystemID(mainCat, subCat, universe);
+        if (isRestricted) {
+            universe = 'Classified';
+            fullCategory = `Restricted Files / ${subCat}`;
+        } else {
+            universe = document.getElementById('add-comp-universe')?.value || 'Canon';
+            fullCategory = `${mainCat} / ${subCat}`;
+        }
+
+        id = generateSystemID(isRestricted ? 'Restricted Files' : mainCat, subCat, universe);
 
         let newItem = {
             id: id,
@@ -17753,9 +17759,8 @@ function saveNewItem() {
         catalogData.components.push(newItem);
 
     } else {
-        // --- PERSONNEL-LAGRING ---
+        // --- PERSONELL-LAGRING ---
         name = document.getElementById('add-pers-name')?.value.trim() || document.getElementById('add-comp-name')?.value.trim() || '';
-        universe = document.getElementById('add-pers-universe')?.value || 'Canon';
         const mainCat = document.getElementById('add-pers-main-cat')?.value || 'Known associates';
         const subCat = document.getElementById('add-pers-sub-cat')?.value || 'Personnel';
         mfrOrFaction = document.getElementById('add-pers-faction')?.value.trim() || 'Uavhengig';
@@ -17773,12 +17778,13 @@ function saveNewItem() {
 
         if (isRestricted) {
             universe = 'Classified';
-            fullCategory = `The Shadows / ${subCat || 'Assets'}`;
+            fullCategory = `Restricted Files / ${subCat}`;
         } else {
+            universe = document.getElementById('add-pers-universe')?.value || 'Canon';
             fullCategory = `${mainCat} / ${subCat}`;
         }
 
-        id = generateSystemID(isRestricted ? 'The Shadows' : mainCat, subCat, universe);
+        id = generateSystemID(isRestricted ? 'Restricted Files' : mainCat, subCat, universe);
 
         let newItem = {
             id: id,
@@ -17806,6 +17812,7 @@ function saveNewItem() {
     closeAddModal();
     alert(`Ny post lagt til med automatisk ID: ${id}`);
 }
+
         
 		async function loadCatalogFromGitHub() {
             const jsonUrl = 'https://raw.githubusercontent.com/LexRonny/Lex-Spare-Part-Catalog/feature-json-update/catalogData_backup%20(1).json';
