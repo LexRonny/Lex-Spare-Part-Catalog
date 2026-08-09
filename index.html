@@ -17758,13 +17758,13 @@ function saveNewItem() {
 
     } else {
         // --- PERSONNEL-LAGRING ---
-        name = document.getElementById('add-pers-name').value.trim();
-        universe = document.getElementById('add-pers-universe').value;
-        const mainCat = document.getElementById('add-pers-main-cat').value;
-        const subCat = document.getElementById('add-pers-sub-cat').value;
-        mfrOrFaction = document.getElementById('add-pers-faction').value.trim() || 'Uavhengig';
-        desc = document.getElementById('add-pers-desc').value.trim() || '';
-        imageUrl = document.getElementById('add-pers-image').value.trim() || '';
+        name = document.getElementById('add-pers-name')?.value.trim() || '';
+        universe = document.getElementById('add-pers-universe')?.value || 'Canon';
+        const mainCat = document.getElementById('add-pers-main-cat')?.value || 'Known associates';
+        const subCat = document.getElementById('add-pers-sub-cat')?.value || 'Personnel';
+        mfrOrFaction = document.getElementById('add-pers-faction')?.value.trim() || 'Uavhengig';
+        desc = document.getElementById('add-pers-desc')?.value.trim() || '';
+        imageUrl = document.getElementById('add-pers-image')?.value.trim() || '';
 
         if (!name) {
             alert("Du må fylle ut navnet på personellet!");
