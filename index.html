@@ -17713,21 +17713,37 @@ function saveNewItem() {
     const isPersonnelActive = persForm && persForm.style.display === 'block';
     let id = '', name = '', universe = '', fullCategory = '', mfrOrFaction = '', desc = '', imageUrl = '';
 
-    // Definer isRestricted HER, helt øverst i funksjonen, så den er tilgjengelig over alt
     const restrictedCheckbox = document.getElementById('global-pers-restricted') || document.getElementById('add-comp-restricted') || document.getElementById('add-pers-restricted');
     const isRestricted = restrictedCheckbox ? restrictedCheckbox.checked : false;
 
     if (!isPersonnelActive) {
         // --- KOMPONENT-LAGRING ---
-        name = document.getElementById('add-comp-name').value.trim();
-        universe = document.getElementById('add-comp-universe').value;
-        const mainCat = document.getElementById('add-comp-main-cat').value;
-        const subCat = document.getElementById('add-comp-sub-cat').value;
-        mfrOrFaction = document.getElementById('add-comp-manufacturer').value.trim() || 'Ukjent';
-        desc = document.getElementById('add-comp-desc').value.trim() || '';
+        name = document.getElementById('add-comp-name')?.value.trim() || document.getElementById('add-pers-name')?.value.trim() || '';
+        universe = document.getElementById('add-comp-universe')?.value || 'Canon';
+        const mainCat = document.getElementById('add-comp-main-cat')?.value || 'Hardware';
+        const subCat = document.getElementById('add-comp-sub-cat')?.value || 'Components';
+        mfrOrFaction = document.getElementById('add-comp-manufacturer')?.value.trim() || 'Ukjent';
+        desc = document.getElementById('add-comp-desc')?.value.trim() || '';
 
         if (!name) {
             alert("Du må fylle ut navnet på posten!");
+            return;
+        }
+        // ... (resten av koden for komponenter)
+
+    } else {
+        // --- PERSONNEL-LAGRING ---
+        // Sjekker begge ID-er her også, slik at den garantert finner navnet du skrev inn!
+        name = document.getElementById('add-pers-name')?.value.trim() || document.getElementById('add-comp-name')?.value.trim() || '';
+        universe = document.getElementById('add-pers-universe')?.value || 'Canon';
+        const mainCat = document.getElementById('add-pers-main-cat')?.value || 'Known associates';
+        const subCat = document.getElementById('add-pers-sub-cat')?.value || 'Personnel';
+        mfrOrFaction = document.getElementById('add-pers-faction')?.value.trim() || 'Uavhengig';
+        desc = document.getElementById('add-pers-desc')?.value.trim() || '';
+        imageUrl = document.getElementById('add-pers-image')?.value.trim() || '';
+
+        if (!name) {
+            alert("Du må fylle ut navnet på personellet!");
             return;
         }
 
