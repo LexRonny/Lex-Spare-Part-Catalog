@@ -17177,8 +17177,8 @@ function updatesSubcategories() {
             const selectedManufacturer = document.getElementById('manufacturerSelect').value;
 
             const filtered = catalogData.components.filter(p => {
-                let isRestricted = (p.universeStatus === 'Classified') || (p.categoryPath || '').startsWith('The Shadows');
-                if (isRestricted && !unlockedClassified) return false;
+              let isRestricted = (p.universeStatus === 'Classified') || (p.categoryPath || '').startsWith('The Shadows');
+               if (isRestricted && !unlockedClassified) return false;
 
                 let matchesUniverse = currentUniverseFilter === 'All' || p.universeStatus === currentUniverseFilter;
                 
