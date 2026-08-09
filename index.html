@@ -17713,12 +17713,12 @@ function saveNewItem() {
     const isPersonnelActive = persForm && persForm.style.display === 'block';
     let id = '', name = '', universe = '', fullCategory = '', mfrOrFaction = '', desc = '', imageUrl = '';
 
-    // Sjekk om "Add to Restricted Files"-boksen er huket av (sjekk alle mulige ID-er på avkrysningsboksen)
+    // Definer isRestricted HER, helt øverst i funksjonen, så den er tilgjengelig over alt
     const restrictedCheckbox = document.getElementById('global-pers-restricted') || document.getElementById('add-comp-restricted') || document.getElementById('add-pers-restricted');
     const isRestricted = restrictedCheckbox ? restrictedCheckbox.checked : false;
 
     if (!isPersonnelActive) {
-        // --- KOMPONENT-LAGRING (Utstyr, Hardware, Husholdning osv.) ---
+        // --- KOMPONENT-LAGRING ---
         name = document.getElementById('add-comp-name').value.trim();
         universe = document.getElementById('add-comp-universe').value;
         const mainCat = document.getElementById('add-comp-main-cat').value;
@@ -17727,7 +17727,6 @@ function saveNewItem() {
         desc = document.getElementById('add-comp-desc').value.trim() || '';
 
         if (!name) {
-            DuoAlert("Du må fylle ut navnet på posten!"); // eller alert
             alert("Du må fylle ut navnet på posten!");
             return;
         }
@@ -17757,7 +17756,7 @@ function saveNewItem() {
 
         catalogData.components.push(newItem);
 
-   } else {
+    } else {
         // --- PERSONNEL-LAGRING ---
         name = document.getElementById('add-pers-name').value.trim();
         universe = document.getElementById('add-pers-universe').value;
@@ -17790,7 +17789,6 @@ function saveNewItem() {
             fullCategory = `${mainCat} / ${subCat}`;
         }
 
-        // Denne linjen bruker nå riktig isRestricted innenfor samme scope
         let subCatVal = document.getElementById('add-pers-sub-cat').value || 'Known Associates';
         id = generateSystemID(isRestricted ? 'The Shadows' : mainCat, subCatVal, universe);
 
@@ -17823,46 +17821,11 @@ function saveNewItem() {
 
         catalogData.components.push(newItem);
     }
+
     saveToLocalStorage();
     closeAddModal();
     alert(`Ny post lagt til med automatisk ID: ${id}`);
 }
-
-               let subCatVal = document.getElementById('add-pers-sub-cat').value || 'Known Associates';
-id = generateSystemID(isRestricted ? 'The Shadows' : mainCat, subCatVal, universe);
-
-                let newItem = {
-                    id: id,
-                    name: name,
-                    universeStatus: universe,
-                    categoryPath: fullCategory,
-                    imageUrl: imageUrl,
-                    overview: { shortDescription: desc },
-                    manufacturing: { manufacturer: mfrOrFaction },
-                    specifications: {
-                        "Alder": age || "Ukjent",
-                        "Rase": species || "Ukjent",
-                        "Kjønn": gender || "Ukjent",
-                        "Kroppsbygning": build || "Standard",
-                        "Høyde": height || "Ukjent",
-                        "Hårfarge": hairColor || "Ikke spesifisert",
-                        "Hårlengde / Stil": hairLength || "Standard",
-                        "Kjennetegn / Arr": appearanceDesc || "Ingen spesielle",
-                        "Cyborg-type": cyborgType || "Ingen",
-                        "Cybernetisk del": cyberPart || "Ingen",
-                        "Tilhørighet": mfrOrFaction
-                    },
-                    lexNotes: { 
-    lexNote: document.getElementById('add-comp-lex')?.value.trim() || "Lagt til via nettsiden.", 
-    spectreAnalysis: document.getElementById('add-comp-spectre')?.value.trim() || "Registrert i systemet." 
-}
-                };
-
-                catalogData.components.push(newItem);
-
-            saveToLocalStorage();
-            closeAddModal();
-            alert(`Ny post lagt til med automatisk ID: ${id}`);
         
 		async function loadCatalogFromGitHub() {
             const jsonUrl = 'https://raw.githubusercontent.com/LexRonny/Lex-Spare-Part-Catalog/feature-json-update/catalogData_backup%20(1).json';
