@@ -17757,8 +17757,8 @@ function saveNewItem() {
 
         catalogData.components.push(newItem);
 
-    } else {
-        // --- PERSONELL-LAGRING ---
+   } else {
+        // --- PERSONNEL-LAGRING ---
         name = document.getElementById('add-pers-name').value.trim();
         universe = document.getElementById('add-pers-universe').value;
         const mainCat = document.getElementById('add-pers-main-cat').value;
@@ -17772,7 +17772,6 @@ function saveNewItem() {
             return;
         }
 
-        // Hent ut de personlige feltene
         const age = document.getElementById('add-pers-age')?.value.trim() || '';
         const species = document.getElementById('add-pers-species')?.value.trim() || '';
         const gender = document.getElementById('add-pers-gender')?.value.trim() || '';
@@ -17791,8 +17790,9 @@ function saveNewItem() {
             fullCategory = `${mainCat} / ${subCat}`;
         }
 
-        // Generer ID korrekt på første forsøk uten overskriving
-        id = generateSystemID(isRestricted ? 'The Shadows' : mainCat, subCat, universe);
+        // Denne linjen bruker nå riktig isRestricted innenfor samme scope
+        let subCatVal = document.getElementById('add-pers-sub-cat').value || 'Known Associates';
+        id = generateSystemID(isRestricted ? 'The Shadows' : mainCat, subCatVal, universe);
 
         let newItem = {
             id: id,
@@ -17823,7 +17823,6 @@ function saveNewItem() {
 
         catalogData.components.push(newItem);
     }
-
     saveToLocalStorage();
     closeAddModal();
     alert(`Ny post lagt til med automatisk ID: ${id}`);
