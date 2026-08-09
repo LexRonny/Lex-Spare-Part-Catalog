@@ -17782,12 +17782,15 @@ function saveNewItem() {
         const cyborgType = document.getElementById('add-pers-cyborg-type')?.value || '';
         const cyberPart = document.getElementById('add-pers-cyber-part')?.value || '';
 
-        if (isRestricted) {
+       if (isRestricted) {
             universe = 'Classified';
-            fullCategory = `The Shadows / ${subCat || 'Known Associates'}`;
+            // Bruker de vanlige kategoriene du valgte i skjemaet, i stedet for "The Shadows"
+            fullCategory = `${mainCat} / ${subCat}`;
         } else {
             fullCategory = `${mainCat} / ${subCat}`;
         }
+
+        id = generateSystemID(mainCat, subCat, universe);
 
         let subCatVal = document.getElementById('add-pers-sub-cat').value || 'Known Associates';
         id = generateSystemID(isRestricted ? 'The Shadows' : mainCat, subCatVal, universe);
