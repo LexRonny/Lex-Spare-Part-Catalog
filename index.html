@@ -463,6 +463,7 @@
             <button type="button" id="tabBtn4" class="tab-btn" onclick="switchAddTabNew(4)">4. PERSONNEL</button>
             <button type="button" id="tabBtn5" class="tab-btn" onclick="switchAddTabNew(5)">5. LOCATIONS & FACTIONS</button>
 			<button type="button" id="tabBtn6" class="tab-btn" onclick="switchAddTabNew(6)">6.  HOUSEHOLD & LIVING QUARTERS</button>
+			<button type="button" id="tabBtn7" class="tab-btn" onclick="switchAddTabNew(7)">7. RESTRICTED FILES</button>
         </div>
 
         <!-- GLOBAL RESTRICTED CHECKBOX -->
@@ -17500,7 +17501,7 @@ function switchAddTabNew(tabIndex) {
     if (!select) return;
     select.innerHTML = '';
     Object.keys(CATEGORY_STRUCTURE).forEach(cat => {
-        if (cat === 'The Shadows' && !unlockedClassified) return;
+        if (cat === 'Restricted Files' && !unlockedClassified) return;
         let opt = document.createElement('option');
         opt.value = cat;
         opt.innerText = cat;
@@ -17586,7 +17587,7 @@ function getNextSequentialNumber(catCode, subCode, uniCode) {
 
 	function switchAddTabNew(tabNumber) {
     // Fjern 'active' fra alle 6 knapper slik at holobelysningen slukker på de andre
-    for (let i = 1; i <= 6; i++) {
+    for (let i = 1; i <= 7; i++) {
         const btn = document.getElementById(`tabBtn${i}`);
         if (btn) btn.classList.remove('active');
     }
@@ -17598,7 +17599,7 @@ function getNextSequentialNumber(catCode, subCode, uniCode) {
     const genForm = document.getElementById('addItemGenericForm');
     const persForm = document.getElementById('addItemPersonnelForm');
 
-    // Fane 4 = Personell/Droider, Fane 1, 2, 3, 5 og 6 = Generelt utstyr/skip/hus
+    // Fane 4 = Personell/Droider, Fane 1, 2, 3, 5, 6 og 7 = Generelt utstyr/skip/hus
     if (tabNumber === 4) {
         if (genForm) genForm.style.display = 'none';
         if (persForm) persForm.style.display = 'block';
@@ -17629,6 +17630,8 @@ function populateTabCategories(tabNumber, mainId, subId) {
         allowedCategories = ['Factions', 'Locations'];
     } else if (tabNumber === 6) {
         allowedCategories = ['Household Kitchen', 'Living Quarters & Fresher', 'Office & Administrative Equipment', 'Recreation & Entertainment'];
+    } else if (tabNumber === 7) {
+        allowedCategories = ['Restricted Files']; // Lar deg velge Restricted Files som hovedkategori og dens underkategorier direkte
     }
 
     allowedCategories.forEach(cat => {
