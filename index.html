@@ -17270,21 +17270,23 @@ function filterCatalog() {
                     
                     let partJson = encodeURIComponent(JSON.stringify(part));
 
-                    folderHTML += `
-                        <div class="${rowClass}">
-                            <div class="item-info" onclick="openModal('${partJson}')">
-                                <span>[${part.id}]</span> <strong>${part.name}</strong> ${dupTag}
-                                <div style="font-size:0.8rem; color:var(--text-muted); margin-top: 3px;">Affiliation/Mfr: ${part.manufacturing?.manufacturer || 'Unknown'} | Note: ${part.lexNotes?.lexNote || ''}</div>
-                            </div>
-                            <span class="${badgeClass}" onclick="openModal('${partJson}')">${part.universeStatus}</span>
-                        </div>
-                    `;
+                   // Istedenfor å putte JSON direkte i openModal(...) i HTML-en, gjør vi det slik:
+folderHTML += `
+    <div class="${rowClass}">
+        <div class="item-info" data-part="${encodeURIComponent(JSON.stringify(part))}" onclick="handleItemClick(this)">
+            <span>[${part.id}]</span> <strong>${part.name}</strong> ${dupTag}
+            <div style="font-size:0.8rem; color:var(--text-muted); margin-top: 3px;">Affiliation/Mfr: ${part.manufacturing?.manufacturer || 'Unknown'} | Note: ${part.lexNotes?.lexNote || ''}</div>
+        </div>
+        <span class="${badgeClass}" data-part="${encodeURIComponent(JSON.stringify(part))}" onclick="handleItemClick(this)">${part.universeStatus}</span>
+    </div>
+`;
                 });
 
                 folderHTML += `</div></div>`;
                 container.innerHTML += folderHTML;
             }
         }
+		
 
         function toggleFolder(id) {
             document.getElementById(id).classList.toggle('open');
@@ -17445,7 +17447,13 @@ function filterCatalog() {
                 document.getElementById('itemModal').style.display = 'none';
             }
         }
-
+		function handleItemClick(element) {
+    const encodedData = element.getAttribute('data-part');
+    if (encodedData) {
+        openModal(encodedData);
+    }
+}
+		
        // Åpner "Legg til"-modalen med riktig ID og nullstiller til fane 1
 function openAddModal() {
     const modal = document.getElementById('addItemModal');
