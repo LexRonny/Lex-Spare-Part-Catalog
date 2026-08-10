@@ -17183,28 +17183,35 @@ function updatesSubcategories() {
             filterCatalog();
         }
 
-        function filterCatalog() {
+       function filterCatalog() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const selectedManufacturer = document.getElementById('manufacturerSelect').value;
 
             const filtered = catalogData.components.filter(p => {
                 let isRestricted = (p.universeStatus === 'Classified') || (p.categoryPath || '').startsWith('Restricted Files');
 
-                // 1. Hvis posten er restriktiv, men man IKKE har låst opp -> skjjul den helt
+                // 1. Hvis posten er restriktiv, men man ikke har låst opp -> skjjul den fullstendig
                 if (isRestricted && !unlockedClassified) return false;
 
-                // 2. Hvis man HAR låst opp, og brukeren har trykket på "Restricted Files"-knappen -> vis KUN restricted-filer
-                if (unlockedClassified && currentMainCategory === 'Restricted Files') {
-                    if (!isRestricted) return false;
+                // 2. Hvis man HAR låst opp:
+                if (unlockedClassified) {
+                    if (currentMainCategory === 'Restricted Files') {
+                        // Står man på Restricted Files-knappen, skal KUN restricted-filer vises
+                        if (!isRestricted) return false;
+                    } else {
+                        // Står man på "All Categories" eller en annen vanlig sjanger, skal IKKE restricted-filer blande seg inn
+                        if (isRestricted) return false;
+                    }
                 }
 
-                // 3. Hvis man er i standardmodus (eller ser på andre kategorier), og posten ER restriktiv -> ikke vis den i vanlige lister
-                if (!unlockedClassified && isRestricted) return false;
-                if (unlockedClassified && currentMainCategory !== 'Restricted Files' && currentMainCategory !== 'All' && isRestricted) return false;
-
+                // Standard filtrering for univers, kategorier, produsent og søk
                 let matchesUniverse = currentUniverseFilter === 'All' || p.universeStatus === currentUniverseFilter;
                 
-                let matchesMain = currentMainCategory === 'All' || (p.categoryPath || '').toLowerCase().includes(currentMainCategory.toLowerCase());
+                let matchesMain = true;
+                if (currentMainCategory !== 'All') {
+                    matchesMain = (p.categoryPath || '').toLowerCase().startsWith(currentMainCategory.toLowerCase());
+                }
+
                 let matchesSub = currentSubCategory === 'All' || (p.categoryPath || '').toLowerCase().includes(currentSubCategory.toLowerCase());
                 let matchesManufacturer = selectedManufacturer === 'All' || (p.manufacturing?.manufacturer === selectedManufacturer);
 
@@ -17221,7 +17228,6 @@ function updatesSubcategories() {
 
             renderTree(filtered);
         }
-
         function renderTree(parts) {
             const container = document.getElementById('treeContainer');
             container.innerHTML = '';
