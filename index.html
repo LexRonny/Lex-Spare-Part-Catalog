@@ -17047,15 +17047,15 @@
     let categoriesList = Object.keys(CATEGORY_STRUCTURE);
 
     categoriesList.forEach(cat => {
-        let isRestrictedCat = (cat === 'Restricted Files');
-        if (isRestrictedCat) {
-            if (unlockedClassified) {
-                html += `<button class="tab-btn" onclick="selectMainCategory('${cat}', this)" style="color:var(--classified-gold); border-color:var(--classified-gold);">${cat}</button>`;
-            }
-        } else {
-            html += `<button class="tab-btn" onclick="selectMainCategory('${cat}', this)">${cat}</button>`;
+    let isRestrictedCat = (cat === 'Restricted Files');
+    if (isRestrictedCat) {
+        if (unlockedClassified) {
+            html += `<button class="tab-btn" onclick="selectMainCategory('${cat}', this)" style="color:var(--classified-gold); border-color:var(--classified-gold);">${cat}</button>`;
         }
-    });
+    } else {
+        html += `<button class="tab-btn" onclick="selectMainCategory('${cat}', this)">${cat}</button>`;
+    }
+});
     container.innerHTML = html;
         }
 		// Universal funksjon for å oppdatere underkategorier basert på hovedkategori
