@@ -645,6 +645,7 @@
 		 // Legg denne inn øverst i CATEGORY_STRUCTURE-objektet ditt:
 "Restricted Files": [
     "Assets",
+	"Enemies & Targets",
     "Personnel",
     "Weapons",
     "Technology",
@@ -17557,78 +17558,6 @@ function switchAddTabNew(tabIndex) {
 
         }
 
-  // Funksjon som genererer ID automatisk basert på skjemaets valg
-function generateSystemID(prefixCat, prefixSub, universeVal, mode = 'add') {
-    let catCode = getCategoryPrefix(prefixCat);
-    let subCode = getSubCategoryPrefix(prefixSub);
-    
-    // Bestem univers-suffiks (Canon -> CAN, Legends -> LEG, Fan-Made -> FM)
-    let uniCode = 'CAN';
-    if (universeVal === 'Legends') uniCode = 'LEG';
-    if (universeVal === 'Fan-Made') uniCode = 'FM';
-    
-    let nextNum = getNextSequentialNumber(catCode, subCode, uniCode);
-    let paddedNum = String(nextNum).padStart(5, '0'); // 5-sifret tall, f.eks. 00001
-    
-    return `${catCode}-${subCode}-${paddedNum}-${uniCode}`;
-}
-
-// Hjelpefunksjon for å hente kort-prefiks for hovedkategori (med KAS for Known Associates)
-function getCategoryPrefix(categoryName) {
-    const map = {
-        "Weapons": "WPN",
-        "Survival, Tools & Field Gear": "SUR",
-        "Armor & Protection": "ARM",
-        "Clothing & Textiles": "CLO",
-        "Starships": "SHP",
-        "Speeders & Vehicles": "VEH",
-        "Medical & Chemical Equipment": "MED",
-        "System & Software": "SYS",
-        "Hardware": "HDW",
-        "Electronics & Security": "ELS",
-        "Maintenance Supplies": "MSU",
-        "Food & drinks": "FOD",
-        "Medical & Chemical Compounds": "CMP",
-        "Raw Materials": "MAT",
-        "Agriculture": "AGR",
-        "Droids": "DRO",
-        "Known associates": "KAS",
-        "Factions": "FAC",
-        "Locations": "LOC",
-        "Household Kitchen": "HKI",
-        "Living Quarters & Fresher": "LQS",
-        "Office & Administrative Equipment": "OAE",
-        "Recreation & Entertainment": "REE",
-		"Restricted Files": "RES"
-    };
-    return map[categoryName] || "GEN";
-}
-
-// Hjelpefunksjon for å lage en kort-prefiks av underkategorien
-function getSubCategoryPrefix(subCategoryName) {
-    if (!subCategoryName) return "SUB";
-    return subCategoryName.replace(/[^a-zA-Z]/g, "").substring(0, 3).toUpperCase();
-}
-
-// Hjelpefunksjon for å sjekke eksisterende poster og finne neste ledige nummer (00001+)
-function getNextSequentialNumber(catCode, subCode, uniCode) {
-    if (typeof catalogData === 'undefined' || !Array.isArray(catalogData)) return 1;
-    
-    let maxNum = 0;
-    const regex = new RegExp(`^${catCode}-${subCode}-(\\d{5})-${uniCode}$`);
-    
-    catalogData.forEach(item => {
-        if (item.id) {
-            let match = item.id.match(regex);
-            if (match) {
-                let num = parseInt(match[1], 10);
-                if (num > maxNum) maxNum = num;
-            }
-        }
-    });
-    
-    return maxNum + 1;
-}
 
 	function switchAddTabNew(tabNumber) {
     // Fjern 'active' fra alle 6 knapper slik at holobelysningen slukker på de andre
@@ -17702,16 +17631,15 @@ function toggleRestrictedModalColor(checkbox) {
     }
 }
 
-		// --- PLASSER DISSE HJELPEFUNKSJONENE HER (f.eks. like før saveNewItem) ---
-
-function generateSystemID(prefixCat, prefixSub, universeVal, mode = 'add') {
+// Funksjon som genererer ID automatisk basert på skjemaets valg (kun for NYE poster)
+function generateSystemID(prefixCat, prefixSub, universeVal) {
     let catCode = getCategoryPrefix(prefixCat);
     let subCode = getSubCategoryPrefix(prefixSub);
     
+    // Bestem univers-suffiks (Canon -> CAN, Legends -> LEG, Fan-Made -> FM)
     let uniCode = 'CAN';
     if (universeVal === 'Legends') uniCode = 'LEG';
-    if (universeVal === 'Fan-Made') uniCode = 'FM';
-    if (universeVal === 'Classified') uniCode = 'FM'; // Eller tilpassvis hvis klassifisert har egen sjanger
+    if (universeVal === 'Fan-Made' || universeVal === 'Classified') uniCode = 'FM';
     
     let nextNum = getNextSequentialNumber(catCode, subCode, uniCode);
     let paddedNum = String(nextNum).padStart(5, '0'); // 5-sifret tall, f.eks. 00001
@@ -17719,6 +17647,7 @@ function generateSystemID(prefixCat, prefixSub, universeVal, mode = 'add') {
     return `${catCode}-${subCode}-${paddedNum}-${uniCode}`;
 }
 
+// Hjelpefunksjon for å hente kort-prefiks for hovedkategori
 function getCategoryPrefix(categoryName) {
     const map = {
         "Weapons": "WPN",
@@ -17730,6 +17659,8 @@ function getCategoryPrefix(categoryName) {
         "Medical & Chemical Equipment": "MED",
         "System & Software": "SYS",
         "Hardware": "HDW",
+        "Electronics & Security": "ELS",
+        "Maintenance Supplies": "MSU",
         "Food & drinks": "FOD",
         "Medical & Chemical Compounds": "CMP",
         "Raw Materials": "MAT",
@@ -17737,16 +17668,49 @@ function getCategoryPrefix(categoryName) {
         "Droids": "DRO",
         "Known associates": "KAS",
         "Factions": "FAC",
-        "Locations": "LOC"
+        "Locations": "LOC",
+        "Household Kitchen": "HKI",
+        "Living Quarters & Fresher": "LQS",
+        "Office & Administrative Equipment": "OAE",
+        "Recreation & Entertainment": "REE",
+        "Restricted Files": "RES"
     };
     return map[categoryName] || "GEN";
 }
 
+// Hjelpefunksjon for å lage en sikker prefiks av underkategorien (tåler nye underkategorier automatisk)
 function getSubCategoryPrefix(subCategoryName) {
     if (!subCategoryName) return "SUB";
-    return subCategoryName.replace(/[^a-zA-Z]/g, "").substring(0, 3).toUpperCase();
+    
+    // Faste koder for viktige kjernetyper (kan utvides ved behov)
+    const subMap = {
+        "Assets": "AST",
+        "Personnel": "PER",
+        "Contacts": "CON",
+        "Weapons": "WPN",
+        "Technology": "TEC",
+        "Transporters": "TRN",
+        "Bases": "BAS",
+        "Astromech": "AST",
+        "Protocol": "PRO"
+    };
+
+    if (subMap[subCategoryName]) {
+        return subMap[subCategoryName];
+    }
+
+    // AUTOMATISK FALLBACK FOR NYE SUBCATEGORIES:
+    // Tar ut alle bokstaver i det nye navnet, fjerner mellomrom, tar de 3 første og gjør til store bokstaver!
+    // F.eks. "Hidden Bunker" blir "HID", "Cool Gadget" blir "COO".
+    let cleanName = subCategoryName.replace(/[^a-zA-Z]/g, "");
+    if (cleanName.length >= 3) {
+        return cleanName.substring(0, 3).toUpperCase();
+    }
+    
+    return "GEN";
 }
 
+// Hjelpefunksjon for å sjekke eksisterende poster og finne neste ledige nummer (00001+)
 function getNextSequentialNumber(catCode, subCode, uniCode) {
     if (typeof catalogData === 'undefined' || !Array.isArray(catalogData.components)) return 1;
     
