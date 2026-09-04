@@ -598,8 +598,8 @@
                 </div>
             </div>
 
-            <!-- ========================================== -->
-            <!-- SOFTWARE FORM FOR TAB 8                    -->
+          <!-- ========================================== -->
+            <!-- SOFTWARE FORM FOR TAB 8 (UTVIDET)          -->
             <!-- ========================================== -->
             <div id="addItemSoftwareForm" style="display: none;">
                 <div style="display: flex; gap: 10px; margin-bottom: 10px;">
@@ -619,14 +619,35 @@
                         <input type="text" id="add-sw-version" placeholder="f.eks. v4.12-RevB" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
                     </div>
                     <div style="flex: 1;">
-                        <label style="font-size: 0.85rem; color: #aaa;">Encryption / Security Protocol:</label>
-                        <input type="text" id="add-sw-encryption" placeholder="f.eks. Slicer-Secured / Imperial-Mamek" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                        <label style="font-size: 0.85rem; color: #aaa;">Publisher / Creator:</label>
+                        <input type="text" id="add-sw-publisher" placeholder="Omnitask / Independent" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.85rem; color: #aaa;">Access Classification:</label>
+                        <select id="add-sw-access" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                            <option value="Restricted">Restricted</option>
+                            <option value="Internal" selected>Internal</option>
+                            <option value="Public">Public</option>
+                            <option value="Classified">Classified</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.85rem; color: #aaa;">Integrity State:</label>
+                        <select id="add-sw-integrity" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                            <option value="Verified" selected>Verified</option>
+                            <option value="Encrypted">Encrypted</option>
+                            <option value="Corrupted">Corrupted</option>
+                            <option value="Spliced">Spliced</option>
+                        </select>
                     </div>
                 </div>
 
                 <div style="margin-bottom: 10px;">
-                    <label style="font-size: 0.85rem; color: #aaa;">Developer / Origin:</label>
-                    <input type="text" id="add-sw-manufacturer" placeholder="Omnitask / Independent Slicer" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                    <label style="font-size: 0.85rem; color: #aaa;">Encryption / Security Protocol:</label>
+                    <input type="text" id="add-sw-encryption" placeholder="f.eks. Slicer-Secured / Imperial-Mamek" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
                 </div>
 
                 <div style="margin-bottom: 10px;">
@@ -636,7 +657,7 @@
 
                 <div style="margin-bottom: 10px;">
                     <label style="font-size: 0.85rem; color: #aaa;">Software Description / Specifications:</label>
-                    <textarea id="add-sw-desc" rows="2" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff; box-sizing: border-box;"></textarea>
+                    <textarea id="add-sw-desc" rows="3" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff; box-sizing: border-box;"></textarea>
                 </div>
             </div>
 
@@ -17946,15 +17967,16 @@ function saveNewItem(event) {
 
         id = generateSystemID(isRestricted ? 'Restricted Files' : mainCat, subCat, universe);
 
-        let newItem = {
+       let newItem = {
             id: id,
             name: name,
             universeStatus: universe,
             categoryPath: fullCategory,
             imageUrl: imageUrl,
-            accessClassification: isRestricted ? 'Restricted' : 'Internal',
+            accessClassification: document.getElementById('add-sw-access')?.value || 'Internal',
+            integrityState: document.getElementById('add-sw-integrity')?.value || 'Verified',
             currentVersion: document.getElementById('add-sw-version')?.value.trim() || 'v1.0',
-            manufacturing: { manufacturer: mfrOrFaction },
+            publisher: document.getElementById('add-sw-publisher')?.value.trim() || 'Ukjent',
             overview: { shortDescription: desc },
             specifications: {
                 "Encryption": document.getElementById('add-sw-encryption')?.value.trim() || 'Standard'
@@ -17964,7 +17986,6 @@ function saveNewItem(event) {
                 spectreAnalysis: document.getElementById('add-pers-spectre')?.value.trim() || "Registrert i systemet." 
             }
         };
-
         catalogData.components.push(newItem);
 
     } else if (!isPersonnelActive) {
