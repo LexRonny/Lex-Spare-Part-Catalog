@@ -550,6 +550,102 @@
                     <label style="font-size: 0.85rem; color: #aaa;">Description:</label>
                     <textarea id="add-comp-desc" rows="2" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff; box-sizing: border-box;"></textarea>
                 </div>
+			</div>
+				<!-- ========================================== -->
+            <!-- SPECIFIC FIELDS FOR GEAR & EQUIPMENT (TAB 1) -->
+            <!-- ========================================== -->
+            <div id="addItemGearFields" style="display: none; border-top: 1px dashed #444; padding-top: 10px; margin-top: 10px;">
+                
+                <!-- 1. WEAPONS FIELDS -->
+                <div class="gear-sub-fields" data-gear-sub="Weapons" style="display: none;">
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.85rem; color: #aaa;">Damage Type / Output:</label>
+                            <input type="text" id="gear-weapon-damage" placeholder="Plasma / Stun-capable" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                        </div>
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.85rem; color: #aaa;">Effective Range:</label>
+                            <input type="text" id="gear-weapon-range" placeholder="Medium (50m) / Close quarters" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.85rem; color: #aaa;">Ammunition / Power Source:</label>
+                            <input type="text" id="gear-weapon-ammo" placeholder="Standard Power Cell + Tibanna" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                        </div>
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.85rem; color: #aaa;">Special Features / Modded:</label>
+                            <input type="text" id="gear-weapon-mods" placeholder="Slicer-modded scope, Hidden compartment" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. SURVIVAL, TOOLS AND FIELD GEAR FIELDS -->
+                <div class="gear-sub-fields" data-gear-sub="Survival, tools and field gear" style="display: none;">
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.85rem; color: #aaa;">Primary Function:</label>
+                            <input type="text" id="gear-surv-function" placeholder="Electronic hacking, Emergency medical" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                        </div>
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.85rem; color: #aaa;">Power Source:</label>
+                            <input type="text" id="gear-surv-power" placeholder="3x Standard Power Cells" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.85rem; color: #aaa;">Environmental Rating:</label>
+                            <input type="text" id="gear-surv-env" placeholder="Vacuum-sealed, Sub-zero rated" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                        </div>
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.85rem; color: #aaa;">Portability / Weight:</label>
+                            <input type="text" id="gear-surv-weight" placeholder="Belt-mounted / Backpack carry" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. ARMOR AND PROTECTION FIELDS -->
+                <div class="gear-sub-fields" data-gear-sub="Armor and protection" style="display: none;">
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.85rem; color: #aaa;">Armor Class:</label>
+                            <input type="text" id="gear-armor-class" placeholder="Medium Combat / Powered Exoskeleton" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                        </div>
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.85rem; color: #aaa;">Defense Rating:</label>
+                            <input type="text" id="gear-armor-defense" placeholder="High vs. Energy, Moderate vs. Kinetic" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.85rem; color: #aaa;">Mobility Impact:</label>
+                            <input type="text" id="gear-armor-mobility" placeholder="Moderate slowdown / Negligible" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                        </div>
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.85rem; color: #aaa;">Integrated Systems:</label>
+                            <input type="text" id="gear-armor-systems" placeholder="HUD-link, Built-in comlink, Thermal optics" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. CLOTHING AND TEXTILES FIELDS -->
+                <div class="gear-sub-fields" data-gear-sub="Clothing and textiles" style="display: none;">
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.85rem; color: #aaa;">Fabric / Material:</label>
+                            <input type="text" id="gear-cloth-material" placeholder="Durafiber, Armorweave, Reflec-coated" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                        </div>
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.85rem; color: #aaa;">Environmental Resistance:</label>
+                            <input type="text" id="gear-cloth-env" placeholder="Fire-retardant, Cold-weather insulated" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <label style="font-size: 0.85rem; color: #aaa;">Style / Aesthetic:</label>
+                        <input type="text" id="gear-cloth-style" placeholder="Military Uniform, Smuggler casual, Stealth" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                    </div>
+                </div>
+
             </div>
 
             <!-- ========================================== -->
@@ -17262,13 +17358,17 @@ function updateSubCategoryDropdown(mainSelectId, subSelectId) {
         opt.innerText = sub;
         subSelect.appendChild(opt);
     });
+
+    // KJØR DENNE FOR Å OPPDATERE SYNLIGHETEN AV FELT
+    if (typeof updateGearFieldVisibility === 'function') {
+        updateGearFieldVisibility();
+    }
 }
 
 // Alias slik at eventuelle gamle skrivemåter ikke krasjer koden
 function updatesSubCategoryDropdown(mainId, subId) {
     updateSubCategoryDropdown(mainId, subId);
 }
-
 function updatesSubcategories() {
     // Trygg avbryter for gamle elementer som ikke finnes lenger
     const catSelect = document.getElementById('supCategory');
@@ -17659,43 +17759,6 @@ function closeAddModal(event) {
         modal.style.display = 'none';
     }
 }
-
-// Styrer vekslingen mellom de 8 fanene i "Legg til"-modalen
-function switchAddTabNew(tabIndex) {
-    // 1. Fjern 'active'-klasse fra alle 8 knapper
-    for (let i = 1; i <= 6; i++) {
-        const btn = document.getElementById(`tabBtn${i}`);
-        if (btn) btn.classList.remove('active');
-    }
-
-    // 2. Aktiver den knappen som ble trykket
-    const activeBtn = document.getElementById(`tabBtn${tabIndex}`);
-    if (activeBtn) activeBtn.classList.add('active');
-
-    // 3. Hent skjema-elementene
-    const genForm = document.getElementById('addItemGenericForm');
-    const persForm = document.getElementById('addItemPersonnelForm');
-
-    // 4. Vis riktig skjema basert på fanevalg (Fane 4 = Personell/Droider, 1-3 = Generelt utstyr/transport/forsyning)
-    if (tabIndex === 4) {
-        if (genForm) genForm.style.display = 'none';
-        if (persForm) persForm.style.display = 'block';
-        
-        // Fyll inn kategorier for personell/droider
-        if (typeof populateCategoryDropdown === 'function') {
-            populateCategoryDropdown('add-pers-main-cat');
-            updateSubCategoryDropdown('add-pers-main-cat', 'add-pers-sub-cat');
-        }
-    } else {
-        if (genForm) genForm.style.display = 'block';
-        if (persForm) persForm.style.display = 'none';
-        
-        // Fyll inn kategorier for generelt utstyr
-        if (typeof populateCategoryDropdown === 'function') {
-            populateCategoryDropdown('add-gen-main-cat');
-            updateSubCategoryDropdown('add-gen-main-cat', 'add-gen-sub-cat');
-        }
-	}
 		
 		function toggleRestrictedModalColor(checkbox) {
     const modalContent = document.getElementById('addModalContent'); // Tilpass ID-en til din modal-boks hvis den heter noe annet
@@ -17727,7 +17790,8 @@ function switchAddTabNew(tabIndex) {
         }
 
 
-	function switchAddTabNew(tabNum) {
+	// Styrer vekslingen mellom de 8 fanene i "Legg til"-modalen
+function switchAddTabNew(tabNum) {
     // 1. Fjern 'active' fra alle tab-knapper og sett på den riktige
     for (let i = 1; i <= 8; i++) {
         const btn = document.getElementById(`tabBtn${i}`);
@@ -17757,8 +17821,12 @@ function switchAddTabNew(tabIndex) {
         if (genericForm) genericForm.style.display = 'block';
         populateTabCategories(tabNum, 'add-comp-main-cat', 'add-comp-sub-cat');
     }
-}
 
+    // 4. Oppdater synligheten for dynamiske felt (f.eks. Gear & Equipment på fane 1)
+    if (typeof updateGearFieldVisibility === 'function') {
+        updateGearFieldVisibility();
+    }
+}
 function populateTabCategories(tabNumber, mainId, subId) {
     const mainSelect = document.getElementById(mainId);
     if (!mainSelect) return;
