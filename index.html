@@ -441,6 +441,9 @@
 
 				<label style="font-size: 0.8rem; display: block; margin-top: 10px;">Image URL:</label>
                 <input type="text" id="edit-comp-image" style="width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; background: #0b0f19; border: 1px solid var(--border-gray); color: #fff;">
+
+				<!-- Dynamiske spesifikasjons-felt ved redigering -->
+				<div id="edit-gear-fields-container" style="margin-top: 15px;"></div>
 				
 				<!-- Lex Note felt -->
                <div style="margin-top: 15px;">
@@ -17678,6 +17681,77 @@ folderHTML += `
             
             const editContainer = document.getElementById('editModeContainer');
             if (editContainer) editContainer.style.display = 'block';
+	  		
+	  // 1. Fyll inn standardverdier (navn, kategori, etc. - det du sikkert har fra før)
+    document.getElementById('edit-id').value = activeModalPart.id || '';
+    document.getElementById('edit-name').value = activeModalPart.name || '';
+    document.getElementById('edit-universe').value = activeModalPart.universeStatus || 'Canon';
+    document.getElementById('edit-manufacturer').value = activeModalPart.manufacturing?.manufacturer || '';
+    document.getElementById('edit-desc').value = activeModalPart.overview?.shortDescription || '';
+    document.getElementById('edit-comp-image').value = activeModalPart.imageUrl || '';
+    
+    // Lex-notater
+    document.getElementById('edit-comp-lexnote').value = activeModalPart.lexNotes?.lexNote || '';
+    document.getElementById('edit-comp-spectre').value = activeModalPart.lexNotes?.spectreAnalysis || '';
+
+    // 2. Generer dynamiske felter basert på hva posten inneholder av spesifikasjoner
+    let gearContainer = document.getElementById('edit-gear-fields-container');
+    gearContainer.innerHTML = ''; // Nullstill
+
+    let specs = activeModalPart.specifications || {};
+    
+    // Sjekk hvilken type spesifikasjoner posten har, og lag input-felter med eksisterende verdier
+    if ("Damage Type" in specs || activeModalPart.categoryPath?.includes("Weapons")) {
+        gearContainer.innerHTML = `
+            <h4 style="color: var(--holo-blue); margin-bottom: 8px; font-size: 0.9rem;">Weapon Specifications</h4>
+            <label style="font-size: 0.75rem;">Damage Type:</label>
+            <input type="text" id="edit-gear-weapon-damage" value="${specs["Damage Type"] || ''}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
+            <label style="font-size: 0.75rem;">Effective Range:</label>
+            <input type="text" id="edit-gear-weapon-range" value="${specs["Effective Range"] || ''}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
+            <label style="font-size: 0.75rem;">Ammunition / Power:</label>
+            <input type="text" id="edit-gear-weapon-ammo" value="${specs["Ammunition / Power"] || ''}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
+            <label style="font-size: 0.75rem;">Special Features:</label>
+            <input type="text" id="edit-gear-weapon-mods" value="${specs["Special Features"] || ''}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
+        `;
+    } else if ("Primary Function" in specs || activeModalPart.categoryPath?.includes("Survival")) {
+        gearContainer.innerHTML = `
+            <h4 style="color: var(--holo-blue); margin-bottom: 8px; font-size: 0.9rem;">Survival & Tool Specifications</h4>
+            <label style="font-size: 0.75rem;">Primary Function:</label>
+            <input type="text" id="edit-gear-surv-function" value="${specs["Primary Function"] || ''}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
+            <label style="font-size: 0.75rem;">Power Source:</label>
+            <input type="text" id="edit-gear-surv-power" value="${specs["Power Source"] || ''}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
+            <label style="font-size: 0.75rem;">Environmental Rating:</label>
+            <input type="text" id="edit-gear-surv-env" value="${specs["Environmental Rating"] || ''}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
+            <label style="font-size: 0.75rem;">Portability / Weight:</label>
+            <input type="text" id="edit-gear-surv-weight" value="${specs["Portability / Weight"] || ''}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
+        `;
+    } else if ("Armor Class" in specs || activeModalPart.categoryPath?.includes("Armor")) {
+        gearContainer.innerHTML = `
+            <h4 style="color: var(--holo-blue); margin-bottom: 8px; font-size: 0.9rem;">Armor Specifications</h4>
+            <label style="font-size: 0.75rem;">Armor Class:</label>
+            <input type="text" id="edit-gear-armor-class" value="${specs["Armor Class"] || ''}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
+            <label style="font-size: 0.75rem;">Defense Rating:</label>
+            <input type="text" id="edit-gear-armor-defense" value="${specs["Defense Rating"] || ''}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
+            <label style="font-size: 0.75rem;">Mobility Impact:</label>
+            <input type="text" id="edit-gear-armor-mobility" value="${specs["Mobility Impact"] || ''}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
+            <label style="font-size: 0.75rem;">Integrated Systems:</label>
+            <input type="text" id="edit-gear-armor-systems" value="${specs["Integrated Systems"] || ''}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
+        `;
+    } else if ("Fabric / Material" in specs || activeModalPart.categoryPath?.includes("Clothing")) {
+        gearContainer.innerHTML = `
+            <h4 style="color: var(--holo-blue); margin-bottom: 8px; font-size: 0.9rem;">Clothing Specifications</h4>
+            <label style="font-size: 0.75rem;">Fabric / Material:</label>
+            <input type="text" id="edit-gear-cloth-material" value="${specs["Fabric / Material"] || ''}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
+            <label style="font-size: 0.75rem;">Environmental Resistance:</label>
+            <input type="text" id="edit-gear-cloth-env" value="${specs["Environmental Resistance"] || ''}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
+            <label style="font-size: 0.75rem;">Style / Aesthetic:</label>
+            <input type="text" id="edit-gear-cloth-style" value="${specs["Style / Aesthetic"] || ''}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
+        `;
+    }
+
+    // Byttvisning mellom visning og redigering i modalen
+    document.getElementById('viewModeContainer').style.display = 'none';
+    document.getElementById('editModeContainer').style.display = 'block';
         }
         function cancelEditMode() {
             document.getElementById('viewModeContainer').style.display = 'block';
@@ -17685,48 +17759,57 @@ folderHTML += `
         }
 
 		function saveEditedItem() {
-    const name = document.getElementById('edit-name').value.trim();
-    const universe = document.getElementById('edit-universe').value;
-    const mainCat = document.getElementById('edit-main-cat').value;
-    const subCat = document.getElementById('edit-sub-cat').value;
-    const manufacturer = document.getElementById('edit-manufacturer').value.trim();
-    const desc = document.getElementById('edit-desc').value.trim();
-    const lexNote = document.getElementById('edit-comp-lexnote')?.value.trim() || '';
-    const spectre = document.getElementById('edit-comp-spectre')?.value.trim() || '';
-    const imageUrl = document.getElementById('edit-comp-image')?.value.trim() || activeModalPart.imageUrl || '';
+    if (!activeModalPart) return;
+
+    // Oppdater standarddata
+    activeModalPart.name = document.getElementById('edit-name').value.trim();
+    activeModalPart.universeStatus = document.getElementById('edit-universe').value;
+    activeModalPart.manufacturing.manufacturer = document.getElementById('edit-manufacturer').value.trim();
+    activeModalPart.overview.shortDescription = document.getElementById('edit-desc').value.trim();
+    activeModalPart.imageUrl = document.getElementById('edit-comp-image').value.trim();
     
-    let index = catalogData.components.findIndex(p => p.id === activeModalPart.id);
-    if (index !== -1) {
-        // Behold eksisterende ID med mindre hovedkategori eller univers endres
-        let newId = activeModalPart.id;
-        let oldParts = activeModalPart.id.split('-');
-        let expectedCatCode = getCategoryPrefix(mainCat);
-        let expectedUniCode = (universe === 'Legends' ? 'LEG' : (universe === 'Fan-Made' ? 'FM' : 'CAN'));
-        
-        if (oldParts[0] !== expectedCatCode || oldParts[3] !== expectedUniCode) {
-            newId = generateSystemID(mainCat, subCat, universe);
-        }
+    // Oppdater Lex Notes
+    if (!activeModalPart.lexNotes) activeModalPart.lexNotes = {};
+    activeModalPart.lexNotes.lexNote = document.getElementById('edit-comp-lexnote').value.trim();
+    activeModalPart.lexNotes.spectreAnalysis = document.getElementById('edit-comp-spectre').value.trim();
 
-        catalogData.components[index] = {
-            ...catalogData.components[index],
-            id: newId,
-            name: name,
-            universeStatus: universe,
-            categoryPath: `${mainCat} / ${subCat}`,
-            imageUrl: imageUrl,
-            overview: { shortDescription: desc },
-            manufacturing: { manufacturer: manufacturer },
-            lexNotes: {
-                lexNote: lexNote,
-                spectreAnalysis: spectre
-            }
-        };
-        saveToLocalStorage();
-        closeModal();
-        alert(`Endringene ble lagret! ID: ${newId}`);
+    // Oppdater dynamiske spesifikasjoner avhengig av hva som er fylt ut i redigeringsskjemaet
+    if (!activeModalPart.specifications) activeModalPart.specifications = {};
+
+    if (document.getElementById('edit-gear-weapon-damage')) {
+        activeModalPart.specifications["Damage Type"] = document.getElementById('edit-gear-weapon-damage').value.trim();
+        activeModalPart.specifications["Effective Range"] = document.getElementById('edit-gear-weapon-range').value.trim();
+        activeModalPart.specifications["Ammunition / Power"] = document.getElementById('edit-gear-weapon-ammo').value.trim();
+        activeModalPart.specifications["Special Features"] = document.getElementById('edit-gear-weapon-mods').value.trim();
+    } else if (document.getElementById('edit-gear-surv-function')) {
+        activeModalPart.specifications["Primary Function"] = document.getElementById('edit-gear-surv-function').value.trim();
+        activeModalPart.specifications["Power Source"] = document.getElementById('edit-gear-surv-power').value.trim();
+        activeModalPart.specifications["Environmental Rating"] = document.getElementById('edit-gear-surv-env').value.trim();
+        activeModalPart.specifications["Portability / Weight"] = document.getElementById('edit-gear-surv-weight').value.trim();
+    } else if (document.getElementById('edit-gear-armor-class')) {
+        activeModalPart.specifications["Armor Class"] = document.getElementById('edit-gear-armor-class').value.trim();
+        activeModalPart.specifications["Defense Rating"] = document.getElementById('edit-gear-armor-defense').value.trim();
+        activeModalPart.specifications["Mobility Impact"] = document.getElementById('edit-gear-armor-mobility').value.trim();
+        activeModalPart.specifications["Integrated Systems"] = document.getElementById('edit-gear-armor-systems').value.trim();
+    } else if (document.getElementById('edit-gear-cloth-material')) {
+        activeModalPart.specifications["Fabric / Material"] = document.getElementById('edit-gear-cloth-material').value.trim();
+        activeModalPart.specifications["Environmental Resistance"] = document.getElementById('edit-gear-cloth-env').value.trim();
+        activeModalPart.specifications["Style / Aesthetic"] = document.getElementById('edit-gear-cloth-style').value.trim();
     }
-}
 
+    // Lagre til localStorage / oppdater visningen i hovedkatalogen
+    if (typeof saveToLocalStorage === 'function') saveToLocalStorage();
+    if (typeof renderCatalog === 'function') renderCatalog(); // Eller hva funksjonen din heter som tegner opp kortene på nytt
+
+    // Gå tilbake til visningsmodus for den oppdaterte posten
+    document.getElementById('editModeContainer').style.display = 'none';
+    document.getElementById('viewModeContainer').style.display = 'block';
+    
+    // Oppdater modalen slik at den viser de nye endringene umiddelbart
+    openModal(encodeURIComponent(JSON.stringify(activeModalPart)));
+    
+    alert("Posten har blitt oppdatert!");
+}
         function closeModal(event) {
             if (!event || event.target.id === 'itemModal') {
                 document.getElementById('itemModal').style.display = 'none';
