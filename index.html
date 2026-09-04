@@ -17605,10 +17605,11 @@ folderHTML += `
         </div>
     `;
 
-    // Fyll ut spesifikasjoner (fanger opp personell-detaljer som rase/alder eller våpen-specs)
+   // Fyll ut spesifikasjoner (fanger opp personell-detaljer som rase/alder eller våpen-specs)
     let specsContainer = document.getElementById('modal-specs');
     specsContainer.innerHTML = '';
     if (activeModalPart.specifications && Object.keys(activeModalPart.specifications).length > 0) {
+        specsContainer.style.display = 'grid'; // Sørg for at den vises igjen!
         for (let key in activeModalPart.specifications) {
             specsContainer.innerHTML += `<div style="background: rgba(0,255,255,0.05); padding: 6px; border: 1px solid rgba(0,255,255,0.2);"><strong>${key}:</strong> ${activeModalPart.specifications[key]}</div>`;
         }
