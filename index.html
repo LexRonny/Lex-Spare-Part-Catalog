@@ -461,7 +461,7 @@
 
         </div>
     </div>
-	<!-- NEW "ADD ITEM" MODAL OVERLAY -->
+<!-- NEW "ADD ITEM" MODAL OVERLAY -->
 <div class="modal-overlay" id="addItemModal" onclick="closeAddModal(event)">
     <div class="modal-card" onclick="event.stopPropagation()" style="max-width: 650px; max-height: 90vh; overflow-y: auto;">
         <button class="modal-close" onclick="closeAddModal()">[ X ]</button>
@@ -470,16 +470,16 @@
             <div class="modal-title" style="color: var(--holo-blue);">Add New Catalog Entry</div>
         </div>
 
-        <!-- 5 TABS NAVIGATION -->
+        <!-- 8 TABS NAVIGATION -->
         <div class="add-tabs" style="display: flex; gap: 5px; margin-bottom: 15px; flex-wrap: wrap;">
             <button type="button" id="tabBtn1" class="tab-btn active" onclick="switchAddTabNew(1)">1. GEAR & EQUIPMENT</button>
             <button type="button" id="tabBtn2" class="tab-btn" onclick="switchAddTabNew(2)">2. TRANSPORT & TECH</button>
             <button type="button" id="tabBtn3" class="tab-btn" onclick="switchAddTabNew(3)">3. SUPPLY & INDUSTRY</button>
             <button type="button" id="tabBtn4" class="tab-btn" onclick="switchAddTabNew(4)">4. PERSONNEL</button>
             <button type="button" id="tabBtn5" class="tab-btn" onclick="switchAddTabNew(5)">5. LOCATIONS & FACTIONS</button>
-			<button type="button" id="tabBtn6" class="tab-btn" onclick="switchAddTabNew(6)">6. HOUSEHOLD & LIVING QUARTERS</button>
-			<button type="button" id="tabBtn7" class="tab-btn" onclick="switchAddTabNew(7)">7. RESTRICTED FILES</button>
-			<button type="button" id="tabBtn8" class="tab-btn" onclick="switchAddTabNew(8)">8. SOFTWARE</button>
+            <button type="button" id="tabBtn6" class="tab-btn" onclick="switchAddTabNew(6)">6. HOUSEHOLD & LIVING QUARTERS</button>
+            <button type="button" id="tabBtn7" class="tab-btn" onclick="switchAddTabNew(7)">7. RESTRICTED FILES</button>
+            <button type="button" id="tabBtn8" class="tab-btn" onclick="switchAddTabNew(8)">8. SOFTWARE</button>
         </div>
 
         <!-- GLOBAL RESTRICTED CHECKBOX -->
@@ -522,7 +522,7 @@
             </div>
 
             <!-- ========================================== -->
-            <!-- GENERIC FORM FOR TABS 1, 2, 3, 5, 6           -->
+            <!-- GENERIC FORM FOR TABS 1, 2, 3, 5, 6, 7      -->
             <!-- ========================================== -->
             <div id="addItemGenericForm">
                 <div style="display: flex; gap: 10px; margin-bottom: 10px;">
@@ -598,6 +598,48 @@
                 </div>
             </div>
 
+            <!-- ========================================== -->
+            <!-- SOFTWARE FORM FOR TAB 8                    -->
+            <!-- ========================================== -->
+            <div id="addItemSoftwareForm" style="display: none;">
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.85rem; color: #aaa;">Main Category *:</label>
+                        <select id="add-sw-main-cat" onchange="updatesSubCategoryDropdown('add-sw-main-cat', 'add-sw-sub-cat')" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;"></select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.85rem; color: #aaa;">Subcategory *:</label>
+                        <select id="add-sw-sub-cat" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;"></select>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.85rem; color: #aaa;">Software Version / Build:</label>
+                        <input type="text" id="add-sw-version" placeholder="f.eks. v4.12-RevB" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="font-size: 0.85rem; color: #aaa;">Encryption / Security Protocol:</label>
+                        <input type="text" id="add-sw-encryption" placeholder="f.eks. Slicer-Secured / Imperial-Mamek" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 0.85rem; color: #aaa;">Developer / Origin:</label>
+                    <input type="text" id="add-sw-manufacturer" placeholder="Omnitask / Independent Slicer" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 0.85rem; color: #aaa;">Image / Icon URL (GitHub Raw):</label>
+                    <input type="text" id="add-sw-image" placeholder="https://raw.githubusercontent.com/..." style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;">
+                </div>
+
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 0.85rem; color: #aaa;">Software Description / Specifications:</label>
+                    <textarea id="add-sw-desc" rows="2" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff; box-sizing: border-box;"></textarea>
+                </div>
+            </div>
+
             <!-- INTERNAL NOTES (LEX & SPECTRE / THE SHADOWS) -->
             <div style="border-top: 1px dashed #444; padding-top: 10px; margin-top: 10px; margin-bottom: 15px;">
                 <label style="font-size: 0.85rem; color: var(--classified-gold); font-weight: bold; display: block; margin-bottom: 5px;">Internal Notes & Security Logs:</label>
@@ -626,7 +668,6 @@
         </form>
     </div>
 </div>
-
  
     <!-- PRODUSENT POP-UP MODAL -->
     <div class="modal-overlay" id="manufacturerModal" onclick="closeManufacturerModal(event)">
@@ -17665,29 +17706,38 @@ function switchAddTabNew(tabIndex) {
         }
 
 
-	function switchAddTabNew(tabNumber) {
-    // Fjern 'active' fra alle 6 knapper slik at holobelysningen slukker på de andre
-    for (let i = 1; i <= 7; i++) {
+	function switchAddTabNew(tabNum) {
+    // 1. Fjern 'active' fra alle tab-knapper og sett på den riktige
+    for (let i = 1; i <= 8; i++) {
         const btn = document.getElementById(`tabBtn${i}`);
         if (btn) btn.classList.remove('active');
     }
-    
-    // Sett 'active' kun på den knappen som ble trykket
-    const targetBtn = document.getElementById(`tabBtn${tabNumber}`);
-    if (targetBtn) targetBtn.classList.add('active');
+    const activeBtn = document.getElementById(`tabBtn${tabNum}`);
+    if (activeBtn) activeBtn.classList.add('active');
 
-    const genForm = document.getElementById('addItemGenericForm');
-    const persForm = document.getElementById('addItemPersonnelForm');
+    // 2. Hent form-containere
+    const genericForm = document.getElementById('addItemGenericForm');
+    const personnelForm = document.getElementById('addItemPersonnelForm');
+    const softwareForm = document.getElementById('addItemSoftwareForm');
 
-    // Fane 4 = Personell/Droider, Fane 1, 2, 3, 5, 6 og 7 = Generelt utstyr/skip/hus
-    if (tabNumber === 4) {
-        if (genForm) genForm.style.display = 'none';
-        if (persForm) persForm.style.display = 'block';
-        populateTabCategories(4, 'add-pers-main-cat', 'add-pers-sub-cat');
+    // Skjul alle først
+    if (genericForm) genericForm.style.display = 'none';
+    if (personnelForm) personnelForm.style.display = 'none';
+    if (softwareForm) softwareForm.style.display = 'none';
+
+    // 3. Bestem hva som skal vises og fyll inn standardkategorier basert på fane
+    if (tabNum === 4) {
+        // Personnel fane
+        if (personnelForm) personnelForm.style.display = 'block';
+        populatePersonnelCategories(); // Funksjonen som fyller pers-dropdowns
+    } else if (tabNum === 8) {
+        // Software fane
+        if (softwareForm) softwareForm.style.display = 'block';
+        populateSoftwareCategories(); // Funksjonen som fyller software-dropdowns
     } else {
-        if (genForm) genForm.style.display = 'block';
-        if (persForm) persForm.style.display = 'none';
-        populateTabCategories(tabNumber, 'add-comp-main-cat', 'add-comp-sub-cat');
+        // Generelle faner (1, 2, 3, 5, 6, 7)
+        if (genericForm) genericForm.style.display = 'block';
+        populateGenericCategoriesForTab(tabNum);
     }
 }
 
@@ -17712,6 +17762,19 @@ function populateTabCategories(tabNumber, mainId, subId) {
         allowedCategories = ['Household Kitchen', 'Living Quarters & Fresher', 'Office & Administrative Equipment', 'Recreation & Entertainment'];
     } else if (tabNumber === 7) {
         allowedCategories = ['Restricted Files']; // Lar deg velge Restricted Files som hovedkategori og dens underkategorier direkte
+    } else if (tabNumber === 8) {
+        allowedCategories = [
+            'Core Software and Operating Environments',
+            'AI and Cognitive Systems',
+            'Data Archives and Knowledge Systems',
+            'Networks, Communications, and Identity',
+            'Security and Counter-Intrusion',
+            'Control, Automation, and Industrial Logic',
+            'Simulation, Training, and Expert Systems',
+            'Commerce, Logistics, and Administration',
+            'Doctrine, Procedures, and Documents',
+            'System & Software'
+        ];
     }
 
     allowedCategories.forEach(cat => {
@@ -17845,35 +17908,46 @@ function getNextSequentialNumber(catCode, subCode, uniCode) {
     return maxNum + 1;
 }
 
-function saveNewItem() {
-    const persForm = document.getElementById('addItemPersonnelForm') || document.getElementById('addPersonnelForm');
-    const softwareForm = document.getElementById('addItemSoftwareForm') || document.getElementById('addSoftwareForm'); // Tilpass ID etter din HTML for software-skjemaet
+function saveNewItem(event) {
+    if (event) event.preventDefault();
+
+    const persForm = document.getElementById('addItemPersonnelForm');
+    const softwareForm = document.getElementById('addItemSoftwareForm');
     
     const isPersonnelActive = persForm && persForm.style.display === 'block';
     const isSoftwareActive = softwareForm && softwareForm.style.display === 'block';
     
     let id = '', name = '', universe = '', fullCategory = '', mfrOrFaction = '', desc = '', imageUrl = '';
 
-    const restrictedCheckbox = document.getElementById('global-pers-restricted') || document.getElementById('add-comp-restricted') || document.getElementById('add-pers-restricted') || document.getElementById('add-sw-restricted');
+    const restrictedCheckbox = document.getElementById('global-pers-restricted');
     const isRestricted = restrictedCheckbox ? restrictedCheckbox.checked : false;
+
+    // Felles univers-status for standard og software (hvis ikke restricted)
+    const standardUniverse = document.getElementById('add-comp-universe')?.value || 'Canon';
 
     if (isSoftwareActive) {
         // --- SOFTWARE-LAGRING ---
-        name = document.getElementById('sw-name')?.value.trim() || '';
-        const mainCat = document.getElementById('sw-main-cat')?.value || 'Core Software and Operating Environments';
-        const subCat = document.getElementById('sw-sub-cat')?.value || 'Operating systems and kernels';
-        desc = document.getElementById('sw-desc')?.value.trim() || '';
-        imageUrl = document.getElementById('sw-image')?.value.trim() || '';
+        name = document.getElementById('add-comp-name')?.value.trim() || ''; // Bruker felles name-felt i toppen
+        const mainCat = document.getElementById('add-sw-main-cat')?.value || 'Core Software and Operating Environments';
+        const subCat = document.getElementById('add-sw-sub-cat')?.value || 'Firmware and boot systems';
+        desc = document.getElementById('add-sw-desc')?.value.trim() || '';
+        imageUrl = document.getElementById('add-sw-image')?.value.trim() || '';
+        mfrOrFaction = document.getElementById('add-sw-manufacturer')?.value.trim() || 'Ukjent';
 
         if (!name) {
             alert("Du må fylle ut navnet på programvaren!");
             return;
         }
 
-        universe = document.getElementById('sw-universe')?.value || 'Fan-Made';
-        fullCategory = `${mainCat} / ${subCat}`;
+        if (isRestricted) {
+            universe = 'Classified';
+            fullCategory = `Restricted Files / ${subCat}`;
+        } else {
+            universe = standardUniverse;
+            fullCategory = `${mainCat} / ${subCat}`;
+        }
 
-        id = generateSystemID(mainCat, subCat, universe);
+        id = generateSystemID(isRestricted ? 'Restricted Files' : mainCat, subCat, universe);
 
         let newItem = {
             id: id,
@@ -17881,22 +17955,23 @@ function saveNewItem() {
             universeStatus: universe,
             categoryPath: fullCategory,
             imageUrl: imageUrl,
-            accessClassification: document.getElementById('sw-access')?.value || 'Restricted',
-            distributionState: document.getElementById('sw-distribution')?.value || 'Internal',
-            integrityState: document.getElementById('sw-integrity')?.value || 'Verified',
-            currentVersion: document.getElementById('sw-version')?.value.trim() || 'v1.0',
-            publisher: document.getElementById('sw-publisher')?.value.trim() || 'Ukjent',
+            accessClassification: isRestricted ? 'Restricted' : 'Internal',
+            currentVersion: document.getElementById('add-sw-version')?.value.trim() || 'v1.0',
+            manufacturing: { manufacturer: mfrOrFaction },
             overview: { shortDescription: desc },
+            specifications: {
+                "Encryption": document.getElementById('add-sw-encryption')?.value.trim() || 'Standard'
+            },
             lexNotes: { 
-                lexNote: document.getElementById('sw-lex-note')?.value.trim() || "Lagt til via nettsiden.", 
-                spectreAnalysis: document.getElementById('sw-spectre-analysis')?.value.trim() || "Registrert i systemet." 
+                lexNote: document.getElementById('add-pers-lex')?.value.trim() || "Lagt til via nettsiden.", 
+                spectreAnalysis: document.getElementById('add-pers-spectre')?.value.trim() || "Registrert i systemet." 
             }
         };
 
         catalogData.components.push(newItem);
 
     } else if (!isPersonnelActive) {
-        // --- KOMPONENT- / UTSTYRSLAGRING ---
+        // --- KOMPONENT- / UTSTYRSLAGRING (Tab 1, 2, 3, 5, 6, 7) ---
         name = document.getElementById('add-comp-name')?.value.trim() || '';
         const mainCat = document.getElementById('add-comp-main-cat')?.value || 'Hardware';
         const subCat = document.getElementById('add-comp-sub-cat')?.value || 'Components';
@@ -17913,7 +17988,7 @@ function saveNewItem() {
             universe = 'Classified';
             fullCategory = `Restricted Files / ${subCat}`;
         } else {
-            universe = document.getElementById('add-comp-universe')?.value || 'Canon';
+            universe = standardUniverse;
             fullCategory = `${mainCat} / ${subCat}`;
         }
 
@@ -17937,8 +18012,8 @@ function saveNewItem() {
         catalogData.components.push(newItem);
 
     } else {
-        // --- PERSONELL-LAGRING ---
-        name = document.getElementById('add-pers-name')?.value.trim() || document.getElementById('add-comp-name')?.value.trim() || '';
+        // --- PERSONELL-LAGRING (Tab 4) ---
+        name = document.getElementById('add-comp-name')?.value.trim() || '';
         const mainCat = document.getElementById('add-pers-main-cat')?.value || 'Known associates';
         const subCat = document.getElementById('add-pers-sub-cat')?.value || 'Personnel';
         mfrOrFaction = document.getElementById('add-pers-faction')?.value.trim() || 'Uavhengig';
@@ -17958,7 +18033,7 @@ function saveNewItem() {
             universe = 'Classified';
             fullCategory = `Restricted Files / ${subCat}`;
         } else {
-            universe = document.getElementById('add-pers-universe')?.value || 'Canon';
+            universe = standardUniverse;
             fullCategory = `${mainCat} / ${subCat}`;
         }
 
@@ -17986,8 +18061,8 @@ function saveNewItem() {
         catalogData.components.push(newItem);
     }
 
-    saveToLocalStorage();
-    closeAddModal();
+    if (typeof saveToLocalStorage === 'function') saveToLocalStorage();
+    if (typeof closeAddModal === 'function') closeAddModal();
     alert(`Ny post lagt til med automatisk ID: ${id}`);
 }
         
