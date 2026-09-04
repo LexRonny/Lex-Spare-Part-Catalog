@@ -17785,6 +17785,7 @@ function closeAddModal(event) {
         select.appendChild(opt);
     });
 }
+		
 function updateGearFieldVisibility() {
     const gearFieldsContainer = document.getElementById('addItemGearFields');
     if (!gearFieldsContainer) return;
@@ -17802,27 +17803,33 @@ function updateGearFieldVisibility() {
     const mainCatSelect = document.getElementById('add-comp-main-cat');
     const subCatSelect = document.getElementById('add-comp-sub-cat');
     
-    const cleanText = (txt) => txt ? txt.toLowerCase().trim() : '';
+    // Vasker tekst slik at store/små bokstaver, mellomrom og spesialtegn ikke ødelegger treffet
+    const cleanText = (txt) => txt ? txt.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]/g, '') : '';
 
     const currentMain = cleanText(mainCatSelect ? mainCatSelect.value : '');
     const currentSub = cleanText(subCatSelect ? subCatSelect.value : '');
 
+    console.log("Renset søk - Hoved:", currentMain, "| Under:", currentSub);
+
     const subFieldBlocks = gearFieldsContainer.querySelectorAll('.gear-sub-fields');
     subFieldBlocks.forEach(block => {
-        const targetSub = cleanText(block.getAttribute('data-gear-sub') || '');
+        const rawTarget = block.getAttribute('data-gear-sub') || '';
+        const targetClean = cleanText(rawTarget);
 
-        // Vis hvis underkategorien matcher direkte, ELLER hvis hovedkategorien matcher og ingen underkategori er valgt/funnet
-        const isSubMatch = currentSub && targetSub === currentSub;
-        const isMainMatch = currentMain && targetSub.includes(currentMain) && !currentSub;
+        console.log("Sjekker blokk:", rawTarget, "-> Renset:", targetClean);
 
-        if (isSubMatch || isMainMatch) {
+        // Treff hvis den renset underkategorien matcher, eller hvis hovedkategorien matcher
+        const isMatch = (currentSub && targetClean.includes(currentSub)) || 
+                        (currentMain && targetClean.includes(currentMain));
+
+        if (isMatch) {
             block.style.display = 'block';
         } else {
             block.style.display = 'none';
         }
     });
 }
-
+		
 	// Styrer vekslingen mellom de 8 fanene i "Legg til"-modalen
 function switchAddTabNew(tabNum) {
     // 1. Fjern 'active' fra alle tab-knapper og sett på den riktige
