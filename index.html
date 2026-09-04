@@ -555,7 +555,7 @@
             <!-- SPECIFIC FIELDS FOR GEAR & EQUIPMENT (TAB 1) -->
             <!-- ========================================== -->
             <div id="addItemGearFields" style="display: none; border-top: 1px dashed #444; padding-top: 10px; margin-top: 10px;">
-                
+             <select id="add-comp-sub-cat" onchange="updateGearFieldVisibility()" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;"></select>   
                 <!-- 1. WEAPONS FIELDS -->
                 <div class="gear-sub-fields" data-gear-sub="Weapons" style="display: none;">
                     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
@@ -17783,6 +17783,46 @@ function closeAddModal(event) {
         opt.value = cat;
         opt.innerText = cat;
         select.appendChild(opt);
+    });
+}
+		// Styrer visning av de dynamiske feltene for Gear & Equipment (Fane 1)
+function updateGearFieldVisibility() {
+    const gearFieldsContainer = document.getElementById('addItemGearFields');
+    const genericForm = document.getElementById('addItemGenericForm');
+    
+    if (!gearFieldsContainer) return;
+
+    // Sjekk om Fane 1 (Gear & Equipment) er aktiv (dvs. at genericForm er synlig og vi ikke er på fane 4 eller 8)
+    const persForm = document.getElementById('addItemPersonnelForm');
+    const softwareForm = document.getElementById('addItemSoftwareForm');
+    const isPersonnelActive = persForm && persForm.style.display === 'block';
+    const isSoftwareActive = softwareForm && softwareForm.style.display === 'block';
+
+    // Finn ut hvilken fane som er aktiv basert på en aktiv tab-knapp eller om generic form vises
+    const isTab1Active = genericForm && genericForm.style.display === 'block'; 
+    // Alternativt kan du sjekke tab-knapp 1: document.getElementById('tabBtn1')?.classList.contains('active')
+
+    if (!isTab1Active || isPersonnelActive || isSoftwareActive) {
+        gearFieldsContainer.style.display = 'none';
+        return;
+    }
+
+    // Hvis vi er på Fane 1, vis hovedcontaineren for gear-felter
+    gearFieldsContainer.style.display = 'block';
+
+    // Hent valgt underkategori
+    const subCatSelect = document.getElementById('add-comp-sub-cat');
+    const currentSubCat = subCatSelect ? subCatSelect.value : '';
+
+    // Gå gjennom alle underkategori-blokkene og vis bare den som matcher
+    const subFieldBlocks = gearFieldsContainer.querySelectorAll('.gear-sub-fields');
+    subFieldBlocks.forEach(block => {
+        const targetSub = block.getAttribute('data-gear-sub');
+        if (targetSub === currentSubCat) {
+            block.style.display = 'block';
+        } else {
+            block.style.display = 'none';
+        }
     });
 }
 
