@@ -18120,32 +18120,36 @@ function saveNewItem(event) {
 
         id = generateSystemID(isRestricted ? 'Restricted Files' : mainCat, subCat, universe);
 
-        // --- HENT DYNAMISKE GEAR & EQUIPMENT FELT HVIS DET ER AKTIVT ---
-        let specs = {};
-        if (mainCat === "Weapons" || mainCat.includes("Gear")) {
-            // Sjekk hvilken underkategori som er aktiv og hent tilhørende felter
-            if (subCat === "Weapons") {
-                specs["Damage Type"] = document.getElementById('gear-weapon-damage')?.value.trim() || "";
-                specs["Effective Range"] = document.getElementById('gear-weapon-range')?.value.trim() || "";
-                specs["Ammunition / Power"] = document.getElementById('gear-weapon-ammo')?.value.trim() || "";
-                specs["Special Features"] = document.getElementById('gear-weapon-mods')?.value.trim() || "";
-            } else if (subCat === "Survival, tools and field gear") {
-                specs["Primary Function"] = document.getElementById('gear-surv-function')?.value.trim() || "";
-                specs["Power Source"] = document.getElementById('gear-surv-power')?.value.trim() || "";
-                specs["Environmental Rating"] = document.getElementById('gear-surv-env')?.value.trim() || "";
-                specs["Portability / Weight"] = document.getElementById('gear-surv-weight')?.value.trim() || "";
-            } else if (subCat === "Armor and protection") {
-                specs["Armor Class"] = document.getElementById('gear-armor-class')?.value.trim() || "";
-                specs["Defense Rating"] = document.getElementById('gear-armor-defense')?.value.trim() || "";
-                specs["Mobility Impact"] = document.getElementById('gear-armor-mobility')?.value.trim() || "";
-                specs["Integrated Systems"] = document.getElementById('gear-armor-systems')?.value.trim() || "";
-            } else if (subCat === "Clothing and textiles") {
-                specs["Fabric / Material"] = document.getElementById('gear-cloth-material')?.value.trim() || "";
-                specs["Environmental Resistance"] = document.getElementById('gear-cloth-env')?.value.trim() || "";
-                specs["Style / Aesthetic"] = document.getElementById('gear-cloth-style')?.value.trim() || "";
-            }
-        }
-
+       // --- HENT DYNAMISKE GEAR & EQUIPMENT FELT ---
+    let specs = {};
+    
+    // Vi sjekker underkategorien direkte, siden den alltid definerer hva slags utstyr det er
+    if (subCat === "Weapons" || document.getElementById('gear-weapon-damage')) {
+        specs["Damage Type"] = document.getElementById('gear-weapon-damage')?.value.trim() || "";
+        specs["Effective Range"] = document.getElementById('gear-weapon-range')?.value.trim() || "";
+        specs["Ammunition / Power"] = document.getElementById('gear-weapon-ammo')?.value.trim() || "";
+        specs["Special Features"] = document.getElementById('gear-weapon-mods')?.value.trim() || "";
+    }
+    
+    if (subCat === "Survival, tools and field gear" || document.getElementById('gear-surv-function')) {
+        specs["Primary Function"] = document.getElementById('gear-surv-function')?.value.trim() || "";
+        specs["Power Source"] = document.getElementById('gear-surv-power')?.value.trim() || "";
+        specs["Environmental Rating"] = document.getElementById('gear-surv-env')?.value.trim() || "";
+        specs["Portability / Weight"] = document.getElementById('gear-surv-weight')?.value.trim() || "";
+    }
+    
+    if (subCat === "Armor and protection" || document.getElementById('gear-armor-class')) {
+        specs["Armor Class"] = document.getElementById('gear-armor-class')?.value.trim() || "";
+        specs["Defense Rating"] = document.getElementById('gear-armor-defense')?.value.trim() || "";
+        specs["Mobility Impact"] = document.getElementById('gear-armor-mobility')?.value.trim() || "";
+        specs["Integrated Systems"] = document.getElementById('gear-armor-systems')?.value.trim() || "";
+    }
+    
+    if (subCat === "Clothing and textiles" || document.getElementById('gear-cloth-material')) {
+        specs["Fabric / Material"] = document.getElementById('gear-cloth-material')?.value.trim() || "";
+        specs["Environmental Resistance"] = document.getElementById('gear-cloth-env')?.value.trim() || "";
+        specs["Style / Aesthetic"] = document.getElementById('gear-cloth-style')?.value.trim() || "";
+    }
         let newItem = {
             id: id,
             name: name,
