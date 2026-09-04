@@ -18010,7 +18010,7 @@ function saveNewItem(event) {
 
     if (isSoftwareActive) {
         // --- SOFTWARE-LAGRING ---
-        name = document.getElementById('add-comp-name')?.value.trim() || ''; // Bruker felles name-felt i toppen
+        name = document.getElementById('add-comp-name')?.value.trim() || '';
         const mainCat = document.getElementById('add-sw-main-cat')?.value || 'Core Software and Operating Environments';
         const subCat = document.getElementById('add-sw-sub-cat')?.value || 'Firmware and boot systems';
         desc = document.getElementById('add-sw-desc')?.value.trim() || '';
@@ -18032,7 +18032,7 @@ function saveNewItem(event) {
 
         id = generateSystemID(isRestricted ? 'Restricted Files' : mainCat, subCat, universe);
 
-       let newItem = {
+        let newItem = {
             id: id,
             name: name,
             universeStatus: universe,
@@ -18077,6 +18077,32 @@ function saveNewItem(event) {
 
         id = generateSystemID(isRestricted ? 'Restricted Files' : mainCat, subCat, universe);
 
+        // --- HENT DYNAMISKE GEAR & EQUIPMENT FELT HVIS DET ER AKTIVT ---
+        let specs = {};
+        if (mainCat === "Weapons" || mainCat.includes("Gear")) {
+            // Sjekk hvilken underkategori som er aktiv og hent tilhørende felter
+            if (subCat === "Weapons") {
+                specs["Damage Type"] = document.getElementById('gear-weapon-damage')?.value.trim() || "";
+                specs["Effective Range"] = document.getElementById('gear-weapon-range')?.value.trim() || "";
+                specs["Ammunition / Power"] = document.getElementById('gear-weapon-ammo')?.value.trim() || "";
+                specs["Special Features"] = document.getElementById('gear-weapon-mods')?.value.trim() || "";
+            } else if (subCat === "Survival, tools and field gear") {
+                specs["Primary Function"] = document.getElementById('gear-surv-function')?.value.trim() || "";
+                specs["Power Source"] = document.getElementById('gear-surv-power')?.value.trim() || "";
+                specs["Environmental Rating"] = document.getElementById('gear-surv-env')?.value.trim() || "";
+                specs["Portability / Weight"] = document.getElementById('gear-surv-weight')?.value.trim() || "";
+            } else if (subCat === "Armor and protection") {
+                specs["Armor Class"] = document.getElementById('gear-armor-class')?.value.trim() || "";
+                specs["Defense Rating"] = document.getElementById('gear-armor-defense')?.value.trim() || "";
+                specs["Mobility Impact"] = document.getElementById('gear-armor-mobility')?.value.trim() || "";
+                specs["Integrated Systems"] = document.getElementById('gear-armor-systems')?.value.trim() || "";
+            } else if (subCat === "Clothing and textiles") {
+                specs["Fabric / Material"] = document.getElementById('gear-cloth-material')?.value.trim() || "";
+                specs["Environmental Resistance"] = document.getElementById('gear-cloth-env')?.value.trim() || "";
+                specs["Style / Aesthetic"] = document.getElementById('gear-cloth-style')?.value.trim() || "";
+            }
+        }
+
         let newItem = {
             id: id,
             name: name,
@@ -18085,7 +18111,7 @@ function saveNewItem(event) {
             imageUrl: imageUrl,
             overview: { shortDescription: desc },
             manufacturing: { manufacturer: mfrOrFaction },
-            specifications: {},
+            specifications: specs,
             lexNotes: { 
                 lexNote: document.getElementById('add-pers-lex')?.value.trim() || "Lagt til via nettsiden.", 
                 spectreAnalysis: document.getElementById('add-pers-spectre')?.value.trim() || "Registrert i systemet." 
