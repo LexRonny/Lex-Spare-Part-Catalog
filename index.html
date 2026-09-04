@@ -17798,25 +17798,28 @@ function updateGearFieldVisibility() {
         return;
     }
 
-    // Vis alltid containeren når vi er på fane 1
+    // Vis containeren når vi er på fane 1
     gearFieldsContainer.style.display = 'block';
 
-    // Hent verdier fra både hoved- og underkategori-menyen
+    // Hent verdier fra hoved- og underkategori
     const mainCatSelect = document.getElementById('add-comp-main-cat');
     const subCatSelect = document.getElementById('add-comp-sub-cat');
     
-    const currentMain = mainCatSelect ? mainCatSelect.value.trim() : '';
-    const currentSub = subCatSelect ? subCatSelect.value.trim() : '';
+    const currentMain = mainCatSelect ? mainCatSelect.value.trim().toLowerCase() : '';
+    const currentSub = subCatSelect ? subCatSelect.value.trim().toLowerCase() : '';
 
-    console.log("Sjekker synlighet for - Hoved:", currentMain, "| Under:", currentSub);
+    console.log("Sjekker felter - Hoved:", currentMain, "| Under:", currentSub);
 
-    // Gå gjennom alle underkategori-blokkene og sjekk om de matcher enten hoved- eller underkategori
+    // Gå gjennom hver underkategori-blokk og sjekk fleksibelt om den matcher
     const subFieldBlocks = gearFieldsContainer.querySelectorAll('.gear-sub-fields');
     subFieldBlocks.forEach(block => {
-        const targetSub = block.getAttribute('data-gear-sub');
+        const targetSub = block.getAttribute('data-gear-sub').toLowerCase();
         
-        // Matcher enten hoved- eller underkategorien (case-insensitive for sikkerhets skyld)
-        if (targetSub.toLowerCase() === currentMain.toLowerCase() || targetSub.toLowerCase() === currentSub.toLowerCase()) {
+        // Sjekk om hoved- eller underkategorien deler navn med data-gear-sub
+        const isMatch = (currentMain && (targetSub.includes(currentMain) || currentMain.includes(targetSub))) ||
+                        (currentSub && (targetSub.includes(currentSub) || currentSub.includes(targetSub)));
+
+        if (isMatch) {
             block.style.display = 'block';
         } else {
             block.style.display = 'none';
