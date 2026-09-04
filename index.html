@@ -17639,9 +17639,9 @@ function closeAddModal(event) {
     }
 }
 
-// Styrer vekslingen mellom de 6 fanene i "Legg til"-modalen
+// Styrer vekslingen mellom de 8 fanene i "Legg til"-modalen
 function switchAddTabNew(tabIndex) {
-    // 1. Fjern 'active'-klasse fra alle 6 knapper
+    // 1. Fjern 'active'-klasse fra alle 8 knapper
     for (let i = 1; i <= 6; i++) {
         const btn = document.getElementById(`tabBtn${i}`);
         if (btn) btn.classList.remove('active');
@@ -17725,19 +17725,16 @@ function switchAddTabNew(tabIndex) {
     if (personnelForm) personnelForm.style.display = 'none';
     if (softwareForm) softwareForm.style.display = 'none';
 
-    // 3. Bestem hva som skal vises og fyll inn standardkategorier basert på fane
+    // 3. Bestem hva som skal vises og fyll inn riktige kategorier
     if (tabNum === 4) {
-        // Personnel fane
         if (personnelForm) personnelForm.style.display = 'block';
-        populatePersonnelCategories(); // Funksjonen som fyller pers-dropdowns
+        populateTabCategories(4, 'add-pers-main-cat', 'add-pers-sub-cat');
     } else if (tabNum === 8) {
-        // Software fane
         if (softwareForm) softwareForm.style.display = 'block';
-        populateSoftwareCategories(); // Funksjonen som fyller software-dropdowns
+        populateTabCategories(8, 'add-sw-main-cat', 'add-sw-sub-cat');
     } else {
-        // Generelle faner (1, 2, 3, 5, 6, 7)
         if (genericForm) genericForm.style.display = 'block';
-        populateGenericCategoriesForTab(tabNum);
+        populateTabCategories(tabNum, 'add-comp-main-cat', 'add-comp-sub-cat');
     }
 }
 
