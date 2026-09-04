@@ -17789,37 +17789,34 @@ function updateGearFieldVisibility() {
     const gearFieldsContainer = document.getElementById('addItemGearFields');
     if (!gearFieldsContainer) return;
 
-    // 1. Sjekk om vi faktisk står på Fane 1 (Gear & Equipment) eller har modalen åpen
-    // Vi tvinger den på om vi er på fane 1, ved å sjekke om tabBtn1 er aktiv eller genericForm vises
+    // Sjekk om vi er på riktig fane (fane 1 / generic form)
     const genericForm = document.getElementById('addItemGenericForm');
     const isTab1Active = genericForm && genericForm.style.display !== 'none';
 
-    // Hent valgt hovedkategori (sørg for at ID-en her matcher din hovedkategori-select for komponenter)
-    const mainCatSelect = document.getElementById('add-comp-main-cat');
-    const currentMainCat = mainCatSelect ? mainCatSelect.value : '';
-
-    // Sjekk om hovedkategorien er "Gear & Equipment" (juster teksten her hvis hovedkategorien heter noe annet i koden din)
-    const isGearMainCategory = currentMainCat.toLowerCase().includes('gear') || currentMainCat === 'Gear & Equipment';
-
-    if (!isGearMainCategory) {
+    if (!isTab1Active) {
         gearFieldsContainer.style.display = 'none';
         return;
     }
 
-    // Hvis hovedkategorien er Gear & Equipment, vis hovedkonteineren!
+    // Vis alltid containeren når vi er på fane 1
     gearFieldsContainer.style.display = 'block';
 
-    // 2. Hent valgt underkategori
+    // Hent verdier fra både hoved- og underkategori-menyen
+    const mainCatSelect = document.getElementById('add-comp-main-cat');
     const subCatSelect = document.getElementById('add-comp-sub-cat');
-    const currentSubCat = subCatSelect ? subCatSelect.value.trim() : '';
+    
+    const currentMain = mainCatSelect ? mainCatSelect.value.trim() : '';
+    const currentSub = subCatSelect ? subCatSelect.value.trim() : '';
 
-    console.log("Viser felter for underkategori:", currentSubCat); // Gir deg beskjed i konsollen hva den finner
+    console.log("Sjekker synlighet for - Hoved:", currentMain, "| Under:", currentSub);
 
-    // 3. Vis/skjul riktig underkategori-blokk
+    // Gå gjennom alle underkategori-blokkene og sjekk om de matcher enten hoved- eller underkategori
     const subFieldBlocks = gearFieldsContainer.querySelectorAll('.gear-sub-fields');
     subFieldBlocks.forEach(block => {
         const targetSub = block.getAttribute('data-gear-sub');
-        if (targetSub === currentSubCat) {
+        
+        // Matcher enten hoved- eller underkategorien (case-insensitive for sikkerhets skyld)
+        if (targetSub.toLowerCase() === currentMain.toLowerCase() || targetSub.toLowerCase() === currentSub.toLowerCase()) {
             block.style.display = 'block';
         } else {
             block.style.display = 'none';
