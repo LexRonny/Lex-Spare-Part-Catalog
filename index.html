@@ -477,8 +477,9 @@
             <button type="button" id="tabBtn3" class="tab-btn" onclick="switchAddTabNew(3)">3. SUPPLY & INDUSTRY</button>
             <button type="button" id="tabBtn4" class="tab-btn" onclick="switchAddTabNew(4)">4. PERSONNEL</button>
             <button type="button" id="tabBtn5" class="tab-btn" onclick="switchAddTabNew(5)">5. LOCATIONS & FACTIONS</button>
-			<button type="button" id="tabBtn6" class="tab-btn" onclick="switchAddTabNew(6)">6.  HOUSEHOLD & LIVING QUARTERS</button>
+			<button type="button" id="tabBtn6" class="tab-btn" onclick="switchAddTabNew(6)">6. HOUSEHOLD & LIVING QUARTERS</button>
 			<button type="button" id="tabBtn7" class="tab-btn" onclick="switchAddTabNew(7)">7. RESTRICTED FILES</button>
+			<button type="button" id="tabBtn8" class="tab-btn" onclick="switchAddTabNew(8)">8. SOFTWARE</button>
         </div>
 
         <!-- GLOBAL RESTRICTED CHECKBOX -->
@@ -859,9 +860,91 @@
         "Audio & Communication Units",
         "Physical Conditioning Gear",
         "Leisure & Hobby Supplies"
+    ],
+		 // --- TAB 7: SOFTWARE ---
+    "Core Software and Operating Environments": [
+        "Firmware and boot systems",
+        "Operating systems and kernels",
+        "Device drivers and interface layers",
+        "Libraries, middleware, and runtimes",
+        "Update packages and patches",
+        "Configuration profiles and system images",
+        "Legacy, emulation, and compatibility layers"
+    ],
+    "AI and Cognitive Systems": [
+        "Personality matrices",
+        "Decision and planning engines",
+        "Language and translation packages",
+        "Memory architectures",
+        "Ethical and restraint layers",
+        "Autonomy ratings and control modes",
+        "Training, behaviour, and task packages",
+        "Memory wipes, partitions, and restoration records"
+    ],
+    "Data Archives and Knowledge Systems": [
+        "Industrial catalogues and component libraries",
+        "Navigation, survey, and mapping data",
+        "Medical, biological, and cybernetic records",
+        "Legal, registry, and ownership data",
+        "Research archives and laboratory records",
+        "Sensor logs and telemetry archives",
+        "Corrupted, encrypted, and partial data sets"
+    ],
+    "Networks, Communications, and Identity": [
+        "Local networks and system buses",
+        "Long-range communications",
+        "Data protocols and message formats",
+        "Routing and relay systems",
+        "Identity certificates and authentication",
+        "Access roles and permission sets",
+        "Network monitoring and traffic records"
+    ],
+    "Security and Counter-Intrusion": [
+        "Encryption and key management",
+        "Authentication and access control",
+        "Integrity verification and signatures",
+        "Intrusion detection and audit logging",
+        "Isolation, sandboxing, and quarantine",
+        "Countermeasures and incident response",
+        "Vulnerability, exploit, and patch records"
+    ],
+    "Control, Automation, and Industrial Logic": [
+        "Vehicle control and flight software",
+        "Navigation and route-planning",
+        "Power and thermal management control",
+        "Facility automation and environmental control",
+        "Manufacturing execution and quality systems",
+        "Droid coordination and remote operation",
+        "Diagnostics, calibration, and predictive maintenance"
+    ],
+    "Simulation, Training, and Expert Systems": [
+        "Flight and vehicle simulators",
+        "Maintenance and repair trainers",
+        "Medical and surgical training",
+        "Tactical and security scenarios",
+        "Industrial process simulators",
+        "Expert advisors and decision support"
+    ],
+    "Commerce, Logistics, and Administration": [
+        "Inventory and asset management",
+        "Vendor, dealer, and contract records",
+        "Pricing and valuation engines",
+        "Shipment, customs, and route planning",
+        "Maintenance scheduling",
+        "Licensing, permits, and certification",
+        "Accounting and audit systems"
+    ],
+    "Doctrine, Procedures, and Documents": [
+        "Operating procedures",
+        "Emergency and incident playbooks",
+        "Technical manuals and service bulletins",
+        "Mission packages and briefings",
+        "Policies, directives, and permissions",
+        "Training curricula and competency records",
+        "Redacted, conflicting, and obsolete documents"
     ]
-
 };
+	
 
         const MANUFACTURER_PROFILES = {
             "Corellian Engineering Corporation": {
@@ -17697,6 +17780,15 @@ function getCategoryPrefix(categoryName) {
         "Office & Administrative Equipment": "OAE",
         "Recreation & Entertainment": "REE",
         "Restricted Files": "RES"
+		"Core Software and Operating Environments": "CSF",
+        "AI and Cognitive Systems": "AIC",
+        "Data Archives and Knowledge Systems": "DAS",
+        "Networks, Communications, and Identity": "NWI",
+        "Security and Counter-Intrusion": "SEC",
+        "Control, Automation, and Industrial Logic": "CAI",
+        "Simulation, Training, and Expert Systems": "STE",
+        "Commerce, Logistics, and Administration": "CLA",
+        "Doctrine, Procedures, and Documents": "DPD"
     };
     return map[categoryName] || "GEN";
 }
@@ -17755,14 +17847,55 @@ function getNextSequentialNumber(catCode, subCode, uniCode) {
 
 function saveNewItem() {
     const persForm = document.getElementById('addItemPersonnelForm') || document.getElementById('addPersonnelForm');
+    const softwareForm = document.getElementById('addItemSoftwareForm') || document.getElementById('addSoftwareForm'); // Tilpass ID etter din HTML for software-skjemaet
+    
     const isPersonnelActive = persForm && persForm.style.display === 'block';
+    const isSoftwareActive = softwareForm && softwareForm.style.display === 'block';
     
     let id = '', name = '', universe = '', fullCategory = '', mfrOrFaction = '', desc = '', imageUrl = '';
 
-    const restrictedCheckbox = document.getElementById('global-pers-restricted') || document.getElementById('add-comp-restricted') || document.getElementById('add-pers-restricted');
+    const restrictedCheckbox = document.getElementById('global-pers-restricted') || document.getElementById('add-comp-restricted') || document.getElementById('add-pers-restricted') || document.getElementById('add-sw-restricted');
     const isRestricted = restrictedCheckbox ? restrictedCheckbox.checked : false;
 
-    if (!isPersonnelActive) {
+    if (isSoftwareActive) {
+        // --- SOFTWARE-LAGRING ---
+        name = document.getElementById('sw-name')?.value.trim() || '';
+        const mainCat = document.getElementById('sw-main-cat')?.value || 'Core Software and Operating Environments';
+        const subCat = document.getElementById('sw-sub-cat')?.value || 'Operating systems and kernels';
+        desc = document.getElementById('sw-desc')?.value.trim() || '';
+        imageUrl = document.getElementById('sw-image')?.value.trim() || '';
+
+        if (!name) {
+            alert("Du må fylle ut navnet på programvaren!");
+            return;
+        }
+
+        universe = document.getElementById('sw-universe')?.value || 'Fan-Made';
+        fullCategory = `${mainCat} / ${subCat}`;
+
+        id = generateSystemID(mainCat, subCat, universe);
+
+        let newItem = {
+            id: id,
+            name: name,
+            universeStatus: universe,
+            categoryPath: fullCategory,
+            imageUrl: imageUrl,
+            accessClassification: document.getElementById('sw-access')?.value || 'Restricted',
+            distributionState: document.getElementById('sw-distribution')?.value || 'Internal',
+            integrityState: document.getElementById('sw-integrity')?.value || 'Verified',
+            currentVersion: document.getElementById('sw-version')?.value.trim() || 'v1.0',
+            publisher: document.getElementById('sw-publisher')?.value.trim() || 'Ukjent',
+            overview: { shortDescription: desc },
+            lexNotes: { 
+                lexNote: document.getElementById('sw-lex-note')?.value.trim() || "Lagt til via nettsiden.", 
+                spectreAnalysis: document.getElementById('sw-spectre-analysis')?.value.trim() || "Registrert i systemet." 
+            }
+        };
+
+        catalogData.components.push(newItem);
+
+    } else if (!isPersonnelActive) {
         // --- KOMPONENT- / UTSTYRSLAGRING ---
         name = document.getElementById('add-comp-name')?.value.trim() || '';
         const mainCat = document.getElementById('add-comp-main-cat')?.value || 'Hardware';
@@ -17857,7 +17990,6 @@ function saveNewItem() {
     closeAddModal();
     alert(`Ny post lagt til med automatisk ID: ${id}`);
 }
-
         
 		async function loadCatalogFromGitHub() {
             const jsonUrl = 'https://raw.githubusercontent.com/LexRonny/Lex-Spare-Part-Catalog/feature-json-update/catalogData_backup%20(1).json';
