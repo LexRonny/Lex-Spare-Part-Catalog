@@ -17785,36 +17785,37 @@ function closeAddModal(event) {
         select.appendChild(opt);
     });
 }
-		// Styrer visning av de dynamiske feltene for Gear & Equipment (Fane 1)
 function updateGearFieldVisibility() {
     const gearFieldsContainer = document.getElementById('addItemGearFields');
-    const genericForm = document.getElementById('addItemGenericForm');
-    
     if (!gearFieldsContainer) return;
 
-    // Sjekk om Fane 1 (Gear & Equipment) er aktiv (dvs. at genericForm er synlig og vi ikke er på fane 4 eller 8)
-    const persForm = document.getElementById('addItemPersonnelForm');
-    const softwareForm = document.getElementById('addItemSoftwareForm');
-    const isPersonnelActive = persForm && persForm.style.display === 'block';
-    const isSoftwareActive = softwareForm && softwareForm.style.display === 'block';
+    // 1. Sjekk om vi faktisk står på Fane 1 (Gear & Equipment) eller har modalen åpen
+    // Vi tvinger den på om vi er på fane 1, ved å sjekke om tabBtn1 er aktiv eller genericForm vises
+    const genericForm = document.getElementById('addItemGenericForm');
+    const isTab1Active = genericForm && genericForm.style.display !== 'none';
 
-    // Finn ut hvilken fane som er aktiv basert på en aktiv tab-knapp eller om generic form vises
-    const isTab1Active = genericForm && genericForm.style.display === 'block'; 
-    // Alternativt kan du sjekke tab-knapp 1: document.getElementById('tabBtn1')?.classList.contains('active')
+    // Hent valgt hovedkategori (sørg for at ID-en her matcher din hovedkategori-select for komponenter)
+    const mainCatSelect = document.getElementById('add-comp-main-cat');
+    const currentMainCat = mainCatSelect ? mainCatSelect.value : '';
 
-    if (!isTab1Active || isPersonnelActive || isSoftwareActive) {
+    // Sjekk om hovedkategorien er "Gear & Equipment" (juster teksten her hvis hovedkategorien heter noe annet i koden din)
+    const isGearMainCategory = currentMainCat.toLowerCase().includes('gear') || currentMainCat === 'Gear & Equipment';
+
+    if (!isGearMainCategory) {
         gearFieldsContainer.style.display = 'none';
         return;
     }
 
-    // Hvis vi er på Fane 1, vis hovedcontaineren for gear-felter
+    // Hvis hovedkategorien er Gear & Equipment, vis hovedkonteineren!
     gearFieldsContainer.style.display = 'block';
 
-    // Hent valgt underkategori
+    // 2. Hent valgt underkategori
     const subCatSelect = document.getElementById('add-comp-sub-cat');
-    const currentSubCat = subCatSelect ? subCatSelect.value : '';
+    const currentSubCat = subCatSelect ? subCatSelect.value.trim() : '';
 
-    // Gå gjennom alle underkategori-blokkene og vis bare den som matcher
+    console.log("Viser felter for underkategori:", currentSubCat); // Gir deg beskjed i konsollen hva den finner
+
+    // 3. Vis/skjul riktig underkategori-blokk
     const subFieldBlocks = gearFieldsContainer.querySelectorAll('.gear-sub-fields');
     subFieldBlocks.forEach(block => {
         const targetSub = block.getAttribute('data-gear-sub');
@@ -17825,7 +17826,6 @@ function updateGearFieldVisibility() {
         }
     });
 }
-
 
 	// Styrer vekslingen mellom de 8 fanene i "Legg til"-modalen
 function switchAddTabNew(tabNum) {
