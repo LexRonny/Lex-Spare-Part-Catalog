@@ -17899,6 +17899,20 @@ function closeAddModal(event) {
 }
 		
 function updateGearFieldVisibility() {
+	// Hent elementet for transport-feltene
+    const transportFields = document.getElementById('transportTechDynamicFields');
+    const activeTabBtn = document.querySelector('.tab-btn.active');
+    const isTransportTab = activeTabBtn && activeTabBtn.id === 'tabBtn2'; // Tilpass ID om nødvendig
+
+    if (transportFields) {
+        if (isTransportTab) {
+            transportFields.style.display = 'block';
+            // Skjul de vanlige gear-underfeltene når vi er på fane 2
+            gearFieldsContainer.querySelectorAll('.gear-sub-fields').forEach(b => b.style.display = 'none');
+        } else {
+            transportFields.style.display = 'none';
+        }
+    }
     const gearFieldsContainer = document.getElementById('addItemGearFields');
     if (!gearFieldsContainer) return;
 
