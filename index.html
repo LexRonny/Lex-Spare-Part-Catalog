@@ -17895,12 +17895,50 @@ function updateGearFieldVisibility() {
 
     console.log("Renset søk - Hoved:", currentMain, "| Under:", currentSub);
 
+    // --- NY LOGIKK FOR Å SJEKKE OM VI ER PÅ FANE 2 (Transport & Tech) ---
+    const activeTabBtn = document.querySelector('.tab-btn.active');
+    const isTransportTab = activeTabBtn && activeTabBtn.id === 'tabBtn2'; // Juster ID hvis knappen din heter noe annet
+
+    if (isTransportTab) {
+        // Logikk for Transport & Tech (Fane 2)
+        const starships = ["starfighter", "interceptor", "gunship", "supportship", "capitalships", "haulcraft", "cargoship", "personneltransport"];
+        const vehicles = ["speederbikes", "swoops", "skiff", "landspeeder", "airspeeder", "snowspeeder", "groundvehicles", "walker", "crawler"];
+        
+        const label1 = document.getElementById('specLabel1');
+        const label2 = document.getElementById('specLabel2');
+        const label3 = document.getElementById('specLabel3');
+        const label4 = document.getElementById('specLabel4');
+
+        if (label1 && label2 && label3 && label4) {
+            if (starships.includes(currentSub)) {
+                label1.innerText = "Hyperdrive Rating:";
+                label2.innerText = "Armament:";
+                label3.innerText = "Shielding:";
+                label4.innerText = "Crew / Capacity:";
+            } else if (vehicles.includes(currentSub)) {
+                label1.innerText = "Max Speed:";
+                label2.innerText = "Propulsion Type:";
+                label3.innerText = "Cargo Capacity:";
+                label4.innerText = "Crew / Capacity:";
+            } else if (["bactatanks", "medpacsmedikit", "othermedicalequipment", "cyberneticprosthetics", "cloningtanks", "chemicalconverters", "toxindetectorsandscanners", "chemicalsprayersandemergencygear", "coresystemsfirmware", "controlnetworks", "sensorarrays", "weaponsystems", "stealthtechnology", "automationairoutines", "mainframesterminals", "subroutinesprotocols", "droidbrain", "slicingcovertsystem", "communicationsystems", "terminalscomputing", "securitysurveillance"].includes(currentSub)) {
+                label1.innerText = "Core Function:";
+                label2.innerText = "Power Draw / Interface:";
+                label3.innerText = "Processing Speed / Tier:";
+                label4.innerText = "Compatibility:";
+            } else {
+                label1.innerText = "Output / Performance:";
+                label2.innerText = "Durability / Integrity:";
+                label3.innerText = "Maintenance Interval:";
+                label4.innerText = "Energy Consumption:";
+            }
+        }
+    }
+    // ------------------------------------------------------------------
+
     const subFieldBlocks = gearFieldsContainer.querySelectorAll('.gear-sub-fields');
     subFieldBlocks.forEach(block => {
         const rawTarget = block.getAttribute('data-gear-sub') || '';
         const targetClean = cleanText(rawTarget);
-
-        console.log("Sjekker blokk:", rawTarget, "-> Renset:", targetClean);
 
         // Treff hvis den renset underkategorien matcher, eller hvis hovedkategorien matcher
         const isMatch = (currentSub && targetClean.includes(currentSub)) || 
