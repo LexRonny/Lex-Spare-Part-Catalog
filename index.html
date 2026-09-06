@@ -533,11 +533,10 @@
                         <label style="font-size: 0.85rem; color: #aaa;">Main Category *:</label>
                         <select id="add-comp-main-cat" onchange="updatesSubCategoryDropdown('add-comp-main-cat', 'add-comp-sub-cat')" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;"></select>
                     </div>
-                    <div style="flex: 1;">
-                        <label style="font-size: 0.85rem; color: #aaa;">Subcategory *:</label>
-                        <select id="add-comp-sub-cat" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;"></select>
-                    </div>
-                </div>
+                 <div style="flex: 1;">
+                    <label style="font-size: 0.85rem; color: #aaa;">Subcategory *:</label>
+                    <select id="add-comp-sub-cat" onchange="updateTransportTechSpecs(this.value)" style="width: 100%; padding: 6px; background: #1e1e1e; border: 1px solid #444; color: #fff;"></select>
+				</div>
 
                 <div style="margin-bottom: 10px;">
                     <label style="font-size: 0.85rem; color: #aaa;">Manufacturer / Origin:</label>
@@ -17978,6 +17977,57 @@ function updateGearFieldVisibility() {
         }
     });
 }
+
+		function updateTransportTechSpecs(subCategory) {
+    const label1 = document.getElementById('specLabel1');
+    const label2 = document.getElementById('specLabel2');
+    const label3 = document.getElementById('specLabel3');
+    const label4 = document.getElementById('specLabel4');
+    
+    const val1 = document.getElementById('specValue1');
+    const val2 = document.getElementById('specValue2');
+    const val3 = document.getElementById('specValue3');
+    const val4 = document.getElementById('specValue4');
+
+    // Nullstill verdier vedbytte hvis ønskelig
+    // val1.value = ''; val2.value = ''; val3.value = ''; val4.value = '';
+
+    switch (subCategory) {
+        case 'Stjerneskip':
+        case 'Starships':
+            label1.textContent = 'Hyperdrive rating:';
+            label2.textContent = 'Armament:';
+            label3.textContent = 'Shielding:';
+            label4.textContent = 'Crew / capacity:';
+            break;
+            
+        case 'Kjøretøy og Speedere':
+        case 'Speeders & Vehicles':
+            label1.textContent = 'Max Speed:';
+            label2.textContent = 'Propulsion Type:';
+            label3.textContent = 'Cargo Capacity:';
+            label4.textContent = 'Terrain Adaptability:';
+            break;
+            
+        case 'Medisinsk, Droids og Programvare/Systemer':
+        case 'Medical, System & Software, Electronics':
+            label1.textContent = 'Core Function:';
+            label2.textContent = 'Power Draw / Interface:';
+            label3.textContent = 'Processing Speed / Tier:';
+            label4.textContent = 'Compatibility:';
+            break;
+            
+        case 'Maskinvare og Komponenter':
+        case 'Hardware, Engines, Maintenance':
+        default:
+            label1.textContent = 'Output / Performance:';
+            label2.textContent = 'Durability / Integrity:';
+            label3.textContent = 'Maintenance Interval:';
+            label4.textContent = 'Energy Consumption:';
+            break;
+    }
+}
+		
 	// Styrer vekslingen mellom de 8 fanene i "Legg til"-modalen
 function switchAddTabNew(tabNum) {
     // 1. Fjern 'active' fra alle tab-knapper og sett på den riktige
