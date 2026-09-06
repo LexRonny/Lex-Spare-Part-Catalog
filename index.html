@@ -17919,7 +17919,6 @@ function updateGearFieldVisibility() {
     const mainCatSelect = document.getElementById('add-comp-main-cat');
     const subCatSelect = document.getElementById('add-comp-sub-cat');
     
-    // Vasker tekst slik at store/små bokstaver, mellomrom og spesialtegn ikke ødelegger treffet
     const cleanText = (txt) => txt ? txt.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]/g, '') : '';
 
     const currentMain = cleanText(mainCatSelect ? mainCatSelect.value : '');
@@ -17929,11 +17928,8 @@ function updateGearFieldVisibility() {
 
     if (isTransportTab) {
         if (transportFields) transportFields.style.display = 'block';
-        
-        // Skjul vanlig gear-underfelt på fane 2
         gearFieldsContainer.querySelectorAll('.gear-sub-fields').forEach(b => b.style.display = 'none');
 
-        // Logikk for Transport & Tech (Fane 2)
         const starships = ["starfighter", "interceptor", "gunship", "supportship", "capitalships", "haulcraft", "cargoship", "personneltransport"];
         const vehicles = ["speederbikes", "swoops", "skiff", "landspeeder", "airspeeder", "snowspeeder", "groundvehicles", "walker", "crawler"];
         
@@ -17970,7 +17966,6 @@ function updateGearFieldVisibility() {
         if (transportFields) transportFields.style.display = 'none';
     }
 
-    // Vanlig logikk for fane 1 (Gear & Equipment)
     const subFieldBlocks = gearFieldsContainer.querySelectorAll('.gear-sub-fields');
     subFieldBlocks.forEach(block => {
         const rawTarget = block.getAttribute('data-gear-sub') || '';
@@ -17986,25 +17981,6 @@ function updateGearFieldVisibility() {
         }
     });
 }
-
-    // ------------------------------------------------------------------
-
-    const subFieldBlocks = gearFieldsContainer.querySelectorAll('.gear-sub-fields');
-    subFieldBlocks.forEach(block => {
-        const rawTarget = block.getAttribute('data-gear-sub') || '';
-        const targetClean = cleanText(rawTarget);
-
-        // Treff hvis den renset underkategorien matcher, eller hvis hovedkategorien matcher
-        const isMatch = (currentSub && targetClean.includes(currentSub)) || 
-                        (currentMain && targetClean.includes(currentMain));
-
-        if (isMatch) {
-            block.style.display = 'block';
-        } else {
-            block.style.display = 'none';
-        }
-    });
-		
 	// Styrer vekslingen mellom de 8 fanene i "Legg til"-modalen
 function switchAddTabNew(tabNum) {
     // 1. Fjern 'active' fra alle tab-knapper og sett på den riktige
