@@ -17899,23 +17899,16 @@ function closeAddModal(event) {
 }
 		
 function updateGearFieldVisibility() {
-	// Hent elementet for transport-feltene
-    const transportFields = document.getElementById('transportTechDynamicFields');
-
-    if (transportFields) {
-        if (isTransportTab) {
-            transportFields.style.display = 'block';
-            // Skjul de vanlige gear-underfeltene når vi er på fane 2
-            gearFieldsContainer.querySelectorAll('.gear-sub-fields').forEach(b => b.style.display = 'none');
-        } else {
-            transportFields.style.display = 'none';
-        }
-    }
     const gearFieldsContainer = document.getElementById('addItemGearFields');
     if (!gearFieldsContainer) return;
 
     const genericForm = document.getElementById('addItemGenericForm');
     const isTab1Active = genericForm && genericForm.style.display !== 'none';
+
+    // Definer disse TRYGT med en gang
+    const activeTabBtn = document.querySelector('.tab-btn.active');
+    const isTransportTab = activeTabBtn && activeTabBtn.id === 'tabBtn2';
+    const transportFields = document.getElementById('transportTechDynamicFields');
 
     if (!isTab1Active) {
         gearFieldsContainer.style.display = 'none';
@@ -17935,11 +17928,12 @@ function updateGearFieldVisibility() {
 
     console.log("Renset søk - Hoved:", currentMain, "| Under:", currentSub);
 
-    // --- NY LOGIKK FOR Å SJEKKE OM VI ER PÅ FANE 2 (Transport & Tech) ---
-    const activeTabBtn = document.querySelector('.tab-btn.active');
-    const isTransportTab = activeTabBtn && activeTabBtn.id === 'tabBtn2'; // Juster ID hvis knappen din heter noe annet
-
     if (isTransportTab) {
+        if (transportFields) transportFields.style.display = 'block';
+        
+        // Skjul vanlig gear-underfelt på fane 2
+        gearFieldsContainer.querySelectorAll('.gear-sub-fields').forEach(b => b.style.display = 'none');
+
         // Logikk for Transport & Tech (Fane 2)
         const starships = ["starfighter", "interceptor", "gunship", "supportship", "capitalships", "haulcraft", "cargoship", "personneltransport"];
         const vehicles = ["speederbikes", "swoops", "skiff", "landspeeder", "airspeeder", "snowspeeder", "groundvehicles", "walker", "crawler"];
@@ -17972,7 +17966,27 @@ function updateGearFieldVisibility() {
                 label4.innerText = "Energy Consumption:";
             }
         }
+        return; // Stopp her så vi ikke kjører gear-filteret under
+    } else {
+        if (transportFields) transportFields.style.display = 'none';
     }
+
+    // Vanlig logikk for fane 1 (Gear & Equipment)
+    const subFieldBlocks = gearFieldsContainer.querySelectorAll('.gear-sub-fields');
+    subFieldBlocks.forEach(block => {
+        const rawTarget = block.getAttribute('data-gear-sub') || '';
+        const targetClean = cleanText(rawTarget);
+
+        const isMatch = (currentSub && targetClean.includes(currentSub)) || 
+                        (currentMain && targetClean.includes(currentMain));
+
+        if (isMatch) {
+            block.style.display = 'block';
+        } else {
+            block.style.display = 'none';
+        }
+    });
+}
 	// Funksjon som oppdaterer feltene basert på underkategori for Transport & Tech
 function updateTransportTechFieldVisibility() {
     const subcategorySelect = document.getElementById('subCategory'); // Eller ID-en til din underkategori-meny i skjemaet
