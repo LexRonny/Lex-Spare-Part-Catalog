@@ -17978,22 +17978,17 @@ function updateGearFieldVisibility() {
     });
 }
 
-		function updateTransportTechSpecs(subCategory) {
+function updateTransportTechSpecs(subCategory) {
+    // Sjekk om vi er på fane 2 (eller om elementet for fane 2 er synlig)
+    const transportFields = document.getElementById('transportTechDynamicFields');
+    if (!transportFields || transportFields.style.display === 'none') return;
+
     const label1 = document.getElementById('specLabel1');
     const label2 = document.getElementById('specLabel2');
     const label3 = document.getElementById('specLabel3');
     const label4 = document.getElementById('specLabel4');
-    
-    const val1 = document.getElementById('specValue1');
-    const val2 = document.getElementById('specValue2');
-    const val3 = document.getElementById('specValue3');
-    const val4 = document.getElementById('specValue4');
 
-    // Nullstill verdier vedbytte hvis ønskelig
-    // val1.value = ''; val2.value = ''; val3.value = ''; val4.value = '';
-
-    switch (subCategory) {
-        case 'Stjerneskip':
+    switch (subCategory)
         case 'Starships':
             label1.textContent = 'Hyperdrive rating:';
             label2.textContent = 'Armament:';
@@ -18001,7 +17996,6 @@ function updateGearFieldVisibility() {
             label4.textContent = 'Crew / capacity:';
             break;
             
-        case 'Kjøretøy og Speedere':
         case 'Speeders & Vehicles':
             label1.textContent = 'Max Speed:';
             label2.textContent = 'Propulsion Type:';
@@ -18009,7 +18003,6 @@ function updateGearFieldVisibility() {
             label4.textContent = 'Terrain Adaptability:';
             break;
             
-        case 'Medisinsk, Droids og Programvare/Systemer':
         case 'Medical, System & Software, Electronics':
             label1.textContent = 'Core Function:';
             label2.textContent = 'Power Draw / Interface:';
@@ -18017,7 +18010,6 @@ function updateGearFieldVisibility() {
             label4.textContent = 'Compatibility:';
             break;
             
-        case 'Maskinvare og Komponenter':
         case 'Hardware, Engines, Maintenance':
         default:
             label1.textContent = 'Output / Performance:';
