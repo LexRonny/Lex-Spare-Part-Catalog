@@ -17973,6 +17973,51 @@ function updateGearFieldVisibility() {
             }
         }
     }
+	// Funksjon som oppdaterer feltene basert på underkategori for Transport & Tech
+function updateTransportTechFieldVisibility() {
+    const subcategorySelect = document.getElementById('subCategory'); // Eller ID-en til din underkategori-meny i skjemaet
+    if (!subcategorySelect) return;
+    
+    const subcategory = subcategorySelect.value;
+    
+    const label1 = document.getElementById('specLabel1');
+    const label2 = document.getElementById('specLabel2');
+    const label3 = document.getElementById('specLabel3');
+    const label4 = document.getElementById('specLabel4');
+    
+    if (!label1 || !label2 || !label3 || !label4) return;
+
+    // 1. Starships
+    const starships = ["Starfighter", "Interceptor", "Gunship", "Supportship", "Capital ships", "Haulcraft", "Cargo ship", "Personnel transport"];
+    
+    // 2. Speeders & Vehicles
+    const vehicles = ["Speeder Bikes", "Swoops", "Skiff", "Landspeeder", "Airspeeder", "Snowspeeder", "Ground Vehicles", "Walker", "Crawler"];
+
+    if (starships.includes(subcategory)) {
+        label1.innerText = "Hyperdrive Rating:";
+        label2.innerText = "Armament:";
+        label3.innerText = "Shielding:";
+        label4.innerText = "Crew / Capacity:";
+    } 
+    else if (vehicles.includes(subcategory)) {
+        label1.innerText = "Max Speed:";
+        label2.innerText = "Propulsion Type:";
+        label3.innerText = "Cargo Capacity:";
+        label4.innerText = "Crew / Capacity:";
+    } 
+    else if (["Bacta-tanks", "Medpacs / MediKit", "Other Medical Equipment", "Cybernetic prosthetics", "Cloning tanks", "Chemical converters", "Toxin detectors and scanners", "Chemical sprayers and emergency gear", "Core Systems & Firmware", "Control Networks", "Sensor Arrays", "Weapon systems", "Stealth Technology", "Automation & AI Routines", "Mainframes & Terminals", "Subroutines & Protocols", "Droid Brain", "Slicing & Covert system", "Communication Systems", "Terminals & Computing", "Security & Surveillance"].includes(subcategory)) {
+        label1.innerText = "Core Function:";
+        label2.innerText = "Power Draw / Interface:";
+        label3.innerText = "Processing Speed / Tier:";
+        label4.innerText = "Compatibility:";
+    } 
+    else {
+        label1.innerText = "Output / Performance:";
+        label2.innerText = "Durability / Integrity:";
+        label3.innerText = "Maintenance Interval:";
+        label4.innerText = "Energy Consumption:";
+    }
+}
     // ------------------------------------------------------------------
 
     const subFieldBlocks = gearFieldsContainer.querySelectorAll('.gear-sub-fields');
