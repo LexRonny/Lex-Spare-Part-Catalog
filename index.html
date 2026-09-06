@@ -17900,15 +17900,14 @@ function closeAddModal(event) {
 		
 function updateGearFieldVisibility() {
     const gearFieldsContainer = document.getElementById('addItemGearFields');
+    const transportFields = document.getElementById('transportTechDynamicFields');
+    const activeTabBtn = document.querySelector('.tab-btn.active');
+    const isTransportTab = activeTabBtn && activeTabBtn.id === 'tabBtn2';
+
     if (!gearFieldsContainer) return;
 
     const genericForm = document.getElementById('addItemGenericForm');
     const isTab1Active = genericForm && genericForm.style.display !== 'none';
-
-    // Definer disse TRYGT med en gang
-    const activeTabBtn = document.querySelector('.tab-btn.active');
-    const isTransportTab = activeTabBtn && activeTabBtn.id === 'tabBtn2';
-    const transportFields = document.getElementById('transportTechDynamicFields');
 
     if (!isTab1Active) {
         gearFieldsContainer.style.display = 'none';
@@ -17966,7 +17965,7 @@ function updateGearFieldVisibility() {
                 label4.innerText = "Energy Consumption:";
             }
         }
-        return; // Stopp her så vi ikke kjører gear-filteret under
+        return; 
     } else {
         if (transportFields) transportFields.style.display = 'none';
     }
