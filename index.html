@@ -17987,7 +17987,6 @@ function updateGearFieldVisibility() {
 }
 
 function updateTransportTechSpecs(subCategory) {
-    // Sjekk om vi er på fane 2 (eller om elementet for fane 2 er synlig)
     const transportFields = document.getElementById('transportTechDynamicFields');
     if (!transportFields || transportFields.style.display === 'none') return;
 
@@ -17996,14 +17995,20 @@ function updateTransportTechSpecs(subCategory) {
     const label3 = document.getElementById('specLabel3');
     const label4 = document.getElementById('specLabel4');
 
+    if (!label1 || !label2 || !label3 || !label4) return;
+
+    // Sjekk mot underkategoriene (tilpass gjerne tekstene til nøyaktig hva som kommer fra databasen din)
     switch (subCategory) {
+        case 'Stjerneskip':
         case 'Starships':
+        case 'Starfighter':
             label1.textContent = 'Hyperdrive rating:';
             label2.textContent = 'Armament:';
             label3.textContent = 'Shielding:';
             label4.textContent = 'Crew / capacity:';
             break;
             
+        case 'Kjøretøy og Speedere':
         case 'Speeders & Vehicles':
             label1.textContent = 'Max Speed:';
             label2.textContent = 'Propulsion Type:';
@@ -18011,14 +18016,20 @@ function updateTransportTechSpecs(subCategory) {
             label4.textContent = 'Terrain Adaptability:';
             break;
             
+        case 'Medisinsk, Droids og Programvare/Systemer':
         case 'Medical, System & Software, Electronics':
+        case 'Medical':
+        case 'Droids':
             label1.textContent = 'Core Function:';
             label2.textContent = 'Power Draw / Interface:';
             label3.textContent = 'Processing Speed / Tier:';
             label4.textContent = 'Compatibility:';
             break;
             
+        case 'Maskinvare og Komponenter':
         case 'Hardware, Engines, Maintenance':
+        case 'Hardware':
+        case 'Engines':
         default:
             label1.textContent = 'Output / Performance:';
             label2.textContent = 'Durability / Integrity:';
@@ -18027,7 +18038,6 @@ function updateTransportTechSpecs(subCategory) {
             break;
     }
 }
-		
 	// Styrer vekslingen mellom de 8 fanene i "Legg til"-modalen
 function switchAddTabNew(tabNum) {
     // 1. Fjern 'active' fra alle tab-knapper og sett på den riktige
@@ -18038,15 +18048,19 @@ function switchAddTabNew(tabNum) {
     const activeBtn = document.getElementById(`tabBtn${tabNum}`);
     if (activeBtn) activeBtn.classList.add('active');
 
-    // 2. Hent form-containere
+    // 2. Hent form-containere og spesialfelt
     const genericForm = document.getElementById('addItemGenericForm');
     const personnelForm = document.getElementById('addItemPersonnelForm');
     const softwareForm = document.getElementById('addItemSoftwareForm');
+    const gearFields = document.getElementById('addItemGearFields');
+    const transportFields = document.getElementById('transportTechDynamicFields');
 
-    // Skjul alle først
+    // Skjul alt som standard
     if (genericForm) genericForm.style.display = 'none';
-    if (personnelForm) personnelForm.style.display = 'none';
+    if (personnelForm) genericForm.style.display = 'none';
     if (softwareForm) softwareForm.style.display = 'none';
+    if (gearFields) gearFields.style.display = 'none';
+    if (transportFields) transportFields.style.display = 'none';
 
     // 3. Bestem hva som skal vises og fyll inn riktige kategorier
     if (tabNum === 4) {
@@ -18056,13 +18070,24 @@ function switchAddTabNew(tabNum) {
         if (softwareForm) softwareForm.style.display = 'block';
         populateTabCategories(8, 'add-sw-main-cat', 'add-sw-sub-cat');
     } else {
+        // For alle andre faner (inkludert 1, 2, 3, 5, 6, 7) brukes genericForm
         if (genericForm) genericForm.style.display = 'block';
         populateTabCategories(tabNum, 'add-comp-main-cat', 'add-comp-sub-cat');
-    }
 
-    // 4. Oppdater synligheten for dynamiske felt (f.eks. Gear & Equipment på fane 1)
-    if (typeof updateGearFieldVisibility === 'function') {
-        updateGearFieldVisibility();
+        // Vis spesifikke felt for Fane 1 (Gear) eller Fane 2 (Transport & Tech)
+        if (tabNum === 1 && gearFields) {
+            gearFields.style.display = 'block';
+            if (typeof updateGearFieldVisibility === 'function') {
+                updateGearFieldVisibility();
+            }
+        } else if (tabNum === 2 && transportFields) {
+            transportFields.style.display = 'block';
+            // Oppdater etikettene basert på valgt underkategori med en gang
+            const subCatSelect = document.getElementById('add-comp-sub-cat');
+            if (subCatSelect) {
+                updateTransportTechSpecs(subCatSelect.value);
+            }
+        }
     }
 }
 function populateTabCategories(tabNumber, mainId, subId) {
