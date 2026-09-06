@@ -17901,8 +17901,6 @@ function closeAddModal(event) {
 function updateGearFieldVisibility() {
 	// Hent elementet for transport-feltene
     const transportFields = document.getElementById('transportTechDynamicFields');
-    const activeTabBtn = document.querySelector('.tab-btn.active');
-    const isTransportTab = activeTabBtn && activeTabBtn.id === 'tabBtn2'; // Tilpass ID om nødvendig
 
     if (transportFields) {
         if (isTransportTab) {
@@ -17938,8 +17936,8 @@ function updateGearFieldVisibility() {
     console.log("Renset søk - Hoved:", currentMain, "| Under:", currentSub);
 
     // --- NY LOGIKK FOR Å SJEKKE OM VI ER PÅ FANE 2 (Transport & Tech) ---
-    activeTabBtn = document.querySelector('.tab-btn.active');
-    isTransportTab = activeTabBtn && activeTabBtn.id === 'tabBtn2'; // Juster ID hvis knappen din heter noe annet
+    const activeTabBtn = document.querySelector('.tab-btn.active');
+    const isTransportTab = activeTabBtn && activeTabBtn.id === 'tabBtn2'; // Juster ID hvis knappen din heter noe annet
 
     if (isTransportTab) {
         // Logikk for Transport & Tech (Fane 2)
