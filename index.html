@@ -18021,6 +18021,7 @@ function updateGearFieldVisibility() {
     });
 }
 
+// 1. Funksjonen som oppdaterer etikettene basert på de 7 hovedkategoriene
 function updateTransportTechSpecs(mainCategory) {
     const dynamicContainer = document.getElementById('transportTechDynamicFields');
     const label1 = document.getElementById('specLabel1');
@@ -18033,55 +18034,61 @@ function updateTransportTechSpecs(mainCategory) {
     // Sørg for at de dynamiske feltene alltid vises når man er på Fane 2
     dynamicContainer.style.display = 'block';
 
-    // 1. Starships
     if (mainCategory.includes('Starships')) {
         label1.textContent = 'Hyperdrive rating:';
         label2.textContent = 'Armament:';
         label3.textContent = 'Shielding:';
         label4.textContent = 'Crew / capacity:';
     } 
-    // 2. Speeders & Vehicles
     else if (mainCategory.includes('Speeders') || mainCategory.includes('Vehicles')) {
         label1.textContent = 'Max Speed:';
         label2.textContent = 'Propulsion Type:';
         label3.textContent = 'Cargo Capacity:';
         label4.textContent = 'Terrain Adaptability:';
     } 
-    // 3. Medical & Chemical Equipment
     else if (mainCategory.includes('Medical')) {
         label1.textContent = 'Core Function:';
         label2.textContent = 'Power Draw / Interface:';
         label3.textContent = 'Processing Speed / Tier:';
         label4.textContent = 'Compatibility:';
     } 
-    // 4. System & Software
     else if (mainCategory.includes('System') || mainCategory.includes('Software')) {
         label1.textContent = 'Core Function:';
         label2.textContent = 'Power Draw / Interface:';
         label3.textContent = 'Processing Speed / Tier:';
         label4.textContent = 'Compatibility:';
     } 
-    // 5. Hardware
     else if (mainCategory.includes('Hardware')) {
         label1.textContent = 'Output / Performance:';
         label2.textContent = 'Durability / Integrity:';
         label3.textContent = 'Maintenance Interval:';
         label4.textContent = 'Energy Consumption:';
     } 
-    // 6. Electronics & Security
     else if (mainCategory.includes('Electronics')) {
         label1.textContent = 'Core Function:';
         label2.textContent = 'Power Draw / Interface:';
         label3.textContent = 'Processing Speed / Tier:';
         label4.textContent = 'Compatibility:';
     } 
-    // 7. Maintenance Supplies (og generell fallback)
     else {
+        // Maintenance Supplies og generell fallback
         label1.textContent = 'Output / Performance:';
         label2.textContent = 'Durability / Integrity:';
         label3.textContent = 'Maintenance Interval:';
         label4.textContent = 'Energy Consumption:';
     }
+}
+
+// 2. Lytteren som fanger opp når du endrer hovedkategori i skjemaet.
+// Denne kan du plassere helt nederst i filen din eller i en generell init-funksjon (f.eks. der nettsiden starter opp).
+const addMainCatSelect = document.getElementById('add-comp-main-cat');
+if (addMainCatSelect) {
+    addMainCatSelect.addEventListener('change', function() {
+        const transportFields = document.getElementById('transportTechDynamicFields');
+        if (transportFields && transportFields.style.display === 'block') {
+            updateTransportTechSpecs(this.value);
+        }
+    });
 }
 	// Styrer vekslingen mellom de 8 fanene i "Legg til"-modalen
 function switchAddTabNew(tabNum) {
@@ -18100,24 +18107,24 @@ function switchAddTabNew(tabNum) {
     const gearFields = document.getElementById('addItemGearFields');
     const transportFields = document.getElementById('transportTechDynamicFields');
 
-    // Skjul alt som standard
+    // Skjul alt totalt som standard for å unngå kollisjoner
     if (genericForm) genericForm.style.display = 'none';
-    if (personnelForm) genericForm.style.display = 'none';
+    if (personnelForm) personnelForm.style.display = 'none';
     if (softwareForm) softwareForm.style.display = 'none';
     if (gearFields) gearFields.style.display = 'none';
     if (transportFields) transportFields.style.display = 'none';
 
-    // 3. Bestem hva som skal vises og fyll inn riktige kategorier
+    // 3. Bestem hva som skal vises
     if (tabNum === 4) {
         if (personnelForm) personnelForm.style.display = 'block';
-        populateTabCategories(4, 'add-pers-main-cat', 'add-pers-sub-cat');
+        if (typeof populateTabCategories === 'function') populateTabCategories(4, 'add-pers-main-cat', 'add-pers-sub-cat');
     } else if (tabNum === 8) {
         if (softwareForm) softwareForm.style.display = 'block';
-        populateTabCategories(8, 'add-sw-main-cat', 'add-sw-sub-cat');
+        if (typeof populateTabCategories === 'function') populateTabCategories(8, 'add-sw-main-cat', 'add-sw-sub-cat');
     } else {
-        // For alle andre faner (inkludert 1, 2, 3, 5, 6, 7) brukes genericForm
+        // For alle andre faner (1, 2, 3, 5, 6, 7) brukes genericForm
         if (genericForm) genericForm.style.display = 'block';
-        populateTabCategories(tabNum, 'add-comp-main-cat', 'add-comp-sub-cat');
+        if (typeof populateTabCategories === 'function') populateTabCategories(tabNum, 'add-comp-main-cat', 'add-comp-sub-cat');
 
         // Vis spesifikke felt for Fane 1 (Gear) eller Fane 2 (Transport & Tech)
         if (tabNum === 1 && gearFields) {
@@ -18127,10 +18134,11 @@ function switchAddTabNew(tabNum) {
             }
         } else if (tabNum === 2 && transportFields) {
             transportFields.style.display = 'block';
-            // Oppdater etikettene basert på valgt underkategori med en gang
-            const subCatSelect = document.getElementById('add-comp-sub-cat');
-            if (subCatSelect) {
-                updateTransportTechSpecs(subCatSelect.value);
+            
+            // Hent hovedkategorien for å sette riktig mal med en gang
+            const mainCatSelect = document.getElementById('add-comp-main-cat');
+            if (mainCatSelect) {
+                updateTransportTechSpecs(mainCatSelect.value);
             }
         }
     }
