@@ -18343,36 +18343,46 @@ function saveNewItem(event) {
 
         id = generateSystemID(isRestricted ? 'Restricted Files' : mainCat, subCat, universe);
 
-       // --- HENT DYNAMISKE GEAR & EQUIPMENT FELT ---
-    let specs = {};
-    
-    // Vi sjekker underkategorien direkte, siden den alltid definerer hva slags utstyr det er
-    if (subCat === "Weapons" || document.getElementById('gear-weapon-damage')) {
-        specs["Damage Type"] = document.getElementById('gear-weapon-damage')?.value.trim() || "";
-        specs["Effective Range"] = document.getElementById('gear-weapon-range')?.value.trim() || "";
-        specs["Ammunition / Power"] = document.getElementById('gear-weapon-ammo')?.value.trim() || "";
-        specs["Special Features"] = document.getElementById('gear-weapon-mods')?.value.trim() || "";
-    }
-    
-    if (subCat === "Survival, tools and field gear" || document.getElementById('gear-surv-function')) {
-        specs["Primary Function"] = document.getElementById('gear-surv-function')?.value.trim() || "";
-        specs["Power Source"] = document.getElementById('gear-surv-power')?.value.trim() || "";
-        specs["Environmental Rating"] = document.getElementById('gear-surv-env')?.value.trim() || "";
-        specs["Portability / Weight"] = document.getElementById('gear-surv-weight')?.value.trim() || "";
-    }
-    
-    if (subCat === "Armor and protection" || document.getElementById('gear-armor-class')) {
-        specs["Armor Class"] = document.getElementById('gear-armor-class')?.value.trim() || "";
-        specs["Defense Rating"] = document.getElementById('gear-armor-defense')?.value.trim() || "";
-        specs["Mobility Impact"] = document.getElementById('gear-armor-mobility')?.value.trim() || "";
-        specs["Integrated Systems"] = document.getElementById('gear-armor-systems')?.value.trim() || "";
-    }
-    
-    if (subCat === "Clothing and textiles" || document.getElementById('gear-cloth-material')) {
-        specs["Fabric / Material"] = document.getElementById('gear-cloth-material')?.value.trim() || "";
-        specs["Environmental Resistance"] = document.getElementById('gear-cloth-env')?.value.trim() || "";
-        specs["Style / Aesthetic"] = document.getElementById('gear-cloth-style')?.value.trim() || "";
-    }
+        // --- HENT DYNAMISKE FELT (GEAR ELLER TRANSPORT & TECH) ---
+        let specs = {};
+        
+        // Fane 1: Gear & Equipment
+        if (subCat === "Weapons" || document.getElementById('gear-weapon-damage')) {
+            specs["Damage Type"] = document.getElementById('gear-weapon-damage')?.value.trim() || "";
+            specs["Effective Range"] = document.getElementById('gear-weapon-range')?.value.trim() || "";
+            specs["Ammunition / Power"] = document.getElementById('gear-weapon-ammo')?.value.trim() || "";
+            specs["Special Features"] = document.getElementById('gear-weapon-mods')?.value.trim() || "";
+        }
+        else if (subCat === "Survival, tools and field gear" || document.getElementById('gear-surv-function')) {
+            specs["Primary Function"] = document.getElementById('gear-surv-function')?.value.trim() || "";
+            specs["Power Source"] = document.getElementById('gear-surv-power')?.value.trim() || "";
+            specs["Environmental Rating"] = document.getElementById('gear-surv-env')?.value.trim() || "";
+            specs["Portability / Weight"] = document.getElementById('gear-surv-weight')?.value.trim() || "";
+        }
+        else if (subCat === "Armor and protection" || document.getElementById('gear-armor-class')) {
+            specs["Armor Class"] = document.getElementById('gear-armor-class')?.value.trim() || "";
+            specs["Defense Rating"] = document.getElementById('gear-armor-defense')?.value.trim() || "";
+            specs["Mobility Impact"] = document.getElementById('gear-armor-mobility')?.value.trim() || "";
+            specs["Integrated Systems"] = document.getElementById('gear-armor-systems')?.value.trim() || "";
+        }
+        else if (subCat === "Clothing and textiles" || document.getElementById('gear-cloth-material')) {
+            specs["Fabric / Material"] = document.getElementById('gear-cloth-material')?.value.trim() || "";
+            specs["Environmental Resistance"] = document.getElementById('gear-cloth-env')?.value.trim() || "";
+            specs["Style / Aesthetic"] = document.getElementById('gear-cloth-style')?.value.trim() || "";
+        }
+        // Fane 2: Transport & Tech (Henter dynamiske etiketter og verdier)
+        else if (document.getElementById('specLabel1') && document.getElementById('specValue1')) {
+            const label1 = document.getElementById('specLabel1').textContent.replace(':', '').trim();
+            const label2 = document.getElementById('specLabel2').textContent.replace(':', '').trim();
+            const label3 = document.getElementById('specLabel3').textContent.replace(':', '').trim();
+            const label4 = document.getElementById('specLabel4').textContent.replace(':', '').trim();
+
+            if (label1) specs[label1] = document.getElementById('specValue1')?.value.trim() || "";
+            if (label2) specs[label2] = document.getElementById('specValue2')?.value.trim() || "";
+            if (label3) specs[label3] = document.getElementById('specValue3')?.value.trim() || "";
+            if (label4) specs[label4] = document.getElementById('specValue4')?.value.trim() || "";
+        }
+
         let newItem = {
             id: id,
             name: name,
