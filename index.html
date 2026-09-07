@@ -17780,6 +17780,22 @@ folderHTML += `
             <input type="text" id="edit-gear-cloth-style" value="${specs["Style / Aesthetic"] || ''}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
         `;
     }
+	  // (Inne i switchToEditMode, etter clothing-sjekken):
+    else {
+        // Generisk fallback eller fane 2 (Transport & Tech) dynamiske felt
+        let dynamicInputsHtml = '';
+        if (specs && Object.keys(specs).length > 0) {
+            gearContainer.innerHTML = `<h4 style="color: var(--holo-blue); margin-bottom: 8px; font-size: 0.9rem;">Technical Specifications</h4>`;
+            let index = 1;
+            for (let key in specs) {
+                gearContainer.innerHTML += `
+                    <label style="font-size: 0.75rem;" id="edit-spec-label-${index}">${key}:</label>
+                    <input type="text" id="edit-spec-val-${index}" value="${specs[key]}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
+                `;
+                index++;
+            }
+        }
+    }
 
     // Byttvisning mellom visning og redigering i modalen
     document.getElementById('viewModeContainer').style.display = 'none';
@@ -17827,6 +17843,20 @@ folderHTML += `
         activeModalPart.specifications["Fabric / Material"] = document.getElementById('edit-gear-cloth-material').value.trim();
         activeModalPart.specifications["Environmental Resistance"] = document.getElementById('edit-gear-cloth-env').value.trim();
         activeModalPart.specifications["Style / Aesthetic"] = document.getElementById('edit-gear-cloth-style').value.trim();
+    }
+			// (Inne i saveEditedItem, etter de andre if/else-blokkene for spesifikasjoner):
+    else {
+        // Loop gjennom og lagre de generelle/fane 2 spesifikasjonene som finnes i redigeringsskjemaet
+        let index = 1;
+        while (document.getElementById(`edit-spec-label-${index}`)) {
+            let labelElement = document.getElementById(`edit-spec-label-${index}`);
+            let inputElement = document.getElementById(`edit-spec-val-${index}`);
+            if (labelElement && inputElement) {
+                let keyName = labelElement.textContent.replace(':', '').trim();
+                activeModalPart.specifications[keyName] = inputElement.value.trim();
+            }
+            index++;
+        }
     }
 
     // Lagre til localStorage / oppdater visningen i hovedkatalogen
