@@ -17375,25 +17375,26 @@ function closeManufacturerModal(e) {
         document.getElementById('manufacturerModal').style.display = 'none';
     }
 }
-    function populateMainCategoryButtons() {
+  function populateMainCategoryButtons() {
     const container = document.getElementById('mainCategoryButtons');
     let html = `<button class="tab-btn active" onclick="selectMainCategory('All', this)" style="grid-column: 1 / -1;">All Categories</button>`;
 
     let categoriesList = Object.keys(CATEGORY_STRUCTURE);
 
     categoriesList.forEach(cat => {
-    let isRestrictedCat = (cat === 'Restricted Files');
-    if (isRestrictedCat) {
-        if (unlockedClassified) {
-            html += `<button class="tab-btn" onclick="selectMainCategory('${cat}', this)" style="color:var(--classified-gold); border-color:var(--classified-gold);">${cat}</button>`;
+        let isRestrictedCat = (cat === 'Restricted Files');
+        if (isRestrictedCat) {
+            if (unlockedClassified) {
+                html += `<button class="tab-btn" onclick="selectMainCategory('${cat}', this)" style="color:var(--classified-gold); border-color:var(--classified-gold);">${cat}</button>`;
+            }
+        } else {
+            html += `<button class="tab-btn" onclick="selectMainCategory('${cat}', this)">${cat}</button>`;
         }
-    } else {
-        html += `<button class="tab-btn" onclick="selectMainCategory('${cat}', this)">${cat}</button>`;
-    }
-});
+    });
     container.innerHTML = html;
-        }
-		// Universal funksjon for å oppdatere underkategorier basert på hovedkategori
+}
+
+// Universal funksjon for å oppdatere underkategorier basert på hovedkategori
 function updateSubCategoryDropdown(mainSelectId, subSelectId) {
     const mainSelect = document.getElementById(mainSelectId);
     const subSelect = document.getElementById(subSelectId);
@@ -17403,7 +17404,6 @@ function updateSubCategoryDropdown(mainSelectId, subSelectId) {
     const selectedMain = mainSelect.value;
     subSelect.innerHTML = '';
     
-    // Hent underkategorier fra categoryMap (eller CATEGORY_STRUCTURE)
     const sourceMap = typeof CATEGORY_STRUCTURE !== 'undefined' ? CATEGORY_STRUCTURE : categoryMap;
     const subcats = sourceMap[selectedMain] || [];
     
@@ -17414,7 +17414,6 @@ function updateSubCategoryDropdown(mainSelectId, subSelectId) {
         subSelect.appendChild(opt);
     });
 
-    // KJØR DENNE FOR Å OPPDATERE SYNLIGHETEN AV FELT
     if (typeof updateGearFieldVisibility === 'function') {
         updateGearFieldVisibility();
     }
@@ -17423,11 +17422,6 @@ function updateSubCategoryDropdown(mainSelectId, subSelectId) {
 // Alias slik at eventuelle gamle skrivemåter ikke krasjer koden
 function updatesSubCategoryDropdown(mainId, subId) {
     updateSubCategoryDropdown(mainId, subId);
-}
-function updatesSubcategories() {
-    // Trygg avbryter for gamle elementer som ikke finnes lenger
-    const catSelect = document.getElementById('supCategory');
-    if (!catSelect) return;
 }
 
 // Funksjon for å fylle inn kategorier i Redigerings-modalen
@@ -17446,37 +17440,36 @@ function populateCategoryDropdown(mainId, subId) {
     });
     
     updateSubCategoryDropdown(mainId, subId);
-	
 }
-		
-        function selectMainCategory(catName, btn) {
-            document.querySelectorAll('#mainCategoryButtons .tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentMainCategory = catName;
-            currentSubCategory = 'All';
 
-            if (catName === 'All') {
-                document.getElementById('subCategoryTabs').style.display = 'none';
-            } else {
-                populateSubCategoryTabs(catName);
-            }
-            filterCatalog();
-        }
+function selectMainCategory(catName, btn) {
+    document.querySelectorAll('#mainCategoryButtons .tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentMainCategory = catName;
+    currentSubCategory = 'All';
 
-        function populateSubCategoryTabs(mainCat) {
-            const subContainer = document.getElementById('subCategoryTabs');
-            subContainer.style.display = 'flex';
+    if (catName === 'All') {
+        document.getElementById('subCategoryTabs').style.display = 'none';
+    } else {
+        populateSubCategoryTabs(catName);
+    }
+    filterCatalog();
+}
 
-            let subCats = CATEGORY_STRUCTURE[mainCat] || [];
+function populateSubCategoryTabs(mainCat) {
+    const subContainer = document.getElementById('subCategoryTabs');
+    subContainer.style.display = 'flex';
 
-            let html = `<button class="tab-btn active" onclick="selectSubCategory('All', this)">All under ${mainCat}</button>`;
-            subCats.forEach(sub => {
-                html += `<button class="tab-btn" onclick="selectSubCategory('${sub}', this)">${sub}</button>`;
-            });
-            subContainer.innerHTML = html;
-        }
+    let subCats = CATEGORY_STRUCTURE[mainCat] || [];
 
-		// Kart over underkategorier knyttet til hovedkategori
+    let html = `<button class="tab-btn active" onclick="selectSubCategory('All', this)">All under ${mainCat}</button>`;
+    subCats.forEach(sub => {
+        html += `<button class="tab-btn" onclick="selectSubCategory('${sub}', this)">${sub}</button>`;
+    });
+    subContainer.innerHTML = html;
+}
+
+// Kart over underkategorier knyttet til hovedkategori
 const subcategoryMap = {
     "Food & drinks": ["Beverages", "Fruit", "Portion Bread", "Alcohol"],
     "Medical & Chemical Compounds": ["Bacta", "Glitterstim", "Medical Gases", "Bioweapons"],
@@ -17493,10 +17486,8 @@ function updatesSubcategories() {
 
     const selectedCategory = categorySelect.value;
     
-    // Tøm eksisterende valg
     subcategorySelect.innerHTML = "";
 
-    // Hent relevante underkategorier eller sett en tom liste
     const options = subcategoryMap[selectedCategory] || [];
     
     options.forEach(sub => {
@@ -17506,131 +17497,132 @@ function updatesSubcategories() {
         subcategorySelect.appendChild(option);
     });
 }
-
 		
-        function selectSubCategory(subName, btn) {
-            document.querySelectorAll('#subCategoryTabs .tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentSubCategory = subName;
-            filterCatalog();
-        }
+     function selectSubCategory(subName, btn) {
+    document.querySelectorAll('#subCategoryTabs .tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentSubCategory = subName;
+    filterCatalog();
+}
 
-        function setUniverseFilter(status, btn) {
-            document.querySelectorAll('#universeTabs .tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentUniverseFilter = status;
-            filterCatalog();
-        }
+function setUniverseFilter(status, btn) {
+    document.querySelectorAll('#universeTabs .tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentUniverseFilter = status;
+    filterCatalog();
+}
+
 function filterCatalog() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const selectedManufacturer = document.getElementById('manufacturerSelect').value;
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const selectedManufacturer = document.getElementById('manufacturerSelect').value;
 
-            const filtered = catalogData.components.filter(p => {
-                let path = (p.categoryPath || '').toLowerCase();
-                
-                // Fanger opp både det nye navnet og de gamle navnevariantene automatisk
-                let isRestricted = (p.universeStatus === 'Classified') || 
-                                   path.includes('restricted files') ||
-                                   path.includes('the shadows') ||
-                                   path.includes('shadow hunter');
+    const filtered = catalogData.components.filter(p => {
+        let path = (p.categoryPath || '').toLowerCase();
+        
+        // Fanger opp både det nye navnet og de gamle navnevariantene automatisk
+        let isRestricted = (p.universeStatus === 'Classified') || 
+                           path.includes('restricted files') ||
+                           path.includes('the shadows') ||
+                           path.includes('shadow hunter');
 
-                // 1. Hvis posten er restriktiv, men man ikke har låst opp -> skjjul den fullstendig
-                if (isRestricted && !unlockedClassified) return false;
+        // 1. Hvis posten er restriktiv, men man ikke har låst opp -> skjul den fullstendig
+        if (isRestricted && !unlockedClassified) return false;
 
-                // 2. Hvis man har låst opp:
-                if (unlockedClassified) {
-                    if (currentMainCategory === 'Restricted Files') {
-                        // Står man på Restricted Files-knappen, skal KUN disse vises
-                        if (!isRestricted) return false;
-                    } else {
-                        // Står man på "All Categories" eller andre vanlige sjangere, holdes de skjult
-                        if (isRestricted) return false;
-                    }
-                }
-
-                // Standard filtrering for univers, kategorier, produsent og søk
-                let matchesUniverse = currentUniverseFilter === 'All' || p.universeStatus === currentUniverseFilter;
-                
-                let matchesMain = true;
-                if (currentMainCategory !== 'All' && currentMainCategory !== 'Restricted Files') {
-                    matchesMain = path.includes(currentMainCategory.toLowerCase());
-                }
-
-                let matchesSub = currentSubCategory === 'All' || path.includes(currentSubCategory.toLowerCase());
-                let matchesManufacturer = selectedManufacturer === 'All' || (p.manufacturing?.manufacturer === selectedManufacturer);
-
-                let matchesQuery = query === '' || (
-                    p.id.toLowerCase().includes(query) ||
-                    p.name.toLowerCase().includes(query) ||
-                    (p.manufacturing?.manufacturer || '').toLowerCase().includes(query) ||
-                    path.includes(query) ||
-                    (p.lexNotes?.lexNote || '').toLowerCase().includes(query)
-                );
-
-                return matchesUniverse && matchesMain && matchesSub && matchesManufacturer && matchesQuery;
-            });
-
-            renderTree(filtered);
-        }
-        function renderTree(parts) {
-            const container = document.getElementById('treeContainer');
-            container.innerHTML = '';
-
-            document.getElementById('stat-count').innerText = parts.length;
-
-            if (parts.length === 0) {
-                container.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:20px;">Ingen poster funnet under denne kategorien.</p>`;
-                return;
-            }
-
-            let categories = {};
-            parts.forEach(part => {
-                let cat = part.categoryPath || "Unsorted";
-                if (!categories[cat]) categories[cat] = [];
-                categories[cat].push(part);
-            });
-
-            for (let cat in categories) {
-                let folderId = 'folder-' + Math.random().toString(36).substr(2, 9);
-                let folderHTML = `
-                    <div class="category-folder">
-                        <div class="folder-header" onclick="toggleFolder('${folderId}')">
-                            <span>◈ ${cat}</span>
-                            <span>[${categories[cat].length} items] ▼</span>
-                        </div>
-                        <div class="folder-content" id="${folderId}">
-                `;
-
-                categories[cat].forEach(part => {
-                    let isClassified = part.universeStatus === 'Classified';
-                    let rowClass = isClassified ? 'item-row classified' : 'item-row';
-                    let badgeClass = isClassified ? 'universe-badge classified' : 'universe-badge';
-                    let dupTag = part.isDuplicate ? `<span style="color: var(--status-red); font-size: 0.75rem; border: 1px solid var(--status-red); padding: 1px 4px; margin-left: 6px;">⚠️ DUPLIKAT</span>` : '';
-                    
-                    let partJson = encodeURIComponent(JSON.stringify(part));
-
-                   // Istedenfor å putte JSON direkte i openModal(...) i HTML-en, gjør vi det slik:
-folderHTML += `
-    <div class="${rowClass}">
-        <div class="item-info" data-part="${encodeURIComponent(JSON.stringify(part))}" onclick="handleItemClick(this)">
-            <span>[${part.id}]</span> <strong>${part.name}</strong> ${dupTag}
-            <div style="font-size:0.8rem; color:var(--text-muted); margin-top: 3px;">Affiliation/Mfr: ${part.manufacturing?.manufacturer || 'Unknown'} | Note: ${part.lexNotes?.lexNote || ''}</div>
-        </div>
-        <span class="${badgeClass}" data-part="${encodeURIComponent(JSON.stringify(part))}" onclick="handleItemClick(this)">${part.universeStatus}</span>
-    </div>
-`;
-                });
-
-                folderHTML += `</div></div>`;
-                container.innerHTML += folderHTML;
+        // 2. Hvis man har låst opp:
+        if (unlockedClassified) {
+            if (currentMainCategory === 'Restricted Files') {
+                // Står man på Restricted Files-knappen, skal KUN disse vises
+                if (!isRestricted) return false;
+            } else {
+                // Står man på "All Categories" eller andre vanlige sjangere, holdes de skjult
+                if (isRestricted) return false;
             }
         }
+
+        // Standard filtrering for univers, kategorier, produsent og søk
+        let matchesUniverse = currentUniverseFilter === 'All' || p.universeStatus === currentUniverseFilter;
+        
+        let matchesMain = true;
+        if (currentMainCategory !== 'All' && currentMainCategory !== 'Restricted Files') {
+            matchesMain = path.includes(currentMainCategory.toLowerCase());
+        }
+
+        let matchesSub = currentSubCategory === 'All' || path.includes(currentSubCategory.toLowerCase());
+        let matchesManufacturer = selectedManufacturer === 'All' || (p.manufacturing?.manufacturer === selectedManufacturer);
+
+        let matchesQuery = query === '' || (
+            p.id.toLowerCase().includes(query) ||
+            p.name.toLowerCase().includes(query) ||
+            (p.manufacturing?.manufacturer || '').toLowerCase().includes(query) ||
+            path.includes(query) ||
+            (p.lexNotes?.lexNote || '').toLowerCase().includes(query)
+        );
+
+        return matchesUniverse && matchesMain && matchesSub && matchesManufacturer && matchesQuery;
+    });
+
+    renderTree(filtered);
+}
+
+function renderTree(parts) {
+    const container = document.getElementById('treeContainer');
+    container.innerHTML = '';
+
+    document.getElementById('stat-count').innerText = parts.length;
+
+    if (parts.length === 0) {
+        container.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:20px;">Ingen poster funnet under denne kategorien.</p>`;
+        return;
+    }
+
+    let categories = {};
+    parts.forEach(part => {
+        let cat = part.categoryPath || "Unsorted";
+        if (!categories[cat]) categories[cat] = [];
+        categories[cat].push(part);
+    });
+
+    for (let cat in categories) {
+        let folderId = 'folder-' + Math.random().toString(36).substr(2, 9);
+        let folderHTML = `
+            <div class="category-folder">
+                <div class="folder-header" onclick="toggleFolder('${folderId}')">
+                    <span>◈ ${cat}</span>
+                    <span>[${categories[cat].length} items] ▼</span>
+                </div>
+                <div class="folder-content" id="${folderId}">
+        `;
+
+        categories[cat].forEach(part => {
+            let isClassified = part.universeStatus === 'Classified';
+            let rowClass = isClassified ? 'item-row classified' : 'item-row';
+            let badgeClass = isClassified ? 'universe-badge classified' : 'universe-badge';
+            let dupTag = part.isDuplicate ? `<span style="color: var(--status-red); font-size: 0.75rem; border: 1px solid var(--status-red); padding: 1px 4px; margin-left: 6px;">⚠️ DUPLIKAT</span>` : '';
+            
+            let encodedPart = encodeURIComponent(JSON.stringify(part));
+
+            folderHTML += `
+                <div class="${rowClass}">
+                    <div class="item-info" data-part="${encodedPart}" onclick="handleItemClick(this)">
+                        <span>[${part.id}]</span> <strong>${part.name}</strong> ${dupTag}
+                        <div style="font-size:0.8rem; color:var(--text-muted); margin-top: 3px;">Affiliation/Mfr: ${part.manufacturing?.manufacturer || 'Unknown'} | Note: ${part.lexNotes?.lexNote || ''}</div>
+                    </div>
+                    <span class="${badgeClass}" data-part="${encodedPart}" onclick="handleItemClick(this)">${part.universeStatus}</span>
+                </div>
+            `;
+        });
+
+        folderHTML += `</div></div>`;
+        container.innerHTML += folderHTML;
+    }
+}
 		
 
-        function toggleFolder(id) {
-            document.getElementById(id).classList.toggle('open');
-        }
-		function openModal(partJson) {
+     function toggleFolder(id) {
+    document.getElementById(id).classList.toggle('open');
+}
+
+function openModal(partJson) {
     activeModalPart = JSON.parse(decodeURIComponent(partJson));
     
     document.getElementById('modal-id').innerText = `Record ID: ${activeModalPart.id}`;
@@ -17660,11 +17652,11 @@ folderHTML += `
         </div>
     `;
 
-   // Fyll ut spesifikasjoner (fanger opp personell-detaljer som rase/alder eller våpen-specs)
+    // Fyll ut spesifikasjoner
     let specsContainer = document.getElementById('modal-specs');
     specsContainer.innerHTML = '';
     if (activeModalPart.specifications && Object.keys(activeModalPart.specifications).length > 0) {
-        specsContainer.style.display = 'grid'; // Sørg for at den vises igjen!
+        specsContainer.style.display = 'grid';
         for (let key in activeModalPart.specifications) {
             specsContainer.innerHTML += `<div style="background: rgba(0,255,255,0.05); padding: 6px; border: 1px solid rgba(0,255,255,0.2);"><strong>${key}:</strong> ${activeModalPart.specifications[key]}</div>`;
         }
@@ -17677,82 +17669,57 @@ folderHTML += `
     document.getElementById('itemModal').style.display = 'flex';
 }
 
-        function deleteCurrentItem() {
-            if (!activeModalPart) return;
-            if (confirm(`Er du sikker på at du vil slette "${activeModalPart.name}" permanent fra databasen?`)) {
-                catalogData.components = catalogData.components.filter(p => p.id !== activeModalPart.id);
-                saveToLocalStorage();
-                closeModal();
-                alert("Posten har blitt slettet.");
-            }
-        }
+function deleteCurrentItem() {
+    if (!activeModalPart) return;
+    if (confirm(`Er du sikker på at du vil slette "${activeModalPart.name}" permanent fra databasen?`)) {
+        catalogData.components = catalogData.components.filter(p => p.id !== activeModalPart.id);
+        saveToLocalStorage();
+        closeModal();
+        alert("Posten har blitt slettet.");
+    }
+}
 
-  function switchToEditMode() {
-            if (!activeModalPart) return;
-            
-            const editId = document.getElementById('edit-id');
-            if (editId) editId.value = activeModalPart.id || '';
-            
-            const editName = document.getElementById('edit-name');
-            if (editName) editName.value = activeModalPart.name || '';
-            
-            const editUniverse = document.getElementById('edit-universe');
-            if (editUniverse) editUniverse.value = activeModalPart.universeStatus || 'Canon';
-            
-            const editMfr = document.getElementById('edit-manufacturer');
-            if (editMfr) editMfr.value = activeModalPart.manufacturing?.manufacturer || '';
-            
-            const editDesc = document.getElementById('edit-desc');
-            if (editDesc) editDesc.value = activeModalPart.overview?.shortDescription || '';
-            
-            const editImg = document.getElementById('edit-comp-image');
-            if (editImg) editImg.value = activeModalPart.imageUrl || '';
-            
-            const editLex = document.getElementById('edit-comp-lexnote');
-            if (editLex) editLex.value = activeModalPart.lexNotes?.lexNote || '';
-
-            const editSpectre = document.getElementById('edit-comp-spectre');
-            if (editSpectre) editSpectre.value = activeModalPart.lexNotes?.spectreAnalysis || '';
-
-            populateCategoryDropdown('edit-main-cat','edit-sub-cat');
-            
-            let parts = (activeModalPart.categoryPath || '').split('/');
-            let main = parts[0] ? parts[0].trim() : '';
-            let sub = parts[1] ? parts[1].trim() : '';
-            
-            const editMainCat = document.getElementById('edit-main-cat');
-            if (editMainCat) editMainCat.value = main;
-            
-            updateSubCategoryDropdown('edit-main-cat', 'edit-sub-cat');
-            
-            const editSubCat = document.getElementById('edit-sub-cat');
-            if (editSubCat) editSubCat.value = sub;
-
-            const viewContainer = document.getElementById('viewModeContainer');
-            if (viewContainer) viewContainer.style.display = 'none';
-            
-            const editContainer = document.getElementById('editModeContainer');
-            if (editContainer) editContainer.style.display = 'block';
-	  		
-	  // 1. Fyll inn standardverdier (navn, kategori, etc. - det du sikkert har fra før)
-    document.getElementById('edit-id').value = activeModalPart.id || '';
-    document.getElementById('edit-name').value = activeModalPart.name || '';
-    document.getElementById('edit-universe').value = activeModalPart.universeStatus || 'Canon';
-    document.getElementById('edit-manufacturer').value = activeModalPart.manufacturing?.manufacturer || '';
-    document.getElementById('edit-desc').value = activeModalPart.overview?.shortDescription || '';
-    document.getElementById('edit-comp-image').value = activeModalPart.imageUrl || '';
+function switchToEditMode() {
+    if (!activeModalPart) return;
     
-    // Lex-notater
-    document.getElementById('edit-comp-lexnote').value = activeModalPart.lexNotes?.lexNote || '';
-    document.getElementById('edit-comp-spectre').value = activeModalPart.lexNotes?.spectreAnalysis || '';
+    // 1. Fyll inn standardverdier i redigeringsskjemaet
+    const fields = {
+        'edit-id': activeModalPart.id || '',
+        'edit-name': activeModalPart.name || '',
+        'edit-universe': activeModalPart.universeStatus || 'Canon',
+        'edit-manufacturer': activeModalPart.manufacturing?.manufacturer || '',
+        'edit-desc': activeModalPart.overview?.shortDescription || '',
+        'edit-comp-image': activeModalPart.imageUrl || '',
+        'edit-comp-lexnote': activeModalPart.lexNotes?.lexNote || '',
+        'edit-comp-spectre': activeModalPart.lexNotes?.spectreAnalysis || ''
+    };
 
-    // 2. Generer dynamiske felter basert på hva posten inneholder av spesifikasjoner
+    for (let id in fields) {
+        const el = document.getElementById(id);
+        if (el) el.value = fields[id];
+    }
+
+    // 2. Håndter kategorier
+    populateCategoryDropdown('edit-main-cat', 'edit-sub-cat');
+    
+    let parts = (activeModalPart.categoryPath || '').split('/');
+    let main = parts[0] ? parts[0].trim() : '';
+    let sub = parts[1] ? parts[1].trim() : '';
+    
+    const editMainCat = document.getElementById('edit-main-cat');
+    if (editMainCat) editMainCat.value = main;
+    
+    updateSubCategoryDropdown('edit-main-cat', 'edit-sub-cat');
+    
+    const editSubCat = document.getElementById('edit-sub-cat');
+    if (editSubCat) editSubCat.value = sub;
+
+    // 3. Generer dynamiske felt basert på spesifikasjoner
     let gearContainer = document.getElementById('edit-gear-fields-container');
-    gearContainer.innerHTML = ''; // Nullstill
+    gearContainer.innerHTML = '';
 
     let specs = activeModalPart.specifications || {};
     
-    // Sjekk hvilken type spesifikasjoner posten har, og lag input-felter med eksisterende verdier
     if ("Damage Type" in specs || activeModalPart.categoryPath?.includes("Weapons")) {
         gearContainer.innerHTML = `
             <h4 style="color: var(--holo-blue); margin-bottom: 8px; font-size: 0.9rem;">Weapon Specifications</h4>
@@ -17799,34 +17766,28 @@ folderHTML += `
             <label style="font-size: 0.75rem;">Style / Aesthetic:</label>
             <input type="text" id="edit-gear-cloth-style" value="${specs["Style / Aesthetic"] || ''}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
         `;
-    }
-	  // (Inne i switchToEditMode, etter clothing-sjekken):
-    else {
-        // Generisk fallback eller fane 2 (Transport & Tech) dynamiske felt
-        let dynamicInputsHtml = '';
-        if (specs && Object.keys(specs).length > 0) {
-            gearContainer.innerHTML = `<h4 style="color: var(--holo-blue); margin-bottom: 8px; font-size: 0.9rem;">Technical Specifications</h4>`;
-            let index = 1;
-            for (let key in specs) {
-                gearContainer.innerHTML += `
-                    <label style="font-size: 0.75rem;" id="edit-spec-label-${index}">${key}:</label>
-                    <input type="text" id="edit-spec-val-${index}" value="${specs[key]}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
-                `;
-                index++;
-            }
+    } else if (specs && Object.keys(specs).length > 0) {
+        gearContainer.innerHTML = `<h4 style="color: var(--holo-blue); margin-bottom: 8px; font-size: 0.9rem;">Technical Specifications</h4>`;
+        let index = 1;
+        for (let key in specs) {
+            gearContainer.innerHTML += `
+                <label style="font-size: 0.75rem;" id="edit-spec-label-${index}">${key}:</label>
+                <input type="text" id="edit-spec-val-${index}" value="${specs[key]}" style="width: 100%; padding: 6px; margin-bottom: 8px; background: #111; color: #fff; border: 1px solid #444;">
+            `;
+            index++;
         }
     }
 
-    // Byttvisning mellom visning og redigering i modalen
+    // Bytt synlighet mellom visningsmodus og redigeringsmodus
     document.getElementById('viewModeContainer').style.display = 'none';
     document.getElementById('editModeContainer').style.display = 'block';
-        }
-        function cancelEditMode() {
-            document.getElementById('viewModeContainer').style.display = 'block';
-            document.getElementById('editModeContainer').style.display = 'none';
-        }
+}
 
-		function saveEditedItem() {
+function cancelEditMode() {
+    document.getElementById('viewModeContainer').style.display = 'block';
+    document.getElementById('editModeContainer').style.display = 'none';
+}
+	function saveEditedItem() {
     if (!activeModalPart) return;
 
     // Oppdater standarddata
@@ -17863,9 +17824,7 @@ folderHTML += `
         activeModalPart.specifications["Fabric / Material"] = document.getElementById('edit-gear-cloth-material').value.trim();
         activeModalPart.specifications["Environmental Resistance"] = document.getElementById('edit-gear-cloth-env').value.trim();
         activeModalPart.specifications["Style / Aesthetic"] = document.getElementById('edit-gear-cloth-style').value.trim();
-    }
-			// (Inne i saveEditedItem, etter de andre if/else-blokkene for spesifikasjoner):
-    else {
+    } else {
         // Loop gjennom og lagre de generelle/fane 2 spesifikasjonene som finnes i redigeringsskjemaet
         let index = 1;
         while (document.getElementById(`edit-spec-label-${index}`)) {
@@ -17881,7 +17840,7 @@ folderHTML += `
 
     // Lagre til localStorage / oppdater visningen i hovedkatalogen
     if (typeof saveToLocalStorage === 'function') saveToLocalStorage();
-    if (typeof renderCatalog === 'function') renderCatalog(); // Eller hva funksjonen din heter som tegner opp kortene på nytt
+    if (typeof renderCatalog === 'function') renderCatalog();
 
     // Gå tilbake til visningsmodus for den oppdaterte posten
     document.getElementById('editModeContainer').style.display = 'none';
@@ -17892,19 +17851,21 @@ folderHTML += `
     
     alert("Posten har blitt oppdatert!");
 }
-        function closeModal(event) {
-            if (!event || event.target.id === 'itemModal') {
-                document.getElementById('itemModal').style.display = 'none';
-            }
-        }
-		function handleItemClick(element) {
+
+function closeModal(event) {
+    if (!event || event.target.id === 'itemModal') {
+        document.getElementById('itemModal').style.display = 'none';
+    }
+}
+
+function handleItemClick(element) {
     const encodedData = element.getAttribute('data-part');
     if (encodedData) {
         openModal(encodedData);
     }
 }
-		
-       // Åpner "Legg til"-modalen med riktig ID og nullstiller til fane 1
+
+// Åpner "Legg til"-modalen med riktig ID og nullstiller til fane 1
 function openAddModal() {
     const modal = document.getElementById('addItemModal');
     if (modal) {
@@ -17913,23 +17874,23 @@ function openAddModal() {
     } else {
         console.error("Fant ikke elementet med ID 'addItemModal' i HTML-en!");
     }
-	// Inne i funksjonen som åpner "Legg til"-modalen (f.eks. openAddModal):
-const currentCatSelect = document.getElementById('add-comp-main-cat');
-if (currentCatSelect) {
-    updateTransportTechSpecs(currentCatSelect.value);
-}
-	// Lytt etter endringer i hovedkategori-nedtrekksmenyen i "Legg til"-modalen
-	const mainCatSelect = document.getElementById('add-comp-main-cat');
-	if (mainCatSelect) {
-    mainCatSelect.addEventListener('change', function() {
-        updateTransportTechSpecs(this.value);
-    });
-}
+
+    const currentCatSelect = document.getElementById('add-comp-main-cat');
+    if (currentCatSelect) {
+        updateTransportTechSpecs(currentCatSelect.value);
+    }
+
+    // Lytt etter endringer i hovedkategori-nedtrekksmenyen i "Legg til"-modalen
+    const mainCatSelect = document.getElementById('add-comp-main-cat');
+    if (mainCatSelect) {
+        mainCatSelect.addEventListener('change', function() {
+            updateTransportTechSpecs(this.value);
+        });
+    }
 }
 
 // Lukker "Legg til"-modalen
 function closeAddModal(event) {
-    // Hvis funksjonen kalles av en klikk-hendelse på overlayen, sjekk at man klikker utenfor kortet
     if (event && event.target.id !== 'addItemModal') return;
     
     const modal = document.getElementById('addItemModal');
@@ -17937,21 +17898,21 @@ function closeAddModal(event) {
         modal.style.display = 'none';
     }
 }
-		
-		function toggleRestrictedModalColor(checkbox) {
-    const modalContent = document.getElementById('addModalContent'); // Tilpass ID-en til din modal-boks hvis den heter noe annet
+
+function toggleRestrictedModalColor(checkbox) {
+    const modalContent = document.getElementById('addModalContent');
     if (!modalContent) return;
 
     if (checkbox.checked) {
         modalContent.style.background = '#1a1700'; // Mørk gul/oransje tone
         modalContent.style.borderColor = 'var(--classified-gold)';
     } else {
-        modalContent.style.background = ''; // Tilbake til standard
+        modalContent.style.background = ''; 
         modalContent.style.borderColor = '';
     }
 }
 
-      function populateCategoryDropdown(elementId) {
+function populateCategoryDropdown(elementId) {
     const select = document.getElementById(elementId);
     if (!select) return;
     select.innerHTML = '';
@@ -17963,7 +17924,7 @@ function closeAddModal(event) {
         select.appendChild(opt);
     });
 }
-		
+
 function updateGearFieldVisibility() {
     const gearFieldsContainer = document.getElementById('addItemGearFields');
     const genericForm = document.getElementById('addItemGenericForm');
@@ -17971,7 +17932,6 @@ function updateGearFieldVisibility() {
 
     if (!gearFieldsContainer) return;
 
-    // Hvis vi ikke er på Fane 1, skjul disse feltene og avslutt
     if (!isTab1Active) {
         gearFieldsContainer.style.display = 'none';
         return;
@@ -17987,7 +17947,6 @@ function updateGearFieldVisibility() {
     const currentMain = cleanText(mainCatSelect ? mainCatSelect.value : '');
     const currentSub = cleanText(subCatSelect ? subCatSelect.value : '');
 
-    // Håndter de spesifikke underelementene for Gear & Equipment (Fane 1)
     const subFieldBlocks = gearFieldsContainer.querySelectorAll('.gear-sub-fields');
     subFieldBlocks.forEach(block => {
         const rawTarget = block.getAttribute('data-gear-sub') || '';
@@ -17999,7 +17958,8 @@ function updateGearFieldVisibility() {
         block.style.display = isMatch ? 'block' : 'none';
     });
 }
-		function updateTab1Subcategories() {
+
+function updateTab1Subcategories() {
     const mainCatSelect = document.getElementById('add-comp-main-cat');
     const subCatSelect = document.getElementById('add-comp-sub-cat');
     
@@ -18021,7 +17981,6 @@ function updateGearFieldVisibility() {
     
     subCatSelect.appendChild(fragment);
     
-    // Oppdater også spesifikasjons-etikettene for denne hovedkategorien automatisk
     updateTab1FieldLabels(selectedMain);
 }
 
@@ -18048,11 +18007,9 @@ function updateTransportTechSpecs(mainCategory) {
 
     if (!dynamicContainer || !labels[1] || !labels[2] || !labels[3] || !labels[4]) return;
 
-    // Vis alltid feltene når vi er på rett fane
     dynamicContainer.style.display = 'block';
 
-    // Finn riktig sett med etiketter basert på kategori-navn
-    let matchedConfig = TRANSPORT_TECH_SPECS["Maintenance Supplies"]; // Standard fallback
+    let matchedConfig = TRANSPORT_TECH_SPECS["Maintenance Supplies"];
 
     if (mainCategory.includes('Starships')) {
         matchedConfig = TRANSPORT_TECH_SPECS["Starships"];
@@ -18065,19 +18022,16 @@ function updateTransportTechSpecs(mainCategory) {
     } else if (mainCategory.includes('Hardware')) {
         matchedConfig = TRANSPORT_TECH_SPECS["Hardware"];
     } else if (mainCategory.includes('Electronics')) {
-        matchedConfig = TRANSPORT_TECH_Specs || TRANSPORT_TECH_SPECS["Hardware"];
+        matchedConfig = TRANSPORT_TECH_SPECS["Hardware"];
     } else if (mainCategory.includes('Maintenance Supplies')) {
         matchedConfig = TRANSPORT_TECH_SPECS["Maintenance Supplies"];
     }
 
-    // Sett etikettene
     for (let i = 1; i <= 4; i++) {
         labels[i].textContent = matchedConfig[i];
     }
 }
 
-// 2. Lytteren som fanger opp når du endrer hovedkategori i skjemaet.
-// Denne kan du plassere helt nederst i filen din eller i en generell init-funksjon (f.eks. der nettsiden starter opp).
 const addMainCatSelect = document.getElementById('add-comp-main-cat');
 if (addMainCatSelect) {
     addMainCatSelect.addEventListener('change', function() {
@@ -18087,7 +18041,7 @@ if (addMainCatSelect) {
         }
     });
 }
-	// Styrer vekslingen mellom de 8 fanene i "Legg til"-modalen
+// Styrer vekslingen mellom de 8 fanene i "Legg til"-modalen
 function switchAddTabNew(tabNum) {
     // 1. Fjern 'active' fra alle tab-knapper og sett på den riktige
     for (let i = 1; i <= 8; i++) {
@@ -18140,6 +18094,7 @@ function switchAddTabNew(tabNum) {
         }
     }
 }
+
 // Komplett oversikt over hvilke hovedkategorier som hører til hvilken fane
 const TAB_CATEGORY_MAPPING = {
     1: ['Weapons', 'Survival, Tools & Field Gear', 'Armor & Protection', 'Clothing & Textiles'],
@@ -18194,7 +18149,7 @@ function populateTabCategories(tabNumber, mainId, subId) {
 }
 
 function toggleRestrictedModalColor(checkbox) {
-    const modalContent = document.getElementById('addItemModal'); // Bruker riktig ID på modalen din
+    const modalContent = document.getElementById('addItemModal'); 
     if (!modalContent) return;
 
     if (checkbox.checked) {
@@ -18249,7 +18204,7 @@ function getCategoryPrefix(categoryName) {
         "Office & Administrative Equipment": "OAE",
         "Recreation & Entertainment": "REE",
         "Restricted Files": "RES",
-		"Core Software and Operating Environments": "CSF",
+        "Core Software and Operating Environments": "CSF",
         "AI and Cognitive Systems": "AIC",
         "Data Archives and Knowledge Systems": "DAS",
         "Networks, Communications, and Identity": "NWI",
@@ -18262,11 +18217,10 @@ function getCategoryPrefix(categoryName) {
     return map[categoryName] || "GEN";
 }
 
-// Hjelpefunksjon for å lage en sikker prefiks av underkategorien (tåler nye underkategorier automatisk)
+// Hjelpefunksjon for å lage en sikker prefiks av underkategorien
 function getSubCategoryPrefix(subCategoryName) {
     if (!subCategoryName) return "SUB";
     
-    // Faste koder for viktige kjernetyper (kan utvides ved behov)
     const subMap = {
         "Assets": "AST",
         "Personnel": "PER",
@@ -18283,9 +18237,6 @@ function getSubCategoryPrefix(subCategoryName) {
         return subMap[subCategoryName];
     }
 
-    // AUTOMATISK FALLBACK FOR NYE SUBCATEGORIES:
-    // Tar ut alle bokstaver i det nye navnet, fjerner mellomrom, tar de 3 første og gjør til store bokstaver!
-    // F.eks. "Hidden Bunker" blir "HID", "Cool Gadget" blir "COO".
     let cleanName = subCategoryName.replace(/[^a-zA-Z]/g, "");
     if (cleanName.length >= 3) {
         return cleanName.substring(0, 3).toUpperCase();
@@ -18294,7 +18245,7 @@ function getSubCategoryPrefix(subCategoryName) {
     return "GEN";
 }
 
-// Hjelpefunksjon for å sjekke eksisterende poster og finne neste ledige nummer (00001+)
+// Hjelpefunksjon for å sjekke eksisterende poster og finne neste ledige nummer
 function getNextSequentialNumber(catCode, subCode, uniCode) {
     if (typeof catalogData === 'undefined' || !Array.isArray(catalogData.components)) return 1;
     
