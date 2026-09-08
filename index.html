@@ -17246,7 +17246,37 @@ const TAB_1_CONFIG = {
     }
 };
 		
-
+// Komplett struktur og spesifikasjoner for Fane 2: Transport & Tech
+const TAB_2_CONFIG = {
+    "Starships": {
+        subcategories: ["Starfighter", "Interceptor", "Gunship", "Supportship", "Capital ships", "Haulcraft", "Cargo ship", "Personnel transport"],
+        specs: { 1: "Class / Type:", 2: "Hyperdrive Rating:", 3: "Crew / Capacity:", 4: "Shield / Armor:" }
+    },
+    "Speeders & Vehicles": {
+        subcategories: ["Speeder Bikes", "Swoops", "Skiff", "Landspeeder", "Airspeeder", "Snowspeeder", "Ground Vehicles", "Walker", "Crawler"],
+        specs: { 1: "Max Speed:", 2: "Engine Type:", 3: "Passenger Capacity:", 4: "Handling Rating:" }
+    },
+    "Medical & Chemical Equipment": {
+        subcategories: ["Bacta-tanks", "Medpacs / MediKit", "Other Medical Equipment", "Cybernetic prosthetics", "Cloning tanks", "Chemical converters", "Toxin detectors and scanners", "Chemical sprayers and emergency gear"],
+        specs: { 1: "Medical Tier:", 2: "Power Draw:", 3: "Capacity / Volume:", 4: "Sterility Level:" }
+    },
+    "System & Software": {
+        subcategories: ["Core Systems & Firmware", "Control Networks", "Sensor Arrays", "Weapon systems", "Stealth Technology", "Automation & AI Routines", "Mainframes & Terminals", "Subroutines & Protocols", "Droid Brain", "Slicing & Covert system"],
+        specs: { 1: "Architecture:", 2: "Security Protocol:", 3: "Processing Core:", 4: "Compatibility:" }
+    },
+    "Hardware": {
+        subcategories: ["Engines", "Propulsion", "Hyperdrive", "Power Core", "Shields", "Tractor Beam", "Repulsorlift", "Thrusters", "Hull Plating", "Life Support System", "Other components"],
+        specs: { 1: "Component Class:", 2: "Energy Output:", 3: "Thermal Tolerance:", 4: "Durability Rating:" }
+    },
+    "Electronics & Security": {
+        subcategories: ["Communication Systems", "Terminals & Computing", "Security & Surveillance"],
+        specs: { 1: "Signal Range:", 2: "Encryption Type:", 3: "Power Requirement:", 4: "Security Rating:" }
+    },
+    "Maintenance Supplies": {
+        subcategories: ["Workshop tools & Electrical equipment", "Mechanical Components", "Power cells & Energy conduits", "Industrial liquids, Oil & Lubricants", "Decontaminants & Sterilizing spirits", "Cleaning Products", "Hazard mitigation & Protective gear (PPE)"],
+        specs: { 1: "Composition:", 2: "Hazard Level:", 3: "Shelf Life:", 4: "Application Method:" }
+    }
+};
 
 
 function initCatalog() {
