@@ -17907,14 +17907,14 @@ function openAddModal() {
 
     const currentCatSelect = document.getElementById('add-comp-main-cat');
     if (currentCatSelect) {
-        updateTransportTechSpecs(currentCatSelect.value);
+        updateCategorySpecs(currentCatSelect.value);
     }
 
     // Lytt etter endringer i hovedkategori-nedtrekksmenyen i "Legg til"-modalen
     const mainCatSelect = document.getElementById('add-comp-main-cat');
     if (mainCatSelect) {
         mainCatSelect.addEventListener('change', function() {
-            updateTransportTechSpecs(this.value);
+            updateCategorySpecs(this.value);
         });
     }
 }
@@ -18183,7 +18183,7 @@ function switchAddTabNew(tabNum) {
         if (tabNum === 1 && gearFields) {
             gearFields.style.display = 'block';
             if (typeof updateGearFieldVisibility === 'function') {
-                updateGearFieldVisibility();
+                updateCategorySpecs();
             }
         } else if (tabNum === 2 && transportFields) {
             transportFields.style.display = 'block';
@@ -18191,7 +18191,7 @@ function switchAddTabNew(tabNum) {
             // Hent hovedkategorien for å sette riktig mal med en gang
             const mainCatSelect = document.getElementById('add-comp-main-cat');
             if (mainCatSelect) {
-                updateTransportTechSpecs(mainCatSelect.value);
+               updateCategorySpecs(mainCatSelect.value);
             }
         }
     }
