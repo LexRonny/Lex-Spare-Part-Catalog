@@ -17957,7 +17957,7 @@ function populateCategoryDropdown(elementId) {
 
 		// 1. Ett felles, strukturert oppslagsverk for alle hovedkategorier og deres 4 spesifikasjonsfelt
 const CATEGORY_SPECS_CONFIG = {
-    // Fane 1: Gear & Equipment
+    // --- TAB1: Gear & Equipment ---
     "Weapons": {
         specs: { 1: "Damage Type:", 2: "Effective Range:", 3: "Ammunition / Power:", 4: "Special Features:" }
     },
@@ -17971,7 +17971,7 @@ const CATEGORY_SPECS_CONFIG = {
         specs: { 1: "Fabric / Material:", 2: "Environmental Resistance:", 3: "Style / Aesthetic:", 4: "General Info:" }
     },
 
-    // Fane 2: Transport & Tech
+    // --- TAB 2: Transport & Tech---
     "Starships": {
         specs: { 1: "Class / Type:", 2: "Hyperdrive Rating:", 3: "Crew / Capacity:", 4: "Shield / Armor:" }
     },
@@ -18039,7 +18039,7 @@ const CATEGORY_SPECS_CONFIG = {
         specs: { 1: "Resolution / Fidelity:", 2: "Power Requirement:", 3: "User Interface:", 4: "Catalog Index:" }
     },
 
-    // --- TAB 7: SOFTWARE (Som vist i bilde 2) ---
+    // --- TAB 7: SOFTWARE ---
     "Core Software and Operating Environments": {
         specs: { 1: "Architecture:", 2: "Kernel Type:", 3: "System Footprint:", 4: "License Class:" }
     },
@@ -18066,6 +18066,37 @@ const CATEGORY_SPECS_CONFIG = {
     },
     "Doctrine, Procedures, and Documents": {
         specs: { 1: "Classification:", 2: "Issuing Authority:", 3: "Revision ID:", 4: "Applicability:" }
+    },
+	// --- TAB 8: RESTRICTED FILES (The Shadows Internal Database) ---
+    "Assets & Contacts": {
+        specs: { 1: "Security Clearance:", 2: "Reliability Rating:", 3: "Active Status:", 4: "Primary Contact:" }
+    },
+    "Enemies & Targets": {
+        specs: { 1: "Threat Level:", 2: "Disposition (Live/Deceased):", 3: "Bounty / Priority:", 4: "Last Known Location:" }
+    },
+    "Personnel files": {
+        specs: { 1: "Crew Role / Designation:", 2: "Authorization Level:", 3: "Operational Status:", 4: "Special Modifications:" }
+    },
+    "Organisations": {
+        specs: { 1: "Faction Type:", 2: "Influence / Scale:", 3: "Relationship to Crew:", 4: "Primary Sector:" }
+    },
+    "Weapons": {
+        specs: { 1: "Lethality / Damage:", 2: "Origin / Make:", 3: "Legality Status:", 4: "Assigned User:" }
+    },
+    "Technology": {
+        specs: { 1: "Tech Class:", 2: "Security Vulnerability:", 3: "Encryption Type:", 4: "Source / Acquisition:" }
+    },
+    "Vehicles": {
+        specs: { 1: "Classification:", 2: "Max Speed / Handling:", 3: "Modification Level:", 4: "Current Location:" }
+    },
+    "Ships": {
+        specs: { 1: "Hull Class:", 2: "Hyperdrive Rating:", 3: "Registry Status:", 4: "Primary Purpose:" }
+    },
+    "Properties": {
+        specs: { 1: "Property Type:", 2: "Ownership / Control:", 3: "Security Defenses:", 4: "Access Route:" }
+    },
+    "Bases": {
+        specs: { 1: "Facility Type:", 2: "Strategic Value:", 3: "Garrison / Personnel:", 4: "Operational Status:" }
     }
 };
 
