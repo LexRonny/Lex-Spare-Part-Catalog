@@ -17220,15 +17220,13 @@
         }
 			]
         };
-		
-		
-		let currentUniverseFilter = 'All';
-        let currentMainCategory = 'All';
-        let currentSubCategory = 'All';
-        let unlockedClassified = false;
-        let activeModalPart = null;
+	let currentUniverseFilter = 'All';
+let currentMainCategory = 'All';
+let currentSubCategory = 'All';
+let unlockedClassified = false;
+let activeModalPart = null;
 
-		// Komplett struktur og spesifikasjoner for Fane 1: Gear & Equipment
+// Komplett struktur og spesifikasjoner for Fane 1: Gear & Equipment
 const TAB_1_CONFIG = {
     "Weapons": {
         subcategories: ["Blasters & Pistols", "Rifles & Carabines", "Heavy & Support weapons", "Melee & Vibro weapons", "Explosives & Launchers", "Turrets"],
@@ -17248,180 +17246,135 @@ const TAB_1_CONFIG = {
     }
 };
 		
-		// Definerer spesifikasjonsetiketter for kategori 2 for enklere vedlikehold
-const TRANSPORT_TECH_SPECS = {
-    "Starships": {
-        1: 'Hyperdrive rating:',
-        2: 'Armament:',
-        3: 'Shielding:',
-        4: 'Crew / capacity:'
-    },
-    "Speeders": { // Inkluderer også Vehicles via sjekk under
-        1: 'Max Speed:',
-        2: 'Propulsion Type:',
-        3: 'Cargo Capacity:',
-        4: 'Terrain Adaptability:'
-    },
-    "Medical": {
-        1: 'Core Function:',
-        2: 'Power Draw / Interface:',
-        3: 'Processing Speed / Tier:',
-        4: 'Compatibility:'
-    },
-    "System": { // Inkluderer Software
-        1: 'Core Function:',
-        2: 'Power Draw / Interface:',
-        3: 'Processing Speed / Tier:',
-        4: 'Compatibility:'
-    },
-    "Hardware": {
-        1: 'Output / Performance:',
-        2: 'Durability / Integrity:',
-        3: 'Maintenance Interval:',
-        4: 'Energy Consumption:'
-    },
-    "Electronics": {
-        1: 'Core Function:',
-        2: 'Power Draw / Interface:',
-        3: 'Processing Speed / Tier:',
-        4: 'Compatibility:'
-    },
-    "Maintenance Supplies": {
-        1: 'Consumption Rate:',
-        2: 'Shelf Life / Stability:',
-        3: 'Application Method:',
-        4: 'Compatibility / Grade:'
+
+
+
+function initCatalog() {
+    let savedData = localStorage.getItem('lex_catalog_components');
+    if (savedData) {
+        try {
+            catalogData.components = JSON.parse(savedData);
+        } catch(e) {
+            catalogData.components = [];
+        }
     }
-};
 
+    // Duplikatkontroll og merking
+    let idMap = new Map();
+    let nameMap = new Map();
 
-        function initCatalog() {
-            let savedData = localStorage.getItem('lex_catalog_components');
-            if (savedData) {
-                try {
-                    catalogData.components = JSON.parse(savedData);
-                } catch(e) {
-                    catalogData.components = [];
-                }
-            }
+    catalogData.components.forEach(item => {
+        let cleanId = item.id ? item.id.trim().toLowerCase() : '';
+        let cleanName = item.name ? item.name.trim().toLowerCase() : '';
 
-            // Duplikatkontroll og merking
-            let idMap = new Map();
-            let nameMap = new Map();
+        if (cleanId && idMap.has(cleanId)) {
+            item.isDuplicate = true;
+        } else if (cleanId) {
+            idMap.set(cleanId, item);
+        }
 
-            catalogData.components.forEach(item => {
-                let cleanId = item.id ? item.id.trim().toLowerCase() : '';
-                let cleanName = item.name ? item.name.trim().toLowerCase() : '';
+        if (cleanName && nameMap.has(cleanName)) {
+            item.isDuplicate = true;
+        } else if (cleanName) {
+            nameMap.set(cleanName, item);
+        }
+    });
 
-                if (cleanId && idMap.has(cleanId)) {
-                    item.isDuplicate = true;
-                } else if (cleanId) {
-                    idMap.set(cleanId, item);
-                }
+    populateManufacturers();
+    populateMainCategoryButtons();
+    filterCatalog();
+}
 
-                if (cleanName && nameMap.has(cleanName)) {
-                    item.isDuplicate = true;
-                } else if (cleanName) {
-                    nameMap.set(cleanName, item);
-                }
-            });
+function saveToLocalStorage() {
+    localStorage.setItem('lex_catalog_components', JSON.stringify(catalogData.components));
+    initCatalog();
+}
 
-            populateManufacturers();
+function exportBackup() {
+    let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(catalogData, null, 4));
+    let downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", "catalogData_backup.json");
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+    alert("Sikkerhetskopi lastet ned!");
+}
+
+function toggleRestrictedFiles() {
+    if (!unlockedClassified) {
+        let pwd = prompt("Enter security clearance code for Restricted Archive (The Shadows):");
+        if (pwd === "654321") {
+            unlockedClassified = true;
+            document.getElementById('statusIndicator').classList.add('restricted-active');
+            document.getElementById('securityStatusText').innerText = "RESTRICTED / ACTIVE (RED)";
+            document.getElementById('securityStatusText').style.color = "var(--status-red)";
+            alert("Access granted. The Shadows personnel, fleet and bases are now online.");
             populateMainCategoryButtons();
             filterCatalog();
+        } else if (pwd !== null) {
+            alert("Access denied. Invalid code.");
         }
+    } else {
+        unlockedClassified = false;
+        document.getElementById('statusIndicator').classList.remove('restricted-active');
+        document.getElementById('securityStatusText').innerText = "STANDARD (BLUE)";
+        document.getElementById('securityStatusText').style.color = "var(--holo-blue)";
+        currentMainCategory = 'All';
+        currentSubCategory = 'All';
+        document.getElementById('subCategoryTabs').style.display = 'none';
+        populateMainCategoryButtons();
+        filterCatalog();
+        alert("Restricted archive locked.");
+    }
+}
 
-        function saveToLocalStorage() {
-            localStorage.setItem('lex_catalog_components', JSON.stringify(catalogData.components));
-            initCatalog();
+function populateManufacturers() {
+    const select = document.getElementById('manufacturerSelect');
+    select.innerHTML = '<option value="All">All Manufacturers / Affiliations</option>';
+    let manufacturers = [...new Set(catalogData.components.map(p => p.manufacturing?.manufacturer).filter(Boolean))];
+    manufacturers.forEach(m => {
+        let opt = document.createElement('option');
+        opt.value = m;
+        opt.innerText = m;
+        select.appendChild(opt);
+    });
+    select.onchange = function() {
+        if(this.value !== 'All' && MANUFACTURER_PROFILES[this.value]) {
+            showManufacturerPopup(this.value);
         }
+        filterCatalog();
+    }
+}
 
-        function exportBackup() {
-            let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(catalogData, null, 4));
-            let downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "catalogData_backup.json");
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
-             alert("Sikkerhetskopi lastet ned!");
-        }
+function showManufacturerPopup(mfrName) {
+    let profile = MANUFACTURER_PROFILES[mfrName] || {
+        origin: "Ukjent system",
+        what: "Generell industri / ukjent produksjon",
+        subdiv: "Standard avdelinger",
+        affiliation: "Uavhengig",
+        desc: "Ingen utvidet profil registrert for denne produsenten."
+    };
 
-        function toggleRestrictedFiles() {
-            if (!unlockedClassified) {
-                let pwd = prompt("Enter security clearance code for Restricted Archive (The Shadows):");
-                if (pwd === "654321") {
-                    unlockedClassified = true;
-                    document.getElementById('statusIndicator').classList.add('restricted-active');
-                    document.getElementById('securityStatusText').innerText = "RESTRICTED / ACTIVE (RED)";
-                    document.getElementById('securityStatusText').style.color = "var(--status-red)";
-                    alert("Access granted. The Shadows personnel, fleet and bases are now online.");
-                    populateMainCategoryButtons();
-                    filterCatalog();
-                } else if (pwd !== null) {
-                    alert("Access denied. Invalid code.");
-                }
-            } else {
-                unlockedClassified = false;
-                document.getElementById('statusIndicator').classList.remove('restricted-active');
-                document.getElementById('securityStatusText').innerText = "STANDARD (BLUE)";
-                document.getElementById('securityStatusText').style.color = "var(--holo-blue)";
-                currentMainCategory = 'All';
-                currentSubCategory = 'All';
-                document.getElementById('subCategoryTabs').style.display = 'none';
-                populateMainCategoryButtons();
-                filterCatalog();
-                alert("Restricted archive locked.");
-            }
-        }
+    document.getElementById('mfr-name').innerText = mfrName;
+    document.getElementById('mfr-origin').innerText = `Hovedkvarter / Opprinnelse: ${profile.origin}`;
+    document.getElementById('mfr-desc').innerText = profile.desc;
+    
+    let details = document.getElementById('mfr-details');
+    details.innerHTML = `
+        <div><strong>Produksjon:</strong> ${profile.what}</div>
+        <div><strong>Underavdelinger:</strong> ${profile.subdiv}</div>
+        <div><strong>Tilhørighet:</strong> ${profile.affiliation}</div>
+    `;
 
-        function populateManufacturers() {
-            const select = document.getElementById('manufacturerSelect');
-            select.innerHTML = '<option value="All">All Manufacturers / Affiliations</option>';
-            let manufacturers = [...new Set(catalogData.components.map(p => p.manufacturing?.manufacturer).filter(Boolean))];
-            manufacturers.forEach(m => {
-                let opt = document.createElement('option');
-                opt.value = m;
-                opt.innerText = m;
-                select.appendChild(opt);
-            });
-            select.onchange = function() {
-                if(this.value !== 'All' && MANUFACTURER_PROFILES[this.value]) {
-                    showManufacturerPopup(this.value);
-                }
-                filterCatalog();
-            }
-        }
+    document.getElementById('manufacturerModal').style.display = 'flex';
+}
 
-        function showManufacturerPopup(mfrName) {
-            let profile = MANUFACTURER_PROFILES[mfrName] || {
-                origin: "Ukjent system",
-                what: "Generell industri / ukjent produksjon",
-                subdiv: "Standard avdelinger",
-                affiliation: "Uavhengig",
-                desc: "Ingen utvidet profil registrert for denne produsenten."
-            };
-
-            document.getElementById('mfr-name').innerText = mfrName;
-            document.getElementById('mfr-origin').innerText = `Hovedkvarter / Opprinnelse: ${profile.origin}`;
-            document.getElementById('mfr-desc').innerText = profile.desc;
-            
-            let details = document.getElementById('mfr-details');
-            details.innerHTML = `
-                <div><strong>Produksjon:</strong> ${profile.what}</div>
-                <div><strong>Underavdelinger:</strong> ${profile.subdiv}</div>
-                <div><strong>Tilhørighet:</strong> ${profile.affiliation}</div>
-            `;
-
-            document.getElementById('manufacturerModal').style.display = 'flex';
-        }
-
-        function closeManufacturerModal(e) {
-            if (!e || e.target.id === 'manufacturerModal') {
-                document.getElementById('manufacturerModal').style.display = 'none';
-            }
-        }
-
+function closeManufacturerModal(e) {
+    if (!e || e.target.id === 'manufacturerModal') {
+        document.getElementById('manufacturerModal').style.display = 'none';
+    }
+}
     function populateMainCategoryButtons() {
     const container = document.getElementById('mainCategoryButtons');
     let html = `<button class="tab-btn active" onclick="selectMainCategory('All', this)" style="grid-column: 1 / -1;">All Categories</button>`;
