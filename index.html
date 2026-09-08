@@ -17228,7 +17228,27 @@
         let unlockedClassified = false;
         let activeModalPart = null;
 
-		// Definerer spesifikasjonsetiketter per kategori for enklere vedlikehold
+		// Komplett struktur og spesifikasjoner for Fane 1: Gear & Equipment
+const TAB_1_CONFIG = {
+    "Weapons": {
+        subcategories: ["Blasters & Pistols", "Rifles & Carabines", "Heavy & Support weapons", "Melee & Vibro weapons", "Explosives & Launchers", "Turrets"],
+        specs: { 1: "Damage Type:", 2: "Effective Range:", 3: "Ammunition / Power:", 4: "Special Features:" }
+    },
+    "Survival, Tools & Field Gear": {
+        subcategories: ["Tools", "Equipment", "Survival Gear", "Containers", "Shelter", "Navigation"],
+        specs: { 1: "Primary Function:", 2: "Power Source:", 3: "Environmental Rating:", 4: "Portability / Weight:" }
+    },
+    "Armor & Protection": {
+        subcategories: ["Helmet & Visors", "Body armor & Chest rigs", "Shields & Deflectors", "Special"],
+        specs: { 1: "Armor Class:", 2: "Defense Rating:", 3: "Mobility Impact:", 4: "Integrated Systems:" }
+    },
+    "Clothing & Textiles": {
+        subcategories: ["Uniforms", "Headwear", "Outerwear", "Undergarments", "Footwear", "Special", "Carpets & curtains", "Other textiles"],
+        specs: { 1: "Fabric / Material:", 2: "Environmental Resistance:", 3: "Style / Aesthetic:", 4: "General Info:" }
+    }
+};
+		
+		// Definerer spesifikasjonsetiketter for kategori 2 for enklere vedlikehold
 const TRANSPORT_TECH_SPECS = {
     "Starships": {
         1: 'Hyperdrive rating:',
@@ -18025,6 +18045,43 @@ function updateGearFieldVisibility() {
 
         block.style.display = isMatch ? 'block' : 'none';
     });
+}
+		function updateTab1Subcategories() {
+    const mainCatSelect = document.getElementById('add-comp-main-cat');
+    const subCatSelect = document.getElementById('add-comp-sub-cat');
+    
+    if (!mainCatSelect || !subCatSelect) return;
+
+    const selectedMain = mainCatSelect.value;
+    subCatSelect.innerHTML = '';
+
+    const categoryData = TAB_1_CONFIG[selectedMain];
+    if (!categoryData) return;
+
+    const fragment = document.createDocumentFragment();
+    categoryData.subcategories.forEach(sub => {
+        const option = document.createElement('option');
+        option.value = sub;
+        option.textContent = sub;
+        fragment.appendChild(option);
+    });
+    
+    subCatSelect.appendChild(fragment);
+    
+    // Oppdater også spesifikasjons-etikettene for denne hovedkategorien automatisk
+    updateTab1FieldLabels(selectedMain);
+}
+
+function updateTab1FieldLabels(mainCategory) {
+    const categoryData = TAB_1_CONFIG[mainCategory];
+    if (!categoryData) return;
+
+    for (let i = 1; i <= 4; i++) {
+        const label = document.getElementById(`specLabel${i}`);
+        if (label) {
+            label.textContent = categoryData.specs[i];
+        }
+    }
 }
 
 function updateTransportTechSpecs(mainCategory) {
