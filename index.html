@@ -17228,6 +17228,53 @@
         let unlockedClassified = false;
         let activeModalPart = null;
 
+		// Definerer spesifikasjonsetiketter per kategori for enklere vedlikehold
+const TRANSPORT_TECH_SPECS = {
+    "Starships": {
+        1: 'Hyperdrive rating:',
+        2: 'Armament:',
+        3: 'Shielding:',
+        4: 'Crew / capacity:'
+    },
+    "Speeders": { // Inkluderer også Vehicles via sjekk under
+        1: 'Max Speed:',
+        2: 'Propulsion Type:',
+        3: 'Cargo Capacity:',
+        4: 'Terrain Adaptability:'
+    },
+    "Medical": {
+        1: 'Core Function:',
+        2: 'Power Draw / Interface:',
+        3: 'Processing Speed / Tier:',
+        4: 'Compatibility:'
+    },
+    "System": { // Inkluderer Software
+        1: 'Core Function:',
+        2: 'Power Draw / Interface:',
+        3: 'Processing Speed / Tier:',
+        4: 'Compatibility:'
+    },
+    "Hardware": {
+        1: 'Output / Performance:',
+        2: 'Durability / Integrity:',
+        3: 'Maintenance Interval:',
+        4: 'Energy Consumption:'
+    },
+    "Electronics": {
+        1: 'Core Function:',
+        2: 'Power Draw / Interface:',
+        3: 'Processing Speed / Tier:',
+        4: 'Compatibility:'
+    },
+    "Maintenance Supplies": {
+        1: 'Consumption Rate:',
+        2: 'Shelf Life / Stability:',
+        3: 'Application Method:',
+        4: 'Compatibility / Grade:'
+    }
+};
+
+
         function initCatalog() {
             let savedData = localStorage.getItem('lex_catalog_components');
             if (savedData) {
@@ -17898,6 +17945,13 @@ const currentCatSelect = document.getElementById('add-comp-main-cat');
 if (currentCatSelect) {
     updateTransportTechSpecs(currentCatSelect.value);
 }
+	// Lytt etter endringer i hovedkategori-nedtrekksmenyen i "Legg til"-modalen
+	const mainCatSelect = document.getElementById('add-comp-main-cat');
+	if (mainCatSelect) {
+    mainCatSelect.addEventListener('change', function() {
+        updateTransportTechSpecs(this.value);
+    });
+}
 }
 
 // Lukker "Legg til"-modalen
@@ -17939,15 +17993,12 @@ function closeAddModal(event) {
 		
 function updateGearFieldVisibility() {
     const gearFieldsContainer = document.getElementById('addItemGearFields');
-    const transportFields = document.getElementById('transportTechDynamicFields');
-    const activeTabBtn = document.querySelector('.tab-btn.active');
-    const isTransportTab = activeTabBtn && activeTabBtn.id === 'tabBtn2';
-
-    if (!gearFieldsContainer) return;
-
     const genericForm = document.getElementById('addItemGenericForm');
     const isTab1Active = genericForm && genericForm.style.display !== 'none';
 
+    if (!gearFieldsContainer) return;
+
+    // Hvis vi ikke er på Fane 1, skjul disse feltene og avslutt
     if (!isTab1Active) {
         gearFieldsContainer.style.display = 'none';
         return;
@@ -17963,48 +18014,7 @@ function updateGearFieldVisibility() {
     const currentMain = cleanText(mainCatSelect ? mainCatSelect.value : '');
     const currentSub = cleanText(subCatSelect ? subCatSelect.value : '');
 
-    console.log("Renset søk - Hoved:", currentMain, "| Under:", currentSub);
-
-    if (isTransportTab) {
-        if (transportFields) transportFields.style.display = 'block';
-        gearFieldsContainer.querySelectorAll('.gear-sub-fields').forEach(b => b.style.display = 'none');
-
-        const starships = ["starfighter", "interceptor", "gunship", "supportship", "capitalships", "haulcraft", "cargoship", "personneltransport"];
-        const vehicles = ["speederbikes", "swoops", "skiff", "landspeeder", "airspeeder", "snowspeeder", "groundvehicles", "walker", "crawler"];
-        
-        const label1 = document.getElementById('specLabel1');
-        const label2 = document.getElementById('specLabel2');
-        const label3 = document.getElementById('specLabel3');
-        const label4 = document.getElementById('specLabel4');
-
-        if (label1 && label2 && label3 && label4) {
-            if (starships.includes(currentSub)) {
-                label1.innerText = "Hyperdrive Rating:";
-                label2.innerText = "Armament:";
-                label3.innerText = "Shielding:";
-                label4.innerText = "Crew / Capacity:";
-            } else if (vehicles.includes(currentSub)) {
-                label1.innerText = "Max Speed:";
-                label2.innerText = "Propulsion Type:";
-                label3.innerText = "Cargo Capacity:";
-                label4.innerText = "Crew / Capacity:";
-            } else if (["bactatanks", "medpacsmedikit", "othermedicalequipment", "cyberneticprosthetics", "cloningtanks", "chemicalconverters", "toxindetectorsandscanners", "chemicalsprayersandemergencygear", "coresystemsfirmware", "controlnetworks", "sensorarrays", "weaponsystems", "stealthtechnology", "automationairoutines", "mainframesterminals", "subroutinesprotocols", "droidbrain", "slicingcovertsystem", "communicationsystems", "terminalscomputing", "securitysurveillance"].includes(currentSub)) {
-                label1.innerText = "Core Function:";
-                label2.innerText = "Power Draw / Interface:";
-                label3.innerText = "Processing Speed / Tier:";
-                label4.innerText = "Compatibility:";
-            } else {
-                label1.innerText = "Output / Performance:";
-                label2.innerText = "Durability / Integrity:";
-                label3.innerText = "Maintenance Interval:";
-                label4.innerText = "Energy Consumption:";
-            }
-        }
-        return; 
-    } else {
-        if (transportFields) transportFields.style.display = 'none';
-    }
-
+    // Håndter de spesifikke underelementene for Gear & Equipment (Fane 1)
     const subFieldBlocks = gearFieldsContainer.querySelectorAll('.gear-sub-fields');
     subFieldBlocks.forEach(block => {
         const rawTarget = block.getAttribute('data-gear-sub') || '';
@@ -18013,69 +18023,46 @@ function updateGearFieldVisibility() {
         const isMatch = (currentSub && targetClean.includes(currentSub)) || 
                         (currentMain && targetClean.includes(currentMain));
 
-        if (isMatch) {
-            block.style.display = 'block';
-        } else {
-            block.style.display = 'none';
-        }
+        block.style.display = isMatch ? 'block' : 'none';
     });
 }
 
-// 1. Funksjonen som oppdaterer etikettene basert på de 7 hovedkategoriene
 function updateTransportTechSpecs(mainCategory) {
     const dynamicContainer = document.getElementById('transportTechDynamicFields');
-    const label1 = document.getElementById('specLabel1');
-    const label2 = document.getElementById('specLabel2');
-    const label3 = document.getElementById('specLabel3');
-    const label4 = document.getElementById('specLabel4');
+    const labels = {
+        1: document.getElementById('specLabel1'),
+        2: document.getElementById('specLabel2'),
+        3: document.getElementById('specLabel3'),
+        4: document.getElementById('specLabel4')
+    };
 
-    if (!dynamicContainer || !label1 || !label2 || !label3 || !label4) return;
+    if (!dynamicContainer || !labels[1] || !labels[2] || !labels[3] || !labels[4]) return;
 
-    // Sørg for at de dynamiske feltene alltid vises når man er på Fane 2
+    // Vis alltid feltene når vi er på rett fane
     dynamicContainer.style.display = 'block';
 
+    // Finn riktig sett med etiketter basert på kategori-navn
+    let matchedConfig = TRANSPORT_TECH_SPECS["Maintenance Supplies"]; // Standard fallback
+
     if (mainCategory.includes('Starships')) {
-        label1.textContent = 'Hyperdrive rating:';
-        label2.textContent = 'Armament:';
-        label3.textContent = 'Shielding:';
-        label4.textContent = 'Crew / capacity:';
-    } 
-    else if (mainCategory.includes('Speeders') || mainCategory.includes('Vehicles')) {
-        label1.textContent = 'Max Speed:';
-        label2.textContent = 'Propulsion Type:';
-        label3.textContent = 'Cargo Capacity:';
-        label4.textContent = 'Terrain Adaptability:';
-    } 
-    else if (mainCategory.includes('Medical')) {
-        label1.textContent = 'Core Function:';
-        label2.textContent = 'Power Draw / Interface:';
-        label3.textContent = 'Processing Speed / Tier:';
-        label4.textContent = 'Compatibility:';
-    } 
-    else if (mainCategory.includes('System') || mainCategory.includes('Software')) {
-        label1.textContent = 'Core Function:';
-        label2.textContent = 'Power Draw / Interface:';
-        label3.textContent = 'Processing Speed / Tier:';
-        label4.textContent = 'Compatibility:';
-    } 
-    else if (mainCategory.includes('Hardware')) {
-        label1.textContent = 'Output / Performance:';
-        label2.textContent = 'Durability / Integrity:';
-        label3.textContent = 'Maintenance Interval:';
-        label4.textContent = 'Energy Consumption:';
-    } 
-    else if (mainCategory.includes('Electronics')) {
-        label1.textContent = 'Core Function:';
-        label2.textContent = 'Power Draw / Interface:';
-        label3.textContent = 'Processing Speed / Tier:';
-        label4.textContent = 'Compatibility:';
-    } 
-    else {
-        // Maintenance Supplies og generell fallback
-        label1.textContent = 'Output / Performance:';
-        label2.textContent = 'Durability / Integrity:';
-        label3.textContent = 'Maintenance Interval:';
-        label4.textContent = 'Energy Consumption:';
+        matchedConfig = TRANSPORT_TECH_SPECS["Starships"];
+    } else if (mainCategory.includes('Speeders') || mainCategory.includes('Vehicles')) {
+        matchedConfig = TRANSPORT_TECH_SPECS["Speeders"];
+    } else if (mainCategory.includes('Medical')) {
+        matchedConfig = TRANSPORT_TECH_SPECS["Medical"];
+    } else if (mainCategory.includes('System') || mainCategory.includes('Software')) {
+        matchedConfig = TRANSPORT_TECH_SPECS["System"];
+    } else if (mainCategory.includes('Hardware')) {
+        matchedConfig = TRANSPORT_TECH_SPECS["Hardware"];
+    } else if (mainCategory.includes('Electronics')) {
+        matchedConfig = TRANSPORT_TECH_Specs || TRANSPORT_TECH_SPECS["Hardware"];
+    } else if (mainCategory.includes('Maintenance Supplies')) {
+        matchedConfig = TRANSPORT_TECH_SPECS["Maintenance Supplies"];
+    }
+
+    // Sett etikettene
+    for (let i = 1; i <= 4; i++) {
+        labels[i].textContent = matchedConfig[i];
     }
 }
 
@@ -18143,48 +18130,55 @@ function switchAddTabNew(tabNum) {
         }
     }
 }
+// Komplett oversikt over hvilke hovedkategorier som hører til hvilken fane
+const TAB_CATEGORY_MAPPING = {
+    1: ['Weapons', 'Survival, Tools & Field Gear', 'Armor & Protection', 'Clothing & Textiles'],
+    2: ['Starships', 'Speeders & Vehicles', 'Medical & Chemical Equipment', 'System & Software', 'Hardware', 'Electronics & Security', 'Maintenance Supplies'],
+    3: ['Food & drinks', 'Medical & Chemical Compounds', 'Raw Materials', 'Agriculture'],
+    4: ['Droids', 'Known associates'],
+    5: ['Factions', 'Locations'],
+    6: ['Household Kitchen', 'Living Quarters & Fresher', 'Office & Administrative Equipment', 'Recreation & Entertainment'],
+    7: ['Restricted Files'],
+    8: [
+        'Core Software and Operating Environments',
+        'AI and Cognitive Systems',
+        'Data Archives and Knowledge Systems',
+        'Networks, Communications, and Identity',
+        'Security and Counter-Intrusion',
+        'Control, Automation, and Industrial Logic',
+        'Simulation, Training, and Expert Systems',
+        'Commerce, Logistics, and Administration',
+        'Doctrine, Procedures, and Documents',
+        'System & Software'
+    ]
+};
+
 function populateTabCategories(tabNumber, mainId, subId) {
     const mainSelect = document.getElementById(mainId);
     if (!mainSelect) return;
     
+    // Husker hva som eventuelt var valgt fra før, slik at vi kan prøve å beholde det hvis det fremdeles er gyldig
+    const currentSelectedValue = mainSelect.value;
+    
     mainSelect.innerHTML = '';
     
-    let allowedCategories = [];
-    if (tabNumber === 1) {
-        allowedCategories = ['Weapons', 'Survival, Tools & Field Gear', 'Armor & Protection', 'Clothing & Textiles'];
-    } else if (tabNumber === 2) {
-        allowedCategories = ['Starships', 'Speeders & Vehicles', 'Medical & Chemical Equipment', 'System & Software', 'Hardware', 'Electronics & Security', 'Maintenance Supplies'];
-    } else if (tabNumber === 3) {
-        allowedCategories = ['Food & drinks', 'Medical & Chemical Compounds', 'Raw Materials', 'Agriculture'];
-    } else if (tabNumber === 4) {
-        allowedCategories = ['Droids', 'Known associates'];
-    } else if (tabNumber === 5) {
-        allowedCategories = ['Factions', 'Locations'];
-    } else if (tabNumber === 6) {
-        allowedCategories = ['Household Kitchen', 'Living Quarters & Fresher', 'Office & Administrative Equipment', 'Recreation & Entertainment'];
-    } else if (tabNumber === 7) {
-        allowedCategories = ['Restricted Files']; // Lar deg velge Restricted Files som hovedkategori og dens underkategorier direkte
-    } else if (tabNumber === 8) {
-        allowedCategories = [
-            'Core Software and Operating Environments',
-            'AI and Cognitive Systems',
-            'Data Archives and Knowledge Systems',
-            'Networks, Communications, and Identity',
-            'Security and Counter-Intrusion',
-            'Control, Automation, and Industrial Logic',
-            'Simulation, Training, and Expert Systems',
-            'Commerce, Logistics, and Administration',
-            'Doctrine, Procedures, and Documents',
-            'System & Software'
-        ];
-    }
+    const allowedCategories = TAB_CATEGORY_MAPPING[tabNumber] || [];
+    if (allowedCategories.length === 0) return;
 
+    // Bruker DocumentFragment for raskere DOM-oppbygging
+    const fragment = document.createDocumentFragment();
     allowedCategories.forEach(cat => {
         let opt = document.createElement('option');
         opt.value = cat;
         opt.innerText = cat;
-        mainSelect.appendChild(opt);
+        fragment.appendChild(opt);
     });
+    mainSelect.appendChild(fragment);
+
+    // Gjenopprett tidligere valg hvis det fortsatt finnes i den nye listen, ellers sett første valg
+    if (allowedCategories.includes(currentSelectedValue)) {
+        mainSelect.value = currentSelectedValue;
+    }
 
     updateSubCategoryDropdown(mainId, subId);
 }
@@ -18327,13 +18321,6 @@ function saveNewItem(event) {
     // Felles univers-status for standard og software (hvis ikke restricted)
     const standardUniverse = document.getElementById('add-comp-universe')?.value || 'Canon';
 
-	// Lytt etter endringer i hovedkategori-nedtrekksmenyen i "Legg til"-modalen
-	const mainCatSelect = document.getElementById('add-comp-main-cat');
-	if (mainCatSelect) {
-    mainCatSelect.addEventListener('change', function() {
-        updateTransportTechSpecs(this.value);
-    });
-}
 
     if (isSoftwareActive) {
         // --- SOFTWARE-LAGRING ---
