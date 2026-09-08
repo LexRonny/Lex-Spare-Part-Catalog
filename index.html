@@ -17955,37 +17955,154 @@ function populateCategoryDropdown(elementId) {
     });
 }
 
-function updateGearFieldVisibility() {
-    const gearFieldsContainer = document.getElementById('addItemGearFields');
-    const genericForm = document.getElementById('addItemGenericForm');
-    const isTab1Active = genericForm && genericForm.style.display !== 'none';
+		// 1. Ett felles, strukturert oppslagsverk for alle hovedkategorier og deres 4 spesifikasjonsfelt
+const CATEGORY_SPECS_CONFIG = {
+    // Fane 1: Gear & Equipment
+    "Weapons": {
+        specs: { 1: "Damage Type:", 2: "Effective Range:", 3: "Ammunition / Power:", 4: "Special Features:" }
+    },
+    "Survival, Tools & Field Gear": {
+        specs: { 1: "Primary Function:", 2: "Power Source:", 3: "Environmental Rating:", 4: "Portability / Weight:" }
+    },
+    "Armor & Protection": {
+        specs: { 1: "Armor Class:", 2: "Defense Rating:", 3: "Mobility Impact:", 4: "Integrated Systems:" }
+    },
+    "Clothing & Textiles": {
+        specs: { 1: "Fabric / Material:", 2: "Environmental Resistance:", 3: "Style / Aesthetic:", 4: "General Info:" }
+    },
 
-    if (!gearFieldsContainer) return;
-
-    if (!isTab1Active) {
-        gearFieldsContainer.style.display = 'none';
-        return;
+    // Fane 2: Transport & Tech
+    "Starships": {
+        specs: { 1: "Class / Type:", 2: "Hyperdrive Rating:", 3: "Crew / Capacity:", 4: "Shield / Armor:" }
+    },
+    "Speeders & Vehicles": {
+        specs: { 1: "Max Speed:", 2: "Engine Type:", 3: "Passenger Capacity:", 4: "Handling Rating:" }
+    },
+    "Medical & Chemical Equipment": {
+        specs: { 1: "Medical Tier:", 2: "Power Draw:", 3: "Capacity / Volume:", 4: "Sterility Level:" }
+    },
+    "System & Software": {
+        specs: { 1: "Architecture:", 2: "Security Protocol:", 3: "Processing Core:", 4: "Compatibility:" }
+    },
+    "Hardware": {
+        specs: { 1: "Component Class:", 2: "Energy Output:", 3: "Thermal Tolerance:", 4: "Durability Rating:" }
+    },
+    "Electronics & Security": {
+        specs: { 1: "Signal Range:", 2: "Encryption Type:", 3: "Power Requirement:", 4: "Security Rating:" }
+    },
+    "Maintenance Supplies": {
+        specs: { 1: "Composition:", 2: "Hazard Level:", 3: "Shelf Life:", 4: "Application Method:" }
     }
+    // --- TAB 3: SUPPLY & INDUSTRY ---
+    "Food & drinks": {
+        specs: { 1: "Flavor / Profile:", 2: "Nutritional Value:", 3: "Shelf Life:", 4: "Origin System:" }
+    },
+    "Medical & Chemical Compounds": {
+        specs: { 1: "Potency / Tier:", 2: "Toxicity Level:", 3: "Application Method:", 4: "Controlled Status:" }
+    },
+    "Raw Materials": {
+        specs: { 1: "Purity Grade:", 2: "Tensile Strength:", 3: "Melting Point:", 4: "Processing Requirement:" }
+    },
+    "Agriculture": {
+        specs: { 1: "Growth Cycle:", 2: "Climate Requirement:", 3: "Yield Rating:", 4: "Export Restrictions:" }
+    },
 
-    gearFieldsContainer.style.display = 'block';
+    // --- TAB 4: PERSONNEL & CONTACTS ---
+    // (Bruker egne felt som alder, species, gender vist i bilde 1, 
+    // men her kan de 4 dynamiske feltene f.eks. brukes til operasjonelle data hvis skjemaet krever det)
+    "Droids": {
+        specs: { 1: "Primary Function:", 2: "Processor Class:", 3: "Mobility Type:", 4: "Network Link:" }
+    },
+    "Known associates": {
+        specs: { 1: "Threat Level:", 2: "Reliability:", 3: "Last Known Location:", 4: "Primary Leverage:" }
+    },
 
-    const mainCatSelect = document.getElementById('add-comp-main-cat');
-    const subCatSelect = document.getElementById('add-comp-sub-cat');
-    
-    const cleanText = (txt) => txt ? txt.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]/g, '') : '';
+    // --- TAB 5: LOCATIONS & FACTIONS ---
+    "Factions": {
+        specs: { 1: "Influence Scale:", 2: "Primary Sector:", 3: "Alignment:", 4: "Military Strength:" }
+    },
+    "Locations": {
+        specs: { 1: "Environment Type:", 2: "Security Level:", 3: "Population:", 4: "Strategic Value:" }
+    },
 
-    const currentMain = cleanText(mainCatSelect ? mainCatSelect.value : '');
-    const currentSub = cleanText(subCatSelect ? subCatSelect.value : '');
+    // --- TAB 6: HOUSEHOLD & LIVING QUARTERS ---
+    "Household Kitchen": {
+        specs: { 1: "Power Consumption:", 2: "Capacity:", 3: "Maintenance Cycle:", 4: "Material Build:" }
+    },
+    "Living Quarters & Fresher": {
+        specs: { 1: "Comfort Rating:", 2: "Water/Power Draw:", 3: "Sanitation Grade:", 4: "Automation Level:" }
+    },
+    "Office & Administrative Equipment": {
+        specs: { 1: "Data Capacity:", 2: "Encryption Standard:", 3: "Interface Type:", 4: "Security Lock:" }
+    },
+    "Recreation & Entertainment": {
+        specs: { 1: "Resolution / Fidelity:", 2: "Power Requirement:", 3: "User Interface:", 4: "Catalog Index:" }
+    },
 
-    const subFieldBlocks = gearFieldsContainer.querySelectorAll('.gear-sub-fields');
-    subFieldBlocks.forEach(block => {
-        const rawTarget = block.getAttribute('data-gear-sub') || '';
-        const targetClean = cleanText(rawTarget);
+    // --- TAB 7: SOFTWARE (Som vist i bilde 2) ---
+    "Core Software and Operating Environments": {
+        specs: { 1: "Architecture:", 2: "Kernel Type:", 3: "System Footprint:", 4: "License Class:" }
+    },
+    "AI and Cognitive Systems": {
+        specs: { 1: "Sentience Level:", 2: "Neural Core:", 3: "Restraint Protocol:", 4: "Memory Allocation:" }
+    },
+    "Data Archives and Knowledge Systems": {
+        specs: { 1: "Data Volume:", 2: "Access Speed:", 3: "Encryption Type:", 4: "Source Origin:" }
+    },
+    "Networks, Communications, and Identity": {
+        specs: { 1: "Bandwidth / Range:", 2: "Protocol Standard:", 3: "Encryption Tier:", 4: "Node Capacity:" }
+    },
+    "Security and Counter-Intrusion": {
+        specs: { 1: "Defense Rating:", 2: "Response Time:", 3: "Counter-Measure:", 4: "Bypass Difficulty:" }
+    },
+    "Control, Automation, and Industrial Logic": {
+        specs: { 1: "Execution Speed:", 2: "Precision Rating:", 3: "Hardware Link:", 4: "Fail-safe Protocol:" }
+    },
+    "Simulation, Training, and Expert Systems": {
+        specs: { 1: "Simulation Fidelity:", 2: "Scenario Matrix:", 3: "Target Skill:", 4: "Processor Load:" }
+    },
+    "Commerce, Logistics, and Administration": {
+        specs: { 1: "Transaction Speed:", 2: "Ledger Format:", 3: "Compliance Level:", 4: "Automation Tier:" }
+    },
+    "Doctrine, Procedures, and Documents": {
+        specs: { 1: "Classification:", 2: "Issuing Authority:", 3: "Revision ID:", 4: "Applicability:" }
+    }
+];
+};
 
-        const isMatch = (currentSub && targetClean.includes(currentSub)) || 
-                        (currentMain && targetClean.includes(currentMain));
+// 2. Én universell funksjon som erstatter alle de gamle spesifikasjonsfunksjonene
+function updateCategorySpecs(mainCategory) {
+    const dynamicContainer = document.getElementById('transportTechDynamicFields'); // Kan også omdøpes til et generelt ID-navn i HTML om ønskelig
+    const labels = {
+        1: document.getElementById('specLabel1'),
+        2: document.getElementById('specLabel2'),
+        3: document.getElementById('specLabel3'),
+        4: document.getElementById('specLabel4')
+    };
 
-        block.style.display = isMatch ? 'block' : 'none';
+    if (!dynamicContainer || !labels[1]) return;
+
+    // Sjekk om den valgte hovedkategorien finnes i konfigurasjonen vår
+    if (CATEGORY_SPECS_CONFIG[mainCategory]) {
+        dynamicContainer.style.display = 'block';
+        const matchedSpecs = CATEGORY_SPECS_CONFIG[mainCategory].specs;
+        
+        for (let i = 1; i <= 4; i++) {
+            if (labels[i]) {
+                labels[i].textContent = matchedSpecs[i] || `Spec ${i}:`;
+            }
+        }
+    } else {
+        // Skjul de dynamiske feltene hvis kategorien ikke krever egne spesifikasjoner
+        dynamicContainer.style.display = 'none';
+    }
+}
+
+// 3. Koble hendelseslytteren til hovedkategori-nedtrekksmenyen
+const addMainCatSelect = document.getElementById('add-comp-main-cat');
+if (addMainCatSelect) {
+    addMainCatSelect.addEventListener('change', function() {
+        updateCategorySpecs(this.value);
     });
 }
 
@@ -18026,51 +18143,7 @@ function updateTab1FieldLabels(mainCategory) {
     }
 }
 
-function updateTransportTechSpecs(mainCategory) {
-    const dynamicContainer = document.getElementById('transportTechDynamicFields');
-    const labels = {
-        1: document.getElementById('specLabel1'),
-        2: document.getElementById('specLabel2'),
-        3: document.getElementById('specLabel3'),
-        4: document.getElementById('specLabel4')
-    };
 
-    if (!dynamicContainer || !labels[1] || !labels[2] || !labels[3] || !labels[4]) return;
-
-    dynamicContainer.style.display = 'block';
-
-    let matchedConfig = TRANSPORT_TECH_SPECS["Maintenance Supplies"];
-
-    if (mainCategory.includes('Starships')) {
-        matchedConfig = TRANSPORT_TECH_SPECS["Starships"];
-    } else if (mainCategory.includes('Speeders') || mainCategory.includes('Vehicles')) {
-        matchedConfig = TRANSPORT_TECH_SPECS["Speeders"];
-    } else if (mainCategory.includes('Medical')) {
-        matchedConfig = TRANSPORT_TECH_SPECS["Medical"];
-    } else if (mainCategory.includes('System') || mainCategory.includes('Software')) {
-        matchedConfig = TRANSPORT_TECH_SPECS["System"];
-    } else if (mainCategory.includes('Hardware')) {
-        matchedConfig = TRANSPORT_TECH_SPECS["Hardware"];
-    } else if (mainCategory.includes('Electronics')) {
-        matchedConfig = TRANSPORT_TECH_SPECS["Hardware"];
-    } else if (mainCategory.includes('Maintenance Supplies')) {
-        matchedConfig = TRANSPORT_TECH_SPECS["Maintenance Supplies"];
-    }
-
-    for (let i = 1; i <= 4; i++) {
-        labels[i].textContent = matchedConfig[i];
-    }
-}
-
-const addMainCatSelect = document.getElementById('add-comp-main-cat');
-if (addMainCatSelect) {
-    addMainCatSelect.addEventListener('change', function() {
-        const transportFields = document.getElementById('transportTechDynamicFields');
-        if (transportFields && transportFields.style.display === 'block') {
-            updateTransportTechSpecs(this.value);
-        }
-    });
-}
 // Styrer vekslingen mellom de 8 fanene i "Legg til"-modalen
 function switchAddTabNew(tabNum) {
     // 1. Fjern 'active' fra alle tab-knapper og sett på den riktige
