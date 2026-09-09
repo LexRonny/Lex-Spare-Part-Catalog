@@ -485,14 +485,6 @@
             <button type="button" id="tabBtn8" class="tab-btn" onclick="switchAddTabNew(8)">8. RESTRICTED FILES</button>
         </div>
 
-        <!-- GLOBAL RESTRICTED CHECKBOX -->
-        <div style="background: rgba(255,200,0,0.1); border: 1px solid var(--classified-gold); padding: 6px 10px; margin-bottom: 15px; border-radius: 4px; font-size: 0.9rem;">
-            <label style="color: var(--classified-gold); font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px;">
-                <input type="checkbox" id="global-pers-restricted" onchange="toggleRestrictedModalColor(this)"> 
-                ⚠️ Add to Restricted Files (The Shadows)
-            </label>
-        </div>
-
         <!-- FORM START -->
         <form id="addItemForm" onsubmit="saveNewItem(event)">
             
@@ -18458,8 +18450,6 @@ function saveNewItem(event) {
     
     let id = '', name = '', universe = '', fullCategory = '', mfrOrFaction = '', desc = '', imageUrl = '';
 
-    const restrictedCheckbox = document.getElementById('global-pers-restricted');
-    const isRestricted = restrictedCheckbox ? restrictedCheckbox.checked : false;
 
     // Felles univers-status for standard og software (hvis ikke restricted)
     const standardUniverse = document.getElementById('add-comp-universe')?.value || 'Canon';
@@ -18479,13 +18469,17 @@ function saveNewItem(event) {
             return;
         }
 
-        if (isRestricted) {
-            universe = 'Classified';
-            fullCategory = `Restricted Files / ${subCat}`;
-        } else {
-            universe = standardUniverse;
-            fullCategory = `${mainCat} / ${subCat}`;
-        }
+       // Automatisk sjekk om posten tilhører Fane 8 (Restricted Files)
+    const mainCatVal = document.getElementById('add-comp-main-cat')?.value || '';
+    const exclusiveRestrictedCats = [
+        "Assets & Contacts", "Enemies & Targets", "Personnel files", 
+        "Organisations", "Properties", "Bases"
+    ];
+    
+    // Hvis hovedkategorien er en av de eksklusive Fane 8-kategoriene, settes den automatisk som restricted
+    const isRestricted = exclusiveRestrictedCats.includes(mainCatVal) || 
+                         (typeof currentTab !== 'undefined' && currentTab === 8) ||
+                         (typeof activeTab !== 'undefined' && activeTab === 8);
 
         id = generateSystemID(isRestricted ? 'Restricted Files' : mainCat, subCat, universe);
 
@@ -18511,7 +18505,7 @@ function saveNewItem(event) {
         catalogData.components.push(newItem);
 
     } else if (!isPersonnelActive) {
-        // --- KOMPONENT- / UTSTYRSLAGRING (Tab 1, 2, 3, 5, 6, 7) ---
+        // --- KOMPONENT- / UTSTYRSLAGRING (Tab 1, 2, 3, 5, 6, 7, 8) ---
         name = document.getElementById('add-comp-name')?.value.trim() || '';
         const mainCat = document.getElementById('add-comp-main-cat')?.value || 'Hardware';
         const subCat = document.getElementById('add-comp-sub-cat')?.value || 'Components';
