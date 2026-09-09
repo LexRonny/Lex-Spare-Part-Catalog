@@ -17641,13 +17641,24 @@ function renderTree(parts) {
 
     document.getElementById('stat-count').innerText = parts.length;
 
+	// Filtrer bort klassifiserte poster med mindre man har låst opp fane 8
+    const activeRestricted = typeof isRestrictedUnlocked !== 'undefined' ? isRestrictedUnlocked : false;
+    
+    let filteredParts = parts.filter(part => {
+        let isClassified = part.universeStatus === 'Classified' || (part.categoryPath && part.categoryPath.startsWith('Restricted Files'));
+        if (isClassified && !activeRestricted) {
+            return false; // Skjul hvis den er klassifisert og fane 8 ikke er låst opp
+        }
+        return true;
+    });
+	
     if (parts.length === 0) {
         container.innerHTML = `<p style="color:var(--text-muted); text-align:center; padding:20px;">Ingen poster funnet under denne kategorien.</p>`;
         return;
     }
 
     let categories = {};
-    parts.forEach(part => {
+    filteredParts.forEach(part => {
         let cat = part.categoryPath || "Unsorted";
         if (!categories[cat]) categories[cat] = [];
         categories[cat].push(part);
@@ -18277,19 +18288,9 @@ const TAB_CATEGORY_MAPPING = {
     4: ['Droids', 'Known associates'],
     5: ['Factions', 'Locations'],
     6: ['Household Kitchen', 'Living Quarters & Fresher', 'Office & Administrative Equipment', 'Recreation & Entertainment'],
-    7: ['Restricted Files'],
-    8: [
-        'Core Software and Operating Environments',
-        'AI and Cognitive Systems',
-        'Data Archives and Knowledge Systems',
-        'Networks, Communications, and Identity',
-        'Security and Counter-Intrusion',
-        'Control, Automation, and Industrial Logic',
-        'Simulation, Training, and Expert Systems',
-        'Commerce, Logistics, and Administration',
-        'Doctrine, Procedures, and Documents',
-        'System & Software'
-    ]
+    7: ['Core Software and Operating Environments', 'AI and Cognitive Systems', 'Data Archives and Knowledge Systems', 'Networks, Communications, and Identity', 'Security and Counter-Intrusion', 'Control, Automation, and Industrial Logic', 'Simulation, Training, and Expert Systems', 'Commerce, Logistics, and Administration', 'Doctrine, Procedures, and Documents', 'System & Software'],
+	8: ['Restricted Files'
+	]
 };
 
 function populateTabCategories(tabNumber, mainId, subId) {
@@ -18450,9 +18451,29 @@ function saveNewItem(event) {
     
     let id = '', name = '', universe = '', fullCategory = '', mfrOrFaction = '', desc = '', imageUrl = '';
 
-
     // Felles univers-status for standard og software (hvis ikke restricted)
     const standardUniverse = document.getElementById('add-comp-universe')?.value || 'Canon';
+
+    // --- AUTOMATISK SJEKK FOR RESTRICTED FILES (Fane 8) ---
+    // Henter riktig hovedkategori avhengig av hvilket skjema som er aktivt
+    let mainCatVal = '';
+    if (isSoftwareActive) {
+        mainCatVal = document.getElementById('add-sw-main-cat')?.value || '';
+    } else if (isPersonnelActive) {
+        mainCatVal = document.getElementById('add-pers-main-cat')?.value || '';
+    } else {
+        mainCatVal = document.getElementById('add-comp-main-cat')?.value || '';
+    }
+
+    const exclusiveRestrictedCats = [
+        "Assets & Contacts", "Enemies & Targets", "Personnel files", 
+        "Organisations", "Properties", "Bases"
+    ];
+    
+    // Sjekker om kategorien tilhører fane 8 eller om aktiv fane er 8
+    const isRestricted = exclusiveRestrictedCats.includes(mainCatVal) || 
+                         (typeof currentTab !== 'undefined' && currentTab === 8) ||
+                         (typeof activeTab !== 'undefined' && activeTab === 8);
 
 
     if (isSoftwareActive) {
@@ -18469,17 +18490,13 @@ function saveNewItem(event) {
             return;
         }
 
-       // Automatisk sjekk om posten tilhører Fane 8 (Restricted Files)
-    const mainCatVal = document.getElementById('add-comp-main-cat')?.value || '';
-    const exclusiveRestrictedCats = [
-        "Assets & Contacts", "Enemies & Targets", "Personnel files", 
-        "Organisations", "Properties", "Bases"
-    ];
-    
-    // Hvis hovedkategorien er en av de eksklusive Fane 8-kategoriene, settes den automatisk som restricted
-    const isRestricted = exclusiveRestrictedCats.includes(mainCatVal) || 
-                         (typeof currentTab !== 'undefined' && currentTab === 8) ||
-                         (typeof activeTab !== 'undefined' && activeTab === 8);
+        if (isRestricted) {
+            universe = 'Classified';
+            fullCategory = `Restricted Files / ${subCat}`;
+        } else {
+            universe = standardUniverse;
+            fullCategory = `${mainCat} / ${subCat}`;
+        }
 
         id = generateSystemID(isRestricted ? 'Restricted Files' : mainCat, subCat, universe);
 
@@ -18531,7 +18548,6 @@ function saveNewItem(event) {
         // --- HENT DYNAMISKE FELT (GEAR ELLER TRANSPORT & TECH) ---
         let specs = {};
         
-        // Fane 1: Gear & Equipment
         if (subCat === "Weapons" || document.getElementById('gear-weapon-damage')) {
             specs["Damage Type"] = document.getElementById('gear-weapon-damage')?.value.trim() || "";
             specs["Effective Range"] = document.getElementById('gear-weapon-range')?.value.trim() || "";
@@ -18555,7 +18571,6 @@ function saveNewItem(event) {
             specs["Environmental Resistance"] = document.getElementById('gear-cloth-env')?.value.trim() || "";
             specs["Style / Aesthetic"] = document.getElementById('gear-cloth-style')?.value.trim() || "";
         }
-        // Fane 2: Transport & Tech (Henter dynamiske etiketter og verdier)
         else if (document.getElementById('specLabel1') && document.getElementById('specValue1')) {
             const label1 = document.getElementById('specLabel1').textContent.replace(':', '').trim();
             const label2 = document.getElementById('specLabel2').textContent.replace(':', '').trim();
@@ -18636,7 +18651,7 @@ function saveNewItem(event) {
     }
 
     if (typeof saveToLocalStorage === 'function') saveToLocalStorage();
-	if (typeof renderCatalog === 'function') {
+    if (typeof renderCatalog === 'function') {
         renderCatalog();
     } else if (typeof filterCatalog === 'function') {
         filterCatalog();
